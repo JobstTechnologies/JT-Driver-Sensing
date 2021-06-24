@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="54">
+      <Unit0>
+        <Filename Value="JTDriverSensing.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="12" Y="14"/>
+        <UsageCount Value="205"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="JTDriverSensingMain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <TopLine Value="2507"/>
+        <CursorPos Y="2525"/>
+        <UsageCount Value="205"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="serialusbselection.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SerialUSBSelectionF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SerialUSBSelection"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="15"/>
+        <CursorPos X="38" Y="22"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="namesetting.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="NameSettingF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="NameSetting"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="59" Y="19"/>
+        <UsageCount Value="200"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="fitting.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FitForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Fitting"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="123"/>
+        <CursorPos X="36" Y="141"/>
+        <UsageCount Value="438"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="pumpcontrolunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PumpControlUnit"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="3" Y="3"/>
+        <UsageCount Value="205"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="SIXControlUnit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="277"/>
+        <CursorPos X="31" Y="310"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="aboutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutFormF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AboutForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="60" Y="13"/>
+        <UsageCount Value="200"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="ChartEditing\ceaxisdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AxisEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceAxisDlg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="12"/>
+        <UsageCount Value="202"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="ChartEditing\cebrushframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="BrushFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceBrushFrame"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="ChartEditing\cefontframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FontFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceFontFrame"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="ChartEditing\celegenddlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartLegendEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceLegendDlg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="11"/>
+        <UsageCount Value="202"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="ChartEditing\cepenframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PenFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="cePenFrame"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="ChartEditing\cepointerframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PointerFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="cePointerFrame"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="ChartEditing\ceseriesdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartSeriesEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceSeriesDlg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="11"/>
+        <UsageCount Value="202"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="ChartEditing\ceshapebrushpenmarginsframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShapeBrushPenMarginsFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceShapeBrushPenMarginsFrame"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="ChartEditing\cetitlefootdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TitleFootEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceTitleFootDlg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="20" Y="11"/>
+        <UsageCount Value="202"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="ChartEditing\ceutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ceUtils"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="202"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="calibration.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalibrationF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="10"/>
+        <CursorPos X="65" Y="26"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="biomonparseunit.pas"/>
+        <ComponentName Value="MainF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SIXControlUnit"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="3"/>
+        <UsageCount Value="182"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="JTPumpDriver2.lpr"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="59" Y="26"/>
+        <UsageCount Value="175"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="jtpumpdrivermain2.pas"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="JTPumpDriverMain2"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="307"/>
+        <CursorPos X="15" Y="340"/>
+        <UsageCount Value="175"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="biomonparseunit.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="35"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\lazarus\lcl\customtimer.pas"/>
+        <UnitName Value="CustomTimer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="136"/>
+        <CursorPos Y="151"/>
+        <UsageCount Value="8"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="C:\lazarus\lcl\include\customcontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="53"/>
+        <CursorPos Y="75"/>
+        <UsageCount Value="1"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="C:\LazarusDev\lazarus\components\tachart\tacustomsource.pas"/>
+        <UnitName Value="TACustomSource"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1784"/>
+        <CursorPos Y="1804"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="C:\LazarusDev\lazarus\components\tachart\tasources.pas"/>
+        <UnitName Value="TASources"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="573"/>
+        <CursorPos Y="593"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="LegendFormatting.pas"/>
+        <ComponentName Value="LegendEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22"/>
+        <UsageCount Value="3"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="cefontframe.pas"/>
+        <UnitName Value="ceFontFrame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="79"/>
+        <CursorPos X="11" Y="48"/>
+        <UsageCount Value="3"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="charteditor\celegenddlg.pas"/>
+        <UnitName Value="ceLegendDlg"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="74"/>
+        <CursorPos X="15" Y="89"/>
+        <UsageCount Value="3"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5087"/>
+        <CursorPos X="20" Y="5105"/>
+        <UsageCount Value="6"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="I:\Pumpen\Pumpentreiber\Kombi-Treiber-SIX\JT-DriverSensing\ChartEditing\ceseriesdlg.pas"/>
+        <UnitName Value="ceSeriesDlg"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="67"/>
+        <CursorPos X="15" Y="97"/>
+        <UsageCount Value="8"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\tachart\tagraph.pas"/>
+        <UnitName Value="TAGraph"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2104"/>
+        <CursorPos Y="2127"/>
+        <UsageCount Value="6"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\tachart\tasources.pas"/>
+        <UnitName Value="TASources"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="914"/>
+        <CursorPos Y="932"/>
+        <UsageCount Value="7"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\tachart\tacustomsource.pas"/>
+        <UnitName Value="TACustomSource"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1782"/>
+        <CursorPos Y="1804"/>
+        <UsageCount Value="8"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\fpcupdeluxe\config_lazarus\onlinepackagemanager\packages\LazSerial\lazserial.pas"/>
+        <UnitName Value="LazSerial"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="280"/>
+        <CursorPos Y="302"/>
+        <UsageCount Value="10"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\application.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1046"/>
+        <CursorPos Y="1067"/>
+        <UsageCount Value="5"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\tachart\tachartutils.pas"/>
+        <UnitName Value="TAChartUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="610"/>
+        <CursorPos Y="631"/>
+        <UsageCount Value="3"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\customcontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="53"/>
+        <CursorPos Y="75"/>
+        <UsageCount Value="7"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\customtimer.pas"/>
+        <UnitName Value="CustomTimer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="128"/>
+        <CursorPos Y="155"/>
+        <UsageCount Value="1"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\interfaces\win32\win32callback.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1989"/>
+        <CursorPos Y="2008"/>
+        <UsageCount Value="5"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\interfaces\win32\win32object.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="380"/>
+        <CursorPos Y="409"/>
+        <UsageCount Value="1"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\tachart\tatransformations.pas"/>
+        <UnitName Value="TATransformations"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="692"/>
+        <CursorPos Y="714"/>
+        <UsageCount Value="7"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="C:\LazarusDev\lazarus\components\tachart\tagraph.pas"/>
+        <UnitName Value="TAGraph"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2109"/>
+        <CursorPos Y="2126"/>
+        <UsageCount Value="2"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="C:\LazarusDev\fpcsrc\packages\rtl-objpas\src\inc\system.uitypes.pp"/>
+        <UnitName Value="System.UITypes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="166"/>
+        <CursorPos X="9" Y="183"/>
+        <UsageCount Value="2"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="C:\LazarusDev\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3577"/>
+        <CursorPos Y="3594"/>
+        <UsageCount Value="2"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\buttoncontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <CursorPos Y="50"/>
+        <UsageCount Value="7"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\customcheckbox.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="114"/>
+        <CursorPos Y="134"/>
+        <UsageCount Value="5"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="C:\Users\USti\AppData\Local\Temp\7zO84D0AEC7\pumpcontrolunit.pas"/>
+        <UnitName Value="PumpControlUnit"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\customedit.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="482"/>
+        <CursorPos Y="501"/>
+        <UsageCount Value="5"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\wincontrol.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5412"/>
+        <CursorPos Y="5430"/>
+        <UsageCount Value="5"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\lclmessageglue.pas"/>
+        <UnitName Value="LCLMessageGlue"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="93"/>
+        <CursorPos Y="123"/>
+        <UsageCount Value="5"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="C:\fpcupdeluxe\lazarus\docs\xml\system.xml"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="6"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="C:\LazarusDev\config_lazarus\onlinepackagemanager\packages\LazSerial\lazserial.pas"/>
+        <UnitName Value="LazSerial"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="284"/>
+        <CursorPos X="36" Y="299"/>
+        <UsageCount Value="10"/>
+      </Unit53>
+    </Units>
+    <JumpHistory Count="24" HistoryIndex="23">
+      <Position1>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="140" TopLine="128"/>
+      </Position1>
+      <Position2>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="203" TopLine="191"/>
+      </Position2>
+      <Position3>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="189" TopLine="174"/>
+      </Position3>
+      <Position4>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="203" TopLine="187"/>
+      </Position4>
+      <Position5>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="206" TopLine="193"/>
+      </Position5>
+      <Position6>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="207" TopLine="193"/>
+      </Position6>
+      <Position7>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="210" TopLine="193"/>
+      </Position7>
+      <Position8>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="243" TopLine="234"/>
+      </Position8>
+      <Position9>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="291" Column="4" TopLine="141"/>
+      </Position9>
+      <Position10>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="296" Column="50" TopLine="270"/>
+      </Position10>
+      <Position11>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="153" TopLine="152"/>
+      </Position11>
+      <Position12>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="173" TopLine="161"/>
+      </Position12>
+      <Position13>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="140" TopLine="134"/>
+      </Position13>
+      <Position14>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="223" TopLine="208"/>
+      </Position14>
+      <Position15>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="223" TopLine="215"/>
+      </Position15>
+      <Position16>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="226" TopLine="215"/>
+      </Position16>
+      <Position17>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="227" TopLine="215"/>
+      </Position17>
+      <Position18>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="230" TopLine="215"/>
+      </Position18>
+      <Position19>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="148" Column="31" TopLine="134"/>
+      </Position19>
+      <Position20>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="274" TopLine="220"/>
+      </Position20>
+      <Position21>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="169" Column="7" TopLine="144"/>
+      </Position21>
+      <Position22>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="72" Column="61" TopLine="66"/>
+      </Position22>
+      <Position23>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="78" Column="16" TopLine="66"/>
+      </Position23>
+      <Position24>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="299" Column="43" TopLine="292"/>
+      </Position24>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="274"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="912"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="1389"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="232"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="320"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="SIXControlUnit.pas"/>
+        <Line Value="156"/>
+      </Item>
+    </BreakPoints>
+    <Watches>
+      <Item>
+        <Expression Value="dataArray"/>
+      </Item>
+      <Item>
+        <Expression Value="dataArray[22]"/>
+      </Item>
+      <Item>
+        <Expression Value="dataArray[StopPos-1]"/>
+      </Item>
+      <Item>
+        <Expression Value="checksum"/>
+      </Item>
+      <Item>
+        <Expression Value="PintegerArray^[1]"/>
+      </Item>
+      <Item>
+        <Expression Value="intArray[1]"/>
+      </Item>
+      <Item>
+        <Expression Value="p^[3]"/>
+      </Item>
+      <Item>
+        <Expression Value="p^[4]"/>
+      </Item>
+      <Item>
+        <Expression Value="DelayReadCounter"/>
+      </Item>
+      <Item>
+        <Expression Value="i"/>
+      </Item>
+      <Item>
+        <Expression Value="ChanDbl"/>
+      </Item>
+      <Item>
+        <Expression Value="ChanRawDbl"/>
+      </Item>
+      <Item>
+        <Expression Value="str"/>
+      </Item>
+      <Item>
+        <Expression Value="prevChan"/>
+      </Item>
+      <Item>
+        <Expression Value="SIXCh3Values"/>
+      </Item>
+      <Item>
+        <Expression Value="signalCounter"/>
+      </Item>
+      <Item>
+        <Expression Value="SingleByte"/>
+      </Item>
+    </Watches>
+  </Debugging>
+</CONFIG>

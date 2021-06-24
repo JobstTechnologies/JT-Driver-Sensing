@@ -1,0 +1,1464 @@
+unit SIXControlUnit;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Windows, Classes, SysUtils, Forms, Controls, Graphics, Crt, Streamex,
+  Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
+  TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
+  Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
+  TAGeometry,
+  // custom forms
+  JTDriverSensingMain, NameSetting;
+
+type
+
+  TSIXControl = class
+    constructor create;
+    procedure SCScrollViewCBChange(Sender: TObject);
+    procedure SCChartToolsetDataPointHintTool1Hint(ATool: TDataPointHintTool;
+      const APoint: TPoint; var AHint: String);
+    procedure SCSaveCSVResultBClick(Sender: TObject);
+    procedure SCSaveScreenshotLiveBClick(Sender: TObject);
+    procedure SCSaveScreenshotResultBClick(Sender: TObject);
+    procedure SCStartFitBClick(Sender: TObject);
+    procedure SCChannelXCBChange(Sender: TObject);
+    procedure SCChannelXGBDblClick(Sender: TObject);
+    procedure SCRawCurrentCBChange(Sender: TObject);
+    procedure SCReadTimerTimerFinished(Sender: TObject);
+    procedure SCChartToolsetTitleFootClickTool1Click(Sender: TChartTool;
+      Title: TChartTitle);
+    procedure SCChartToolsetLegendClickTool1Click(Sender: TChartTool;
+      Legend: TChartLegend);
+    procedure SCChartToolsetAxisClickTool1Click(Sender: TChartTool;
+      AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
+    procedure SCAppearanceXBBClick(Sender: TObject);
+    procedure SCChannelXOnOffCBChange(Sender: TObject);
+    procedure SCShowTempCBChange(Sender: TObject);
+    procedure SCAnOutConnectorXOnOffCBChange(Sender: TObject);
+    procedure SCAnOutOfXLEChange(Sender: TObject);
+    procedure SCAnOutOnOffTBChange(Sender: TObject);
+    procedure SCCalibrateTBChange(Sender: TObject);
+
+  private
+
+  public
+    function SaveCSV(Overwrite: Boolean; ChartName: string): Boolean;
+    function SaveScreenshot(Overwrite: Boolean; ChartName: string): Boolean;
+    function ParseLine(Line: string; channel: Byte): double;
+    function ParseDefFile(InFile: string): Boolean;
+
+    class var
+     evalTimeChanged : Boolean; // true if user changed evaluation time
+     DelayReadCounter : integer; // to check if the readout will stop
+     HeaderStrings : array [1..6] of string; // string for the output file header
+     isBlank : array [1..6] of Boolean; // if channel is a blank
+     timeCounter : double; // counter of the overall SIX signal time in min
+     signalCounter : integer; // counter of the overall SIX readouts
+     NumChannels : integer; // number of channels
+
+  end;
+
+var
+  SIXControl: TSIXControl;
+  InNameParse: string = ''; // name of load file
+  DropfileNameParse: string = ''; // name of dropped file
+  intSlopeCounter: integer = 0; // counts how many time the current measurement exceeded the slope limit
+  wasReset: Boolean = false; // true if Reset button was pressed
+  ScreenOutName: string = '';
+  CSVOutName: string = '';
+  Started: Boolean = false; //if Start was pressed or not
+  Gains : array [1..6] of single; // the channel gains
+  GainsRaw : array [1..6] of double; // the default gains
+  Subtracts : array [1..6] of integer; // the channel subtracts
+  TemperGains : array [1..8] of single; // the temperature gains
+  ErrorCount : integer = 0; // counts how many times we did not reeive a stop bit
+  wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
+
+implementation
+
+uses
+  Fitting, Calibration,
+  // ChartEditing units
+  ceTitleFootDlg, ceLegendDlg, ceSeriesDlg, ceAxisDlg;
+
+constructor TSIXControl.create;
+begin
+ evalTimeChanged:= false;
+end;
+
+procedure TSIXControl.SCReadTimerTimerFinished(Sender: TObject);
+type intArray = array[1..4] of byte;
+     PintArray = ^intArray;
+var
+ OutLine : string;
+ slope, temperature, lastInterval : double;
+ i, k, StopPos, ItemIndex: integer;
+ Extent : TDoubleRect;
+ MousePointer : TPoint;
+ dataArray : array[0..24] of byte;
+ HiLowArray : array[0..1] of byte;
+ Chan : array [1..6] of Int16;
+ ChanDbl : array [0..8] of double; // start from zero purposely for non-existing subtracts
+ ChanRawDbl : array [1..8] of double;
+ prevChan : array [1..8] of double;
+ checksum : integer;
+ tempInt16: Int16;
+ PintegerArray: PintArray;
+ wasRead : Boolean = false;
+ SingleByte : byte;
+begin
+ // say the OS the application is alive
+ Application.ProcessMessages;
+
+ // initialize
+ MousePointer:= Mouse.CursorPos;
+ lastInterval:= 0.0;
+ for i:= 0 to 8 do
+  ChanDbl[i]:= 0.0;
+
+ // first check if we still have a filestream
+ if not HaveSensorFileStream then
+ begin
+  MainForm.ReadTimer.Enabled:= false;
+  MessageDlgPos('The connection to the data file was lost!' + LineEnding
+    + 'To restart you must call again the menu Connection -> SIX bisensors',
+   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  MainForm.ConnComPortSensLE.Color:= clRed;
+  MainForm.IndicatorSensorP.Caption:= 'Connection lost';
+  MainForm.IndicatorSensorP.Color:= clRed;
+  // disable all buttons
+  MainForm.StartTestBB.Enabled:= false;
+  MainForm.StopTestBB.Enabled:= false;
+  MainForm.CloseLazSerialConn(MousePointer);
+  HaveSerialSensor:= False;
+  exit;
+ end;
+
+ try
+  // in case we need to re-sync we must readout as many bytes until we get a
+  // stop byte again
+  if wasNoStopByte then
+  begin
+   SingleByte:= $1;
+   i:= 0;
+   // look for a stp byte in the next 100 bytes
+   while (SingleByte <> $16) and (i < 101) do
+   begin
+    SingleByte:= MainForm.COMConnect.SynSer.RecvByte(100);
+    inc(i);
+   end;
+   wasNoStopByte:= false;
+   if i > 100 then // no stopy byte within 100 bytes, so there is a severe problem
+   begin
+    MainForm.ReadTimer.Enabled:= False;
+    MessageDlgPos('The received last 100 bytes do not contain a stop bit.'
+    + LineEnding + 'Try to reconnect to the SIX.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    MainForm.ConnComPortSensLE.Color:= clRed;
+    MainForm.IndicatorSensorP.Caption:= 'SIX error';
+    MainForm.IndicatorSensorP.Color:= clRed;
+    MainForm.StartTestBB.Enabled:= false;
+    MainForm.StopTestBB.Enabled:= false;
+    MainForm.CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+    exit;
+   end;
+  end;
+
+  // check if there are 25 bytes available to be read
+  // if not wait another 100 ms until the timer finished the next time
+  while MainForm.COMConnect.SynSer.WaitingDataEx < 25 do
+  begin
+   delay(100);
+   lastInterval:= lastInterval + 0.00166; // 100 ms of the delay in min
+   inc(DelayReadCounter);
+   if DelayReadCounter > 50 then
+   // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
+   begin
+    // often the SIX only stops telling it has not enough data
+    // to try to read data
+    try
+     k:= MainForm.COMConnect.SynSer.RecvBufferEx(@dataArray[0], 25, 100);
+     wasRead:= true;
+    finally
+     if k <> 25 then
+     begin
+      MainForm.ReadTimer.Enabled:= false;
+      MessageDlgPos('Error: ' + MainForm.ConnComPortSensLE.Text +
+       ' did not deliver data within 5.1 s.',
+       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+      MainForm.ConnComPortSensLE.Color:= clRed;
+      MainForm.IndicatorSensorP.Caption:= 'SIX error';
+      MainForm.IndicatorSensorP.Color:= clRed;
+      MainForm.StartTestBB.Enabled:= false;
+      MainForm.StopTestBB.Enabled:= false;
+      MainForm.CloseLazSerialConn(MousePointer);
+      HaveSerialSensor:= False;
+      exit;
+     end;
+     DelayReadCounter:= 0;
+    end;
+   end;
+   if wasRead then
+    break;
+  end;
+ finally
+  if MainForm.COMConnect.SynSer.LastError <> 0 then // occurs if USB cable was removed
+  begin
+   MainForm.ReadTimer.Enabled:= False;
+   MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on connecting to SIX: '
+    + MainForm.COMConnect.SynSer.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.IndicatorSensorP.Caption:= 'Check USB cable';
+   MainForm.IndicatorSensorP.Color:= clRed;
+   MainForm.StartTestBB.Enabled:= false;
+   MainForm.StopTestBB.Enabled:= false;
+   MainForm.CloseLazSerialConn(MousePointer);
+   HaveSerialSensor:= False;
+   exit;
+  end;
+ end;
+
+ // read the data
+ if not wasRead then
+  k:= MainForm.COMConnect.SynSer.RecvBufferEx(@dataArray[0], 25, 100);
+
+ // in case the read failed or not 25 bytes received
+ if (MainForm.COMConnect.SynSer.LastError <> 0) or (k <> 25) then
+ begin
+  inc(ErrorCount);
+  // we wait then another timer run
+  // if we get 3 times the same error, something is wrong and we must stop
+  if ErrorCount < 4 then
+  begin
+   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+   timeCounter:= timeCounter + lastInterval;
+   exit;
+  end
+  else
+  begin
+   MainForm.ReadTimer.Enabled:= False;
+   if MainForm.COMConnect.SynSer.LastError <> 0 then
+    MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on reading signal data: '
+     + MainForm.COMConnect.SynSer.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
+   else
+    MessageDlgPos('Error: Could not read 25 bytes. Got only ' + IntToStr(k) + ' bytes.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.IndicatorSensorP.Caption:= 'SIX error';
+   MainForm.IndicatorSensorP.Color:= clRed;
+   // disable all buttons
+   MainForm.StartTestBB.Enabled:= false;
+   MainForm.StopTestBB.Enabled:= false;
+   MainForm.CloseLazSerialConn(MousePointer);
+   HaveSerialSensor:= False;
+   exit;
+  end;
+ end;
+
+ // now search the byte array for the stop bit
+ StopPos:= -1;
+ for i:= 0 to 24 do
+ begin
+  if dataArray[i] = $16 then
+  begin
+   StopPos:= i;
+   break;
+  end;
+ end;
+ if StopPos = -1 then
+ begin
+  inc(ErrorCount);
+  // the read data block sometimes misses the stop bit
+  // usually the stop bit appears again within the next readout, but not at the
+  // expected position
+  // to re-sync then with the SIX, wait one interval and read out all byte by
+  // byte until a stop byte appears
+  wasNoStopByte:= true;
+  // however, if we cannot re-sync after 3 attempts, something is wrong with the
+  // SIX and we must stop
+  if ErrorCount < 4 then
+  begin
+   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+   timeCounter:= timeCounter + lastInterval;
+   exit;
+  end
+  else
+  begin
+   MainForm.ReadTimer.Enabled:= False;
+   MessageDlgPos('The received last 300 bytes do not contain a stop bit.'
+    + LineEnding + 'Try to reconnect to the SIX.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.IndicatorSensorP.Caption:= 'SIX error';
+   MainForm.IndicatorSensorP.Color:= clRed;
+   MainForm.StartTestBB.Enabled:= false;
+   MainForm.StopTestBB.Enabled:= false;
+   MainForm.CloseLazSerialConn(MousePointer);
+   HaveSerialSensor:= False;
+   exit;
+  end;
+ end;
+
+ // reset counter since we got no error
+ ErrorCount:= 0;
+
+ // if StopPos > 19 we have all relevant data before
+ if StopPos > 19 then
+ begin
+  // checksum
+  checksum:= dataArray[StopPos-2];
+  for i:= StopPos-3 downto StopPos-20 do
+   checksum:= checksum + dataArray[i];
+  PintegerArray:= PintArray(@checksum);
+  if PintegerArray^[1] <> dataArray[StopPos-1] then
+  begin
+   // the data are corrupted so wait for another timer run
+   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+   timeCounter:= timeCounter + lastInterval;
+   exit;
+  end;
+  // transform the dataArray so that zero array position gets the first value byte
+  for i := 0 to 18 do
+   dataArray[i]:= dataArray[StopPos - 19 + i];
+ end
+ else // we must wait another timer run
+ begin
+  lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+  timeCounter:= timeCounter + lastInterval;
+  exit;
+ end;
+
+ // create now a string with the line we will write to the file
+ // first the time and counter
+ inc(signalCounter);
+ OutLine:= IntToStr(signalCounter) + #9;
+ // take the time passed until the timer was triggered
+ lastInterval:= lastInterval + MainForm.ReadTimer.Interval / 60000; // in min
+ timeCounter:= timeCounter + lastInterval; // in min
+ OutLine:= OutLine + FloatToStrF(timeCounter, ffFixed, 3, 3) + #9;
+ // check if user meanwhile changed the time
+ if evalTimeChanged then
+  MainForm.ReadTimer.Interval:= Trunc(MainForm.EvalTimeFSE.Value * 1000); // in ms;
+
+ // now the channels
+ // first convert each 2 bytes to a signed 16 bit integer
+ i:= NumChannels;
+ for i:= 1 to NumChannels do
+ begin
+  HiLowArray[0]:= dataArray[2*i-1];
+  HiLowArray[1]:= dataArray[2*i-2];
+  Chan[i]:= Int16(HiLowArray);
+ end;
+
+ // now the temperature
+ HiLowArray[0]:= dataArray[13];
+ HiLowArray[1]:= dataArray[12];
+ tempInt16:= Int16(HiLowArray);
+ // the temperature value must be divided by 16 to get the value in deg celsius
+ temperature:= tempInt16 / 16;
+ MainForm.SIXTempLE.Text:= FloatToStr(RoundTo(temperature, -2));
+
+ // get the raw values in nA
+ for i:= 1 to NumChannels do
+  ChanRawDbl[i]:= Chan[i] * GainsRaw[i] / 100;
+
+ if (MainForm.LoadedDefFileLE.Text <> 'None')
+  and (not MainForm.RawCurrentCB.Checked) then
+ // convert to mM
+ begin
+  for i:= 1 to NumChannels do
+   ChanDbl[i]:= Chan[i] * Gains[i] / 100
+    / exp(TemperGains[i] / 100 * (temperature - TemperGains[8]));
+  // blank handling
+  if MainForm.NoSubtractBlankCB.Checked then
+  begin
+   // output all non-blank channels
+   for i:= 1 to NumChannels do
+   begin
+    if not isBlank[i] then
+     OutLine:= OutLine + FormatFloat('0.0000', ChanDbl[i]) + #9;
+   end;
+   OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
+  end
+  else
+  begin
+   // subtract blank values
+   for i:= 1 to NumChannels do
+    ChanDbl[i]:= ChanDbl[i] - ChanDbl[Subtracts[i]];
+   // output all non-blank channels
+   for i:= 1 to NumChannels do
+   begin
+    if not isBlank[i] then
+     OutLine:= OutLine + FormatFloat('0.0000', ChanDbl[i]) + #9;
+   end;
+   OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
+  end;
+ end;
+
+ // store also the raw current values
+ if (MainForm.LoadedDefFileLE.Text <> 'None')
+  and (not MainForm.NoSubtractBlankCB.Checked) then
+  // subtract blank values
+  for i:= 1 to NumChannels do
+   if not isBlank[i] then
+    ChanRawDbl[i]:= ChanRawDbl[i] - ChanRawDbl[Subtracts[i]];
+ // output
+ for i:= 1 to NumChannels do
+  OutLine:= OutLine + FormatFloat('0.0000', ChanRawDbl[i]) + #9;
+
+ // output temperature
+ OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
+ OutLine:= OutLine + LineEnding;
+
+ // write the line to the file
+ SensorFileStream.Write(OutLine[1], Length(OutLine));
+
+ // calculate raw channel 7 and 8 values
+ if MainForm.Channel7CB.Text = 'raw(#1)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[1];
+  ChanRawDbl[7]:= ChanRawDbl[1];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#1)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[1];
+  ChanRawDbl[8]:= ChanRawDbl[1];
+ end;
+ if MainForm.Channel7CB.Text = 'raw(#2)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[2];
+  ChanRawDbl[7]:= ChanRawDbl[2];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#2)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[2];
+  ChanRawDbl[8]:= ChanRawDbl[2];
+ end;
+ if MainForm.Channel7CB.Text = 'raw(#3)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[3];
+  ChanRawDbl[7]:= ChanRawDbl[3];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#3)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[3];
+  ChanRawDbl[8]:= ChanRawDbl[3];
+ end;
+ if MainForm.Channel7CB.Text = 'raw(#4)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[4];
+  ChanRawDbl[7]:= ChanRawDbl[4];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#4)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[4];
+  ChanRawDbl[8]:= ChanRawDbl[4];
+ end;
+ if MainForm.Channel7CB.Text = 'raw(#5)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[5];
+  ChanRawDbl[7]:= ChanRawDbl[5];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#5)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[5];
+  ChanRawDbl[8]:= ChanRawDbl[5];
+ end;
+ if MainForm.Channel7CB.Text = 'raw(#6)' then
+ begin
+  ChanDbl[7]:= ChanRawDbl[6];
+  ChanRawDbl[7]:= ChanRawDbl[6];
+ end;
+ if MainForm.Channel8CB.Text = 'raw(#6)' then
+ begin
+  ChanDbl[8]:= ChanRawDbl[6];
+  ChanRawDbl[8]:= ChanRawDbl[6];
+ end;
+
+ // calculate mean channel 7 and 8 values
+ if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
+ begin
+  ChanDbl[7]:= (ChanDbl[2] + ChanDbl[5]) / 2;
+  ChanRawDbl[7]:= (ChanRawDbl[2] + ChanRawDbl[5]) / 2;
+ end;
+ if MainForm.Channel8CB.Text = 'mean(#2, #5)' then
+ begin
+  ChanDbl[8]:= (ChanDbl[2] + ChanDbl[5]) / 2;
+  ChanRawDbl[8]:= (ChanRawDbl[2] + ChanRawDbl[5]) / 2;
+ end;
+ if MainForm.Channel7CB.Text = 'mean(#3, #6)' then
+ begin
+  ChanDbl[7]:= (ChanDbl[3] + ChanDbl[6]) / 2;
+  ChanRawDbl[7]:= (ChanRawDbl[3] + ChanRawDbl[6]) / 2;
+ end;
+ if MainForm.Channel8CB.Text = 'mean(#3, #6)' then
+ begin
+  ChanDbl[8]:= (ChanDbl[3] + ChanDbl[6]) / 2;
+  ChanRawDbl[8]:= (ChanRawDbl[3] + ChanRawDbl[6]) / 2;
+ end;
+ if MainForm.Channel7CB.Text = 'mean(#1, #4)' then
+ begin
+  ChanDbl[7]:= (ChanDbl[1] + ChanDbl[4]) / 2;
+  ChanRawDbl[7]:= (ChanRawDbl[1] + ChanRawDbl[4]) / 2;
+ end;
+ if MainForm.Channel8CB.Text = 'mean(#1, #4)' then
+ begin
+  ChanDbl[8]:= (ChanDbl[1] + ChanDbl[4]) / 2;
+  ChanRawDbl[8]:= (ChanRawDbl[1] + ChanRawDbl[4]) / 2;
+ end;
+
+ // get last channel values out of diagramm series
+ for i:= 1 to NumChannels do
+  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).GetYValue(signalCounter - 1);
+ for i:= 7 to 8 do
+  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).GetYValue(signalCounter - 1);
+
+ // draw SIX data
+ for i:= 1 to NumChannels do
+ begin
+  if (MainForm.LoadedDefFileLE.Text <> 'None')
+   and (not MainForm.RawCurrentCB.Checked) then
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(timeCounter, ChanDbl[i])
+  else
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i])
+ end;
+ for i:= 7 to 8 do
+ begin
+  if (MainForm.LoadedDefFileLE.Text <> 'None')
+   and (not MainForm.RawCurrentCB.Checked) then
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(timeCounter, ChanDbl[i])
+  else
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i])
+ end;
+ MainForm.SIXTempValues.AddXY(timeCounter, temperature);
+
+ // scroll axis if desired by the user
+ if MainForm.ScrollViewCB.Checked = true then
+ begin
+  Extent:= MainForm.SIXCH.GetFullExtent;
+  // if there are not yet enough values, do nothing
+  if timeCounter > MainForm.ScrollIntervalSE.Value/60 then
+   Extent.a.x:= Extent.b.x - MainForm.ScrollIntervalSE.Value/60;
+  //Extent.a.y := -1.0; //Extent.b.y := +1.0;
+  MainForm.SIXCH.LogicalExtent:= Extent;
+ end;
+
+ // calculate slopes
+ for i:= 1 to NumChannels do
+ begin
+  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+   as TCheckBox).Checked then
+  begin
+   if MainForm.RawCurrentCB.Checked then
+    slope:= (ChanRawDbl[i] - prevChan[i])
+            / (lastInterval * 60) * 1000 // in pA/s
+   else
+    slope:= (ChanDbl[i] - prevChan[i])
+            / (lastInterval * 60) * 1000; // in uM/s
+   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
+   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
+   if MainForm.RawCurrentCB.Checked then
+    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
+   else
+    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
+  end;
+ end;
+ for i:= 7 to 8 do
+ begin
+  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+   as TCheckBox).Checked then
+  begin
+   if MainForm.RawCurrentCB.Checked then
+    slope:= (ChanRawDbl[i] - prevChan[i])
+            / (lastInterval * 60) * 1000 // in pA/s
+   else
+    slope:= (ChanDbl[i] - prevChan[i])
+            / (lastInterval * 60) * 1000; // in uM/s
+   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
+   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
+   if MainForm.RawCurrentCB.Checked then
+    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
+   else
+    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
+  end;
+ end;
+
+ // output analog voltages
+ // first calculate the values
+ for i:= 1 to 4 do // we limit to output channels (4 times pump driver)
+ begin
+  if (MainForm.FindComponent('AnOutConnector' + IntToStr(i) + 'OnOffCB')
+   as TCheckBox).Checked then
+  begin
+   if MainForm.RawCurrentCB.Checked then // use raw signals
+   begin
+    // if just a channel
+    // we calculate the values in nA
+    ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
+     as TComboBox).ItemIndex;
+    if ItemIndex < 6 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(ChanRawDbl[ItemIndex + 1]
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3)
+    else
+     // if mean
+    begin
+     if ItemIndex = 6 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[2]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 7 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[3]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 8 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 9 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 10 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 11 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[3]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 12 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 13 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 14 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 15 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 16 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 17 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 18 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[4] + ChanRawDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 19 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[4] + ChanRawDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 20 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[5] + ChanRawDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+    end;
+   end
+   else // values in mM according to .def file
+   begin
+    // if just a channel
+    ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
+     as TComboBox).ItemIndex;
+    if ItemIndex < 6 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(ChanDbl[ItemIndex + 1]
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3)
+    else
+     // if mean
+    begin
+     if ItemIndex = 6 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[2]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 7 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[3]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 8 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 9 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 10 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 11 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[3]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 12 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 13 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 14 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 15 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[4]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 16 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 17 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 18 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[4] + ChanDbl[5]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 19 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[4] + ChanDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+     if ItemIndex = 20 then
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[5] + ChanDbl[6]) / 2
+      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
+    end;
+   end;
+  end;
+ end;
+
+end;
+
+procedure TSIXControl.SCChartToolsetDataPointHintTool1Hint(ATool: TDataPointHintTool;
+  const APoint: TPoint; var AHint: String);
+var
+ x, y: Double;
+begin
+ with ATool as TDataPointHintTool do
+  if (Series <> nil) then
+   with (Series as TLineSeries) do
+   begin
+    x:= APoint.X; // only to avoid compiler warning about unused APoint
+    y:= APoint.Y;
+    // get the X/Y coordinate of the point
+    x:= GetXValue(PointIndex);
+    y:= GetYValue(PointIndex);
+    AHint:= Format('x = %f' + LineEnding + 'y = %.3f', [x,y]);
+   end;
+end;
+
+function TSIXControl.ParseLine(Line: string; channel: Byte): double;
+// parses the input string to get the time and channels
+var
+ List: TStringList;
+ resultString: string;
+begin
+ // use a stringList to easily parse the string
+ List:= TStringList.Create;
+ try
+  List.Delimiter:= #9; // the values are separated by a tabulator
+  List.DelimitedText:= Line;
+  // the time is the second element in a line
+  resultString:= List[channel + 1];
+ finally
+  List.Free;
+ end;
+ result:= strToFloat(resultString);
+end;
+
+function TSIXControl.SaveCSV(Overwrite: Boolean; ChartName: string) : Boolean;
+var
+ InNameCSV, line : string;
+ stream : TStream;
+ i: Integer;
+ //dyp, dyn: Double;
+
+begin
+ Result:= false;
+ // propose a file name
+ InNameCSV:= 'SIXMeasurements';
+ if Overwrite = true then
+ begin
+  // proposal according to currently active tab
+  if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then
+   InNameCSV:= InNameCSV + '-Live';
+  if MainForm.MainPC.ActivePage = MainForm.ResultTS then
+   InNameCSV:= InNameCSV + '-Result';
+ end;
+ CSVOutName:= MainForm.SaveHandling(InNameCSV, '.csv'); // opens file dialog
+
+ if (CSVOutName <> '') and (FileExists(CSVOutName) = true) then
+ begin
+  try
+    stream:= TFileStream.Create(CSVOutName, fmCreate);
+   // output the flow rate and channel as header lines
+   line:= 'used pump rate in µl/min:' + #9 + LineEnding;
+   stream.WriteBuffer(line[1], Length(line));
+   line:= 'used SIX channel:' + #9 + MainForm.Channel2LE.Text + LineEnding;
+   stream.WriteBuffer(line[1], Length(line));
+   // output the table header line
+   line:= 'concentration in mmol/l' + #9 + 'measured signal in nA' + LineEnding;
+   stream.WriteBuffer(line[1], Length(line));
+   for i:= 0 to (MainForm.FindComponent(ChartName) as TLineSeries).Count - 1 do
+   begin
+    line:= Format('%.9g'#9'%.9g',
+           [(MainForm.FindComponent(ChartName) as TLineSeries).XValue[i],
+            (MainForm.FindComponent(ChartName) as TLineSeries).YValue[i]],
+           DefaultFormatSettings);
+    line:= line + LineEnding;
+    stream.WriteBuffer(line[1], Length(line));
+   end;
+  finally
+   stream.Free;
+  end;
+
+  Result:= true;
+ end;
+
+end;
+
+procedure TSIXControl.SCScrollViewCBChange(Sender: TObject);
+begin
+ if MainForm.ScrollViewCB.Checked = false then
+ begin
+  MainForm.ScrollIntervalSE.Enabled:= false;
+  // zoom back to normal
+  MainForm.SIXCH.ZoomFull;
+ end
+ else
+  MainForm.ScrollIntervalSE.Enabled:= true;
+end;
+
+procedure TSIXControl.SCSaveCSVResultBClick(Sender: TObject);
+begin
+ CSVOutName:= '';
+ SaveCSV(true, MainForm.ResultCHValues.Name);
+ //SaveCSV(true, ResultCHAverages.Name);
+end;
+
+function TSIXControl.SaveScreenshot(Overwrite: Boolean; ChartName: string) : Boolean;
+var
+ OutNameHelp : string;
+
+begin
+ Result:= false;
+ // propose a file name
+ OutNameHelp:= 'Screenshot';
+ if Overwrite = true then
+ begin
+  // proposal according to currently active tab
+  if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then
+   OutNameHelp:= OutNameHelp + '-Live';
+  if MainForm.MainPC.ActivePage = MainForm.ResultTS then
+   OutNameHelp:= OutNameHelp + '-Fit';
+ end;
+ ScreenOutName:= MainForm.SaveHandling(OutNameHelp, '.svg'); // opens file dialog
+
+ if ScreenOutName <> '' then
+ begin
+  (MainForm.FindComponent(ChartName) as TChart).SaveToSVGFile(ScreenOutName);
+  Result:= true;
+ end
+ else
+  Result:= false;
+
+end;
+
+procedure TSIXControl.SCSaveScreenshotLiveBClick(Sender: TObject);
+begin
+ ScreenOutName:= '';
+ SaveScreenshot(true, MainForm.SIXCH.Name);
+end;
+
+procedure TSIXControl.SCSaveScreenshotResultBClick(Sender: TObject);
+begin
+ ScreenOutName:= '';
+ SaveScreenshot(true, MainForm.ResultCH.Name);
+end;
+
+procedure TSIXControl.SCStartFitBClick(Sender: TObject);
+// start the fit widget
+begin
+ // we close the form if it is already opened since on showing
+ // the maybe updated/new values will be loaded
+ // and to trigger the .Show routine, the form must not already be visible
+ if FitForm.Visible then
+  FitForm.Close;
+ // show the form
+ FitForm.Show;
+end;
+
+procedure TSIXControl.SCChannelXCBChange(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'ChannelxCB' and we need the x
+ // so get the 8th character of the name
+ Channel:= Copy(SenderName, 8, 1);
+ (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
+  'Live ' + (MainForm.FindComponent(SenderName) as TComboBox).Text;
+ if Started then
+  (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
+   'Stable ' + (MainForm.FindComponent(SenderName) as TComboBox).Text;
+ // if we have a raw signal, then the unit is nA
+ if (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex > 2 then
+  (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+ if (MainForm.LoadedDefFileLE.Text <> 'None')
+  and ((MainForm.FindComponent(SenderName) as TComboBox).ItemIndex < 3) then
+  (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+end;
+
+procedure TSIXControl.SCChannelXGBDblClick(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'ChannelxBB' and we need the x
+ // so get the 8th character of the name
+ Channel:= Copy(SenderName, 8, 1);
+ // show in dialog the current name
+ NameSettingF.NameE.Text:=
+  (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+ // open connection dialog
+ NameSettingF.Caption:= 'Channel name selection';
+ NameSettingF.NameL.Caption:= 'Channel name:';
+ NameSettingF.ShowModal;
+ if NameSettingF.ModalResult = mrCancel then
+  exit
+ else
+  (MainForm.FindComponent(SenderName)
+   as TGroupBox).Caption:= NameSettingF.NameE.Text;
+
+ // rename the chart legend accordingly if not channel 7 or 8
+ if StrToInt(Channel) < 7 then
+ begin
+  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
+   'Live ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+  if Started then
+   (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
+    'Stable ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+ end;
+end;
+
+procedure TSIXControl.SCRawCurrentCBChange(Sender: TObject);
+var
+ i : integer;
+ HeaderLine : string = '';
+begin
+ if MainForm.RawCurrentCB.Checked then
+ begin
+  // rename the chart axis
+  MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [nA]';
+  MainForm.ResultCH.AxisList[0].Title.Caption:= 'Sensor Value [nA]';
+  for i:= 1 to 8 do
+  begin
+   if (i < 7) and isBlank[i] then // don't do this for blank channels
+    continue;
+   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [nA]';
+   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [pA/s]';
+   (MainForm.FindComponent('LabelSlope' + IntToStr(i))
+    as TLabel).Caption:= 'Limit for Slope [pA/s]';
+  end;
+  // in this case no definition file is needed and the SIX connection
+  // can be enabled
+  MainForm.SIXBiosensorsMI.Enabled:= true;
+  MainForm.IndicatorSensorP.Color:= cldefault;
+  // thus also clear the warning
+  MainForm.IndicatorSensorP.Caption:= '';
+  // enable analog output
+  MainForm.UseAnOutCB.Enabled:= true;
+  // change 3.3V output label
+  MainForm.AnOutMaxLabel.Caption:= 'nA will become 3.3 V output';
+
+  // write a new header line to the output file
+  if HaveSensorFileStream then
+  begin
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   for i:= 1 to SIXControl.NumChannels do
+    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+  end;
+
+ end
+ else
+ begin
+  MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
+  MainForm.ResultCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
+  for i:= 1 to 8 do
+  begin
+   if (i < 7) and isBlank[i] then // don't do this for blank channels
+    continue;
+   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [mM]';
+   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [uM/s]';
+   (MainForm.FindComponent('LabelSlope' + IntToStr(i))
+    as TLabel).Caption:= 'Limit for Slope [uM/s]';
+  end;
+  // change 3.3V output label
+  MainForm.AnOutMaxLabel.Caption:= 'mM will become 3.3 V output';
+  // if there is no definition file loaded issue a warning
+  if MainForm.LoadedDefFileLE.Text = 'None' then
+  begin
+   MainForm.IndicatorSensorP.Color:= clRed;
+   MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
+   MainForm.SIXBiosensorsMI.Enabled:= false;
+   // disable then also analog output
+   MainForm.UseAnOutCB.Enabled:= false;
+   MainForm.UseAnOutCB.Checked:= false;
+  end;
+
+  // write a new header line to the output file
+  if (MainForm.LoadedDefFileLE.Text <> 'None') and HaveSensorFileStream then
+  begin
+    HeaderLine:= HeaderLine + 'Used definition file: "' + MainForm.LoadedDefFileLE.Text +
+    '.def"' + LineEnding;
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   // the blank channels have the unit nA
+   for i:= 1 to 6 do
+   begin
+    if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
+     or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
+     SIXControl.isBlank[i]:= true
+    else
+     SIXControl.isBlank[i]:= false;
+   end;
+   // output all non-blank channels
+   for i:= 1 to SIXControl.NumChannels do
+    if not SIXControl.isBlank[i] then
+     HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [mM]' + #9;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
+   // also for the raw values
+   for i:= 1 to SIXControl.NumChannels do
+    HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [nA]' + #9;
+   HeaderLine:= HeaderLine + LineEnding;
+
+   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+  end;
+
+ end;
+
+end;
+
+procedure TSIXControl.SCChartToolsetTitleFootClickTool1Click(Sender: TChartTool;
+  Title: TChartTitle);
+var
+ editor : TChartTitleFootEditor;
+begin
+ editor:= TChartTitleFootEditor.Create(nil);
+ try
+  editor.Prepare(Title, 'Edit chart title');
+  editor.ShowModal;
+ finally
+  editor.Free;
+ end;
+end;
+
+procedure TSIXControl.SCChartToolsetLegendClickTool1Click(Sender: TChartTool;
+  Legend: TChartLegend);
+var
+ editor : TChartLegendEditor;
+begin
+ editor:= TChartLegendEditor.Create(nil);
+ try
+  editor.Prepare(Legend, 'Edit chart legend');
+  editor.ShowModal;
+ finally
+  editor.Free;
+ end;
+end;
+
+procedure TSIXControl.SCChartToolsetAxisClickTool1Click(Sender: TChartTool;
+  AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
+var
+  page : TChartAxisEditorPage;
+  editor : TChartAxisEditor;
+begin
+ Unused(Sender);
+ if (ahtTitle in HitInfo) then
+  page:= aepTitle
+ else if (ahtLabels in HitInfo) then
+  page:= aepLabels
+ else if (ahtLine in HitInfo) then
+  page:= aepLine
+ else if (ahtGrid in HitInfo) then
+  page:= aepGrid
+ else
+  exit;
+ editor:= TChartAxisEditor.Create(nil);
+ try
+  editor.Prepare(AnAxis, 'Edit chart axis "%s"');
+  editor.Page:= page;
+  editor.ShowModal;
+ finally
+  editor.Free;
+ end;
+end;
+
+procedure TSIXControl.SCAppearanceXBBClick(Sender: TObject);
+Var
+ SenderName, GBCaption, ChannelNumber : string;
+ editor : TChartSeriesEditor;
+ Channel : integer;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'AppearancexBB' and we need the x
+ // so get the 11th character of the name
+ ChannelNumber:= Copy(SenderName, 11, 1);
+ Channel:= StrToInt(ChannelNumber);
+ // we have this assignment:
+ // 1 -> Series 0, 2 -> Series 2, 4 -> Series 4, 5 -> Series 6
+ // 6 -> Series 8, 7 -> Series 10
+ if Channel < 4 then
+  Channel:= 2 * Channel - 2
+ else
+  Channel:= 2 * Channel - 4;
+ // change to the chart tab to see the changes immediately
+ MainForm.MainPC.ActivePage:= MainForm.SIXValuesTS;
+ // get name of GroupBox or ComboBox
+ if Channel < 8 then
+ GBCaption:= (MainForm.FindComponent('Channel' + ChannelNumber + 'GB')
+  as TGroupBox).Caption
+ else
+  GBCaption:= (MainForm.FindComponent('Channel' + ChannelNumber + 'CB')
+  as TComboBox).Text;
+ // now we can edit the desired series
+ editor:= TChartSeriesEditor.Create(nil);
+ try
+  editor.Prepare(MainForm.SIXCH.Series[Channel],
+   'Edit appearance for ' + GBCaption);
+  editor.ShowModal;
+ finally
+  editor.Free;
+ end;
+ // change back to tab from where we started
+ MainForm.MainPC.ActivePage:= MainForm.GeneralTS;
+end;
+
+procedure TSIXControl.SCChannelXOnOffCBChange(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'ChannelxOnOffCB' and we need the x
+ // so get the 8th character of the name
+ Channel:= Copy(SenderName, 8, 1);
+ // show/hide data
+ (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Active:=
+  (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
+ if Started then
+  (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Active:=
+   (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
+end;
+
+procedure TSIXControl.SCAnOutConnectorXOnOffCBChange(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'AnOutConnectorXOnOffCB' and we need the x
+ // so get the 15th character of the name
+ Channel:= Copy(SenderName, 15, 1);
+ // transfer settings to the pump on/off of step 1
+ (MainForm.FindComponent('Pump' + Channel + 'OnOffCB1') as TCheckBox).Checked:=
+  (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
+end;
+
+procedure TSIXControl.SCAnOutOfXLEChange(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'AnOutOfXLE' and we need the x
+ // so get the 8th character of the name
+ Channel:= Copy(SenderName, 8, 1);
+ // transfer value to the PumpXVoltageFS of step 1
+ (MainForm.FindComponent('Pump' + Channel + 'VoltageFS1') as TFloatSpinEdit).Value:=
+  StrToFloat((MainForm.FindComponent(SenderName) as TLabeledEdit).Text);
+end;
+
+procedure TSIXControl.SCAnOutOnOffTBChange(Sender: TObject);
+begin
+ if MainForm.AnOutOnOffTB.checked then
+ begin
+  // 'run' the pumps
+  MainForm.RunBBClick(Sender);
+  // change botton appearance
+  MainForm.AnOutOnOffTB.Caption:= 'Output Off';
+  MainForm.IndicatorAnOutP.Caption:= 'Output is on';
+  MainForm.IndicatorAnOutP.Color:= clRed;
+ end
+ else
+ begin
+  // 'stop' the pumps
+  MainForm.StopBBClick(Sender);
+  // change botton appearance
+  MainForm.AnOutOnOffTB.Caption:= 'Output On';
+  MainForm.IndicatorAnOutP.Caption:= '';
+  MainForm.IndicatorAnOutP.Color:= clDefault;
+ end;
+end;
+
+procedure TSIXControl.SCShowTempCBChange(Sender: TObject);
+begin
+ // show/hide temperature values
+ MainForm.SIXTempValues.Active:= MainForm.ShowTempCB.Checked;
+ MainForm.SIXCH.AxisList[2].Visible:= MainForm.ShowTempCB.Checked;
+end;
+
+function TSIXControl.ParseDefFile(InFile: string): Boolean;
+// parses the input sensor definition file
+var
+ OpenFileStream : TFileStream;
+ LineReader : TStreamReader;
+ ReadLine : string;
+ i, j, gainFactor : integer;
+ StringArray : TStringArray;
+ ppp : PChar;
+ Component : TComponent = nil;
+begin
+ // initialize
+ result:= false;
+ // enable maybe previously disabled GroupBoxes
+ for i:= 1 to 6 do
+  (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+   as TGroupBox).Enabled:= true;
+
+ // check the SIX type
+ if MainForm.SIXTypeRG.ItemIndex = 1 then
+  gainFactor:= 1
+ else
+  gainFactor:= 2;
+
+ // open file stream
+ try
+  OpenFileStream:= TFileStream.Create(InFile, fmOpenRead);
+  LineReader:= TStreamReader.Create(OpenFileStream);
+
+  // read first line
+  LineReader.ReadLine(ReadLine);
+  // read until first comma
+  StringArray:= ReadLine.Split(',');
+  for i:= 0 to 5 do
+  begin
+   if not TryStrToFloat(StringArray[i], Gains[i+1]) then
+   begin
+    Result:= false;
+    exit;
+   end;
+   Gains[i+1]:= Gains[i+1] / gainFactor;
+  end;
+
+  // next interesting line is line 4
+  LineReader.ReadLine(ReadLine); // line 2
+  LineReader.ReadLine(ReadLine); // line 3
+  LineReader.ReadLine(ReadLine);
+  StringArray:= ReadLine.Split(',');
+  NumChannels:= 0;
+  for i:= 0 to 5 do
+  begin
+   ppp:= PChar(StringArray[i]);
+   HeaderStrings[i+1]:= AnsiExtractQuotedStr(ppp, '"');
+   if HeaderStrings[i+1] <> '' then // we have a channel
+    inc(NumChannels);
+   // take this as name for the group box
+   Component:= (MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
+       as TGroupBox);
+   if (Component is TGroupBox) then
+    (MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
+     as TGroupBox).Caption:= HeaderStrings[i+1];
+  end;
+  // disable all channel GroupBoxes for non-existing channels
+  if NumChannels < 6 then
+  begin
+   for i:= NumChannels + 1 to 6 do
+   begin
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Enabled:= false;
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked:= false;
+   end;
+  end;
+  // update the possible operations
+  if NumChannels < 4 then
+   for i:= 7 to 8 do
+   begin
+    // first delete, then refill
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Items.Clear;
+    for j:= 1 to NumChannels do
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
+   end
+  else
+   for i:= 7 to 8 do
+   begin
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Items.Clear;
+    if NumChannels >= 5 then
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).Items.Add('mean(#2, #5)');
+    if NumChannels = 6 then
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).Items.Add('mean(#3, #6)');
+    if NumChannels >= 4 then
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).Items.Add('mean(#1, #4)');
+    for j:= 1 to NumChannels do
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
+   end;
+  // set new item index
+  for i:= 7 to 8 do
+   (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+    as TComboBox).ItemIndex:= i - 7;
+
+  // read line 5
+  LineReader.ReadLine(ReadLine);
+  // read until first comma
+  StringArray:= ReadLine.Split(',');
+  for i:= 0 to 5 do
+   if not TryStrToInt(StringArray[i], Subtracts[i+1]) then
+   begin
+    Result:= false;
+    exit;
+   end;
+
+  // next interesting line is line 7
+  LineReader.ReadLine(ReadLine); // line 6
+  LineReader.ReadLine(ReadLine);
+  StringArray:= ReadLine.Split(',');
+  for i:= 0 to 7 do
+   if not TryStrToFloat(StringArray[i], TemperGains[i+1]) then
+   begin
+    Result:= false;
+    exit;
+   end;
+
+ finally
+  LineReader.Free;
+  OpenFileStream.Free;
+ end;
+
+ result:= true;
+end;
+
+procedure TSIXControl.SCCalibrateTBChange(Sender: TObject);
+{the calibration is done the following way:
+ - after clicking the calibrate button, the user can select data by clicking
+   and dragging in the chart. This way a selection rectangle is created.
+ - after the selection a dialog pops up listing all series in the chart
+ - the user selects there what series to use and what conversion unit should be used
+ - the mean of the selected series' datapoints within the rectangle is eventually
+   used as calibration value}
+var
+ extent: TDoubleRect;
+ height, width: Double;
+ center: TDoublePoint;
+ wasScrolling : Boolean = false;
+begin
+ // show/hide the lines and en/disable the rectangle tool
+ MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
+ MainForm.BottomLine.Active:= MainForm.CalibrateTB.Checked;
+ MainForm.LeftLine.Active:= MainForm.CalibrateTB.Checked;
+ MainForm.RightLine.Active:= MainForm.CalibrateTB.Checked;
+ // enable rectangle tool
+ MainForm.RectangleSelectionTool.Enabled:= MainForm.CalibrateTB.Checked;
+ // disable unused tools
+ MainForm.ChartToolsetZoomDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.ChartToolsetDataPointHintTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.ChartToolsetDataPointCrosshairTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.ChartToolsetPanDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.ChartToolsetPanMouseWheelTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+
+ if MainForm.CalibrateTB.Checked then
+ begin
+  extent:= MainForm.SIXCH.LogicalExtent;
+  width:= extent.b.x - extent.a.x; // horizontal range of data
+  height:= extent.b.y - extent.a.y; // vertical range of data
+  center:= DoublePoint((extent.a.x + extent.b.x)/2, (extent.a.y + extent.b.y)/2);
+  // make a preset for the selection line positions
+  if MainForm.TopLine.Position = Infinity then
+   MainForm.TopLine.Position:= center.y + height/4;
+  if MainForm.BottomLine.Position = -Infinity then
+   MainForm.BottomLine.Position:= center.y - height/4;
+  if MainForm.LeftLine.Position = -Infinity then
+   MainForm.LeftLine.Position:= center.x - width/4;
+  if MainForm.RightLine.Position = Infinity then
+   MainForm.RightLine.Position:= center.x + width/4;
+
+  // activate the rectangle selection
+  MainForm.LineDragTool.Shift:= [ssLeft];
+  MainForm.RectangleSelectionTool.Shift:= [ssLeft];
+  // turn off scrolling
+  if MainForm.ScrollViewCB.Checked then
+  begin
+   MainForm.ScrollViewCB.Checked:= false;
+   wasScrolling:= true;
+  end;
+ end
+ else
+ begin
+  // show the calibration dialog
+  CalibrationF.ShowModal;
+
+  // move lines back to infinity
+  MainForm.TopLine.Position:= Infinity;
+  MainForm.BottomLine.Position:= -Infinity;
+  MainForm.LeftLine.Position:= -Infinity;
+  MainForm.RightLine.Position:= Infinity;
+
+  // deactivate the rectangle selection
+  MainForm.LineDragTool.Shift:= [];
+  MainForm.RectangleSelectionTool.Shift:= [];
+  if wasScrolling then
+   MainForm.ScrollViewCB.Checked:= true;
+ end;
+
+end;
+
+end. //unit
+

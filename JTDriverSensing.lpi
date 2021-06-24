@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="JT Driver Sensing"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+        <TextName Value="JobstTechnologies.JTDriverSensing"/>
+        <TextDesc Value="CPP driver control"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MinorVersionNr Value="9"/>
+      <RevisionNr Value="1"/>
+      <Attributes pvaPreRelease="True"/>
+      <StringTable CompanyName="Jobst Technologies" FileDescription="Program to control CCP1 pumps and to sense LV5 biosensors" LegalCopyright="Jobst Technologies GmbH" ProductName="JT DriverSensing" ProductVersion="0.91"/>
+    </VersionInfo>
+    <BuildModes Count="3">
+      <Item1 Name="Default" Default="True"/>
+      <Item2 Name="Debug">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="JTDriverSensing0-91-debug"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ChartEditing"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+              <UseHeaptrc Value="True"/>
+              <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShoLineNum Value="True"/>
+            </Verbosity>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="JTDriverSensing0-91"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="ChartEditing"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item3>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages Count="5">
+      <Item1>
+        <PackageName Value="LazControls"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="TAChartLazarusPkg"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="LazSerialPort"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="laz_synapse"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
+    </RequiredPackages>
+    <Units Count="19">
+      <Unit0>
+        <Filename Value="JTDriverSensing.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="JTDriverSensingMain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="serialusbselection.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SerialUSBSelectionF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SerialUSBSelection"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="namesetting.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="NameSettingF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="NameSetting"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="fitting.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FitForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Fitting"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="pumpcontrolunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PumpControlUnit"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="SIXControlUnit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="aboutform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutFormF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AboutForm"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="ChartEditing\ceaxisdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AxisEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceAxisDlg"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="ChartEditing\cebrushframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="BrushFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceBrushFrame"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="ChartEditing\cefontframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FontFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceFontFrame"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="ChartEditing\celegenddlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartLegendEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceLegendDlg"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="ChartEditing\cepenframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PenFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="cePenFrame"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="ChartEditing\cepointerframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PointerFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="cePointerFrame"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="ChartEditing\ceseriesdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartSeriesEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceSeriesDlg"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="ChartEditing\ceshapebrushpenmarginsframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShapeBrushPenMarginsFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceShapeBrushPenMarginsFrame"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="ChartEditing\cetitlefootdlg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TitleFootEditor"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ceTitleFootDlg"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="ChartEditing\ceutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ceUtils"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="calibration.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CalibrationF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit18>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="JTDriverSensing0-9"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="ChartEditing"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="6">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+      <Item4>
+        <Name Value="EStringListError"/>
+      </Item4>
+      <Item5>
+        <Name Value="EInvalidCast"/>
+      </Item5>
+      <Item6>
+        <Name Value="RunError(219)"/>
+      </Item6>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

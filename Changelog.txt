@@ -1,0 +1,12 @@
+Changes
+
+from version x.yy to x.zz
+
+new feature:
+- 
+
+changed:
+- 
+
+bugfixes:
+- 

@@ -1,0 +1,83 @@
+object AboutFormF: TAboutFormF
+  Left = 747
+  Height = 201
+  Top = 177
+  Width = 330
+  Caption = 'About JT Driver Sensing'
+  ClientHeight = 201
+  ClientWidth = 330
+  Position = poMainFormCenter
+  LCLVersion = '2.3.0.0'
+  object SourceCodeText: TLabel
+    Left = 16
+    Height = 15
+    Top = 120
+    Width = 141
+    Caption = 'Source code is available at:'
+  end
+  object GitHubLink: TLabel
+    Cursor = crHandPoint
+    Left = 16
+    Height = 15
+    Top = 136
+    Width = 300
+    Caption = 'https://github.com/JobstTechnologies/JT-Driver-Sensing'
+    Font.Color = clHighlight
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    OnClick = GitHubLinkClick
+  end
+  object BitBtn1: TBitBtn
+    Left = 128
+    Height = 24
+    Top = 168
+    Width = 65
+    Default = True
+    DefaultCaption = True
+    Kind = bkOK
+    ModalResult = 1
+    TabOrder = 0
+  end
+  object UsageText: TStaticText
+    Left = 16
+    Height = 40
+    Top = 72
+    Width = 66
+    Caption = 'Usage:'#13#10'- see the file'
+    TabOrder = 1
+  end
+  object Label1: TLabel
+    Left = 16
+    Height = 15
+    Top = 13
+    Width = 129
+    Caption = 'JT Driver Sensing version'
+  end
+  object VersionNumber: TLabel
+    Left = 152
+    Height = 15
+    Top = 13
+    Width = 82
+    Caption = 'VersionNumber'
+  end
+  object DescriptionText: TStaticText
+    Left = 16
+    Height = 36
+    Top = 32
+    Width = 286
+    Caption = 'Program to output and visualize SIX sensor values'#13#10'and to control a driver for CCP1 pumps'
+    TabOrder = 2
+  end
+  object ReadmeLink: TLabel
+    Cursor = crHandPoint
+    Left = 86
+    Height = 15
+    Top = 87
+    Width = 64
+    Caption = 'Readme.md'
+    Font.Color = clHighlight
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    OnClick = ReadmeLinkClick
+  end
+end

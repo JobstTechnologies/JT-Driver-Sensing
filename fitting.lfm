@@ -1,0 +1,531 @@
+object FitForm: TFitForm
+  Left = 421
+  Height = 503
+  Top = 293
+  Width = 1003
+  Caption = 'Fit Result'
+  ClientHeight = 503
+  ClientWidth = 1003
+  OnCreate = FormCreate
+  OnShow = FormShow
+  ShowHint = True
+  LCLVersion = '2.3.0.0'
+  object pnlParams: TPanel
+    Left = 8
+    Height = 487
+    Top = 8
+    Width = 350
+    Align = alLeft
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 487
+    ClientWidth = 350
+    TabOrder = 0
+    object PageControl1: TPageControl
+      Left = 0
+      Height = 487
+      Top = 0
+      Width = 350
+      ActivePage = TabSheet1
+      Align = alClient
+      TabIndex = 0
+      TabOrder = 0
+      object TabSheet1: TTabSheet
+        Caption = 'Preparation'
+        ClientHeight = 459
+        ClientWidth = 342
+        object gbDataGeneration: TGroupBox
+          Left = 4
+          Height = 82
+          Top = 4
+          Width = 334
+          Align = alTop
+          AutoSize = True
+          BorderSpacing.Around = 4
+          Caption = ' Data generation '
+          ClientHeight = 62
+          ClientWidth = 330
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 0
+          object btnSave: TSpeedButton
+            AnchorSideRight.Side = asrBottom
+            Left = 190
+            Height = 22
+            Hint = 'Export data to verify fit with other software'
+            Top = 40
+            Width = 130
+            Anchors = [akTop, akRight]
+            Caption = 'Save Data Points'
+            Glyph.Data = {
+              36040000424D3604000000000000360000002800000010000000100000000100
+              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF006E01
+              4A0066004445650043C60404048A0404048A0404048A0404048A0404048A0404
+              048A650043C6650043C6650043C6650043C666004494FFFFFF00FFFFFF006F01
+              4B416E014ABA9B4880EFB9ABABFFB16598FFB16598FFB5A7A7FFB5A7A7FFB9AB
+              ABFFB16598FFC377AAFFC074A7FFD68ABDFF6E014ABAFFFFFF00FFFFFF007702
+              50ADD488BBFFAD6194FFBAB1B1FFAD6194FFAD6194FFB1A8A8FFB1A8A8FFBAB1
+              B1FFAD6194FFC377AAFFB86C9FFFD88CBFFF770250ADFFFFFF00FFFFFF007B02
+              53A8D286B9FFA95D90FFC0BBBBFF95497CFF95497CFFB7B2B2FFB7B2B2FFC0BB
+              BBFFA95D90FFC377AAFFB06497FFDA8EC1FF7B0253A8FFFFFF00FFFFFF007E02
+              55A4D589BCFFA5598CFFC8C7C7FFC3C2C2FFC3C2C2FFC3C2C2FFC3C2C2FFC8C7
+              C7FFA5598CFFC377AAFFA85C8FFFDD91C4FF7E0255A4FFFFFF00FFFFFF008002
+              57A0D98DC0FFA25689FFA15588FFA15588FFA15588FFA15588FFA15588FFA155
+              88FFA25689FFA25689FFA25689FFE195C8FF800257A0FFFFFF00FFFFFF008302
+              599DDC90C3FFD387BAFFD387BAFFD387BAFFD387BAFFD387BAFFD387BAFFD387
+              BAFFD387BAFFD387BAFFD387BAFFDC90C3FF8302599DFFFFFF00FFFFFF008502
+              5A9AE094C7FFF0DDDEFFF4F4E4FFF4F4E4FFF4F4E4FFF4F4E4FFF4F4E4FFF4F4
+              E4FFF4F4E4FFF4F4E4FFF0DDDEFFE094C7FF85025A9AFFFFFF00FFFFFF008702
+              5C97E397CAFFF6F6E9FFECECDFFFECECDFFFECECDFFFECECDFFFECECDFFFECEC
+              DFFFECECDFFFECECDFFFF6F6E9FFE397CAFF87025C97FFFFFF00FFFFFF008A03
+              5E94E69ACDFFF8F8EFFFF1F1E7FFF1F1E7FFF1F1E7FFF1F1E7FFF1F1E7FFF1F1
+              E7FFF1F1E7FFF1F1E7FFF8F8EFFFE69ACDFF8A035E94FFFFFF00FFFFFF008C03
+              5F91EA9ED1FFFBFBF5FFF6F6F0FFF6F6F0FFF6F6F0FFF6F6F0FFF6F6F0FFF6F6
+              F0FFF6F6F0FFF6F6F0FFFBFBF5FFEA9ED1FF8C035F91FFFFFF00FFFFFF008D03
+              608FECA0D3FFFEFEFBFFFBFBF8FFFBFBF8FFFBFBF8FFFBFBF8FFFBFBF8FFFBFB
+              F8FFFBFBF8FFFBFBF8FFFEFEFBFFECA0D3FF8D03608FFFFFFF00FFFFFF008F03
+              618DF2A6D9FFFFFFFFFFFFFFFEFFFFFFFEFFFFFFFEFFFFFFFEFFFFFFFEFFFFFF
+              FEFFFFFFFEFFFFFFFEFFFFFFFFFFF2A6D9FF8F03618DFFFFFF00FFFFFF009003
+              62689003628B7F7F55667F7F55667F7F55667F7F55667F7F55667F7F55667F7F
+              55667F7F55667F7F55667F7F55669003628B90036268FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+            }
+            OnClick = btnSaveClick
+          end
+          object BtnLoad: TButton
+            AnchorSideTop.Control = Label1
+            AnchorSideTop.Side = asrCenter
+            Left = 0
+            Height = 25
+            Top = 3
+            Width = 61
+            AutoSize = True
+            BorderSpacing.Bottom = 12
+            Caption = 'Load...'
+            OnClick = BtnLoadClick
+            ParentFont = False
+            TabOrder = 0
+          end
+          object Label1: TLabel
+            AnchorSideLeft.Control = BtnLoad
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = gbDataGeneration
+            AnchorSideRight.Side = asrBottom
+            AnchorSideBottom.Side = asrBottom
+            Left = 77
+            Height = 30
+            Top = 0
+            Width = 253
+            Anchors = [akTop, akLeft, akRight]
+            BorderSpacing.Left = 16
+            BorderSpacing.Bottom = 4
+            Caption = 'x, y : two columns, separator semicolon or tab'#13#10'dy: in optional third column'
+            ParentFont = False
+          end
+        end
+        object gbFitting: TGroupBox
+          Left = 0
+          Height = 188
+          Top = 94
+          Width = 342
+          Align = alTop
+          BorderSpacing.Top = 8
+          Caption = ' Fitting '
+          ClientHeight = 168
+          ClientWidth = 338
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 1
+          object FitOrderSE: TSpinEdit
+            AnchorSideLeft.Control = lblFitOrder
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = FitEquationCB
+            AnchorSideTop.Side = asrBottom
+            Left = 144
+            Height = 23
+            Top = 35
+            Width = 53
+            BorderSpacing.Left = 16
+            BorderSpacing.Top = 8
+            Enabled = False
+            OnChange = FitOrderSEChange
+            ParentFont = False
+            TabOrder = 0
+            Value = 2
+          end
+          object lblFitOrder: TLabel
+            AnchorSideLeft.Control = lblFitEquation
+            AnchorSideTop.Control = FitOrderSE
+            AnchorSideTop.Side = asrCenter
+            Left = 14
+            Height = 15
+            Top = 39
+            Width = 114
+            Caption = 'Degree of polynomial'
+            Enabled = False
+            ParentFont = False
+          end
+          object FitEquationCB: TComboBox
+            AnchorSideLeft.Control = lblFitEquation
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = gbFitting
+            AnchorSideRight.Control = gbFitting
+            AnchorSideRight.Side = asrBottom
+            Left = 89
+            Height = 23
+            Hint = 'Select a function type to be used for fitting to the generated data'
+            Top = 4
+            Width = 235
+            Anchors = [akTop, akLeft, akRight]
+            BorderSpacing.Left = 12
+            BorderSpacing.Top = 4
+            BorderSpacing.Right = 14
+            ItemHeight = 15
+            Items.Strings = (
+              'Polynomial (y = b0 + b1*x + ... bn*x^n)'
+              'Linear (y = a + b*x)'
+              'Exponential (y = a * exp (b * x), linear in semilog plot)'
+              'Power (y = a x^b, linear in log-log plot)'
+              'Harmonic (y = b0 + b1*sin(x) + ...  + bn*sin(n*x)'
+            )
+            OnSelect = FitEquationCBSelect
+            ParentFont = False
+            Style = csDropDownList
+            TabOrder = 1
+          end
+          object lblFitEquation: TLabel
+            AnchorSideLeft.Control = gbFitting
+            AnchorSideTop.Control = FitEquationCB
+            AnchorSideTop.Side = asrCenter
+            Left = 14
+            Height = 15
+            Top = 8
+            Width = 63
+            BorderSpacing.Left = 14
+            Caption = 'Fit equation'
+            ParentFont = False
+          end
+          object GroupBox1: TGroupBox
+            AnchorSideLeft.Control = lblFitEquation
+            AnchorSideTop.Control = FitOrderSE
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = FitEquationCB
+            AnchorSideRight.Side = asrBottom
+            Left = 14
+            Height = 94
+            Top = 74
+            Width = 310
+            Anchors = [akTop, akLeft, akRight]
+            BorderSpacing.Top = 16
+            Caption = 'Fixed parameters (check to keep constant)'
+            ClientHeight = 74
+            ClientWidth = 306
+            DoubleBuffered = True
+            ParentDoubleBuffered = False
+            TabOrder = 2
+            object cbFitParam0Fixed: TCheckBox
+              AnchorSideLeft.Control = GroupBox1
+              AnchorSideTop.Side = asrCenter
+              Left = 16
+              Height = 19
+              Top = 8
+              Width = 44
+              AutoSize = False
+              BorderSpacing.Left = 16
+              Caption = 'b0 ='
+              OnChange = FixedParamsChanged
+              ParentFont = False
+              TabOrder = 0
+            end
+            object cbFitParam1Fixed: TCheckBox
+              AnchorSideTop.Control = cbFitParam0Fixed
+              Left = 16
+              Height = 19
+              Top = 36
+              Width = 44
+              Anchors = [akLeft]
+              AutoSize = False
+              Caption = 'b1 ='
+              OnChange = FixedParamsChanged
+              ParentFont = False
+              TabOrder = 1
+            end
+            object FitParam0SE: TFloatSpinEdit
+              Left = 96
+              Height = 23
+              Top = 8
+              Width = 81
+              TabOrder = 2
+            end
+            object FitParam1SE: TFloatSpinEdit
+              Left = 96
+              Height = 23
+              Top = 32
+              Width = 81
+              TabOrder = 3
+            end
+          end
+        end
+        object ReducedChi2LE: TLabeledEdit
+          Left = 16
+          Height = 23
+          Top = 312
+          Width = 104
+          DoubleBuffered = True
+          EditLabel.Height = 15
+          EditLabel.Width = 104
+          EditLabel.Caption = 'reduced Chi^2'
+          Enabled = False
+          ParentDoubleBuffered = False
+          TabOrder = 2
+        end
+        object FitResultInfoM: TMemo
+          Left = 15
+          Height = 56
+          Top = 392
+          Width = 314
+          TabOrder = 3
+        end
+        object PChi2LE: TLabeledEdit
+          Left = 144
+          Height = 23
+          Top = 312
+          Width = 104
+          EditLabel.Height = 15
+          EditLabel.Width = 104
+          EditLabel.Caption = 'P > Chi^2'
+          Enabled = False
+          TabOrder = 4
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'Results'
+        ClientHeight = 459
+        ClientWidth = 342
+        object lbResults: TListBox
+          Left = 0
+          Height = 459
+          Top = 0
+          Width = 342
+          Align = alClient
+          BorderStyle = bsNone
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          ItemHeight = 0
+          OnDrawItem = lbResultsDrawItem
+          ParentFont = False
+          Style = lbOwnerDrawFixed
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object pnlChart: TPanel
+    Left = 384
+    Height = 487
+    Top = 8
+    Width = 611
+    Align = alClient
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 487
+    ClientWidth = 611
+    TabOrder = 1
+    object FitChart: TChart
+      Left = 0
+      Height = 487
+      Top = 0
+      Width = 611
+      AxisList = <      
+        item
+          Intervals.Count = 4
+          Intervals.NiceSteps = '0.2|0.4|0.8'
+          Intervals.Tolerance = 2
+          Marks.AtDataOnly = True
+          Marks.LabelBrush.Style = bsClear
+          Minors = <          
+            item
+              Grid.Visible = False
+              Intervals.MinLength = 5
+              Intervals.Options = [aipUseCount, aipUseMinLength]
+              Marks.LabelBrush.Style = bsClear
+            end>
+          Range.UseMax = True
+          Range.UseMin = True
+          Title.LabelFont.Orientation = 900
+          Title.Visible = True
+          Title.Caption = 'Measurement Value [nA]'
+          Title.LabelBrush.Style = bsClear
+        end      
+        item
+          Intervals.Tolerance = 2
+          Alignment = calBottom
+          Marks.AtDataOnly = True
+          Marks.LabelBrush.Style = bsClear
+          Minors = <          
+            item
+              Grid.Visible = False
+              Intervals.MinLength = 5
+              Intervals.Options = [aipUseCount, aipUseMinLength]
+              Marks.LabelBrush.Style = bsClear
+            end>
+          Title.Visible = True
+          Title.Caption = 'Concentration [mM]'
+          Title.LabelBrush.Style = bsClear
+        end>
+      BackColor = clGray
+      Foot.Brush.Color = clBtnFace
+      Foot.Font.Color = clBlue
+      Legend.Alignment = laTopCenter
+      Legend.UseSidebar = False
+      Legend.Visible = True
+      Title.Brush.Color = clBtnFace
+      Title.Font.Color = clRed
+      Title.Text.Strings = (
+        'TAChart'
+      )
+      Toolset = FitChartToolset
+      Align = alClient
+      DoubleBuffered = True
+      object FitSeries: TFitSeries
+        Legend.Format = '%0:s: %2:s'
+        Title = 'Fitted data'
+        AxisIndexX = 1
+        AxisIndexY = 0
+        Pen.Color = clRed
+        Pointer.Brush.Color = clAqua
+        Pointer.HorizSize = 3
+        Pointer.Style = psCircle
+        Pointer.VertSize = 3
+        Pointer.Visible = True
+        Source = ListChartSource
+        YErrorBars.Pen.Color = clWhite
+        YErrorBars.Visible = True
+        OnFitComplete = FitCompleteHandler
+      end
+      object UpperConfIntervalSeries: TFuncSeries
+        Active = False
+        Title = 'Confidence interval'
+        AxisIndexX = 1
+        AxisIndexY = 0
+        ExtentAutoY = True
+        Pen.Color = clRed
+        Pen.Style = psDot
+      end
+      object LowerConfIntervalSeries: TFuncSeries
+        Legend.Visible = False
+        Active = False
+        AxisIndexX = 1
+        AxisIndexY = 0
+        ExtentAutoY = True
+        Pen.Color = clRed
+        Pen.Style = psDot
+      end
+      object UpperPredIntervalSeries: TFuncSeries
+        Active = False
+        Title = 'Prediction interval'
+        AxisIndexX = 1
+        AxisIndexY = 0
+        ExtentAutoY = True
+        Pen.Color = clRed
+        Pen.Style = psDash
+      end
+      object LowerPredIntervalSeries: TFuncSeries
+        Legend.Visible = False
+        Active = False
+        AxisIndexX = 1
+        AxisIndexY = 0
+        ExtentAutoY = True
+        Pen.Color = clRed
+        Pen.Style = psDash
+      end
+    end
+    object pnlLog: TPanel
+      Left = 0
+      Height = 0
+      Top = 487
+      Width = 611
+      Align = alBottom
+      AutoSize = True
+      BevelOuter = bvNone
+      ClientHeight = 0
+      ClientWidth = 611
+      TabOrder = 1
+      object cbShowConfidenceIntervals: TCheckBox
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = pnlLog
+        Left = 94
+        Height = 19
+        Top = -10
+        Width = 158
+        Anchors = []
+        BorderSpacing.Left = 20
+        Caption = 'Show confidence intervals'
+        OnChange = cbShowConfidenceIntervalsChange
+        TabOrder = 0
+      end
+      object cbShowPredictionIntervals: TCheckBox
+        AnchorSideLeft.Control = cbShowConfidenceIntervals
+        AnchorSideTop.Control = cbShowConfidenceIntervals
+        AnchorSideTop.Side = asrBottom
+        Left = 416
+        Height = 19
+        Top = -10
+        Width = 153
+        Anchors = []
+        Caption = 'Show prediction intervals'
+        OnChange = cbShowPredictionIntervalsChange
+        TabOrder = 1
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 366
+    Height = 503
+    Top = 0
+    Width = 10
+    AutoSnap = False
+    ResizeStyle = rsPattern
+  end
+  object ListChartSource: TListChartSource
+    YCount = 2
+    YErrorBarData.Kind = ebkChartSource
+    YErrorBarData.IndexPlus = 1
+    Left = 520
+    Top = 336
+  end
+  object OpenCSVDialog: TOpenDialog
+    Title = 'Open existing data file'
+    DefaultExt = '.csv'
+    Filter = 'CSV files|*.txt;*.csv'
+    Left = 880
+    Top = 336
+  end
+  object SaveDataCSVDialog: TSaveDialog
+    Title = 'Save data as'
+    Filter = 'Table (*.csv)|*.csv'
+    Left = 768
+    Top = 336
+  end
+  object FitChartToolset: TChartToolset
+    Left = 640
+    Top = 336
+    object FitChartToolsetDataPointCrosshairTool1: TDataPointCrosshairTool
+      GrabRadius = 5
+      DrawingMode = tdmNormal
+      CrosshairPen.Color = clWhite
+    end
+    object FitChartToolsetDataPointHintTool1: TDataPointHintTool
+      GrabRadius = 5
+      OnHint = FitChartToolsetDataPointHintTool1Hint
+    end
+    object FitChartToolsetZoomDragTool1: TZoomDragTool
+      Shift = [ssLeft]
+      Brush.Style = bsClear
+    end
+  end
+end
