@@ -82,11 +82,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 40
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#1'
@@ -146,11 +146,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 40
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#2'
@@ -170,8 +170,8 @@ object MainForm: TMainForm
           Left = 8
           Height = 15
           Top = 8
-          Width = 98
-          Caption = 'Evaluation time [s]'
+          Width = 100
+          Caption = 'Evaluation Time [s]'
         end
         object EvalTimeFSE: TFloatSpinEdit
           Left = 24
@@ -181,7 +181,7 @@ object MainForm: TMainForm
           Width = 70
           Alignment = taCenter
           DecimalPlaces = 1
-          MaxValue = 3
+          MaxValue = 99
           MinValue = 1.7
           OnChange = EvalTimeFSEChange
           TabOrder = 0
@@ -302,8 +302,8 @@ object MainForm: TMainForm
             Left = 12
             Height = 19
             Top = 4
-            Width = 92
-            Caption = 'Show in chart'
+            Width = 94
+            Caption = 'Show in Chart'
             OnChange = ShowTempCBChange
             ParentFont = False
             TabOrder = 1
@@ -456,11 +456,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 40
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#2'
@@ -518,11 +518,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 41
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#2'
@@ -722,11 +722,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 40
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#2'
@@ -784,11 +784,11 @@ object MainForm: TMainForm
           Left = 224
           Height = 23
           Top = 40
-          Width = 90
+          Width = 91
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 90
-          EditLabel.Caption = 'Channel number'
+          EditLabel.Width = 91
+          EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
           Text = '#2'
@@ -1097,16 +1097,20 @@ object MainForm: TMainForm
           LinePen.Width = 2
         end
         object TopLine: TConstantLine
+          Legend.Visible = False
           Active = False
         end
         object BottomLine: TConstantLine
+          Legend.Visible = False
           Active = False
         end
         object LeftLine: TConstantLine
+          Legend.Visible = False
           Active = False
           LineStyle = lsVertical
         end
         object RightLine: TConstantLine
+          Legend.Visible = False
           Active = False
           LineStyle = lsVertical
         end

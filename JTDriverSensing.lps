@@ -21,17 +21,18 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <TopLine Value="893"/>
-        <CursorPos X="32" Y="919"/>
+        <CursorPos X="18" Y="905"/>
         <UsageCount Value="205"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
-        <Filename Value="SerialUSBSelection.pas"/>
+        <Filename Value="serialusbselection.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="SerialUSBSelectionF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SerialUSBSelection"/>
         <EditorIndex Value="4"/>
         <TopLine Value="15"/>
         <CursorPos X="29" Y="38"/>
@@ -40,22 +41,24 @@
         <LoadedDesigner Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="NameSetting.pas"/>
+        <Filename Value="namesetting.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="NameSettingF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="NameSetting"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="59" Y="19"/>
         <UsageCount Value="200"/>
       </Unit3>
       <Unit4>
-        <Filename Value="Fitting.pas"/>
+        <Filename Value="fitting.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FitForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Fitting"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="123"/>
         <CursorPos X="36" Y="141"/>
@@ -75,17 +78,18 @@
         <IsPartOfProject Value="True"/>
         <HasResources Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="277"/>
-        <CursorPos X="31" Y="310"/>
+        <TopLine Value="747"/>
+        <CursorPos X="48" Y="777"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="AboutForm.pas"/>
+        <Filename Value="aboutform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="AboutFormF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="AboutForm"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="60" Y="13"/>
@@ -217,9 +221,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="10"/>
-        <CursorPos X="65" Y="26"/>
-        <UsageCount Value="46"/>
+        <TopLine Value="107"/>
+        <CursorPos X="62" Y="130"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit18>
@@ -493,124 +497,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="78" Column="16" TopLine="66"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position1>
       <Position2>
-        <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="299" Column="43" TopLine="292"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position2>
       <Position3>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2525" TopLine="2507"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position3>
       <Position4>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="898" Column="104" TopLine="887"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position4>
       <Position5>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="910" TopLine="890"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position5>
       <Position6>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="911" TopLine="890"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position6>
       <Position7>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="916" TopLine="905"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position7>
       <Position8>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="950" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position8>
       <Position9>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="952" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position9>
       <Position10>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="955" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position10>
       <Position11>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="956" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position11>
       <Position12>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="957" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position12>
       <Position13>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="958" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position13>
       <Position14>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="959" TopLine="929"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position14>
       <Position15>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="960" TopLine="936"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position15>
       <Position16>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="961" TopLine="936"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position16>
       <Position17>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="901" Column="5" TopLine="889"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position17>
       <Position18>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2431" Column="111" TopLine="2425"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position18>
       <Position19>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2437" TopLine="2425"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position19>
       <Position20>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2438" TopLine="2431"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position20>
       <Position21>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2439" TopLine="2431"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="109" TopLine="84"/>
       </Position21>
       <Position22>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2462" TopLine="2446"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" TopLine="84"/>
       </Position22>
       <Position23>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2469" TopLine="2449"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="84"/>
       </Position23>
       <Position24>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2468" TopLine="2449"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="107" TopLine="84"/>
       </Position24>
       <Position25>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2469" Column="8" TopLine="2443"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="110" Column="39" TopLine="72"/>
       </Position25>
       <Position26>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2472" TopLine="2443"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="106" TopLine="81"/>
       </Position26>
       <Position27>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2468" TopLine="2443"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="117" TopLine="85"/>
       </Position27>
       <Position28>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2469" TopLine="2443"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="104" Column="76" TopLine="86"/>
       </Position28>
       <Position29>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2467" Column="2" TopLine="2443"/>
+        <Filename Value="calibration.pas"/>
+        <Caret Line="26" TopLine="7"/>
       </Position29>
       <Position30>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2468" TopLine="2449"/>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="569" Column="71" TopLine="555"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -626,20 +630,6 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="SIXControlUnit.pas"/>
         <Line Value="274"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="SIXControlUnit.pas"/>
-        <Line Value="912"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="SIXControlUnit.pas"/>
-        <Line Value="1389"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -668,25 +658,7 @@
         <Expression Value="dataArray"/>
       </Item>
       <Item>
-        <Expression Value="dataArray[22]"/>
-      </Item>
-      <Item>
-        <Expression Value="dataArray[StopPos-1]"/>
-      </Item>
-      <Item>
-        <Expression Value="checksum"/>
-      </Item>
-      <Item>
-        <Expression Value="PintegerArray^[1]"/>
-      </Item>
-      <Item>
         <Expression Value="intArray[1]"/>
-      </Item>
-      <Item>
-        <Expression Value="p^[3]"/>
-      </Item>
-      <Item>
-        <Expression Value="p^[4]"/>
       </Item>
       <Item>
         <Expression Value="DelayReadCounter"/>
@@ -707,13 +679,13 @@
         <Expression Value="prevChan"/>
       </Item>
       <Item>
-        <Expression Value="SIXCh3Values"/>
-      </Item>
-      <Item>
         <Expression Value="signalCounter"/>
       </Item>
       <Item>
         <Expression Value="SingleByte"/>
+      </Item>
+      <Item>
+        <Expression Value="ASeries.Name"/>
       </Item>
     </Watches>
   </Debugging>
