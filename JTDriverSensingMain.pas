@@ -898,6 +898,10 @@ begin
     for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
     SerialUSBPortCB.Sorted:= true;
+    // in case a SIX is already connected, remove its COM port from the list
+    for i:= 0 to SerialUSBPortCB.Items.Count-1 do
+     if SerialUSBPortCB.Items[i] = ConnComPortSensLE.Text then
+      SerialUSBPortCB.Items.Delete(i);
    end;
   end;
  finally
@@ -911,6 +915,9 @@ begin
   else
    SerialUSBPortCB.ItemIndex:= -1;
  end;
+ // empty COMPort in case this one is already connected to a SIX
+ if COMPort = ConnComPortSensLE.Text then
+  COMPort:= '';
  // open connection dialog
  SerialUSBSelectionF.ShowModal;
  if (COMPort = 'Ignore') then // user pressed Disconnect
@@ -2443,6 +2450,10 @@ begin
     for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
     SerialUSBPortCB.Sorted:= true;
+    // in case a pump driver is already connected, remove its COM port from the list
+    for i:= 0 to SerialUSBPortCB.Items.Count-1 do
+     if SerialUSBPortCB.Items[i] = ConnComPortPumpLE.Text then
+      SerialUSBPortCB.Items.Delete(i);
    end;
   end;
  finally
@@ -2456,6 +2467,9 @@ begin
   else
    SerialUSBPortCB.ItemIndex:= -1;
  end;
+ // empty COMPort in case this one is already connected to a pump driver
+ if COMPort = ConnComPortPumpLE.Text then
+  COMPort:= '';
  // open connection dialog
  SerialUSBSelectionF.ShowModal;
  if COMPort = 'Ignore' then // user pressed Disconnect
