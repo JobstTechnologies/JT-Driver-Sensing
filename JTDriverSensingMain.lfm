@@ -463,7 +463,7 @@ object MainForm: TMainForm
           EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
-          Text = '#2'
+          Text = '#4'
         end
       end
       object Channel5GB: TGroupBox
@@ -525,7 +525,7 @@ object MainForm: TMainForm
           EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
-          Text = '#2'
+          Text = '#5'
         end
       end
       object Channel8GB: TGroupBox
@@ -729,7 +729,7 @@ object MainForm: TMainForm
           EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
-          Text = '#2'
+          Text = '#3'
         end
       end
       object Channel6GB: TGroupBox
@@ -791,7 +791,7 @@ object MainForm: TMainForm
           EditLabel.Caption = 'SIX Channel'
           Enabled = False
           TabOrder = 3
-          Text = '#2'
+          Text = '#6'
         end
       end
       object PerformTestingGB: TGroupBox
@@ -7785,10 +7785,8 @@ object MainForm: TMainForm
           Top = 0
           Width = 36
           Caption = 'On'
-          Checked = True
           OnChange = AnOutConnectorXOnOffCBChange
           ParentFont = False
-          State = cbChecked
           TabOrder = 2
         end
       end

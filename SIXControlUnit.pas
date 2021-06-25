@@ -1303,7 +1303,11 @@ begin
    ppp:= PChar(StringArray[i]);
    HeaderStrings[i+1]:= AnsiExtractQuotedStr(ppp, '"');
    if HeaderStrings[i+1] <> '' then // we have a channel
+   begin
     inc(NumChannels);
+    (MainForm.FindComponent('Channel' + IntToStr(NumChannels) + 'LE')
+     as TLabeledEdit).Text:= '#' + IntToStr(NumChannels);
+   end;
    // take this as name for the group box
    Component:= (MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
        as TGroupBox);
@@ -1320,6 +1324,8 @@ begin
      as TGroupBox).Enabled:= false;
     (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
      as TCheckBox).Checked:= false;
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= '';
    end;
   end;
   // update the possible operations

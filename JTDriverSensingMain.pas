@@ -1743,6 +1743,18 @@ begin
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
+ // update chart legend according to channel names
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Title:=
+    'Live ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
+  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+   as TLineSeries).Title:=
+    'Stable ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
+ end;
 
  // write a new header line to the output file
  if HaveSensorFileStream and (not wasRawCurrent) then
@@ -1816,6 +1828,19 @@ begin
   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption:= 'Channel ' + IntToStr(i);
   SIXControl.HeaderStrings[i]:= '';
+ end;
+
+ // update chart legend according to new channel names
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Title:=
+    'Live ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
+  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+   as TLineSeries).Title:=
+    'Stable ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
  end;
 
  // update the possible operations
