@@ -9,6 +9,8 @@ uses
 
 type
 
+  { TSerialUSBSelectionF }
+
   TSerialUSBSelectionF = class(TForm)
     OKButtonB: TButton;
     CancelButtonB: TButton;

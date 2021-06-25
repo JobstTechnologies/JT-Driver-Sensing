@@ -6,6 +6,8 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
   Caption = 'Serial port selection'
   ClientHeight = 119
   ClientWidth = 259
+  OnCreate = FormCreate
+  OnShow = FormCreate
   Position = poMainFormCenter
   LCLVersion = '2.3.0.0'
   object SerialUSBPortL: TLabel

@@ -897,11 +897,14 @@ begin
     Reg.GetValueNames(SerialUSBPortCB.Items);
     for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
-    SerialUSBPortCB.Sorted:= true;
     // in case a SIX is already connected, remove its COM port from the list
     for i:= 0 to SerialUSBPortCB.Items.Count-1 do
      if SerialUSBPortCB.Items[i] = ConnComPortSensLE.Text then
+     begin
       SerialUSBPortCB.Items.Delete(i);
+      break;
+     end;
+    SerialUSBPortCB.Sorted:= true;
    end;
   end;
  finally
@@ -914,6 +917,10 @@ begin
    SerialUSBPortCB.ItemIndex:= 0
   else
    SerialUSBPortCB.ItemIndex:= -1;
+  // update the text since this will be displayed
+  // as proposal when the connection dialog is shwon
+  if SerialUSBPortCB.ItemIndex > -1 then
+   SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
  end;
  // empty COMPort in case this one is already connected to a SIX
  if COMPort = ConnComPortSensLE.Text then
@@ -2446,11 +2453,14 @@ begin
     Reg.GetValueNames(SerialUSBPortCB.Items);
     for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
-    SerialUSBPortCB.Sorted:= true;
     // in case a pump driver is already connected, remove its COM port from the list
     for i:= 0 to SerialUSBPortCB.Items.Count-1 do
      if SerialUSBPortCB.Items[i] = ConnComPortPumpLE.Text then
+     begin
       SerialUSBPortCB.Items.Delete(i);
+      break;
+     end;
+    SerialUSBPortCB.Sorted:= true;
    end;
   end;
  finally
@@ -2463,6 +2473,10 @@ begin
    SerialUSBPortCB.ItemIndex:= 0
   else
    SerialUSBPortCB.ItemIndex:= -1;
+  // update the text since this will be displayed
+  // as proposal when the connection dialog is shwon
+  if SerialUSBPortCB.ItemIndex > -1 then
+   SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
  end;
  // empty COMPort in case this one is already connected to a pump driver
  if COMPort = ConnComPortPumpLE.Text then
