@@ -953,7 +953,7 @@ begin
   end;
   exit;
  end;
- if (COMPort = '') then // user forgot to set a COM port
+ if COMPort = '' then // user forgot to set a COM port
  begin
   MessageDlgPos('Error: No COM port selected.',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -2425,9 +2425,6 @@ var
 begin
  // initialize
  MousePointer:= Mouse.CursorPos;
- SIXControl.DelayReadCounter:= 0;
- SIXControl.timeCounter:= 0.0;
- SIXControl.signalCounter:= 0;
 
  // if no .def file loaded only raw values possible
  if MainForm.LoadedDefFileLE.Text = 'None' then
@@ -2498,7 +2495,7 @@ begin
   LoadDefBB.Enabled:= true;
   exit;
  end;
- if (COMPort = '') then // user forgot to set a COM port
+ if COMPort = '' then // user forgot to set a COM port
  begin
   MessageDlgPos('Error: No COM port selected.',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -2757,6 +2754,10 @@ begin
  // we can now set the timer interval
  ReadTimer.Interval:= Trunc(EvalTimeFSE.Value * 1000); // in ms
  ReadTimer.Enabled:= true;
+
+ // start the counters
+ SIXControl.timeCounter:= 0.0;
+ SIXControl.signalCounter:= 0;
  SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
 
 end;
