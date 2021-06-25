@@ -29,8 +29,8 @@ object CalibrationF: TCalibrationF
     ItemIndex = 0
     Items.Strings = (
       'mmol/l'
-      'ng/l'
-      'mmol/cm³'
+      'g/l'
+      'mg/dl'
     )
     TabOrder = 1
     Text = 'mmol/l'
