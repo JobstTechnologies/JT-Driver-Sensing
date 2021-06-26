@@ -1,10 +1,10 @@
 object CalibrationF: TCalibrationF
   Left = 725
-  Height = 367
+  Height = 335
   Top = 392
   Width = 213
   Caption = 'Calibration'
-  ClientHeight = 367
+  ClientHeight = 335
   ClientWidth = 213
   OnShow = FormShow
   LCLVersion = '2.3.0.0'
@@ -12,7 +12,7 @@ object CalibrationF: TCalibrationF
     Left = 16
     Height = 33
     Hint = 'No data available to'#13#10'perform the calibration'
-    Top = 322
+    Top = 288
     Width = 83
     DefaultCaption = True
     Enabled = False
@@ -25,7 +25,7 @@ object CalibrationF: TCalibrationF
   object CalibCancelBB: TBitBtn
     Left = 112
     Height = 33
-    Top = 322
+    Top = 288
     Width = 83
     Cancel = True
     DefaultCaption = True
@@ -36,7 +36,7 @@ object CalibrationF: TCalibrationF
   object ConcentrationGB: TGroupBox
     Left = 16
     Height = 55
-    Top = 256
+    Top = 224
     Width = 160
     Caption = 'Calibration Concentration'
     ClientHeight = 35
@@ -71,16 +71,16 @@ object CalibrationF: TCalibrationF
   end
   object AvailableChannelsGB: TGroupBox
     Left = 16
-    Height = 241
+    Height = 208
     Top = 8
     Width = 179
     Caption = 'Available SIX Channels'
-    ClientHeight = 221
+    ClientHeight = 188
     ClientWidth = 175
     TabOrder = 3
     object SIXCHCLB: TChartListbox
       Left = 8
-      Height = 162
+      Height = 128
       Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
       Top = 0
       Width = 160
@@ -98,7 +98,7 @@ object CalibrationF: TCalibrationF
       Left = 8
       Height = 23
       Hint = 'Mean value of the selected channel'#13#10'within the chosen data range'
-      Top = 192
+      Top = 152
       Width = 144
       Alignment = taCenter
       EditLabel.Height = 15

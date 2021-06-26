@@ -1404,7 +1404,6 @@ var
  extent: TDoubleRect;
  height, width: Double;
  center: TDoublePoint;
- wasScrolling : Boolean = false;
 begin
  // show/hide the lines and en/disable the rectangle tool
  MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
@@ -1439,12 +1438,6 @@ begin
   // activate the rectangle selection
   MainForm.LineDragTool.Shift:= [ssLeft];
   MainForm.RectangleSelectionTool.Shift:= [ssLeft];
-  // turn off scrolling
-  if MainForm.ScrollViewCB.Checked then
-  begin
-   MainForm.ScrollViewCB.Checked:= false;
-   wasScrolling:= true;
-  end;
  end
  else
  begin
@@ -1460,8 +1453,6 @@ begin
   // deactivate the rectangle selection
   MainForm.LineDragTool.Shift:= [];
   MainForm.RectangleSelectionTool.Shift:= [];
-  if wasScrolling then
-   MainForm.ScrollViewCB.Checked:= true;
  end;
 
 end;
