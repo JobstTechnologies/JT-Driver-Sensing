@@ -143,28 +143,25 @@
         <ResourceBaseClass Value="Form"/>
       </Unit1>
       <Unit2>
-        <Filename Value="serialusbselection.pas"/>
+        <Filename Value="SerialUSBSelection.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="SerialUSBSelectionF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="SerialUSBSelection"/>
       </Unit2>
       <Unit3>
-        <Filename Value="namesetting.pas"/>
+        <Filename Value="NameSetting.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="NameSettingF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="NameSetting"/>
       </Unit3>
       <Unit4>
-        <Filename Value="fitting.pas"/>
+        <Filename Value="Fitting.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FitForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Fitting"/>
       </Unit4>
       <Unit5>
         <Filename Value="pumpcontrolunit.pas"/>
@@ -177,12 +174,11 @@
         <HasResources Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="aboutform.pas"/>
+        <Filename Value="AboutForm.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="AboutFormF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="AboutForm"/>
       </Unit7>
       <Unit8>
         <Filename Value="ChartEditing\ceaxisdlg.pas"/>
