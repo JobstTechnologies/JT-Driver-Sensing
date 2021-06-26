@@ -921,8 +921,12 @@ begin
   // as proposal when the connection dialog is shwon
   if SerialUSBPortCB.ItemIndex > -1 then
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
+  if SerialUSBPortCB.Text = '' then
+   COMPort:= '';
  end;
  // empty COMPort in case this one is already connected to a SIX
+ // we don't empty in other cases since the user might just clicked wrong,
+ // is already connected and don't want to change this
  if COMPort = ConnComPortSensLE.Text then
   COMPort:= '';
  // open connection dialog
@@ -2502,8 +2506,12 @@ begin
   // as proposal when the connection dialog is shwon
   if SerialUSBPortCB.ItemIndex > -1 then
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
+  if SerialUSBPortCB.Text = '' then
+   COMPort:= '';
  end;
  // empty COMPort in case this one is already connected to a pump driver
+ // we don't empty in other cases since the user might just clicked wrong,
+ // is already connected and don't want to change this
  if COMPort = ConnComPortPumpLE.Text then
   COMPort:= '';
  // open connection dialog
