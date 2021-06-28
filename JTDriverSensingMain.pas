@@ -679,10 +679,16 @@ type
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure ChartToolsetAxisClickToolClick(Sender: TChartTool;
       Axis: TChartAxis; HitInfo: TChartAxisHitTests);
+    procedure ChartToolsetDataPointHintToolHint(ATool: TDataPointHintTool;
+      const APoint{%H-}: TPoint; var AHint: String);
+    procedure ChartToolsetDataPointHintToolHintPosition(
+      ATool: TDataPointHintTool; var APoint: TPoint);
     procedure ChartToolsetLegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
     procedure ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
+    procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
+      APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
     procedure ConnComPortSensLEChange(Sender: TObject);
     procedure DutyCycleXFSEChange(Sender: TObject);
@@ -818,6 +824,7 @@ begin
  end;
 
  // setup the chart
+ SIXControl.wasZoomDragged:= false;
  TopLine.Position:= Infinity;
  BottomLine.Position:= -Infinity;
  LeftLine.Position:= -Infinity;
@@ -1624,6 +1631,20 @@ begin
  SIXControl.SCChartToolsetAxisClickTool1Click(Sender, Axis, HitInfo);
 end;
 
+procedure TMainForm.ChartToolsetDataPointHintToolHint(
+  ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
+begin
+ AHint:= Format('time = %.2f,' + LineEnding + 'value = %.2f',
+         [ATool.NearestGraphPoint.X, ATool.NearestGraphPoint.Y]);
+end;
+
+procedure TMainForm.ChartToolsetDataPointHintToolHintPosition(
+ ATool: TDataPointHintTool; var APoint: TPoint);
+// moves the hint text above the cursor and center it horizontally to cursor
+begin
+ SIXControl.SCChartToolsetDataPointHintToolHintPosition(ATool, APoint);
+end;
+
 procedure TMainForm.ChartToolsetLegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 begin
@@ -1636,9 +1657,17 @@ begin
  SIXControl.SCChartToolsetTitleFootClickTool1Click(Sender, Title);
 end;
 
+procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
+  APoint: TPoint);
+begin
+ // toggle zoom dragged state
+ // when on, then ScrollViewCB will not scroll until it is off
+ SIXControl.wasZoomDragged:= not SIXControl.wasZoomDragged;
+end;
+
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);
 begin
-  PumpControl.PCDutyCycleXFSEChange(Sender);
+ PumpControl.PCDutyCycleXFSEChange(Sender);
 end;
 
 procedure TMainForm.EvalTimeFSEChange(Sender: TObject);

@@ -18,8 +18,8 @@ type
   TSIXControl = class
     constructor create;
     procedure SCScrollViewCBChange(Sender: TObject);
-    procedure SCChartToolsetDataPointHintTool1Hint(ATool: TDataPointHintTool;
-      const APoint: TPoint; var AHint: String);
+    procedure SCChartToolsetDataPointHintToolHintPosition(
+       ATool: TDataPointHintTool; var APoint: TPoint);
     procedure SCSaveCSVResultBClick(Sender: TObject);
     procedure SCSaveScreenshotLiveBClick(Sender: TObject);
     procedure SCSaveScreenshotResultBClick(Sender: TObject);
@@ -58,6 +58,7 @@ type
      timeCounter : double; // counter of the overall SIX signal time in min
      signalCounter : integer; // counter of the overall SIX readouts
      NumChannels : integer; // number of channels
+     wasZoomDragged : Boolean; // if the user previously zoomDragged
 
   end;
 
@@ -543,7 +544,7 @@ begin
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
  // scroll axis if desired by the user
- if MainForm.ScrollViewCB.Checked = true then
+ if (MainForm.ScrollViewCB.Checked = true) and (not wasZoomDragged) then
  begin
   Extent:= MainForm.SIXCH.GetFullExtent;
   // if there are not yet enough values, do nothing
@@ -762,22 +763,39 @@ begin
 
 end;
 
-procedure TSIXControl.SCChartToolsetDataPointHintTool1Hint(ATool: TDataPointHintTool;
-  const APoint: TPoint; var AHint: String);
+procedure TSIXControl.SCChartToolsetDataPointHintToolHintPosition(
+ ATool: TDataPointHintTool; var APoint: TPoint);
 var
- x, y: Double;
+ series : TLineSeries;
+ x, y, HintWidth, HintHeight : Integer;
+ rect : TRect;
+ HintWindow : THintWindow;
+ HintText : string;
+// moves the hint text above the cursor and center it horizontally to cursor
 begin
- with ATool as TDataPointHintTool do
-  if (Series <> nil) then
-   with (Series as TLineSeries) do
-   begin
-    x:= APoint.X; // only to avoid compiler warning about unused APoint
-    y:= APoint.Y;
-    // get the X/Y coordinate of the point
-    x:= GetXValue(PointIndex);
-    y:= GetYValue(PointIndex);
-    AHint:= Format('x = %f' + LineEnding + 'y = %.3f', [x,y]);
-   end;
+ series:= ATool.Series as TLineSeries;
+ // get image coordinates of the point
+ x:= MainForm.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
+ y:= MainForm.SIXCH.YGraphToImage(series.ListSource[ATool.PointIndex]^.Y);
+
+ // Get hint text - just call the event handler of OnHint
+ MainForm.ChartToolsetDataPointHintToolHint(ATool, APoint, HintText);
+
+ HintWindow:= THintWindow.Create(nil);
+ try
+  rect:= HintWindow.CalcHintRect(MainForm.SIXCH.Width, HintText, nil);
+  HintWidth:= rect.Right - rect.Left; // hint window width
+  HintHeight:= rect.Bottom - rect.Top; // hint window height
+ finally
+  HintWindow.Free;
+ end;
+
+ // Center hint horizontally relative to data point
+ APoint.x:= x - HintWidth div 2;
+ // Move hint 10 pixels above the "High" data point
+ APoint.y:= y - HintHeight - 10;
+ // Hint coordinates are relative to screen
+ APoint:= MainForm.SIXCH.ClientToScreen(APoint);
 end;
 
 function TSIXControl.ParseLine(Line: string; channel: Byte): double;
