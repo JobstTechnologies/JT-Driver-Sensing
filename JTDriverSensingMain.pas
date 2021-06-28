@@ -1703,6 +1703,7 @@ begin
   StartTestBB.enabled:= false;
   NoSubtractBlankCB.enabled:= false;
   UnloadDefBB.visible:= false;
+  CalibrateTB.Enabled:= false;
   // the values are then in nA
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
@@ -1747,6 +1748,7 @@ begin
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
+ CalibrateTB.Enabled:= true;
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
@@ -1801,6 +1803,7 @@ begin
  StartTestBB.enabled:= false;
  NoSubtractBlankCB.enabled:= false;
  UnloadDefBB.visible:= false;
+ CalibrateTB.Enabled:= false;
  // the values are then in nA
  RawCurrentCB.Checked:= true;
  RawCurrentCB.Enabled:= false;

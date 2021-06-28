@@ -1444,6 +1444,8 @@ begin
   // show the calibration dialog
   CalibrationF.ShowModal;
 
+  // if user pressed OK and there is a valid mean value, write a new .def file
+
   // move lines back to infinity
   MainForm.TopLine.Position:= Infinity;
   MainForm.BottomLine.Position:= -Infinity;
