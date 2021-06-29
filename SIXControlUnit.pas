@@ -1484,7 +1484,7 @@ begin
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
    if (OutName <> '') then
    begin
-    // copy the loaded .def file into a TStringList
+    // copy the loaded .def file into a StringList
     StringList:= TStringList.Create;
     try
      StringList.LoadFromFile(InNameDef);
@@ -1492,7 +1492,14 @@ begin
      // we get the calibrated channel and the factor for the gain
      StringArray:= StringList[0].Split(',');
      // the new gain is the current one times the factor
-     calibFactor:= calibFactor * Gains[calibChannel+1];
+     if MainForm.RawCurrentCB.Checked then
+      // then we must take the temperature correction into account
+      calibFactor:= calibFactor * GainsRaw[calibChannel+1]
+      * exp(TemperGains[calibChannel+1] / 100
+      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+     else
+      // the existing gain includes the temperature correction
+      calibFactor:= calibFactor * Gains[calibChannel+1];
      StringArray[calibChannel]:= FloatToStr(RoundTo(calibFactor, -4));
      // transform the array to a string and save it as new first line
      StringList[0]:= string.join(',', StringArray);

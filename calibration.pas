@@ -187,24 +187,20 @@ begin
   CalibOKBB.Enabled:= true;
   CalibOKBB.Hint:= '';
 
-  // output the mean as plain nA value
-  if MainForm.RawCurrentCB.Checked then
-  // calibMean:= yMean
+  // check units
+  calibValue:= ValueFSE.Value; // mmol/l
+  if LactateRB.Checked then
+   molWeight:= 90.07 //in g/mol
   else
-  begin
-   // check units
-   calibValue:= ValueFSE.Value; // mmol/l
-   if LactateRB.Checked then
-    molWeight:= 90.07 //in g/mol
-   else
-    molWeight:= 180.156;
+   molWeight:= 180.156;
+  if UnitCB.ItemIndex = 1 then // g/l
+   calibValue:= ValueFSE.Value / molWeight / 1000
+  else if UnitCB.ItemIndex = 2 then // mg/dl
+   calibValue:= ValueFSE.Value / molWeight / 1000 / 100;
 
-   if UnitCB.ItemIndex = 1 then // g/l
-    calibValue:= ValueFSE.Value / molWeight / 1000
-   else if UnitCB.ItemIndex = 2 then // mg/dl
-    calibValue:= ValueFSE.Value / molWeight / 1000 / 100;
-   calibFactor:= calibValue / yMean;
-  end;
+  // we found the factor with which the current gain must be multiplied
+  calibFactor:= calibValue / yMean;
+
  end;
 
 end;

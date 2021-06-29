@@ -1127,7 +1127,7 @@ object MainForm: TMainForm
       object ScrollViewCB: TCheckBox
         Left = 816
         Height = 19
-        Hint = 'Only the last seconds of the data will shown'#13#10'in the diagram'
+        Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
         Top = 7
         Width = 90
         Anchors = [akTop, akRight]
