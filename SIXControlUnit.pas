@@ -388,8 +388,10 @@ begin
   else
   begin
    // subtract blank values
+   // since the blank has no temperature connection, we cannot just subtract
    for i:= 1 to NumChannels do
-    ChanDbl[i]:= ChanDbl[i] - ChanDbl[Subtracts[i]];
+    if not isBlank[i] then
+     ChanDbl[i]:= ChanDbl[i] * (Chan[i] - Chan[Subtracts[i]]) / Chan[i];
    // output all non-blank channels
    for i:= 1 to NumChannels do
    begin
@@ -770,7 +772,7 @@ var
  x, y, HintWidth, HintHeight : Integer;
  rect : TRect;
  HintWindow : THintWindow;
- HintText : string;
+ HintText : string = '';
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  series:= ATool.Series as TLineSeries;
@@ -1462,12 +1464,6 @@ begin
  end
  else
  begin
-  // move lines back to infinity
-  MainForm.TopLine.Position:= Infinity;
-  MainForm.BottomLine.Position:= -Infinity;
-  MainForm.LeftLine.Position:= -Infinity;
-  MainForm.RightLine.Position:= Infinity;
-
   // deactivate the rectangle selection
   MainForm.LineDragTool.Shift:= [];
   MainForm.RectangleSelectionTool.Shift:= [];
@@ -1488,20 +1484,16 @@ begin
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
    if (OutName <> '') then
    begin
-    if FileExists(OutName) = true then
-    begin
-     // new calibration must be written to a new .def file
-     ;
-     exit;
-    end;
     // copy the loaded .def file into a TStringList
     StringList:= TStringList.Create;
     try
      StringList.LoadFromFile(InNameDef);
      // the first line needs to be changed
-     // we get the calibrated channel and the new gain we need to write in
+     // we get the calibrated channel and the factor for the gain
      StringArray:= StringList[0].Split(',');
-     StringArray[calibChannel]:= FloatToStr(calibGain);
+     // the new gain is the current one times the factor
+     calibFactor:= calibFactor * Gains[calibChannel+1];
+     StringArray[calibChannel]:= FloatToStr(RoundTo(calibFactor, -4));
      // transform the array to a string and save it as new first line
      StringList[0]:= string.join(',', StringArray);
      // save the whole file
@@ -1511,7 +1503,7 @@ begin
     end;
     // immediately use the new .def file
     InNameDef:= OutName;
-    Gains[calibChannel]:= calibGain;
+    Gains[calibChannel+1]:= calibFactor;
     // display file name without suffix
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
@@ -1519,6 +1511,12 @@ begin
    end; //end if OutName <> ''
 
   end; // end mrOK
+
+  // move lines back to infinity
+  MainForm.TopLine.Position:= Infinity;
+  MainForm.BottomLine.Position:= -Infinity;
+  MainForm.LeftLine.Position:= -Infinity;
+  MainForm.RightLine.Position:= Infinity;
 
  end;
 

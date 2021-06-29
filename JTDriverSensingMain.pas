@@ -62,6 +62,7 @@ type
     AnOutOnOffTB: TToggleBox;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
+    Panel5: TPanel;
     TopLine: TConstantLine;
     BottomLine: TConstantLine;
     LeftLine: TConstantLine;
@@ -2926,10 +2927,15 @@ end;
 
 function TMainForm.SaveHandling(InName: string; FileExt: string): string;
 // handles the save dialog
-var YesNo : integer;
-    OutNameTemp : string;
+var
+ YesNo : integer;
+ OutNameTemp : string;
+ MousePointer : TPoint;
 begin
+ // initialize
+ MousePointer:= Mouse.CursorPos;
  result:= '';
+
  if FileExt = '.PDAction' then
  begin
   SaveDialog.Filter:= 'Pump Driver Actions|*.PDAction';
@@ -2961,6 +2967,15 @@ begin
   // add file extension if it is missing
   if (ExtractFileExt(OutNameTemp) <> FileExt) then
    Insert(FileExt, OutNameTemp, Length(OutNameTemp) + 1);
+
+  if (FileExists(OutNameTemp) = true) and (FileExt = '.def') then
+  begin
+   MessageDlgPos('The new definition file must have a unique filename'
+    + LineEnding + 'to distinguish it from prior definition files.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+
   if FileExists(OutNameTemp) = true then
   begin
    with CreateMessageDialog // MessageDlg with mbNo as default

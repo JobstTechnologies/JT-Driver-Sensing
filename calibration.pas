@@ -41,7 +41,7 @@ type
 var
   CalibrationF: TCalibrationF;
   calibChannel : integer = 0;
-  calibGain : double = 0.0;
+  calibFactor : double = 0.0;
 
 implementation
 
@@ -203,7 +203,7 @@ begin
     calibValue:= ValueFSE.Value / molWeight / 1000
    else if UnitCB.ItemIndex = 2 then // mg/dl
     calibValue:= ValueFSE.Value / molWeight / 1000 / 100;
-   calibGain:= calibValue / yMean;
+   calibFactor:= calibValue / yMean;
   end;
  end;
 

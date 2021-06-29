@@ -1118,7 +1118,7 @@ object MainForm: TMainForm
       object SaveScreenshotLiveB: TButton
         Left = 680
         Height = 26
-        Top = 6
+        Top = 4
         Width = 104
         Caption = 'Save Screenshot'
         OnClick = SaveScreenshotLiveBClick
@@ -1127,7 +1127,7 @@ object MainForm: TMainForm
       object ScrollViewCB: TCheckBox
         Left = 816
         Height = 19
-        Hint = 'Please select BioMon file first'
+        Hint = 'Only the last seconds of the data will shown'#13#10'in the diagram'
         Top = 7
         Width = 90
         Anchors = [akTop, akRight]
@@ -1168,18 +1168,31 @@ object MainForm: TMainForm
         ParentColor = False
         TabOrder = 4
       end
-      object CalibrateTB: TToggleBox
+      object Panel5: TPanel
         Left = 58
         Height = 26
-        Hint = 'To calibrate:'#13#10'1. a definition file must be loaded'#13#10'2. click this button'#13#10'3. left-click into the chart and drag the mouse'#13#10'    to select a range of data'#13#10'4. when you selected the desired data range,'#13#10'   click this button again'#13#10'5. Set the calibration values the appearing dialog'#13#10'6. a new definition file will automatically be'#13#10'   created and loaded'
-        Top = 6
+        Top = 4
         Width = 104
-        Caption = 'Calibrate'
-        Enabled = False
-        OnChange = CalibrateTBChange
-        ParentShowHint = False
-        ShowHint = True
+        Anchors = [akTop, akRight]
+        BevelOuter = bvNone
+        ClientHeight = 26
+        ClientWidth = 104
+        Color = clBtnFace
+        ParentColor = False
         TabOrder = 5
+        object CalibrateTB: TToggleBox
+          Left = 0
+          Height = 26
+          Hint = 'To calibrate:'#13#10'1. a definition file must be loaded'#13#10'2. click this button'#13#10'3. left-click into the chart and drag the mouse'#13#10'    to select a range of data'#13#10'4. when you selected the desired data range,'#13#10'   click this button again'#13#10'5. Set the calibration values the appearing dialog'#13#10'6. a new definition file will automatically be'#13#10'   created and loaded'
+          Top = 0
+          Width = 104
+          Caption = 'Calibrate'
+          Enabled = False
+          OnChange = CalibrateTBChange
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+        end
       end
     end
     object PumpControlTS: TTabSheet
@@ -7829,7 +7842,6 @@ object MainForm: TMainForm
           Caption = 'Output On'
           Enabled = False
           OnChange = AnOutOnOffTBChange
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -8351,14 +8363,14 @@ object MainForm: TMainForm
     Top = 560
   end
   object ChartAxisTransformTemp: TChartAxisTransformations
-    Left = 1016
-    Top = 560
+    Left = 1048
+    Top = 616
     object ChartAxisTransformTempAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
   end
   object ChartAxisTransformValues: TChartAxisTransformations
-    Left = 1016
-    Top = 504
+    Left = 1048
+    Top = 560
     object ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
   end
