@@ -1419,9 +1419,12 @@ procedure TSIXControl.SCCalibrateTBChange(Sender: TObject);
  - the mean of the selected series' datapoints within the rectangle is eventually
    used as calibration value}
 var
- extent: TDoubleRect;
- height, width: Double;
- center: TDoublePoint;
+ extent : TDoubleRect;
+ height, width : double;
+ center : TDoublePoint;
+ OutName, DummyString : string;
+ StringList : TStringList;
+ StringArray : TStringArray;
 begin
  // show/hide the lines and en/disable the rectangle tool
  MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
@@ -1459,11 +1462,6 @@ begin
  end
  else
  begin
-  // show the calibration dialog
-  CalibrationF.ShowModal;
-
-  // if user pressed OK and there is a valid mean value, write a new .def file
-
   // move lines back to infinity
   MainForm.TopLine.Position:= Infinity;
   MainForm.BottomLine.Position:= -Infinity;
@@ -1473,6 +1471,55 @@ begin
   // deactivate the rectangle selection
   MainForm.LineDragTool.Shift:= [];
   MainForm.RectangleSelectionTool.Shift:= [];
+
+  // show the calibration dialog
+  CalibrationF.ShowModal;
+
+  // if user pressed OK and there is a valid mean value, write a new .def file
+  if CalibrationF.ModalResult = mrOK then
+  begin
+   // open a file save dialog to save the changed .def file
+   // use the folder of the InNameDef as default directory
+   MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
+   // propose as filename the current date
+   MainForm.SaveDialog.FileName:= FormatDateTime('dd-mm-yyyy-hh-nn', now);
+   // tell the OS the program is alive since the running read timer might make problems
+   Application.ProcessMessages;
+   OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
+   if (OutName <> '') then
+   begin
+    if FileExists(OutName) = true then
+    begin
+     // new calibration must be written to a new .def file
+     ;
+     exit;
+    end;
+    // copy the loaded .def file into a TStringList
+    StringList:= TStringList.Create;
+    try
+     StringList.LoadFromFile(InNameDef);
+     // the first line needs to be changed
+     // we get the calibrated channel and the new gain we need to write in
+     StringArray:= StringList[0].Split(',');
+     StringArray[calibChannel]:= FloatToStr(calibGain);
+     // transform the array to a string and save it as new first line
+     StringList[0]:= string.join(',', StringArray);
+     // save the whole file
+     StringList.SaveToFile(OutName);
+    finally
+     StringList.free;
+    end;
+    // immediately use the new .def file
+    InNameDef:= OutName;
+    Gains[calibChannel]:= calibGain;
+    // display file name without suffix
+    DummyString:= ExtractFileName(InNameDef);
+    SetLength(DummyString, Length(DummyString) - 4);
+    MainForm.LoadedDefFileLE.Text:= DummyString;
+   end; //end if OutName <> ''
+
+  end; // end mrOK
+
  end;
 
 end;

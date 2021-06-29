@@ -1,18 +1,18 @@
 object CalibrationF: TCalibrationF
   Left = 725
-  Height = 335
-  Top = 392
-  Width = 213
+  Height = 378
+  Top = 390
+  Width = 211
   Caption = 'Calibration'
-  ClientHeight = 335
-  ClientWidth = 213
+  ClientHeight = 378
+  ClientWidth = 211
   OnShow = FormShow
   LCLVersion = '2.3.0.0'
   object CalibOKBB: TBitBtn
     Left = 16
     Height = 33
     Hint = 'No data available to'#13#10'perform the calibration'
-    Top = 288
+    Top = 334
     Width = 83
     DefaultCaption = True
     Enabled = False
@@ -25,7 +25,7 @@ object CalibrationF: TCalibrationF
   object CalibCancelBB: TBitBtn
     Left = 112
     Height = 33
-    Top = 288
+    Top = 334
     Width = 83
     Cancel = True
     DefaultCaption = True
@@ -35,11 +35,11 @@ object CalibrationF: TCalibrationF
   end
   object ConcentrationGB: TGroupBox
     Left = 16
-    Height = 55
-    Top = 224
+    Height = 54
+    Top = 220
     Width = 160
     Caption = 'Calibration Concentration'
-    ClientHeight = 35
+    ClientHeight = 34
     ClientWidth = 156
     TabOrder = 2
     object ValueFSE: TFloatSpinEdit
@@ -71,11 +71,11 @@ object CalibrationF: TCalibrationF
   end
   object AvailableChannelsGB: TGroupBox
     Left = 16
-    Height = 208
+    Height = 206
     Top = 8
     Width = 179
     Caption = 'Available SIX Channels'
-    ClientHeight = 188
+    ClientHeight = 186
     ClientWidth = 175
     TabOrder = 3
     object SIXCHCLB: TChartListbox
@@ -108,6 +108,35 @@ object CalibrationF: TCalibrationF
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
+    end
+  end
+  object SubstanceGB: TGroupBox
+    Left = 16
+    Height = 42
+    Top = 280
+    Width = 179
+    Caption = 'Calibration Substance'
+    ClientHeight = 22
+    ClientWidth = 175
+    TabOrder = 4
+    OnClick = SubstanceGBClick
+    object GlucoseRB: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 0
+      Width = 62
+      Caption = 'Glucose'
+      OnClick = SubstanceGBClick
+      TabOrder = 1
+    end
+    object LactateRB: TRadioButton
+      Left = 96
+      Height = 19
+      Top = 0
+      Width = 58
+      Caption = 'Lactate'
+      OnClick = SubstanceGBClick
+      TabOrder = 0
     end
   end
 end

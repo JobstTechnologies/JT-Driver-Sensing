@@ -2944,6 +2944,11 @@ begin
  begin
   SaveDialog.Filter:= 'Vector graphics (*.svg)|*.svg';
   SaveDialog.Title:= 'Save screenshot as';
+ end
+ else if FileExt = '.def' then
+ begin
+  SaveDialog.Filter:= 'SIX definition file (*.def)|*.def';
+  SaveDialog.Title:= 'Save changed definition file as';
  end;
  // propose a file name
  if (InName <> '') and (SaveDialog.FileName = '') then

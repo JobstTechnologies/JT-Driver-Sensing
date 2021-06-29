@@ -1433,7 +1433,7 @@ begin
   // delete finish time
   MainForm.FinishTimePumpLE.Text:= '';
   // output start time
-  startTime := FormatDateTime('dd.mm.yyyy, hh:nn:ss', now);
+  startTime:= FormatDateTime('dd.mm.yyyy, hh:nn:ss', now);
   MainForm.StartTimePumpLE.Text:= startTime;
 
   // start OverallTimer to indicate running state
