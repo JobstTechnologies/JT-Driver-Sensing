@@ -95,7 +95,7 @@ type intArray = array[1..4] of byte;
      PintArray = ^intArray;
 var
  OutLine : string;
- slope, temperature, lastInterval : double;
+ slope, temperature, lastInterval, ScrollInterval : double;
  i, k, StopPos, ItemIndex: integer;
  Extent : TDoubleRect;
  MousePointer : TPoint;
@@ -390,7 +390,7 @@ begin
    // subtract blank values
    // since the blank has no temperature connection, we cannot just subtract
    for i:= 1 to NumChannels do
-    if not isBlank[i] then
+    if (not isBlank[i]) and (Chan[i] <> 0) then
      ChanDbl[i]:= ChanDbl[i] * (Chan[i] - Chan[Subtracts[i]]) / Chan[i];
    // output all non-blank channels
    for i:= 1 to NumChannels do
@@ -546,12 +546,12 @@ begin
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
  // scroll axis if desired by the user
- if (MainForm.ScrollViewCB.Checked = true) and (not wasZoomDragged) then
+ ScrollInterval:= MainForm.ScrollIntervalSE.Value/60;
+ if (MainForm.ScrollViewCB.Checked = true) and (not wasZoomDragged)
+  and (timeCounter > ScrollInterval) then
  begin
   Extent:= MainForm.SIXCH.GetFullExtent;
-  // if there are not yet enough values, do nothing
-  if timeCounter > MainForm.ScrollIntervalSE.Value/60 then
-   Extent.a.x:= Extent.b.x - MainForm.ScrollIntervalSE.Value/60;
+  Extent.a.x:= Extent.b.x - ScrollInterval;
   //Extent.a.y := -1.0; //Extent.b.y := +1.0;
   MainForm.SIXCH.LogicalExtent:= Extent;
  end;
