@@ -1674,6 +1674,8 @@ end;
 procedure TMainForm.EvalTimeFSEChange(Sender: TObject);
 begin
  SIXControl.evalTimeChanged:= true;
+ // change the chart scrolling time so that at least 3 data points are visible
+ ScrollIntervalSE.MinValue:= floor(EvalTimeFSE.Value * 3.99);
 end;
 
 procedure TMainForm.LoadDefBBClick(Sender: TObject);
@@ -1763,7 +1765,7 @@ begin
   for j:= 0 to SIXControl.signalCounter do
   begin
    for i:= 1 to diff do
-    (MainForm.FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
      as TLineSeries).AddXY(0, 0);
   end;
  end;
@@ -1782,13 +1784,13 @@ begin
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=
-    'Stable ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
 
@@ -1849,7 +1851,7 @@ begin
   for j:= 0 to SIXControl.signalCounter do
   begin
    for i:= 1 to diff do
-    (MainForm.FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
      as TLineSeries).AddXY(0, 0);
   end;
  end;
@@ -1862,7 +1864,7 @@ begin
  // rename the channels
  for i:= 1 to SIXControl.NumChannels do
  begin
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+  (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption:= 'Channel ' + IntToStr(i);
   SIXControl.HeaderStrings[i]:= '';
  end;
@@ -1870,13 +1872,13 @@ begin
  // update chart legend according to new channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=
-    'Stable ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
 
@@ -1887,13 +1889,13 @@ begin
   (FindComponent('Channel' + IntToStr(i) + 'CB')
      as TComboBox).Items.Clear;
   for j:= 1 to SIXControl.NumChannels do
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+   (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+  (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#2, #5)');
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+  (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#3, #6)');
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+  (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#1, #4)');
    end;
 
@@ -2496,7 +2498,7 @@ begin
  MousePointer:= Mouse.CursorPos;
 
  // if no .def file loaded only raw values possible
- if MainForm.LoadedDefFileLE.Text = 'None' then
+ if LoadedDefFileLE.Text = 'None' then
  begin
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
@@ -2772,16 +2774,18 @@ begin
  // delete existing live chart data
  // but purposely not the measurement data
  for i:= 1 to 8 do
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Clear;
+ SIXTempValues.Clear;
 
  // initialize live chart data
  for i:= 1 to SIXControl.NumChannels do
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).AddXY(0.0, 0.0);
  for i:= 7 to 8 do
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).AddXY(0.0, 0.0);
+ SIXTempValues.AddXY(0, 0);
 
  // enable chart scrolling
  ScrollViewCB.Enabled:= true;
@@ -2801,26 +2805,27 @@ begin
  // set chart legend according to current names
  for i:= 1 to 8 do
  begin
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=
-    'Stable ' + (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
 
  // only show data that should be shown
  for i:= 1 to SIXControl.NumChannels do
- (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+ (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Active:=
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+   (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
     as TCheckBox).Checked;
  if SIXControl.NumChannels < 6 then
   for i:= SIXControl.NumChannels + 1 to 6 do
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).Active:= false;
+ SIXTempValues.Active:= ShowTempCB.Checked;
 
  // get the default gain for the raw values
  for i:= 1 to SIXControl.NumChannels do
@@ -2869,15 +2874,15 @@ begin
  for i:= 1 to 8 do
  begin
   // show results data that should be shown
-  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results')
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Active:=
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+   (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
     as TCheckBox).Checked;
  end;
 
  // disable all channel actions
  for i:= 7 to 8 do
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+  (FindComponent('Channel' + IntToStr(i) + 'CB')
    as TComboBox).Enabled:= false;
  // definition file must not be changed
  LoadDefBB.Enabled:= false;
@@ -2893,7 +2898,7 @@ begin
  LoadDefBB.Enabled:= true;
  // enable all channel actions
  for i:= 7 to 8 do
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+  (FindComponent('Channel' + IntToStr(i) + 'CB')
    as TComboBox).Enabled:= true;
 end;
 

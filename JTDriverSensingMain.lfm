@@ -1151,6 +1151,7 @@ object MainForm: TMainForm
         Constraints.MaxWidth = 56
         Increment = 30
         MaxValue = 10000
+        MinValue = 11
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
