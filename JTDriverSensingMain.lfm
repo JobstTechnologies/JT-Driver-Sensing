@@ -212,11 +212,11 @@ object MainForm: TMainForm
       end
       object SixStatusGB: TGroupBox
         Left = 720
-        Height = 352
+        Height = 382
         Top = 88
         Width = 156
         Caption = 'SIX Status Info'
-        ClientHeight = 332
+        ClientHeight = 362
         ClientWidth = 152
         ParentColor = False
         TabOrder = 3
@@ -255,10 +255,10 @@ object MainForm: TMainForm
           OnChange = ConnComPortSensLEChange
         end
         object LoadedFileSensM: TMemo
-          Left = 8
+          Left = 7
           Height = 40
           Hint = 'No data storage file selected'
-          Top = 172
+          Top = 192
           Width = 137
           Alignment = taCenter
           Lines.Strings = (
@@ -273,14 +273,14 @@ object MainForm: TMainForm
         object Label66: TLabel
           Left = 8
           Height = 15
-          Top = 152
+          Top = 172
           Width = 86
           Caption = 'Sensor Data File '
         end
         object SIXTempGB: TGroupBox
           Left = 7
           Height = 98
-          Top = 224
+          Top = 256
           Width = 136
           Caption = 'SIX Temperature'
           ClientHeight = 78
@@ -309,18 +309,28 @@ object MainForm: TMainForm
             TabOrder = 1
           end
         end
-        object LoadedDefFileLE: TLabeledEdit
+        object Label68: TLabel
           Left = 7
-          Height = 23
-          Top = 120
-          Width = 138
+          Height = 15
+          Top = 104
+          Width = 108
+          Caption = 'Sensor Definiton File'
+        end
+        object LoadedDefFileM: TMemo
+          Left = 8
+          Height = 40
+          Hint = 'No definition file loaded'
+          Top = 122
+          Width = 136
           Alignment = taCenter
-          EditLabel.Height = 15
-          EditLabel.Width = 138
-          EditLabel.Caption = 'Sensor Definiton File '
+          Lines.Strings = (
+            'None'
+          )
+          OnChange = LoadedDefFileMChange
+          ParentShowHint = False
+          ReadOnly = True
+          ShowHint = True
           TabOrder = 4
-          Text = 'None'
-          OnChange = LoadedDefFileLEChange
         end
       end
       object Channel7GB: TGroupBox
@@ -7520,11 +7530,11 @@ object MainForm: TMainForm
       end
       object StatusTestGB1: TGroupBox
         Left = 752
-        Height = 344
+        Height = 368
         Top = 88
         Width = 156
         Caption = 'Status Info'
-        ClientHeight = 324
+        ClientHeight = 348
         ClientWidth = 152
         ParentColor = False
         TabOrder = 10
@@ -7561,10 +7571,10 @@ object MainForm: TMainForm
           Text = 'Not connected'
         end
         object StartTimeSensLE1: TLabeledEdit
-          Left = 8
+          Left = 6
           Height = 23
           Hint = 'Time when ''Start Measurement'' was pressed'
-          Top = 240
+          Top = 260
           Width = 137
           EditLabel.Height = 15
           EditLabel.Width = 137
@@ -7577,10 +7587,10 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object FinishTimeSensLE1: TLabeledEdit
-          Left = 8
+          Left = 7
           Height = 23
           Hint = 'Time when either the pump action was finished'#13#10'or when ''Stop Measurement'' was pressed'
-          Top = 288
+          Top = 312
           Width = 136
           EditLabel.Height = 15
           EditLabel.Width = 136
@@ -7596,7 +7606,7 @@ object MainForm: TMainForm
           Left = 8
           Height = 40
           Hint = 'No data storage file selected'
-          Top = 172
+          Top = 192
           Width = 137
           Alignment = taCenter
           Lines.Strings = (
@@ -7610,21 +7620,28 @@ object MainForm: TMainForm
         object Label67: TLabel
           Left = 8
           Height = 15
-          Top = 152
+          Top = 172
           Width = 86
           Caption = 'Sensor Data File '
         end
-        object LoadedDefFileTestLE: TLabeledEdit
+        object Label69: TLabel
           Left = 7
-          Height = 23
-          Top = 120
-          Width = 138
+          Height = 15
+          Top = 104
+          Width = 108
+          Caption = 'Sensor Definiton File'
+        end
+        object LoadedDefFileTestM: TMemo
+          Left = 8
+          Height = 40
+          Top = 122
+          Width = 136
           Alignment = taCenter
-          EditLabel.Height = 15
-          EditLabel.Width = 138
-          EditLabel.Caption = 'Sensor Definiton File '
+          Lines.Strings = (
+            'None'
+          )
+          ReadOnly = True
           TabOrder = 5
-          Text = 'None'
         end
       end
     end

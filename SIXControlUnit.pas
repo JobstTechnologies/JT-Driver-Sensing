@@ -367,7 +367,7 @@ begin
  for i:= 1 to NumChannels do
   ChanRawDbl[i]:= Chan[i] * GainsRaw[i] / 100;
 
- if (MainForm.LoadedDefFileLE.Text <> 'None')
+ if (MainForm.LoadedDefFileM.Text <> 'None')
   and (not MainForm.RawCurrentCB.Checked) then
  // convert to mM
  begin
@@ -403,7 +403,7 @@ begin
  end;
 
  // store also the raw current values
- if (MainForm.LoadedDefFileLE.Text <> 'None')
+ if (MainForm.LoadedDefFileM.Text <> 'None')
   and (not MainForm.NoSubtractBlankCB.Checked) then
   // subtract blank values
   for i:= 1 to NumChannels do
@@ -514,18 +514,10 @@ begin
   ChanRawDbl[8]:= (ChanRawDbl[1] + ChanRawDbl[4]) / 2;
  end;
 
- // get last channel values out of diagramm series
- for i:= 1 to NumChannels do
-  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).GetYValue(signalCounter - 1);
- for i:= 7 to 8 do
-  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).GetYValue(signalCounter - 1);
-
  // draw SIX data
  for i:= 1 to NumChannels do
  begin
-  if (MainForm.LoadedDefFileLE.Text <> 'None')
+  if (MainForm.LoadedDefFileM.Text <> 'None')
    and (not MainForm.RawCurrentCB.Checked) then
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
@@ -535,7 +527,7 @@ begin
  end;
  for i:= 7 to 8 do
  begin
-  if (MainForm.LoadedDefFileLE.Text <> 'None')
+  if (MainForm.LoadedDefFileM.Text <> 'None')
    and (not MainForm.RawCurrentCB.Checked) then
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
@@ -552,9 +544,20 @@ begin
  begin
   Extent:= MainForm.SIXCH.GetFullExtent;
   Extent.a.x:= Extent.b.x - ScrollInterval;
-  //Extent.a.y := -1.0; //Extent.b.y := +1.0;
   MainForm.SIXCH.LogicalExtent:= Extent;
  end;
+
+ // if we are in the first run there are no previous values
+ // and no slopes can be calculated
+ if signalCounter = 1 then
+  exit;
+ // get last channel values out of diagramm series
+ for i:= 1 to NumChannels do
+  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).GetYValue(signalCounter - 2);
+ for i:= 7 to 8 do
+  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).GetYValue(signalCounter - 2);
 
  // calculate slopes
  for i:= 1 to NumChannels do
@@ -605,6 +608,8 @@ begin
  end;
 
  // output analog voltages
+ if MainForm.UseAnOutCB.checked then
+ begin
  // first calculate the values
  for i:= 1 to 4 do // we limit to output channels (4 times pump driver)
  begin
@@ -761,7 +766,8 @@ begin
     end;
    end;
   end;
- end;
+ end; // end for i:= 1 to 4
+ end; // end if MainForm.UseAnOutCB.checked
 
 end;
 
@@ -958,7 +964,7 @@ begin
  if (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex > 2 then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
- if (MainForm.LoadedDefFileLE.Text <> 'None')
+ if (MainForm.LoadedDefFileM.Text <> 'None')
   and ((MainForm.FindComponent(SenderName) as TComboBox).ItemIndex < 3) then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
@@ -1061,7 +1067,7 @@ begin
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'mM will become 3.3 V output';
   // if there is no definition file loaded issue a warning
-  if MainForm.LoadedDefFileLE.Text = 'None' then
+  if MainForm.LoadedDefFileM.Text = 'None' then
   begin
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
@@ -1072,9 +1078,10 @@ begin
   end;
 
   // write a new header line to the output file
-  if (MainForm.LoadedDefFileLE.Text <> 'None') and HaveSensorFileStream then
+  if (MainForm.LoadedDefFileM.Text <> 'None') and HaveSensorFileStream then
   begin
-    HeaderLine:= HeaderLine + 'Used definition file: "' + MainForm.LoadedDefFileLE.Text +
+    HeaderLine:= HeaderLine + 'Used definition file: "'
+                 + MainForm.LoadedDefFileM.Text +
     '.def"' + LineEnding;
    HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
    // the blank channels have the unit nA
@@ -1478,7 +1485,8 @@ begin
    // use the folder of the InNameDef as default directory
    MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
    // propose as filename the current date
-   MainForm.SaveDialog.FileName:= FormatDateTime('dd-mm-yyyy-hh-nn', now);
+   MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
+                                  + FormatDateTime('dd-mm-yyyy-hh-nn', now);
    // tell the OS the program is alive since the running read timer might make problems
    Application.ProcessMessages;
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
@@ -1514,7 +1522,7 @@ begin
     // display file name without suffix
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
-    MainForm.LoadedDefFileLE.Text:= DummyString;
+    MainForm.LoadedDefFileM.Text:= DummyString;
    end; //end if OutName <> ''
 
   end; // end mrOK

@@ -62,6 +62,10 @@ type
     AnOutOnOffTB: TToggleBox;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
+    Label68: TLabel;
+    Label69: TLabel;
+    LoadedDefFileM: TMemo;
+    LoadedDefFileTestM: TMemo;
     Panel5: TPanel;
     TopLine: TConstantLine;
     BottomLine: TConstantLine;
@@ -79,7 +83,6 @@ type
     Label65: TLabel;
     Label67: TLabel;
     LoadedActionFileGeneralM: TMemo;
-    LoadedDefFileTestLE: TLabeledEdit;
     LoadedFileSensTestM: TMemo;
     StartTimeSensLE1: TLabeledEdit;
     PumpStatusGeneralGB: TGroupBox;
@@ -144,7 +147,6 @@ type
     LimitSlope6FSE: TFloatSpinEdit;
     LimitSlope7FSE: TFloatSpinEdit;
     LimitSlope8FSE: TFloatSpinEdit;
-    LoadedDefFileLE: TLabeledEdit;
     PerformTestsCB: TCheckBox;
     PrevChannel1LE: TLabeledEdit;
     PrevChannel2LE: TLabeledEdit;
@@ -704,7 +706,7 @@ type
     procedure LoadDefBBClick(Sender: TObject);
     procedure AnOutOfXLEChange(Sender: TObject);
     procedure LoadedActionFileMChange(Sender: TObject);
-    procedure LoadedDefFileLEChange(Sender: TObject);
+    procedure LoadedDefFileMChange(Sender: TObject);
     procedure LoadedFileSensMChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
     procedure RawCurrentCBChange(Sender: TObject);
@@ -1699,8 +1701,8 @@ begin
    // user aborted the loading
    IndicatorSensorP.Color:= clRed;
    IndicatorSensorP.Caption:= 'No definition file loaded';
-   LoadedDefFileLE.Text:= 'None';
-   LoadedDefFileLE.Color:= clDefault;
+   LoadedDefFileM.Text:= 'None';
+   LoadedDefFileM.Color:= clDefault;
    StartTestBB.enabled:= false;
    NoSubtractBlankCB.enabled:= false;
    UnloadDefBB.visible:= false;
@@ -1730,8 +1732,8 @@ begin
   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   IndicatorSensorP.Color:= clRed;
   IndicatorSensorP.Caption:= 'No definition file loaded';
-  LoadedDefFileLE.Text:= 'None';
-  LoadedDefFileLE.Color:= clDefault;
+  LoadedDefFileM.Text:= 'None';
+  LoadedDefFileM.Color:= clDefault;
   StartTestBB.enabled:= false;
   NoSubtractBlankCB.enabled:= false;
   UnloadDefBB.visible:= false;
@@ -1745,8 +1747,8 @@ begin
  // display file name without suffix
  DummyString:= ExtractFileName(InNameDef);
  SetLength(DummyString, Length(DummyString) - 4);
- LoadedDefFileLE.Text:= DummyString;
- LoadedDefFileLE.Color:= clActiveCaption;
+ LoadedDefFileM.Text:= DummyString;
+ LoadedDefFileM.Color:= clActiveCaption;
 
  // since the user purposely loaded a definition file we assume he doesn't
  // want to have values in nA
@@ -1797,7 +1799,7 @@ begin
  // write a new header line to the output file
  if HaveSensorFileStream and (not wasRawCurrent) then
  begin
-  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileLE.Text +
+  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
    '.def"' + LineEnding;
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   // the blank channels have the unit nA
@@ -1830,8 +1832,8 @@ var
 begin
  IndicatorSensorP.Color:= clDefault;
  IndicatorSensorP.Caption:= 'No definition file loaded';
- LoadedDefFileLE.Text:= 'None';
- LoadedDefFileLE.Color:= clDefault;
+ LoadedDefFileM.Text:= 'None';
+ LoadedDefFileM.Color:= clDefault;
  StartTestBB.enabled:= false;
  NoSubtractBlankCB.enabled:= false;
  UnloadDefBB.visible:= false;
@@ -2138,10 +2140,10 @@ begin
  LoadedActionFileGeneralM.Hint:= LoadedActionFileM.Hint;
 end;
 
-procedure TMainForm.LoadedDefFileLEChange(Sender: TObject);
+procedure TMainForm.LoadedDefFileMChange(Sender: TObject);
 begin
- LoadedDefFileTestLE.Color:= LoadedDefFileLE.Color;
- LoadedDefFileTestLE.Text:= LoadedDefFileLE.Text;
+ LoadedDefFileTestM.Color:= LoadedDefFileM.Color;
+ LoadedDefFileTestM.Text:= LoadedDefFileM.Text;
 end;
 
 procedure TMainForm.LoadedFileSensMChange(Sender: TObject);
@@ -2498,7 +2500,7 @@ begin
  MousePointer:= Mouse.CursorPos;
 
  // if no .def file loaded only raw values possible
- if LoadedDefFileLE.Text = 'None' then
+ if LoadedDefFileM.Text = 'None' then
  begin
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
@@ -2726,7 +2728,7 @@ begin
 
  // write header lines
  HeaderLine:= 'Created: ' + FormatDateTime('dd.mm.yyyy, hh:nn:ss', now) + LineEnding;
- if LoadedDefFileLE.Text = 'None' then
+ if LoadedDefFileM.Text = 'None' then
  begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   for i:= 1 to SIXControl.NumChannels do
@@ -2735,7 +2737,7 @@ begin
  end
  else
  begin
-  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileLE.Text +
+  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
    '.def"' + LineEnding;
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   // the blank channels have the unit nA
@@ -2777,15 +2779,6 @@ begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Clear;
  SIXTempValues.Clear;
-
- // initialize live chart data
- for i:= 1 to SIXControl.NumChannels do
-  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).AddXY(0.0, 0.0);
- for i:= 7 to 8 do
-  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).AddXY(0.0, 0.0);
- SIXTempValues.AddXY(0, 0);
 
  // enable chart scrolling
  ScrollViewCB.Enabled:= true;
