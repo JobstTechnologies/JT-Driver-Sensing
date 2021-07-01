@@ -111,7 +111,7 @@ var
  wasRead : Boolean = false;
  SingleByte : byte;
 begin
- // say the OS the application is alive
+ // tell the OS the application is alive
  Application.ProcessMessages;
 
  // initialize
@@ -1434,9 +1434,10 @@ var
  extent : TDoubleRect;
  height, width : double;
  center : TDoublePoint;
- OutName, DummyString : string;
+ OutName, DummyString, HeaderLine : string;
  StringList : TStringList;
  StringArray : TStringArray;
+ i : integer;
 begin
  // show/hide the lines and en/disable the rectangle tool
  MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
@@ -1490,8 +1491,7 @@ begin
    // propose as filename the current date
    MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
                                   + FormatDateTime('dd-mm-yyyy-hh-nn', now);
-   // tell the OS the program is alive since the running read timer might make problems
-   Application.ProcessMessages;
+
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
    if (OutName <> '') then
    begin
@@ -1526,6 +1526,42 @@ begin
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
     MainForm.LoadedDefFileM.Text:= DummyString;
+    // write a new header line to the output file
+    if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
+    begin
+     HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
+      '.def"' + LineEnding;
+     HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+     // the blank channels have the unit nA
+     for i:= 1 to 6 do
+     begin
+     if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
+      or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
+       SIXControl.isBlank[i]:= true
+     else
+      SIXControl.isBlank[i]:= false;
+     end;
+     // output all non-blank channels
+     for i:= 1 to SIXControl.NumChannels do
+      if not SIXControl.isBlank[i] then
+     HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [mM]' + #9;
+     HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
+     // for the raw values
+     for i:= 1 to SIXControl.NumChannels do
+      HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [nA]' + #9;
+     HeaderLine:= HeaderLine + LineEnding;
+     // write line
+     SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+    end
+    else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
+    begin
+     HeaderLine:= 'Calibration was performed' + LineEnding;
+     HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+     for i:= 1 to SIXControl.NumChannels do
+      HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+     HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+     SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+    end;
    end; //end if OutName <> ''
 
   end; // end mrOK

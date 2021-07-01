@@ -784,7 +784,7 @@ var
   DropfileNamePump : string = ''; // name of dropped pump action file
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
-  InNameSensor: string = ''; // name of sensor file
+  InNameSensor : string = ''; // name of sensor file
 
 implementation
 
@@ -1692,12 +1692,10 @@ var
  i, j, diff, NumChannelsPrev : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
- // tell the OS the program is alive since the running read timer might make problems
- Application.ProcessMessages;
  if DropfileNameDef = '' then // no file was dropped into the main window
  begin
   OpenDialog.InitialDir:= '';
-  DummyString:= OpenHandling('', '.def');
+  DummyString:= OpenHandling('', '.def'); // opens file dialog
   if (DummyString = '') and (InNameDef = '') then
   begin
    // user aborted the loading
@@ -1834,7 +1832,19 @@ end;
 procedure TMainForm.UnloadDefBBClick(Sender: TObject);
 var
  i, j, diff, NumChannelsPrev : integer;
+ HeaderLine : string;
 begin
+ // write a new header line to the output file if .def file was used
+ if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None')
+  and (not RawCurrentCB.Checked) then
+ begin
+  HeaderLine:= 'Definition file: "' + LoadedDefFileM.Text +
+      '.def" was unloaded' + LineEnding;
+  // the new value header line is later written when
+  // RawCurrentCB is set to Checked
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end;
+
  IndicatorSensorP.Color:= clDefault;
  IndicatorSensorP.Caption:= 'No definition file loaded';
  LoadedDefFileM.Text:= 'None';
@@ -1905,7 +1915,7 @@ begin
     as TComboBox).Items.Add('mean(#3, #6)');
   (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#1, #4)');
-   end;
+ end;
 
 end;
 
