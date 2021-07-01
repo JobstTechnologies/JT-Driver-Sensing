@@ -810,6 +810,8 @@ begin
  // stores initial values with trailing LineEnding
  LoadedFileSensM.Text:= 'None';
  LoadedActionFileM.Text:= 'None';
+ LoadedDefFileM.Text:= 'None';
+ LoadedDefFileTestM.Text:= 'None';
 
  EvalTimeFSE.MaxValue:= MaxDouble; // because MaxDouble cannot be set in the form editor
  // load definition file file directly if it was provided via command line
@@ -1696,7 +1698,7 @@ begin
  begin
   OpenDialog.InitialDir:= '';
   DummyString:= OpenHandling('', '.def');
-  if DummyString = '' then
+  if (DummyString = '') and (InNameDef = '') then
   begin
    // user aborted the loading
    IndicatorSensorP.Color:= clRed;
@@ -1710,7 +1712,10 @@ begin
    RawCurrentCB.Checked:= true;
    RawCurrentCB.Enabled:= false;
    exit;
-  end;
+  end
+  else if (DummyString = '') and (InNameDef <> '') then
+   // we keep the already loaded file and do nothing
+   exit;
  end;
 
  if DropfileNameDef <> '' then
@@ -1834,6 +1839,7 @@ begin
  IndicatorSensorP.Caption:= 'No definition file loaded';
  LoadedDefFileM.Text:= 'None';
  LoadedDefFileM.Color:= clDefault;
+ InNameDef:= '';
  StartTestBB.enabled:= false;
  NoSubtractBlankCB.enabled:= false;
  UnloadDefBB.visible:= false;
