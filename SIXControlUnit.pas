@@ -148,7 +148,7 @@ begin
    // look for a stop byte in the next 100 bytes
    while (SingleByte <> $16) and (i < 101) do
    begin
-    SingleByte:= MainForm.COMConnect.SynSer.RecvByte(100);
+    SingleByte:= serSensor.RecvByte(100);
     inc(i);
    end;
    wasNoStopByte:= false;
@@ -171,7 +171,7 @@ begin
 
   // check if there are 25 bytes available to be read
   // if not wait another 100 ms until the timer finished the next time
-  while MainForm.COMConnect.SynSer.WaitingDataEx < 25 do
+  while serSensor.WaitingDataEx < 25 do
   begin
    delay(100);
    lastInterval:= lastInterval + 0.00166; // 100 ms of the delay in min
@@ -182,7 +182,7 @@ begin
     // often the SIX only stops telling it has not enough data
     // to try to read data
     try
-     k:= MainForm.COMConnect.SynSer.RecvBufferEx(@dataArray[0], 25, 100);
+     k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
      wasRead:= true;
     finally
      if k <> 25 then
@@ -207,11 +207,11 @@ begin
     break;
   end;
  finally
-  if MainForm.COMConnect.SynSer.LastError <> 0 then // occurs if USB cable was removed
+  if serSensor.LastError <> 0 then // occurs if USB cable was removed
   begin
    MainForm.ReadTimer.Enabled:= False;
    MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on connecting to SIX: '
-    + MainForm.COMConnect.SynSer.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortSensLE.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'Check USB cable';
    MainForm.IndicatorSensorP.Color:= clRed;
@@ -225,10 +225,10 @@ begin
 
  // read the data
  if not wasRead then
-  k:= MainForm.COMConnect.SynSer.RecvBufferEx(@dataArray[0], 25, 100);
+  k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
 
  // in case the read failed or not 25 bytes received
- if (MainForm.COMConnect.SynSer.LastError <> 0) or (k <> 25) then
+ if (serSensor.LastError <> 0) or (k <> 25) then
  begin
   inc(ErrorCount);
   // we wait then another timer run
@@ -242,9 +242,9 @@ begin
   else
   begin
    MainForm.ReadTimer.Enabled:= False;
-   if MainForm.COMConnect.SynSer.LastError <> 0 then
+   if serSensor.LastError <> 0 then
     MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on reading signal data: '
-     + MainForm.COMConnect.SynSer.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
+     + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
    else
     MessageDlgPos('Error: Could not read 25 bytes. Got only ' + IntToStr(k) + ' bytes.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);

@@ -775,7 +775,7 @@ var
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
-  //serSensor: TBlockSerial;
+  serSensor: TBlockSerial;
   HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
@@ -869,13 +869,14 @@ begin
     HaveSerialPump:= False;
    end;
   end;
- if HaveSerialSensor then
-  try
-   // Close the connection
-   COMConnect.Close;
-  except
-   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
-    mtError, [mbOK], 0, 20, 20);
+ if HaveSerialSensor then // conected to a SIX
+  // close connection
+  if HaveSerialSensor and (serSensor.LastError <> 9997) then
+  // we cannot close socket or free when the connection timed out
+  begin
+   serSensor.CloseSocket;
+   serSensor.free;
+   HaveSerialSensor:= False;
   end;
  if HaveSensorFileStream then
   SensorFileStream.Free;
@@ -2635,18 +2636,19 @@ begin
                           + 'to enable the button.';
   // open the connection
   try
-   COMConnect.Device:= COMPort;
-   COMConnect.Open;
+   serSensor:= TBlockSerial.Create;
+   serSensor.DeadlockTimeout:= 10000; //set timeout to 10 s
+   serSensor.Connect(COMPort);
    // the connection settings must be after the opening
-   COMConnect.SynSer.config(9600, 8, 'N', SB1, False, False);
+   serSensor.config(9600, 8, 'N', SB1, False, False);
   except
    exit;
   end;
   HaveSerialSensor:= True;
  finally
-  if COMConnect.SynSer.LastError <> 0 then // output the error
+  if serSensor.LastError <> 0 then // output the error
   begin
-   MessageDlgPos(ConnComPortSensLE.Text + ' error: ' + COMConnect.SynSer.LastErrorDesc,
+   MessageDlgPos(ConnComPortSensLE.Text + ' error: ' + serSensor.LastErrorDesc,
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    IndicatorSensorP.Caption:= 'Connection failiure';
    IndicatorSensorP.Color:= clRed;
@@ -2670,7 +2672,7 @@ begin
  // read out some data as test
  // first wait until we get bytes to read
  k:= 0;
- while COMConnect.SynSer.WaitingDataEx < 25 do
+ while serSensor.WaitingDataEx < 25 do
  begin
   delay(100);
   inc(k);
@@ -2690,13 +2692,12 @@ begin
  end;
 
  // read now 25 bytes
- k:= COMConnect.SynSer.RecvBufferEx(@dataArray[0], 25, 50);
-
+ k:= serSensor.RecvBufferEx(@dataArray[0], 25, 50);
  // in case the read failed or not 25 bytes received
- if (COMConnect.SynSer.LastError <> 0) or (k <> 25) then
+ if (serSensor.LastError <> 0) or (k <> 25) then
  begin
   MessageDlgPos(COMPort + ' error on reading 25 bytes: '
-   + COMConnect.SynSer.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   ConnComPortSensLE.Color:= clRed;
   IndicatorSensorP.Caption:= 'Wrong device';
   IndicatorSensorP.Color:= clRed;
@@ -2921,35 +2922,21 @@ begin
   SensorFileStream.Free;
   HaveSensorFileStream:= false;
  end;
+ if serSensor.LastError = 9997 then
+ begin
+  // we cannot close socket or free when the connection timed out
+  MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
+  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  ConnComPortSensLE.Text:= 'Not acessible';
+  ConnComPortSensLE.Color:= clRed;
+  exit;
+ end;
  if HaveSerialSensor then
  begin
-  if COMConnect.SynSer.LastError = 9997 then
-  begin
-   // we cannot close socket or free when the connection timed out
-   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
-   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   ConnComPortSensLE.Text:= 'Not acessible';
-   ConnComPortSensLE.Color:= clRed;
-   exit;
-  end;
-  try
-   // Close the connection
-   COMConnect.Close;
-   if COMConnect.SynSer.LastError = 9997 then
-   begin
-    MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
-    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-    ConnComPortSensLE.Text:= 'Not acessible';
-    ConnComPortSensLE.Color:= clRed;
-    exit;
-   end;
-  except // something unexpected
-   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
-   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   ConnComPortSensLE.Text:= 'Not acessible';
-   ConnComPortSensLE.Color:= clRed;
-   exit;
-  end;
+  // close connection
+  serSensor.CloseSocket;
+  serSensor.free;
+  HaveSerialSensor:= False;
  end;
 
  ConnComPortSensLE.Text:= 'Not connected';
