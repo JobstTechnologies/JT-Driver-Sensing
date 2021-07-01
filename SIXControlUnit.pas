@@ -145,14 +145,14 @@ begin
   begin
    SingleByte:= $1;
    i:= 0;
-   // look for a stp byte in the next 100 bytes
+   // look for a stop byte in the next 100 bytes
    while (SingleByte <> $16) and (i < 101) do
    begin
     SingleByte:= MainForm.COMConnect.SynSer.RecvByte(100);
     inc(i);
    end;
    wasNoStopByte:= false;
-   if i > 100 then // no stopy byte within 100 bytes, so there is a severe problem
+   if i > 100 then // no stop byte within 100 bytes, so there is a severe problem
    begin
     MainForm.ReadTimer.Enabled:= False;
     MessageDlgPos('The received last 100 bytes do not contain a stop bit.'

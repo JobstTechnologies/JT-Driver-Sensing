@@ -775,7 +775,7 @@ var
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
-  serSensor: TBlockSerial;
+  //serSensor: TBlockSerial;
   HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
@@ -861,7 +861,7 @@ begin
    // since the program is closed anyway
   finally
    // close connection
-   if (HaveSerialPump) and (serPump.LastError <> 9997) then
+   if HaveSerialPump and (serPump.LastError <> 9997) then
    // we cannot close socket or free when the connection timed out
    begin
     serPump.CloseSocket;
@@ -943,7 +943,7 @@ begin
   COMPort:= '';
  // open connection dialog
  SerialUSBSelectionF.ShowModal;
- if (COMPort = 'Ignore') then // user pressed Disconnect
+ if COMPort = 'Ignore' then // user pressed Disconnect
  begin
   ConnComPortPumpLE.Color:= clHighlight;
   ConnComPortPumpLE.Text:= 'Not connected';
@@ -1018,7 +1018,6 @@ begin
                           + 'Connect to a SIX and a pump driver'  + LineEnding
                           + 'to enable the button.';
   serPump:= TBlockSerial.Create;
-  HaveSerialPump:= True;
   serPump.DeadlockTimeout:= 3000; //set timeout to 3 s
   serPump.config(9600, 8, 'N', SB1, False, False);
   serPump.Connect(COMPort);
@@ -1034,6 +1033,8 @@ begin
    IndicatorPumpPPaint;
    exit;
   end;
+  HaveSerialPump:= True;
+
   // blink 5 times
   command:= '/0gLM500lM500G4R' + LineEnding;
   serPump.SendString(command);
@@ -2636,6 +2637,8 @@ begin
   try
    COMConnect.Device:= COMPort;
    COMConnect.Open;
+   // the connection settings must be after the opening
+   COMConnect.SynSer.config(9600, 8, 'N', SB1, False, False);
   except
    exit;
   end;
@@ -2665,18 +2668,15 @@ begin
  IndicatorSensorP.Color:= clDefault;
 
  // read out some data as test
-
- COMConnect.SynSer.config(9600, 8, 'N', SB1, False, False);
-
  // first wait until we get bytes to read
  k:= 0;
  while COMConnect.SynSer.WaitingDataEx < 25 do
  begin
   delay(100);
   inc(k);
-  if k > 19 then // we reached 2 seconds, so there is something wrong
+  if k > 29 then // we reached 3 seconds, so there is something wrong
   begin
-   MessageDlgPos('Error: ' + ConnComPortSensLE.Text + ' did not deliver data within 2 s.',
+   MessageDlgPos('Error: ' + ConnComPortSensLE.Text + ' did not deliver data within 3 s.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    ConnComPortSensLE.Color:= clRed;
    IndicatorSensorP.Caption:= 'Wrong device';
@@ -2921,20 +2921,37 @@ begin
   SensorFileStream.Free;
   HaveSensorFileStream:= false;
  end;
- if COMConnect.SynSer.LastError = 9997 then
-  exit; // we cannot close socket or free when the connection timed out
- try
-  // Close the connection
-  COMConnect.Close;
+ if HaveSerialSensor then
+ begin
   if COMConnect.SynSer.LastError = 9997 then
-   exit; // we cannot close socket or free when the connection timed out
- except
-  MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
-  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  ConnComPortSensLE.Text:= 'Not acessible';
-  ConnComPortSensLE.Color:= clRed;
-  exit;
+  begin
+   // we cannot close socket or free when the connection timed out
+   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
+   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   ConnComPortSensLE.Text:= 'Not acessible';
+   ConnComPortSensLE.Color:= clRed;
+   exit;
+  end;
+  try
+   // Close the connection
+   COMConnect.Close;
+   if COMConnect.SynSer.LastError = 9997 then
+   begin
+    MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    ConnComPortSensLE.Text:= 'Not acessible';
+    ConnComPortSensLE.Color:= clRed;
+    exit;
+   end;
+  except // something unexpected
+   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
+   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   ConnComPortSensLE.Text:= 'Not acessible';
+   ConnComPortSensLE.Color:= clRed;
+   exit;
+  end;
  end;
+
  ConnComPortSensLE.Text:= 'Not connected';
  ConnComPortSensLE.Color:= clHighlight;
 end;
