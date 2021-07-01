@@ -8204,18 +8204,6 @@ object MainForm: TMainForm
     Left = 282
     Top = 616
   end
-  object COMConnect: TLazSerial
-    Active = False
-    BaudRate = br__1200
-    DataBits = db8bits
-    Parity = pNone
-    FlowControl = fcNone
-    StopBits = sbOne
-    Device = 'COM1'
-    RcvLineCRLF = False
-    Left = 186
-    Top = 616
-  end
   object FirmwareNote: TPopupNotifier
     Color = clInfoBk
     Icon.Data = {
@@ -8258,7 +8246,7 @@ object MainForm: TMainForm
     Title = 'Firmware update'
     TitleFont.Style = [fsBold]
     Visible = False
-    Left = 106
+    Left = 184
     Top = 616
   end
   object StepTimer1: TTimer
@@ -8305,7 +8293,7 @@ object MainForm: TMainForm
   end
   object SaveDialog: TSaveDialog
     Filter = 'Pump Driver Actions|*.PDAction'
-    Left = 498
+    Left = 104
     Top = 616
   end
   object OpenDialog: TOpenDialog

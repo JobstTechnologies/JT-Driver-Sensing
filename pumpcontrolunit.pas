@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, ExtCtrls, Spin, Buttons, LCLType,
-  SynaSer, LazSerial, Crt, Character, System.UITypes, Types,
+  SynaSer, Crt, Character, System.UITypes, Types,
   // custom forms
   JTDriverSensingMain, NameSetting, SerialUSBSelection;
 
