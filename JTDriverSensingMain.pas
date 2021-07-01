@@ -708,6 +708,7 @@ type
     procedure LoadedActionFileMChange(Sender: TObject);
     procedure LoadedDefFileMChange(Sender: TObject);
     procedure LoadedFileSensMChange(Sender: TObject);
+    procedure NoSubtractBlankCBChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
     procedure RawCurrentCBChange(Sender: TObject);
     procedure ReadTimerTimerFinished(Sender: TObject);
@@ -1687,7 +1688,6 @@ end;
 procedure TMainForm.LoadDefBBClick(Sender: TObject);
 var
  ParseSuccess : Boolean = false;
- wasRawCurrent : Boolean = false;
  MousePointer : TPoint;
  DummyString : string = '';
  HeaderLine : string = '';
@@ -1758,11 +1758,7 @@ begin
  // since the user purposely loaded a definition file we assume he doesn't
  // want to have values in nA
  if RawCurrentCB.Checked then
- begin
   RawCurrentCB.Checked:= false;
-  // unchecking raw already wrote a new header line thus store this
-  wasRawCurrent:= true;
- end;
 
  // the previous .def file might have had less channels defined
  // to calculate later the slopes fill the new channels with zeroes
@@ -1802,7 +1798,7 @@ begin
  end;
 
  // write a new header line to the output file
- if HaveSensorFileStream and (not wasRawCurrent) then
+ if HaveSensorFileStream then
  begin
   HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
    '.def"' + LineEnding;
@@ -1837,13 +1833,15 @@ var
  HeaderLine : string;
 begin
  // write a new header line to the output file if .def file was used
- if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None')
-  and (not RawCurrentCB.Checked) then
+ if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None') then
  begin
-  HeaderLine:= 'Definition file: "' + LoadedDefFileM.Text +
-      '.def" was unloaded' + LineEnding;
-  // the new value header line is later written when
-  // RawCurrentCB is set to Checked
+  HeaderLine:= 'Definition file: "' + LoadedDefFileM.Text
+               + '.def" was unloaded' + LineEnding;
+  // write a new header line to the output file
+  HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+  for i:= 1 to SIXControl.NumChannels do
+   HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+  HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 
@@ -1853,12 +1851,14 @@ begin
  LoadedDefFileM.Color:= clDefault;
  InNameDef:= '';
  StartTestBB.enabled:= false;
- NoSubtractBlankCB.enabled:= false;
  UnloadDefBB.visible:= false;
  CalibrateTB.Enabled:= false;
  // the values are then in nA
  RawCurrentCB.Checked:= true;
  RawCurrentCB.Enabled:= false;
+ // blanks cannot be subtracted anymore
+ NoSubtractBlankCB.Checked:= false;
+ NoSubtractBlankCB.Enabled:= false;
 
  // we have now all 6 possible channels
  // but the previous .def file might have had less
@@ -1925,6 +1925,11 @@ procedure TMainForm.PerformTestsCBChange(Sender: TObject);
 begin
  TestSettingsTS.TabVisible:= PerformTestsCB.Checked;
  ResultTS.TabVisible:= PerformTestsCB.Checked;
+end;
+
+procedure TMainForm.NoSubtractBlankCBChange(Sender: TObject);
+begin
+ SIXControl.SCNoSubtractBlankCBChange(Sender);
 end;
 
 procedure TMainForm.RawCurrentCBChange(Sender: TObject);

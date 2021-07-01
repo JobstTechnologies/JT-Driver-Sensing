@@ -26,6 +26,7 @@ type
     procedure SCStartFitBClick(Sender: TObject);
     procedure SCChannelXCBChange(Sender: TObject);
     procedure SCChannelXGBDblClick(Sender: TObject);
+    procedure SCNoSubtractBlankCBChange(Sender: TObject);
     procedure SCRawCurrentCBChange(Sender: TObject);
     procedure SCReadTimerTimerFinished(Sender: TObject);
     procedure SCChartToolsetTitleFootClickTool1Click(Sender: TChartTool;
@@ -370,8 +371,7 @@ begin
  for i:= 1 to NumChannels do
   ChanRawDbl[i]:= Chan[i] * GainsRaw[i] / 100;
 
- if (MainForm.LoadedDefFileM.Text <> 'None')
-  and (not MainForm.RawCurrentCB.Checked) then
+ if (MainForm.LoadedDefFileM.Text <> 'None') then
  // convert to mM
  begin
   for i:= 1 to NumChannels do
@@ -416,8 +416,9 @@ begin
  for i:= 1 to NumChannels do
   OutLine:= OutLine + FormatFloat('0.0000', ChanRawDbl[i]) + #9;
 
- // output temperature
- OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
+ // output temperature if not already
+ if (MainForm.LoadedDefFileM.Text = 'None') then
+  OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
  OutLine:= OutLine + LineEnding;
 
  // write the line to the file
@@ -1005,10 +1006,30 @@ begin
  end;
 end;
 
+procedure TSIXControl.SCNoSubtractBlankCBChange(Sender: TObject);
+var
+ HeaderLine : string = '';
+begin
+ if MainForm.NoSubtractBlankCB.Checked and HaveSensorFileStream then
+ begin
+  // write into the output that the blanks are no longer subtracted
+  HeaderLine:= 'Note: From now on the blank values are not subtracted from the channel values!'
+               + LineEnding;
+  // write a new header line to the output file
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end
+ else if (not MainForm.NoSubtractBlankCB.Checked) and HaveSensorFileStream then
+ begin
+  // write into the output that the blanks are again subtracted
+  HeaderLine:= 'Note: The blank values are again subtracted from the channel values.'
+               + LineEnding;
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end;
+end;
+
 procedure TSIXControl.SCRawCurrentCBChange(Sender: TObject);
 var
  i : integer;
- HeaderLine : string = '';
 begin
  if MainForm.RawCurrentCB.Checked then
  begin
@@ -1038,19 +1059,8 @@ begin
   MainForm.UseAnOutCB.Enabled:= true;
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'nA will become 3.3 V output';
-
-  // write a new header line to the output file
-  if HaveSensorFileStream then
-  begin
-   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-   for i:= 1 to SIXControl.NumChannels do
-    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-   HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
-   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
-  end;
-
  end
- else
+ else // not checked
  begin
   MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
   MainForm.ResultCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
@@ -1079,36 +1089,6 @@ begin
    MainForm.UseAnOutCB.Enabled:= false;
    MainForm.UseAnOutCB.Checked:= false;
   end;
-
-  // write a new header line to the output file
-  if (MainForm.LoadedDefFileM.Text <> 'None') and HaveSensorFileStream then
-  begin
-    HeaderLine:= HeaderLine + 'Used definition file: "'
-                 + MainForm.LoadedDefFileM.Text +
-    '.def"' + LineEnding;
-   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-   // the blank channels have the unit nA
-   for i:= 1 to 6 do
-   begin
-    if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
-     or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
-     SIXControl.isBlank[i]:= true
-    else
-     SIXControl.isBlank[i]:= false;
-   end;
-   // output all non-blank channels
-   for i:= 1 to SIXControl.NumChannels do
-    if not SIXControl.isBlank[i] then
-     HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [mM]' + #9;
-   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
-   // also for the raw values
-   for i:= 1 to SIXControl.NumChannels do
-    HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [nA]' + #9;
-   HeaderLine:= HeaderLine + LineEnding;
-
-   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
-  end;
-
  end;
 
 end;
@@ -1535,20 +1515,20 @@ begin
      // the blank channels have the unit nA
      for i:= 1 to 6 do
      begin
-     if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
-      or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
-       SIXControl.isBlank[i]:= true
+     if (Pos('Blank', HeaderStrings[i]) <> 0)
+      or (Pos('blank', HeaderStrings[i]) <> 0) then
+       isBlank[i]:= true
      else
-      SIXControl.isBlank[i]:= false;
+      isBlank[i]:= false;
      end;
      // output all non-blank channels
-     for i:= 1 to SIXControl.NumChannels do
-      if not SIXControl.isBlank[i] then
-     HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [mM]' + #9;
+     for i:= 1 to NumChannels do
+      if not isBlank[i] then
+     HeaderLine:= HeaderLine + HeaderStrings[i] + ' [mM]' + #9;
      HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
      // for the raw values
-     for i:= 1 to SIXControl.NumChannels do
-      HeaderLine:= HeaderLine + SIXControl.HeaderStrings[i] + ' [nA]' + #9;
+     for i:= 1 to NumChannels do
+      HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
      HeaderLine:= HeaderLine + LineEnding;
      // write line
      SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
@@ -1557,7 +1537,7 @@ begin
     begin
      HeaderLine:= 'Calibration was performed' + LineEnding;
      HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-     for i:= 1 to SIXControl.NumChannels do
+     for i:= 1 to NumChannels do
       HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
      HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
      SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
