@@ -8131,11 +8131,11 @@ object MainForm: TMainForm
       Caption = 'Connection'
       ShortCut = 16463
       object PumpDriverMI: TMenuItem
-        Caption = 'Pump driver'
+        Caption = 'Pump Driver'
         OnClick = PumpConnectionMIClick
       end
       object SIXBiosensorsMI: TMenuItem
-        Caption = 'SIX biosensors'
+        Caption = 'SIX Biosensors'
         OnClick = SIXBiosensorsMIClick
       end
     end
