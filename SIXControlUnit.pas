@@ -339,7 +339,10 @@ begin
  OutLine:= IntToStr(signalCounter) + #9;
  // take the time passed until the timer was triggered
  lastInterval:= lastInterval + MainForm.ReadTimer.Interval / 60000; // in min
- timeCounter:= timeCounter + lastInterval; // in min
+ if signalCounter > 1 then
+  timeCounter:= timeCounter + lastInterval // in min
+ else
+  timeCounter:= 0.0; // assures the first data point has time zero
  OutLine:= OutLine + FloatToStrF(timeCounter, ffFixed, 3, 3) + #9;
  // check if user meanwhile changed the time
  if evalTimeChanged then
