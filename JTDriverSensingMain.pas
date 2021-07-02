@@ -869,15 +869,14 @@ begin
     HaveSerialPump:= False;
    end;
   end;
- if HaveSerialSensor then // conected to a SIX
-  // close connection
-  if HaveSerialSensor and (serSensor.LastError <> 9997) then
-  // we cannot close socket or free when the connection timed out
-  begin
-   serSensor.CloseSocket;
-   serSensor.free;
-   HaveSerialSensor:= False;
-  end;
+ // close connection to SIX
+ if HaveSerialSensor and (serSensor.LastError <> 9997) then
+ // we cannot close socket or free when the connection timed out
+ begin
+  serSensor.CloseSocket;
+  serSensor.free;
+  HaveSerialSensor:= False;
+ end;
  if HaveSensorFileStream then
   SensorFileStream.Free;
 end;
