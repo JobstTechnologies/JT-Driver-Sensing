@@ -54,13 +54,17 @@ object ChartSeriesFrame: TChartSeriesFrame
         AnchorSideRight.Side = asrBottom
         Left = 8
         Height = 23
+        Hint = 'To change the legend entry, double-click'#13#10'on the channel name in the tab ''General'''
         Top = 4
         Width = 266
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 8
         BorderSpacing.Top = 4
         BorderSpacing.Right = 8
+        Enabled = False
         OnChange = edSeriesTitleChange
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 0
         Text = 'edSeriesTitle'
       end
@@ -112,7 +116,6 @@ object ChartSeriesFrame: TChartSeriesFrame
         Top = 62
         Width = 71
         Caption = 'Legend items'
-        ParentColor = False
       end
     end
     object gbMarks: TGroupBox
@@ -143,7 +146,6 @@ object ChartSeriesFrame: TChartSeriesFrame
         Width = 25
         BorderSpacing.Left = 8
         Caption = 'Style'
-        ParentColor = False
       end
       object cbMarksStyle: TComboBox
         AnchorSideLeft.Control = edMarksFormat
@@ -186,7 +188,6 @@ object ChartSeriesFrame: TChartSeriesFrame
         Top = 37
         Width = 38
         Caption = 'Format'
-        ParentColor = False
       end
       object edMarksFormat: TEdit
         AnchorSideLeft.Control = Label2
