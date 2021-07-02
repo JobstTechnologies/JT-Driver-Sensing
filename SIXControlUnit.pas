@@ -1568,7 +1568,8 @@ begin
     end;
     // immediately use the new .def file
     InNameDef:= OutName;
-    Gains[calibChannel]:= calibFactor;
+    for i:= 1 to NumChannels  do
+     Gains[i]:= StrToFloat(StringArray[i-1]);
     // display file name without suffix
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
