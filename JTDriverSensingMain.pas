@@ -1783,7 +1783,7 @@ begin
  begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
+    (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
   (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=
@@ -1912,7 +1912,7 @@ begin
  begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
+    (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
   (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=
@@ -2860,7 +2860,7 @@ begin
  begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
-    'Live ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
+    (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
   (FindComponent('SIXCh' + IntToStr(i) + 'Results')
    as TLineSeries).Title:=

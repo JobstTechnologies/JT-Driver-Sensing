@@ -103,6 +103,7 @@ var
  selectedSeries : TChartSeries;
  i, j, n : integer;
  x, y, yMean, x1, x2, y1, y2, calibValue, molWeight : double;
+ selSeriesName : string;
 begin
 
  // catch the case that no substance was selected
@@ -124,37 +125,116 @@ begin
  begin
   if not SIXCHCLB.Selected[i] then
    continue;
-  calibChannel:= i;
+
   selectedSeries:= SIXCHCLB.Series[i] as TChartSeries;
+  selSeriesName:= selectedSeries.Name;
+
+  // find what channel is selected
+  // selSeriesName is in the form 'SIXChxValues' and we need the x
+  // so get the 6th character of the name
+  calibChannel:= StrToInt(Copy(selSeriesName, 6, 1));
 
   // check if selected series fits to the substance
-  if (copy(
-       (MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
-        as TGroupBox).Caption, 1, 7) <> 'Glucose')
-   and
-     (copy((MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
-        as TGroupBox).Caption, 1, 7) <> 'glucose')
-   and (GlucoseRB.Checked) then
+  if calibChannel < 7 then
   begin
-   MeanValueLE.Text:= 'wrong substance';
-   CalibOKBB.Enabled:= false;
-   CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                    + 'perform the calibration';
-   exit;
-  end;
-  if (copy(
-       (MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
-        as TGroupBox).Caption, 1, 7) <> 'Lactate')
-   and
-     (copy((MainForm.FindComponent('Channel' + IntToStr(i+1) + 'GB')
-        as TGroupBox).Caption, 1, 7) <> 'lactate')
-   and (LactateRB.Checked) then
+   if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
+        as TGroupBox).Caption) = 0)
+     and
+      (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
+        as TGroupBox).Caption) = 0)
+     and (GlucoseRB.Checked) )
+    or
+     ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
+        as TGroupBox).Caption) = 0)
+     and
+      (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
+       as TGroupBox).Caption) = 0)
+     and (LactateRB.Checked) ) then
+   begin
+    MeanValueLE.Text:= 'wrong substance';
+    CalibOKBB.Enabled:= false;
+    CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                     + 'perform the calibration';
+    exit;
+   end;
+  end
+  else // if an operation channel
   begin
-   MeanValueLE.Text:= 'wrong substance';
-   CalibOKBB.Enabled:= false;
-   CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                    + 'perform the calibration';
-   exit;
+   for j:= 7 to 8 do
+   begin
+    if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#2, #5)' then
+    begin
+     if ( (pos('Glu' , (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and
+       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (GlucoseRB.Checked) )
+      or
+       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+          as TGroupBox).Caption) = 0)
+       and
+        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (LactateRB.Checked) ) then
+     begin
+      MeanValueLE.Text:= 'wrong substance';
+      CalibOKBB.Enabled:= false;
+      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                       + 'perform the calibration';
+      exit;
+     end;
+    end
+    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#3, #6)' then
+    begin
+     if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and
+        (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (GlucoseRB.Checked) )
+      or
+       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and
+        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (LactateRB.Checked) ) then
+     begin
+      MeanValueLE.Text:= 'wrong substance';
+      CalibOKBB.Enabled:= false;
+      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                       + 'perform the calibration';
+      exit;
+     end;
+    end
+    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#1, #4)' then
+    begin
+     if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and
+        (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (GlucoseRB.Checked) )
+      or
+       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and
+        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+         as TGroupBox).Caption) = 0)
+       and (LactateRB.Checked) ) then
+     begin
+      MeanValueLE.Text:= 'wrong substance';
+      CalibOKBB.Enabled:= false;
+      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                       + 'perform the calibration';
+      exit;
+     end;
+    end;
+   end; // end for j:= 7 to 8
   end;
 
   yMean:= 0.0;

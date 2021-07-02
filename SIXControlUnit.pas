@@ -966,7 +966,7 @@ begin
  if StrToInt(Channel) < 7 then
  begin
   (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
-   'Live ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+   (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
   if Started then
    (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
     'Stable ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
@@ -1398,7 +1398,7 @@ procedure TSIXControl.SCCalibrateTBChange(Sender: TObject);
    used as calibration value}
 var
  extent : TDoubleRect;
- height, width : double;
+ height, width, calibFactorA, calibFactorB : double;
  center : TDoublePoint;
  OutName, DummyString, HeaderLine : string;
  StringList : TStringList;
@@ -1451,6 +1451,15 @@ begin
   // if user pressed OK and there is a valid mean value, write a new .def file
   if CalibrationF.ModalResult = mrOK then
   begin
+   if calibChannel = 0 then // something went wrong
+   begin
+    // move lines back to infinity
+    MainForm.TopLine.Position:= Infinity;
+    MainForm.BottomLine.Position:= -Infinity;
+    MainForm.LeftLine.Position:= -Infinity;
+    MainForm.RightLine.Position:= Infinity;
+    exit;
+   end;
    // open a file save dialog to save the changed .def file
    // use the folder of the InNameDef as default directory
    MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
@@ -1468,16 +1477,88 @@ begin
      // the first line needs to be changed
      // we get the calibrated channel and the factor for the gain
      StringArray:= StringList[0].Split(',');
-     // the new gain is the current one times the factor
-     if MainForm.RawCurrentCB.Checked then
-      // then we must take the temperature correction into account
-      calibFactor:= calibFactor * GainsRaw[calibChannel+1]
-      * exp(TemperGains[calibChannel+1] / 100
-      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
-     else
-      // the existing gain includes the temperature correction
-      calibFactor:= calibFactor * Gains[calibChannel+1];
-     StringArray[calibChannel]:= FloatToStr(RoundTo(calibFactor, -4));
+     if calibChannel < 7 then // we can change the single channel
+     begin
+      // the new gain is the current one times the factor
+      if MainForm.RawCurrentCB.Checked then
+       // then we must take the temperature correction into account
+       calibFactor:= calibFactor * GainsRaw[calibChannel]
+                     * exp(TemperGains[calibChannel] / 100
+                     * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+      else
+       // the existing gain includes the temperature correction
+       calibFactor:= calibFactor * Gains[calibChannel];
+      StringArray[calibChannel-1]:= FloatToStr(RoundTo(calibFactor, -4));
+     end
+     else // for channel operations
+     begin
+      if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#2, #5)' then
+      begin
+       if MainForm.RawCurrentCB.Checked then
+       begin
+        // then we must take the temperature correction into account
+        calibFactorA:= calibFactor * GainsRaw[2]
+                      * exp(TemperGains[2] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+        calibFactorB:= calibFactor * GainsRaw[5]
+                      * exp(TemperGains[5] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+       end
+       else
+       begin
+        // the existing gain includes the temperature correction
+        calibFactorA:= calibFactor * Gains[2];
+        calibFactorB:= calibFactor * Gains[5];
+       end;
+       StringArray[2-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+       StringArray[5-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+      end
+      else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#3, #6)' then
+      begin
+       if MainForm.RawCurrentCB.Checked then
+       begin
+        // then we must take the temperature correction into account
+        calibFactorA:= calibFactor * GainsRaw[3]
+                      * exp(TemperGains[3] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+        calibFactorB:= calibFactor * GainsRaw[6]
+                      * exp(TemperGains[6] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+       end
+       else
+       begin
+        // the existing gain includes the temperature correction
+        calibFactorA:= calibFactor * Gains[3];
+        calibFactorB:= calibFactor * Gains[6];
+       end;
+       StringArray[3-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+       StringArray[6-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+      end
+      else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+        as TComboBox).Text = 'mean(#1, #4)' then
+      begin
+       if MainForm.RawCurrentCB.Checked then
+       begin
+        // then we must take the temperature correction into account
+        calibFactorA:= calibFactor * GainsRaw[1]
+                      * exp(TemperGains[1] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+        calibFactorB:= calibFactor * GainsRaw[4]
+                      * exp(TemperGains[4] / 100
+                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+       end
+       else
+       begin
+        // the existing gain includes the temperature correction
+        calibFactorA:= calibFactor * Gains[1];
+        calibFactorB:= calibFactor * Gains[4];
+       end;
+       StringArray[1-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+       StringArray[4-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+      end;
+     end;
      // transform the array to a string and save it as new first line
      StringList[0]:= string.join(',', StringArray);
      // save the whole file
@@ -1487,7 +1568,7 @@ begin
     end;
     // immediately use the new .def file
     InNameDef:= OutName;
-    Gains[calibChannel+1]:= calibFactor;
+    Gains[calibChannel]:= calibFactor;
     // display file name without suffix
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
@@ -1537,6 +1618,8 @@ begin
   MainForm.BottomLine.Position:= -Infinity;
   MainForm.LeftLine.Position:= -Infinity;
   MainForm.RightLine.Position:= Infinity;
+  //reset calibChannel
+  calibChannel:= 0;
 
  end;
 

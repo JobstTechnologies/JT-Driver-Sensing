@@ -2,10 +2,10 @@ object CalibrationF: TCalibrationF
   Left = 725
   Height = 378
   Top = 390
-  Width = 211
+  Width = 229
   Caption = 'Calibration'
   ClientHeight = 378
-  ClientWidth = 211
+  ClientWidth = 229
   OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '2.3.0.0'
@@ -24,7 +24,7 @@ object CalibrationF: TCalibrationF
     TabOrder = 0
   end
   object CalibCancelBB: TBitBtn
-    Left = 112
+    Left = 135
     Height = 33
     Top = 334
     Width = 83
@@ -74,17 +74,17 @@ object CalibrationF: TCalibrationF
     Left = 16
     Height = 206
     Top = 8
-    Width = 179
+    Width = 202
     Caption = 'Available SIX Channels'
     ClientHeight = 186
-    ClientWidth = 175
+    ClientWidth = 198
     TabOrder = 3
     object SIXCHCLB: TChartListbox
       Left = 8
       Height = 128
       Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
       Top = 0
-      Width = 160
+      Width = 184
       Chart = MainForm.SIXCH
       Options = [cloShowIcons]
       OnAddSeries = SIXCHCLBAddSeries
