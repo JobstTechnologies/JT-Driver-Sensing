@@ -7,6 +7,7 @@ object CalibrationF: TCalibrationF
   ClientHeight = 378
   ClientWidth = 211
   OnShow = FormShow
+  Position = poMainFormCenter
   LCLVersion = '2.3.0.0'
   object CalibOKBB: TBitBtn
     Left = 16
