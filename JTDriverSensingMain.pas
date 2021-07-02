@@ -951,11 +951,12 @@ begin
   IndicatorPumpP.Caption:= '';
   IndicatorPumpP.Color:= clDefault;
   IndicatorPumpPPaint;
+  AnOutOnOffTB.Checked:= false;
   AnOutOnOffTB.Enabled:= false;
   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                          + 'to the pump connectors.' + LineEnding
-                          + 'Connect to a SIX and a pump driver'  + LineEnding
-                          + 'to enable the button.';
+                      + 'to the pump connectors.' + LineEnding
+                      + 'Connect to a SIX and a pump driver'  + LineEnding
+                      + 'to enable the button.';
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
@@ -1002,6 +1003,12 @@ begin
    IndicatorPumpP.Caption:= 'Pumps stopped';
    IndicatorPumpP.Color:= clHighlight;
    IndicatorPumpPPaint;
+   AnOutOnOffTB.Checked:= false;
+   AnOutOnOffTB.Enabled:= false;
+   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                       + 'to the pump connectors.' + LineEnding
+                       + 'Connect to a SIX and a pump driver'  + LineEnding
+                       + 'to enable the button.';
   end;
   exit;
  end;
@@ -1014,26 +1021,17 @@ begin
   end;
   ConnComPortPumpLE.Color:= clHighlight;
   ConnComPortPumpLEChange;
+  AnOutOnOffTB.Checked:= false;
+  AnOutOnOffTB.Enabled:= false;
   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                          + 'to the pump connectors.' + LineEnding
-                          + 'Connect to a SIX and a pump driver'  + LineEnding
-                          + 'to enable the button.';
+                      + 'to the pump connectors.' + LineEnding
+                      + 'Connect to a SIX and a pump driver'  + LineEnding
+                      + 'to enable the button.';
   serPump:= TBlockSerial.Create;
   serPump.DeadlockTimeout:= 3000; //set timeout to 3 s
   serPump.Connect(COMPort);
   serPump.config(9600, 8, 'N', SB1, False, False);
 
-  if serPump.LastError <> 0 then
-  begin
-   // disable all buttons
-   RunBB.Enabled:= false;
-   StopBB.Enabled:= false;
-   RunFreeBB.Enabled:= false;
-   IndicatorPumpP.Caption:= 'Connection failiure';
-   IndicatorPumpP.Color:= clRed;
-   IndicatorPumpPPaint;
-   exit;
-  end;
   HaveSerialPump:= True;
 
   // blink 5 times
@@ -1046,14 +1044,13 @@ begin
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    ConnComPortPumpLE.Color:= clRed;
    ConnComPortPumpLEChange;
-   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                          + 'to the pump connectors.' + LineEnding
-                          + 'Connect to a SIX and a pump driver'  + LineEnding
-                          + 'to enable the button.';
    // disable all buttons
    RunBB.Enabled:= false;
    StopBB.Enabled:= false;
    RunFreeBB.Enabled:= false;
+   IndicatorPumpP.Caption:= 'Connection failiure';
+   IndicatorPumpP.Color:= clRed;
+   IndicatorPumpPPaint;
    if serPump.LastError = 9997 then
     exit; // we cannot close socket or free when the connection timed out
    serPump.CloseSocket;
@@ -1093,68 +1090,65 @@ begin
     serPump.Free;
     HaveSerialPump:= False;
     exit;
-   end
+   end;
+   // FirmwareVersion has now this format:
+   // "JT-PumpDriver-Firmware x.y\n Received command: ..."
+   // but on old versions the firmware does not have any number,
+   // only "received command" is sent back
+   // therefore check for a number dot
+   if Pos('.', FirmwareVersion) > 0 then
+    FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
+   // omit the 'r' because some versions used a capital letter 'R'
+   else if Pos('eceived command:', FirmwareVersion) > 0 then
+    FirmwareVersion:= 'unknown'
    else
    begin
-    // FirmwareVersion has now this format:
-    // "JT-PumpDriver-Firmware x.y\n Received command: ..."
-    // but on old versions the firmware does not have any number,
-    // only "received command" is sent back
-    // therefore check for a number dot
-    if Pos('.', FirmwareVersion) > 0 then
-     FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
-    // omit the 'r' because some versions used a capital letter 'R'
-    else if Pos('eceived command:', FirmwareVersion) > 0 then
-     FirmwareVersion:= 'unknown'
-    else
-    begin
-     MessageDlgPos('Not connected to a supported pump driver.',
-      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-     IndicatorPumpP.Caption:= 'Wrong device';
-     IndicatorPumpP.Color:= clRed;
-     IndicatorPumpPPaint;
-     ConnComPortPumpLE.Color:= clRed;
-     ConnComPortPumpLEChange;
-     exit;
-    end;
-    // JT Pump Driver requires a certain firmware version
-    if FirmwareVersion = 'unknown' then
-    begin
-     MessageDlgPos('JT Pump Driver ' + Version + ' requires firmware version '
-      + FloatToStr(RequiredFirmwareVersion) + ' or newer!'
-      + LineEnding + 'You have an unknown old firmware version installed.'
-      + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
-      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-     IndicatorPumpP.Caption:= 'Firmware too old';
-     IndicatorPumpP.Color:= clRed;
-     IndicatorPumpPPaint;
-     exit;
-    end
-    else if StrToFloat(FirmwareVersion) < RequiredFirmwareVersion then
-    begin
-     MessageDlgPos('JT Pump Driver ' + Version + ' requires firmware version '
-      + FloatToStr(RequiredFirmwareVersion) + ' or newer!'
-      + LineEnding + 'You have firmware version ' + FirmwareVersion + ' installed.'
-      + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
-      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-     IndicatorPumpP.Caption:= 'Firmware too old';
-     IndicatorPumpP.Color:= clRed;
-     IndicatorPumpPPaint;
-     exit;
-    end;
-    // enable all buttons
-    RunBB.Enabled:= true;
-    StopBB.Enabled:= true;
-    RunFreeBB.Enabled:= true;
+    MessageDlgPos('Not connected to a supported pump driver.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    IndicatorPumpP.Caption:= 'Wrong device';
+    IndicatorPumpP.Color:= clRed;
+    IndicatorPumpPPaint;
+    ConnComPortPumpLE.Color:= clRed;
+    ConnComPortPumpLEChange;
+    exit;
+   end;
+   // JT Pump Driver requires a certain firmware version
+   if FirmwareVersion = 'unknown' then
+   begin
+    MessageDlgPos('JT Pump Driver ' + Version + ' requires firmware version '
+     + FloatToStr(RequiredFirmwareVersion) + ' or newer!'
+     + LineEnding + 'You have an unknown old firmware version installed.'
+     + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    IndicatorPumpP.Caption:= 'Firmware too old';
+    IndicatorPumpP.Color:= clRed;
+    IndicatorPumpPPaint;
+    exit;
+   end
+   else if StrToFloat(FirmwareVersion) < RequiredFirmwareVersion then
+   begin
+    MessageDlgPos('JT Pump Driver ' + Version + ' requires firmware version '
+     + FloatToStr(RequiredFirmwareVersion) + ' or newer!'
+     + LineEnding + 'You have firmware version ' + FirmwareVersion + ' installed.'
+     + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    IndicatorPumpP.Caption:= 'Firmware too old';
+    IndicatorPumpP.Color:= clRed;
+    IndicatorPumpPPaint;
+    exit;
+   end;
+   // enable all buttons
+   RunBB.Enabled:= true;
+   StopBB.Enabled:= true;
+   RunFreeBB.Enabled:= true;
+   // enable analog output when also connected to a pump driver
+   if ConnComPortSensLE.Color = clDefault then
+   begin
+    AnOutOnOffTB.Enabled:= true;
+    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                        + 'to the pump connectors';
    end;
   end; //end inner finally
-  // enable analog output when also connected to a pump driver
-  if ConnComPortSensLE.Color = clDefault then
-  begin
-   AnOutOnOffTB.Enabled:= true;
-   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                           + 'to the pump connectors';
-  end;
  end; //end outer finally
 end;
 
@@ -2631,11 +2625,12 @@ begin
    HaveSerialSensor:= False;
    IndicatorSensorP.Caption:= 'SIX stopped';
    IndicatorSensorP.Color:= clHighlight;
+   AnOutOnOffTB.Checked:= false;
    AnOutOnOffTB.Enabled:= false;
    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                           + 'to the pump connectors.' + LineEnding
-                           + 'Connect to a SIX and a pump driver'  + LineEnding
-                           + 'to enable the button.';
+                       + 'to the pump connectors.' + LineEnding
+                       + 'Connect to a SIX and a pump driver'  + LineEnding
+                       + 'to enable the button.';
   end;
   // SIX type can now be set again
   SIXTypeRG.Enabled:= true;
@@ -2657,11 +2652,12 @@ begin
    HaveSerialSensor:= False;
    IndicatorSensorP.Caption:= 'SIX stopped';
    IndicatorSensorP.Color:= clHighlight;
+   AnOutOnOffTB.Checked:= false;
    AnOutOnOffTB.Enabled:= false;
    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                           + 'to the pump connectors.' + LineEnding
-                           + 'Connect to a SIX and a pump driver'  + LineEnding
-                           + 'to enable the button.';
+                       + 'to the pump connectors.' + LineEnding
+                       + 'Connect to a SIX and a pump driver'  + LineEnding
+                       + 'to enable the button.';
   end;
   exit;
  end;
@@ -2675,11 +2671,12 @@ begin
   end;
   ConnComPortSensLE.Text:= 'Not connected';
   ConnComPortSensLE.Color:= clHighlight;
+  AnOutOnOffTB.Checked:= false;
   AnOutOnOffTB.Enabled:= false;
   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                          + 'to the pump connectors.' + LineEnding
-                          + 'Connect to a SIX and a pump driver'  + LineEnding
-                          + 'to enable the button.';
+                      + 'to the pump connectors.' + LineEnding
+                      + 'Connect to a SIX and a pump driver'  + LineEnding
+                      + 'to enable the button.';
   // open the connection
   try
    serSensor:= TBlockSerial.Create;

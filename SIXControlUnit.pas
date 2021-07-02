@@ -179,6 +179,7 @@ begin
    inc(DelayReadCounter);
    if DelayReadCounter > 50 then
    // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
+   // can also occur if USB cable was removed
    begin
     // often the SIX only stops telling it has not enough data
     // to try to read data
@@ -199,6 +200,12 @@ begin
       MainForm.StopTestBB.Enabled:= false;
       MainForm.CloseLazSerialConn(MousePointer);
       HaveSerialSensor:= False;
+      MainForm.AnOutOnOffTB.Checked:= false;
+      MainForm.AnOutOnOffTB.Enabled:= false;
+      MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                          + 'to the pump connectors.' + LineEnding
+                          + 'Connect to a SIX and a pump driver'  + LineEnding
+                          + 'to enable the button.';
       exit;
      end;
      DelayReadCounter:= 0;
@@ -220,6 +227,12 @@ begin
    MainForm.StopTestBB.Enabled:= false;
    MainForm.CloseLazSerialConn(MousePointer);
    HaveSerialSensor:= False;
+   MainForm.AnOutOnOffTB.Checked:= false;
+   MainForm.AnOutOnOffTB.Enabled:= false;
+   MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                       + 'to the pump connectors.' + LineEnding
+                       + 'Connect to a SIX and a pump driver'  + LineEnding
+                       + 'to enable the button.';
    exit;
   end;
  end;
@@ -1210,7 +1223,7 @@ begin
  begin
   // 'run' the pumps
   MainForm.RunBBClick(Sender);
-  // change botton appearance
+  // change button appearance
   MainForm.AnOutOnOffTB.Caption:= 'Output Off';
   MainForm.IndicatorAnOutP.Caption:= 'Output is on';
   MainForm.IndicatorAnOutP.Color:= clRed;
@@ -1219,7 +1232,7 @@ begin
  begin
   // 'stop' the pumps
   MainForm.StopBBClick(Sender);
-  // change botton appearance
+  // change button appearance
   MainForm.AnOutOnOffTB.Caption:= 'Output On';
   MainForm.IndicatorAnOutP.Caption:= '';
   MainForm.IndicatorAnOutP.Color:= clDefault;
