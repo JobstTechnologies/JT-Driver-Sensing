@@ -1796,6 +1796,25 @@ begin
     'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
+ // the channel operations might show the old channel name, thus update them
+ for i:= 7 to 8 do
+ begin
+  if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#2, #5)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel2GB.Caption + ', ' + Channel5GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#3, #6)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel3GB.Caption + ', ' + Channel6GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#1, #4)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel1GB.Caption + ', ' + Channel4GB.Caption + ')';
+  // we use the same legend name for Live and Result charts
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
+ end;
 
  // write a new header line to the output file
  if HaveSensorFileStream then
@@ -1877,9 +1896,14 @@ begin
  end;
 
  // enable maybe previously disabled GroupBoxes
- for i:= 1 to SIXControl.NumChannels do
+ for i:= 1 to 8 do
   (FindComponent('Channel' + IntToStr(i) + 'GB')
    as TGroupBox).Enabled:= true;
+
+ // refill the channel numbers
+ for i:= 1 to SIXControl.NumChannels do
+  (FindComponent('Channel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= '#' + IntToStr(i);
 
  // rename the channels
  for i:= 1 to SIXControl.NumChannels do
@@ -1908,15 +1932,32 @@ begin
   // first delete, then refill
   (FindComponent('Channel' + IntToStr(i) + 'CB')
      as TComboBox).Items.Clear;
-  for j:= 1 to SIXControl.NumChannels do
-   (FindComponent('Channel' + IntToStr(i) + 'CB')
-    as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
   (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#2, #5)');
   (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#3, #6)');
   (FindComponent('Channel' + IntToStr(i) + 'CB')
     as TComboBox).Items.Add('mean(#1, #4)');
+ end;
+
+ // the channel operations might show the old channel name, thus update them
+ for i:= 7 to 8 do
+ begin
+  if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#2, #5)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel2GB.Caption + ', ' + Channel5GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#3, #6)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel3GB.Caption + ', ' + Channel6GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#1, #4)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel1GB.Caption + ', ' + Channel4GB.Caption + ')';
+  // we use the same legend name for Live and Result charts
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
  end;
 
 end;
@@ -2818,7 +2859,7 @@ begin
  SIXTypeRG.Enabled:= false;
 
  // set chart legend according to current names
- for i:= 1 to 8 do
+ for i:= 1 to 6 do
  begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Title:=
@@ -2829,6 +2870,27 @@ begin
     'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
+
+ // set legend for the operation channels
+ for i:= 7 to 8 do
+ begin
+  if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#2, #5)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel2GB.Caption + ', ' + Channel5GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#3, #6)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel3GB.Caption + ', ' + Channel6GB.Caption + ')'
+  else if (FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#1, #4)' then
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + Channel1GB.Caption + ', ' + Channel4GB.Caption + ')';
+  // we use the same legend name for Live and Result charts
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
+end;
+
 
  // only show data that should be shown
  for i:= 1 to SIXControl.NumChannels do

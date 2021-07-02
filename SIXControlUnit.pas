@@ -424,68 +424,6 @@ begin
  // write the line to the file
  SensorFileStream.Write(OutLine[1], Length(OutLine));
 
- // calculate raw channel 7 and 8 values
- if MainForm.Channel7CB.Text = 'raw(#1)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[1];
-  ChanRawDbl[7]:= ChanRawDbl[1];
- end;
- if MainForm.Channel8CB.Text = 'raw(#1)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[1];
-  ChanRawDbl[8]:= ChanRawDbl[1];
- end;
- if MainForm.Channel7CB.Text = 'raw(#2)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[2];
-  ChanRawDbl[7]:= ChanRawDbl[2];
- end;
- if MainForm.Channel8CB.Text = 'raw(#2)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[2];
-  ChanRawDbl[8]:= ChanRawDbl[2];
- end;
- if MainForm.Channel7CB.Text = 'raw(#3)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[3];
-  ChanRawDbl[7]:= ChanRawDbl[3];
- end;
- if MainForm.Channel8CB.Text = 'raw(#3)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[3];
-  ChanRawDbl[8]:= ChanRawDbl[3];
- end;
- if MainForm.Channel7CB.Text = 'raw(#4)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[4];
-  ChanRawDbl[7]:= ChanRawDbl[4];
- end;
- if MainForm.Channel8CB.Text = 'raw(#4)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[4];
-  ChanRawDbl[8]:= ChanRawDbl[4];
- end;
- if MainForm.Channel7CB.Text = 'raw(#5)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[5];
-  ChanRawDbl[7]:= ChanRawDbl[5];
- end;
- if MainForm.Channel8CB.Text = 'raw(#5)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[5];
-  ChanRawDbl[8]:= ChanRawDbl[5];
- end;
- if MainForm.Channel7CB.Text = 'raw(#6)' then
- begin
-  ChanDbl[7]:= ChanRawDbl[6];
-  ChanRawDbl[7]:= ChanRawDbl[6];
- end;
- if MainForm.Channel8CB.Text = 'raw(#6)' then
- begin
-  ChanDbl[8]:= ChanRawDbl[6];
-  ChanRawDbl[8]:= ChanRawDbl[6];
- end;
-
  // calculate mean channel 7 and 8 values
  if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
  begin
@@ -959,11 +897,26 @@ begin
  // SenderName is in the form 'ChannelxCB' and we need the x
  // so get the 8th character of the name
  Channel:= Copy(SenderName, 8, 1);
- (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
-  'Live ' + (MainForm.FindComponent(SenderName) as TComboBox).Text;
- if Started then
-  (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
-   'Stable ' + (MainForm.FindComponent(SenderName) as TComboBox).Text;
+
+ // change the Text according to current item
+ (MainForm.FindComponent(SenderName) as TComboBox).Text:=
+  (MainForm.FindComponent(SenderName) as TComboBox).Items[
+      (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex];
+
+ // set legend name
+ if (MainForm.FindComponent(SenderName) as TComboBox).Text = 'mean(#2, #5)' then
+  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
+   'Mean (' + MainForm.Channel2GB.Caption + ', ' + MainForm.Channel5GB.Caption + ')'
+ else if (MainForm.FindComponent(SenderName) as TComboBox).Text = 'mean(#3, #6)' then
+  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
+   'Mean (' + MainForm.Channel3GB.Caption + ', ' + MainForm.Channel6GB.Caption + ')'
+ else if (MainForm.FindComponent(SenderName) as TComboBox).Text = 'mean(#1, #4)' then
+  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
+   'Mean (' + MainForm.Channel1GB.Caption + ', ' + MainForm.Channel4GB.Caption + ')';
+ // we use the same legend name for Live and Result charts
+ (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
+  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title;
+
  // if we have a raw signal, then the unit is nA
  if (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex > 2 then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
@@ -977,6 +930,7 @@ end;
 procedure TSIXControl.SCChannelXGBDblClick(Sender: TObject);
 var
  SenderName, Channel : string;
+ i : integer;
 begin
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form 'ChannelxBB' and we need the x
@@ -1003,6 +957,26 @@ begin
   if Started then
    (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
     'Stable ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+ end;
+
+ // the channel operations might show the old channel name, thus update them
+ for i:= 7 to 8 do
+ begin
+  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#2, #5)' then
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + MainForm.Channel2GB.Caption + ', ' + MainForm.Channel5GB.Caption + ')'
+  else if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#3, #6)' then
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + MainForm.Channel3GB.Caption + ', ' + MainForm.Channel6GB.Caption + ')'
+  else if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).Text = 'mean(#1, #4)' then
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title:=
+    'Mean (' + MainForm.Channel1GB.Caption + ', ' + MainForm.Channel4GB.Caption + ')';
+  // we use the same legend name for Live and Result charts
+  (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
  end;
 end;
 
@@ -1265,7 +1239,7 @@ var
  OpenFileStream : TFileStream;
  LineReader : TStreamReader;
  ReadLine : string;
- i, j, gainFactor : integer;
+ i, gainFactor : integer;
  StringArray : TStringArray;
  ppp : PChar;
  Component : TComponent = nil;
@@ -1273,7 +1247,7 @@ begin
  // initialize
  result:= false;
  // enable maybe previously disabled GroupBoxes
- for i:= 1 to 6 do
+ for i:= 1 to 8 do
   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
    as TGroupBox).Enabled:= true;
 
@@ -1339,15 +1313,17 @@ begin
    end;
   end;
   // update the possible operations
+  // first delete, then refill
   if NumChannels < 4 then
    for i:= 7 to 8 do
    begin
-    // first delete, then refill
+    // no operations are possible thus disable these channels
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Enabled:= false;
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked:= false;
     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
      as TComboBox).Items.Clear;
-    for j:= 1 to NumChannels do
-     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-      as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
    end
   else
    for i:= 7 to 8 do
@@ -1363,9 +1339,6 @@ begin
     if NumChannels >= 4 then
      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
       as TComboBox).Items.Add('mean(#1, #4)');
-    for j:= 1 to NumChannels do
-     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-      as TComboBox).Items.Add('raw(#' + IntToStr(j) + ')');
    end;
   // set new item index
   for i:= 7 to 8 do
