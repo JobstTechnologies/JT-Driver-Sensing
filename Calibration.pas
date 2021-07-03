@@ -1,4 +1,4 @@
-unit calibration;
+unit Calibration;
 
 {$mode ObjFPC}{$H+}
 

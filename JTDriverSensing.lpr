@@ -11,7 +11,7 @@ uses
   SerialUSBSelection, NameSetting, SIXControlUnit, Fitting, PumpControlUnit,
   AboutForm, ceFontFrame, ceAxisDlg, ceBrushFrame, ceLegendDlg, cePenFrame,
   cePointerFrame, ceSeriesDlg, ceShapeBrushPenMarginsFrame, ceTitleFootDlg,
-  ceUtils, calibration;
+  ceUtils, Calibration;
 
 {$R *.res}
 
