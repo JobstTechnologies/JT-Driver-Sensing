@@ -1835,7 +1835,12 @@ begin
   begin
    if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
     or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
-    SIXControl.isBlank[i]:= true
+   begin
+    SIXControl.isBlank[i]:= true;
+    // don't show the blank channels by default
+    (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked:= false;
+   end
    else
     SIXControl.isBlank[i]:= false;
   end;

@@ -705,8 +705,10 @@ object MainForm: TMainForm
           Top = 0
           Width = 36
           Caption = 'On'
+          Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
           ParentFont = False
+          State = cbChecked
           TabOrder = 1
         end
         object Appearance3BB: TBitBtn
@@ -960,7 +962,7 @@ object MainForm: TMainForm
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
         object SIXCh1Values: TLineSeries
-          Title = 'Live'
+          Title = 'Channel 1'
           AxisIndexY = 0
           LinePen.Width = 2
         end
@@ -975,7 +977,7 @@ object MainForm: TMainForm
           ShowPoints = True
         end
         object SIXCh2Values: TLineSeries
-          Title = 'Live'
+          Title = 'Channel 2'
           AxisIndexY = 0
           LinePen.Color = clYellow
           LinePen.Width = 2
@@ -993,8 +995,7 @@ object MainForm: TMainForm
           ShowPoints = True
         end
         object SIXCh3Values: TLineSeries
-          Active = False
-          Title = 'Live'
+          Title = 'Channel 3'
           AxisIndexY = 0
           LinePen.Color = clAqua
           LinePen.Width = 2
@@ -1011,7 +1012,7 @@ object MainForm: TMainForm
         end
         object SIXCh4Values: TLineSeries
           Active = False
-          Title = 'Live'
+          Title = 'Channel 4'
           AxisIndexY = 0
           LinePen.Color = 33023
           LinePen.Width = 2
@@ -1028,7 +1029,7 @@ object MainForm: TMainForm
         end
         object SIXCh5Values: TLineSeries
           Active = False
-          Title = 'Live '
+          Title = 'Channel 5'
           AxisIndexY = 0
           LinePen.Color = clRed
           LinePen.Width = 2
@@ -1045,7 +1046,7 @@ object MainForm: TMainForm
         end
         object SIXCh6Values: TLineSeries
           Active = False
-          Title = 'Live '
+          Title = 'Channel 6'
           AxisIndexY = 0
           LinePen.Color = clLime
           LinePen.Width = 2
@@ -1062,7 +1063,6 @@ object MainForm: TMainForm
         end
         object SIXCh7Values: TLineSeries
           Active = False
-          Title = 'Live'
           AxisIndexY = 0
           LinePen.Color = clCream
           LinePen.Width = 2
@@ -1079,7 +1079,6 @@ object MainForm: TMainForm
         end
         object SIXCh8Values: TLineSeries
           Active = False
-          Title = 'Live'
           AxisIndexY = 0
           LinePen.Color = clFuchsia
           LinePen.Width = 2
