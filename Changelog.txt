@@ -1,12 +1,12 @@
 Changes
 
-from version x.yy to x.zz
+from version 0.91 to 0.92
 
-new feature:
-- 
+improvements:
+- zooming in the charts is now also possible by dragging up-right
+- the zooming rectangle border is now properly shown
+- stop the chart data scrolling while calibrating
+- stop the chart data scrolling only when zoomed in, not when zoomed out
 
-changed:
-- 
-
-bugfixes:
-- 
+bugfix:
+- fix initialization of the tab 'Test Settings'
