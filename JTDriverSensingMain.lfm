@@ -8305,7 +8305,6 @@ object MainForm: TMainForm
     end
     object ChartToolsetZoomDragTool: TZoomDragTool
       Shift = [ssLeft]
-      OnAfterMouseDown = ChartToolsetZoomDragToolAfterMouseDown
       OnAfterMouseUp = ChartToolsetZoomDragToolAfterMouseUp
       Brush.Style = bsClear
       DrawingMode = tdmNormal

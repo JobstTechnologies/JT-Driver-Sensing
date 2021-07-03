@@ -690,8 +690,6 @@ type
       Legend: TChartLegend);
     procedure ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
-    procedure ChartToolsetZoomDragToolAfterMouseDown(ATool{%H-}: TChartTool;
-      APoint: TPoint);
     procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
@@ -788,7 +786,6 @@ var
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor definition file
-  ChartPoint : TPoint; // position in chart to determine if zoomed in our out
 
 implementation
 
@@ -1668,23 +1665,16 @@ begin
  SIXControl.SCChartToolsetTitleFootClickTool1Click(Sender, Title);
 end;
 
-procedure TMainForm.ChartToolsetZoomDragToolAfterMouseDown(ATool: TChartTool;
-  APoint: TPoint);
-begin
- // position when ZoomDragging started
- ChartPoint:= APoint;
-end;
-
 procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
 begin
  // chart scrolling should not be performed when the user zoomed in
  // thus read the right x-position of the current chart position in
  // respect to the one when the zooming started
- if APoint.X > ChartPoint.X then
-  SIXControl.wasZoomDragged:= true
- else
-  SIXControl.wasZoomDragged:= false;
+ SIXControl.wasZoomDragged:= SIXCH.IsZoomed;
+ // just for information: When a new datapoint is set, the extent is updated
+ // and that would be a zooming as well. Therefore we can only take the
+ // state after a ZoomDragging.
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);
