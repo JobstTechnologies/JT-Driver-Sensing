@@ -8137,11 +8137,11 @@ object MainForm: TMainForm
         OnClick = AboutMIClick
       end
       object GetFirmwareVersionMI: TMenuItem
-        Caption = 'Get Firmware Version'
+        Caption = 'Get Pump Driver Firmware Version'
         OnClick = GetFirmwareVersionMIClick
       end
       object FirmwareUpdateMI: TMenuItem
-        Caption = 'Firmware Update'
+        Caption = 'Pump Driver Firmware Update'
         OnClick = FirmwareUpdateMIClick
       end
       object FirmwareResetMI: TMenuItem

@@ -1033,6 +1033,7 @@ begin
   serPump:= TBlockSerial.Create;
   serPump.DeadlockTimeout:= 3000; //set timeout to 3 s
   serPump.Connect(COMPort);
+  // the config must be set after the connection
   serPump.config(9600, 8, 'N', SB1, False, False);
 
   HaveSerialPump:= True;
@@ -2705,7 +2706,7 @@ begin
    serSensor:= TBlockSerial.Create;
    serSensor.DeadlockTimeout:= 10000; //set timeout to 10 s
    serSensor.Connect(COMPort);
-   // the connection settings must be after the opening
+   // the config must be set after the connection
    serSensor.config(9600, 8, 'N', SB1, False, False);
   except
    exit;
