@@ -42,8 +42,8 @@ object AboutFormF: TAboutFormF
     Left = 16
     Height = 40
     Top = 72
-    Width = 66
-    Caption = 'Usage:'#13#10'- see the file'
+    Width = 60
+    Caption = 'Usage:'#13#10'See the file'
     TabOrder = 1
   end
   object Label1: TLabel
@@ -54,7 +54,7 @@ object AboutFormF: TAboutFormF
     Caption = 'JT Driver Sensing version'
   end
   object VersionNumber: TLabel
-    Left = 152
+    Left = 150
     Height = 15
     Top = 13
     Width = 82
@@ -70,7 +70,7 @@ object AboutFormF: TAboutFormF
   end
   object ReadmeLink: TLabel
     Cursor = crHandPoint
-    Left = 86
+    Left = 78
     Height = 15
     Top = 87
     Width = 64
