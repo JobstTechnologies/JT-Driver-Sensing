@@ -16,7 +16,7 @@ object MainForm: TMainForm
   LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
     Left = 8
-    Height = 686
+    Height = 684
     Top = 8
     Width = 1157
     ActivePage = GeneralTS
@@ -25,7 +25,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       ParentFont = False
       object Channel1GB: TGroupBox
@@ -90,6 +90,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#1'
+          OnChange = ChannelXLEChange
         end
       end
       object Channel2GB: TGroupBox
@@ -154,6 +155,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#2'
+          OnChange = ChannelXLEChange
         end
       end
       object GeneralGB: TGroupBox
@@ -468,6 +470,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#4'
+          OnChange = ChannelXLEChange
         end
       end
       object Channel5GB: TGroupBox
@@ -530,6 +533,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#5'
+          OnChange = ChannelXLEChange
         end
       end
       object Channel8GB: TGroupBox
@@ -643,7 +647,7 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXTypeRG: TRadioGroup
-          Left = 182
+          Left = 184
           Height = 64
           Hint = 'Maximal current representation'#13#10'of the connected SIX device'
           Top = -10
@@ -729,6 +733,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#3'
+          OnChange = ChannelXLEChange
         end
       end
       object Channel6GB: TGroupBox
@@ -791,6 +796,7 @@ object MainForm: TMainForm
           Enabled = False
           TabOrder = 3
           Text = '#6'
+          OnChange = ChannelXLEChange
         end
       end
       object PerformTestingGB: TGroupBox
@@ -894,11 +900,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       object SIXCH: TChart
         Left = 0
-        Height = 654
+        Height = 656
         Top = 0
         Width = 1150
         AxisList = <        
@@ -1197,7 +1203,7 @@ object MainForm: TMainForm
     end
     object PumpControlTS: TTabSheet
       Caption = 'Pump Control'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       object RepeatPC: TPageControl
         Left = 8
@@ -6624,11 +6630,11 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       TabVisible = False
       object ActionSensGB1: TGroupBox
-        Left = 584
+        Left = 215
         Height = 80
         Top = 8
         Width = 129
@@ -6669,10 +6675,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 88
-        Width = 368
+        Width = 344
         Caption = 'Channel 1'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6751,10 +6757,10 @@ object MainForm: TMainForm
           Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
@@ -6762,14 +6768,14 @@ object MainForm: TMainForm
         end
       end
       object Channel4TestGB: TGroupBox
-        Left = 376
+        Left = 360
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 228
-        Width = 368
+        Width = 344
         Caption = 'Channel 4'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6846,14 +6852,14 @@ object MainForm: TMainForm
           Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
-          Text = '#2'
+          Text = '#4'
         end
       end
       object Channel5TEstGB: TGroupBox
@@ -6861,10 +6867,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 370
-        Width = 368
+        Width = 344
         Caption = 'Channel 5'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentBackground = False
         ParentShowHint = False
         ShowHint = True
@@ -6938,7 +6944,7 @@ object MainForm: TMainForm
           TabOrder = 4
         end
         object ChannelTest5LE: TLabeledEdit
-          Left = 256
+          Left = 248
           Height = 23
           Top = 40
           Width = 82
@@ -6948,18 +6954,18 @@ object MainForm: TMainForm
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
-          Text = '#2'
+          Text = '#5'
         end
       end
       object Channel2TestGB: TGroupBox
-        Left = 376
+        Left = 360
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 88
-        Width = 368
+        Width = 344
         Caption = 'Channel 2'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -7038,10 +7044,10 @@ object MainForm: TMainForm
           Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
@@ -7053,10 +7059,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 228
-        Width = 368
+        Width = 344
         Caption = 'Channel 3'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -7133,25 +7139,25 @@ object MainForm: TMainForm
           Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
-          Text = '#2'
+          Text = '#3'
         end
       end
       object Channel6TestGB: TGroupBox
-        Left = 376
+        Left = 360
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 370
-        Width = 368
+        Width = 344
         Caption = 'Channel 6'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 340
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -7228,25 +7234,25 @@ object MainForm: TMainForm
           Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
-          Text = '#2'
+          Text = '#6'
         end
       end
       object Channel8TestGB: TGroupBox
-        Left = 376
+        Left = 360
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 512
-        Width = 368
+        Width = 360
         Caption = 'Channel Operation 2'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 356
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -7293,19 +7299,13 @@ object MainForm: TMainForm
           Height = 23
           Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
           Top = 40
-          Width = 104
+          Width = 96
           ItemHeight = 15
           ItemIndex = 1
           Items.Strings = (
             'mean(#2, #5)'
             'mean(#3, #6)'
             'mean(#1, #4)'
-            'raw(#1)'
-            'raw(#2)'
-            'raw(#3)'
-            'raw(#4)'
-            'raw(#5)'
-            'raw(#6)'
           )
           OnChange = ChannelXCBChange
           ParentShowHint = False
@@ -7357,10 +7357,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Double-click to change the name'
         Top = 512
-        Width = 368
+        Width = 352
         Caption = 'Channel Operation 1'
         ClientHeight = 116
-        ClientWidth = 364
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -7403,23 +7403,17 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object Channel7TestCB: TComboBox
-          Left = 256
+          Left = 248
           Height = 23
           Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
           Top = 40
-          Width = 104
+          Width = 96
           ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'mean(#2, #5)'
             'mean(#3, #6)'
             'mean(#1, #4)'
-            'raw(#1)'
-            'raw(#2)'
-            'raw(#3)'
-            'raw(#4)'
-            'raw(#5)'
-            'raw(#6)'
           )
           OnChange = ChannelXCBChange
           ParentShowHint = False
@@ -7428,7 +7422,7 @@ object MainForm: TMainForm
           Text = 'mean(#2, #5)'
         end
         object Label1Ch10: TLabel
-          Left = 256
+          Left = 248
           Height = 15
           Top = 24
           Width = 82
@@ -7470,14 +7464,14 @@ object MainForm: TMainForm
         Left = 0
         Height = 80
         Top = 8
-        Width = 472
+        Width = 208
         Caption = 'General'
         ClientHeight = 60
-        ClientWidth = 468
+        ClientWidth = 204
         ParentColor = False
         TabOrder = 9
         object ResultCounterSE1: TSpinEdit
-          Left = 136
+          Left = 24
           Height = 23
           Hint = 'When the absolute signal slope is the'#13#10'consecutive number of times below the'#13#10'given value, the signal is treated as stable.'#13#10'Then a measurement point is set.'
           Top = 24
@@ -7490,14 +7484,14 @@ object MainForm: TMainForm
           Value = 7
         end
         object Label2Parse3: TLabel
-          Left = 120
+          Left = 8
           Height = 15
           Top = 8
           Width = 97
           Caption = 'Consecutive times'
         end
         object WaitTimeSE1: TSpinEdit
-          Left = 248
+          Left = 136
           Height = 23
           Hint = 'Set here the minimum time needed'#13#10'for the sample solution to enter the sensor'
           Top = 24
@@ -7510,7 +7504,7 @@ object MainForm: TMainForm
           Value = 60
         end
         object LabelAirValue1: TLabel
-          Left = 240
+          Left = 128
           Height = 15
           Top = 8
           Width = 67
@@ -7518,7 +7512,7 @@ object MainForm: TMainForm
         end
       end
       object StatusTestGB1: TGroupBox
-        Left = 752
+        Left = 728
         Height = 368
         Top = 88
         Width = 156
@@ -7636,7 +7630,7 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       TabVisible = False
       object ResultCH: TChart
@@ -7727,7 +7721,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 658
+      ClientHeight = 656
       ClientWidth = 1149
       TabVisible = False
       object AnOutPump1GB: TGroupBox

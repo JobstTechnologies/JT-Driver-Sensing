@@ -24,6 +24,7 @@ type
     procedure SCSaveScreenshotLiveBClick(Sender: TObject);
     procedure SCSaveScreenshotResultBClick(Sender: TObject);
     procedure SCStartFitBClick(Sender: TObject);
+    procedure SCChannelXLEChange(Sender: TObject);
     procedure SCChannelXCBChange(Sender: TObject);
     procedure SCChannelXGBDblClick(Sender: TObject);
     procedure SCNoSubtractBlankCBChange(Sender: TObject);
@@ -902,6 +903,20 @@ begin
  FitForm.Show;
 end;
 
+procedure TSIXControl.SCChannelXLEChange(Sender: TObject);
+var
+ SenderName, Channel : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form 'ChannelxLE' and we need the x
+ // so get the 8th character of the name
+ Channel:= Copy(SenderName, 8, 1);
+
+ // transfer content to testing tab
+ (MainForm.FindComponent('ChannelTest' + Channel + 'LE') as TLabeledEdit).Text:=
+  (MainForm.FindComponent(SenderName) as TLabeledEdit).Text;
+end;
+
 procedure TSIXControl.SCChannelXCBChange(Sender: TObject);
 var
  SenderName, Channel : string;
@@ -915,6 +930,12 @@ begin
  (MainForm.FindComponent(SenderName) as TComboBox).Text:=
   (MainForm.FindComponent(SenderName) as TComboBox).Items[
       (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex];
+
+ // transfer content to testing tab
+ (MainForm.FindComponent('Channel' + Channel + 'TestCB') as TComboBox).Text:=
+  (MainForm.FindComponent(SenderName) as TComboBox).Text;
+ (MainForm.FindComponent('Channel' + Channel + 'TestCB') as TComboBox).ItemIndex:=
+  (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex;
 
  // set legend name
  if (MainForm.FindComponent(SenderName) as TComboBox).Text = 'mean(#2, #5)' then
@@ -991,6 +1012,10 @@ begin
   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
  end;
+
+ // transfer content to testing tab
+ (MainForm.FindComponent('Channel' + Channel + 'TestGB') as TGroupBox).Caption:=
+  (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
 end;
 
 procedure TSIXControl.SCNoSubtractBlankCBChange(Sender: TObject);

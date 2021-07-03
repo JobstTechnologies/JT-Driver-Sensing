@@ -677,6 +677,7 @@ type
     procedure AnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure AppearanceXBBClick(Sender: TObject);
     procedure CalibrateTBChange(Sender: TObject);
+    procedure ChannelXLEChange(Sender: TObject);
     procedure ChannelXCBChange(Sender: TObject);
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure ChartToolsetAxisClickToolClick(Sender: TChartTool;
@@ -1611,6 +1612,11 @@ begin
  SIXControl.SCCalibrateTBChange(Sender);
 end;
 
+procedure TMainForm.ChannelXLEChange(Sender: TObject);
+begin
+ SIXControl.SCChannelXLEChange(Sender);
+end;
+
 procedure TMainForm.ChannelXCBChange(Sender: TObject);
 begin
  SIXControl.SCChannelXCBChange(Sender);
@@ -1808,6 +1814,10 @@ begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
    (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
  end;
+ // transfer caption to testing tab
+ for i:= 1 to SIXControl.NumChannels do
+ (FindComponent('Channel' + IntToStr(i) + 'TestGB') as TGroupBox).Caption:=
+  (FindComponent('Channel' + IntToStr(i) + 'GB') as TGroupBox).Caption;
 
  // write a new header line to the output file
  if HaveSensorFileStream then
