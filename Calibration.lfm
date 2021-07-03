@@ -75,7 +75,7 @@ object CalibrationF: TCalibrationF
     Height = 206
     Top = 8
     Width = 202
-    Caption = 'Available SIX Channels'
+    Caption = 'Available Channels'
     ClientHeight = 186
     ClientWidth = 198
     TabOrder = 3
