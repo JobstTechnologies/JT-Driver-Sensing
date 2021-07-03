@@ -8158,27 +8158,27 @@ object MainForm: TMainForm
     Interval = 100
     OnTimer = OverallTimerFinished
     Left = 1104
-    Top = 520
+    Top = 472
   end
   object RepeatTimer: TTimer
     Enabled = False
     Interval = 100
     OnTimer = RepeatTimerFinished
     Left = 1104
-    Top = 568
+    Top = 520
   end
   object StopTimer: TTimer
     Enabled = False
     Interval = 1500
     OnTimer = StopTimerFinished
     Left = 1104
-    Top = 616
+    Top = 568
   end
   object FirmwareFileDialog: TOpenDialog
     Title = 'Open firmware file'
     Filter = 'Binary file|*.bin'
     InitialDir = 'ExtractFileDir(Application.ExeName)'
-    Left = 1016
+    Left = 1000
     Top = 568
   end
   object FirmwareNote: TPopupNotifier
@@ -8231,51 +8231,51 @@ object MainForm: TMainForm
     Interval = 100
     OnTimer = StepTimer1Finished
     Left = 1104
-    Top = 128
+    Top = 72
   end
   object StepTimer2: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
     Left = 1104
-    Top = 184
+    Top = 136
   end
   object StepTimer3: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
     Left = 1104
-    Top = 232
+    Top = 184
   end
   object StepTimer4: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
     Left = 1104
-    Top = 280
+    Top = 232
   end
   object StepTimer5: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
     Left = 1104
-    Top = 328
+    Top = 280
   end
   object StepTimer6: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
     Left = 1104
-    Top = 376
+    Top = 328
   end
   object SaveDialog: TSaveDialog
     Filter = 'Pump Driver Actions|*.PDAction'
-    Left = 1016
+    Left = 1000
     Top = 520
   end
   object OpenDialog: TOpenDialog
     Filter = 'Pump Driver Actions|*.PDAction'
-    Left = 1016
+    Left = 1000
     Top = 472
   end
   object StepTimer7: TTimer
@@ -8283,10 +8283,10 @@ object MainForm: TMainForm
     Interval = 100
     OnTimer = StepTimerLastFinished
     Left = 1104
-    Top = 424
+    Top = 376
   end
   object ChartToolset: TChartToolset
-    Left = 1016
+    Left = 1000
     Top = 328
     object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
@@ -8344,16 +8344,16 @@ object MainForm: TMainForm
     Enabled = False
     OnTimer = ReadTimerTimerFinished
     Left = 1104
-    Top = 472
+    Top = 424
   end
   object ChartAxisTransformTemp: TChartAxisTransformations
-    Left = 1016
+    Left = 1000
     Top = 424
     object ChartAxisTransformTempAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
   end
   object ChartAxisTransformValues: TChartAxisTransformations
-    Left = 1016
+    Left = 1000
     Top = 376
     object ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
