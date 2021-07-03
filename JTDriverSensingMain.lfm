@@ -364,7 +364,7 @@ object MainForm: TMainForm
         object Channel7CB: TComboBox
           Left = 224
           Height = 23
-          Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
+          Hint = 'Set channel operation:'#13#10'mean(#, #) : mean of the two channels'
           Top = 40
           Width = 104
           ItemHeight = 15
@@ -565,7 +565,7 @@ object MainForm: TMainForm
         object Channel8CB: TComboBox
           Left = 224
           Height = 23
-          Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
+          Hint = 'Set channel operation:'#13#10'mean(#, #) : mean of the two channels'
           Top = 40
           Width = 104
           ItemHeight = 15
@@ -6673,7 +6673,7 @@ object MainForm: TMainForm
       object Channel1TestGB: TGroupBox
         Left = 0
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 88
         Width = 344
         Caption = 'Channel 1'
@@ -6683,7 +6683,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
-        OnDblClick = ChannelXGBDblClick
         object Slope1LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -6770,7 +6769,7 @@ object MainForm: TMainForm
       object Channel4TestGB: TGroupBox
         Left = 360
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 228
         Width = 344
         Caption = 'Channel 4'
@@ -6780,7 +6779,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
-        OnDblClick = ChannelXGBDblClick
         object Slope4LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -6865,7 +6863,7 @@ object MainForm: TMainForm
       object Channel5TEstGB: TGroupBox
         Left = 0
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 370
         Width = 344
         Caption = 'Channel 5'
@@ -6875,7 +6873,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
-        OnDblClick = ChannelXGBDblClick
         object Slope5LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -6960,7 +6957,7 @@ object MainForm: TMainForm
       object Channel2TestGB: TGroupBox
         Left = 360
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 88
         Width = 344
         Caption = 'Channel 2'
@@ -6970,7 +6967,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4
-        OnDblClick = ChannelXGBDblClick
         object Slope2LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -7057,7 +7053,7 @@ object MainForm: TMainForm
       object Channel3TestGB: TGroupBox
         Left = 0
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 228
         Width = 344
         Caption = 'Channel 3'
@@ -7067,7 +7063,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
-        OnDblClick = ChannelXGBDblClick
         object Slope3LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -7152,7 +7147,7 @@ object MainForm: TMainForm
       object Channel6TestGB: TGroupBox
         Left = 360
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 370
         Width = 344
         Caption = 'Channel 6'
@@ -7162,7 +7157,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 6
-        OnDblClick = ChannelXGBDblClick
         object Slope6LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -7247,7 +7241,7 @@ object MainForm: TMainForm
       object Channel8TestGB: TGroupBox
         Left = 360
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 512
         Width = 360
         Caption = 'Channel Operation 2'
@@ -7257,7 +7251,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
-        OnDblClick = ChannelXGBDblClick
         object Slope8LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -7297,9 +7290,10 @@ object MainForm: TMainForm
         object Channel8TestCB: TComboBox
           Left = 256
           Height = 23
-          Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
+          Hint = 'The action can be changed in the tab ''General'''
           Top = 40
           Width = 96
+          Enabled = False
           ItemHeight = 15
           ItemIndex = 1
           Items.Strings = (
@@ -7355,7 +7349,7 @@ object MainForm: TMainForm
       object Channel7TestGB: TGroupBox
         Left = 0
         Height = 136
-        Hint = 'Double-click to change the name'
+        Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 512
         Width = 352
         Caption = 'Channel Operation 1'
@@ -7365,7 +7359,6 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 8
-        OnDblClick = ChannelXGBDblClick
         object Slope7LE: TLabeledEdit
           Left = 8
           Height = 23
@@ -7405,9 +7398,10 @@ object MainForm: TMainForm
         object Channel7TestCB: TComboBox
           Left = 248
           Height = 23
-          Hint = 'Set channel operation:'#13#10'raw(#) : the channel without blank subtraction'#13#10'mean(#,#) : mean of the two channels'
+          Hint = 'The action can be changed in the tab ''General'''
           Top = 40
           Width = 96
+          Enabled = False
           ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
