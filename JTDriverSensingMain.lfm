@@ -7629,10 +7629,10 @@ object MainForm: TMainForm
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 549
+        Height = 656
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
-        Width = 976
+        Width = 1150
         AxisList = <        
           item
             Marks.LabelBrush.Style = bsClear
@@ -7665,6 +7665,7 @@ object MainForm: TMainForm
         )
         Title.Visible = True
         Toolset = ChartToolset
+        Anchors = [akTop, akLeft, akRight, akBottom]
         object ResultCHValues: TLineSeries
           Legend.Format = 'Measured values'
           LinePen.Color = clRed
@@ -8102,8 +8103,8 @@ object MainForm: TMainForm
     end
   end
   object MainMenu: TMainMenu
-    Left = 434
-    Top = 616
+    Left = 1016
+    Top = 72
     object ConnectionMI: TMenuItem
       Caption = 'Connection'
       ShortCut = 16463
@@ -8156,29 +8157,29 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 100
     OnTimer = OverallTimerFinished
-    Left = 688
-    Top = 560
+    Left = 1104
+    Top = 520
   end
   object RepeatTimer: TTimer
     Enabled = False
     Interval = 100
     OnTimer = RepeatTimerFinished
-    Left = 624
-    Top = 560
+    Left = 1104
+    Top = 568
   end
   object StopTimer: TTimer
     Enabled = False
     Interval = 1500
     OnTimer = StopTimerFinished
-    Left = 370
+    Left = 1104
     Top = 616
   end
   object FirmwareFileDialog: TOpenDialog
     Title = 'Open firmware file'
     Filter = 'Binary file|*.bin'
     InitialDir = 'ExtractFileDir(Application.ExeName)'
-    Left = 282
-    Top = 616
+    Left = 1016
+    Top = 568
   end
   object FirmwareNote: TPopupNotifier
     Color = clInfoBk
@@ -8222,71 +8223,71 @@ object MainForm: TMainForm
     Title = 'Firmware update'
     TitleFont.Style = [fsBold]
     Visible = False
-    Left = 184
-    Top = 616
+    Left = 936
+    Top = 72
   end
   object StepTimer1: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimer1Finished
-    Left = 560
-    Top = 616
+    Left = 1104
+    Top = 128
   end
   object StepTimer2: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
-    Left = 624
-    Top = 616
+    Left = 1104
+    Top = 184
   end
   object StepTimer3: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
-    Left = 688
-    Top = 616
+    Left = 1104
+    Top = 232
   end
   object StepTimer4: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
-    Left = 752
-    Top = 616
+    Left = 1104
+    Top = 280
   end
   object StepTimer5: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
-    Left = 816
-    Top = 616
+    Left = 1104
+    Top = 328
   end
   object StepTimer6: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerXFinished
-    Left = 880
-    Top = 616
+    Left = 1104
+    Top = 376
   end
   object SaveDialog: TSaveDialog
     Filter = 'Pump Driver Actions|*.PDAction'
-    Left = 104
-    Top = 616
+    Left = 1016
+    Top = 520
   end
   object OpenDialog: TOpenDialog
     Filter = 'Pump Driver Actions|*.PDAction'
-    Left = 26
-    Top = 616
+    Left = 1016
+    Top = 472
   end
   object StepTimer7: TTimer
     Enabled = False
     Interval = 100
     OnTimer = StepTimerLastFinished
-    Left = 944
-    Top = 616
+    Left = 1104
+    Top = 424
   end
   object ChartToolset: TChartToolset
-    Left = 880
-    Top = 560
+    Left = 1016
+    Top = 328
     object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
       DrawingMode = tdmNormal
@@ -8342,18 +8343,18 @@ object MainForm: TMainForm
   object ReadTimer: TTimer
     Enabled = False
     OnTimer = ReadTimerTimerFinished
-    Left = 752
-    Top = 560
+    Left = 1104
+    Top = 472
   end
   object ChartAxisTransformTemp: TChartAxisTransformations
-    Left = 1048
-    Top = 616
+    Left = 1016
+    Top = 424
     object ChartAxisTransformTempAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
   end
   object ChartAxisTransformValues: TChartAxisTransformations
-    Left = 1048
-    Top = 560
+    Left = 1016
+    Top = 376
     object ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
   end
