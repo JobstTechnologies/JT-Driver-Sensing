@@ -259,7 +259,6 @@
         <ComponentName Value="CalibrationF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="calibration"/>
       </Unit18>
     </Units>
   </ProjectOptions>
