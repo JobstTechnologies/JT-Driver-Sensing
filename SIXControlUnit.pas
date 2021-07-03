@@ -72,13 +72,14 @@ var
   wasReset: Boolean = false; // true if Reset button was pressed
   ScreenOutName: string = '';
   CSVOutName: string = '';
-  Started: Boolean = false; //if Start was pressed or not
+  Started: Boolean = false; // if Start was pressed or not
   Gains : array [1..6] of single; // the channel gains
   GainsRaw : array [1..6] of double; // the default gains
   Subtracts : array [1..6] of integer; // the channel subtracts
   TemperGains : array [1..8] of single; // the temperature gains
   ErrorCount : integer = 0; // counts how many times we did not reeive a stop bit
   wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
+  inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
 
 implementation
 
@@ -495,8 +496,10 @@ begin
 
  // scroll axis if desired by the user
  ScrollInterval:= MainForm.ScrollIntervalSE.Value/60;
- if (MainForm.ScrollViewCB.Checked = true) and (not wasZoomDragged)
-  and (timeCounter > ScrollInterval) then
+ // don't scroll when user zoomed in and when in calibration mode
+ if (MainForm.ScrollViewCB.Checked = true)
+    and (not wasZoomDragged) and (not inCalibration)
+    and (timeCounter > ScrollInterval) then
  begin
   Extent:= MainForm.SIXCH.GetFullExtent;
   Extent.a.x:= Extent.b.x - ScrollInterval;
@@ -1443,6 +1446,8 @@ begin
  MainForm.ChartToolsetDataPointCrosshairTool.Enabled:= (not MainForm.CalibrateTB.Checked);
  MainForm.ChartToolsetPanDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
  MainForm.ChartToolsetPanMouseWheelTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ // prevent scrolling while in calibration selection mode
+ inCalibration:= MainForm.CalibrateTB.Checked;
 
  if MainForm.CalibrateTB.Checked then
  begin
@@ -1646,6 +1651,9 @@ begin
   MainForm.RightLine.Position:= Infinity;
   //reset calibChannel
   calibChannel:= 0;
+  // The user might have zoomed in, then calibrated and is wondering why nothing
+  // happens afterwards. Therefore jump out of the wasZoomDragged mode.
+  wasZoomDragged:= false;
 
  end;
 

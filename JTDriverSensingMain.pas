@@ -690,6 +690,8 @@ type
       Legend: TChartLegend);
     procedure ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
+    procedure ChartToolsetZoomDragToolAfterMouseDown(ATool{%H-}: TChartTool;
+      APoint: TPoint);
     procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
@@ -785,7 +787,8 @@ var
   DropfileNamePump : string = ''; // name of dropped pump action file
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
-  InNameSensor : string = ''; // name of sensor file
+  InNameSensor : string = ''; // name of sensor definition file
+  ChartPoint : TPoint; // position in chart to determine if zoomed in our out
 
 implementation
 
@@ -1664,12 +1667,23 @@ begin
  SIXControl.SCChartToolsetTitleFootClickTool1Click(Sender, Title);
 end;
 
+procedure TMainForm.ChartToolsetZoomDragToolAfterMouseDown(ATool: TChartTool;
+  APoint: TPoint);
+begin
+ // position when ZoomDragging started
+ ChartPoint:= APoint;
+end;
+
 procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
 begin
- // toggle zoom dragged state
- // when on, then ScrollViewCB will not scroll until it is off
- SIXControl.wasZoomDragged:= not SIXControl.wasZoomDragged;
+ // chart scrolling should not be performed when the user zoomed in
+ // thus read the right x-position of the current chart position in
+ // respect to the one when the zooming started
+ if APoint.X > ChartPoint.X then
+  SIXControl.wasZoomDragged:= true
+ else
+  SIXControl.wasZoomDragged:= false;
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);

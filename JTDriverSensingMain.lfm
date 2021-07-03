@@ -8305,8 +8305,11 @@ object MainForm: TMainForm
     end
     object ChartToolsetZoomDragTool: TZoomDragTool
       Shift = [ssLeft]
+      OnAfterMouseDown = ChartToolsetZoomDragToolAfterMouseDown
       OnAfterMouseUp = ChartToolsetZoomDragToolAfterMouseUp
       Brush.Style = bsClear
+      DrawingMode = tdmNormal
+      RestoreExtentOn = [zreDragTopLeft, zreDragBottomLeft, zreClick]
     end
     object ChartToolsetPanMouseWheelTool: TPanMouseWheelTool
       LimitToExtent = [pdUp, pdRight, pdDown]
