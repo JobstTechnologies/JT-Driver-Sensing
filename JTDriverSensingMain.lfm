@@ -1,11 +1,11 @@
 object MainForm: TMainForm
   Left = 324
-  Height = 719
+  Height = 710
   Top = 191
   Width = 1171
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 699
+  ClientHeight = 690
   ClientWidth = 1171
   Color = clWindow
   Menu = MainMenu
@@ -15,10 +15,10 @@ object MainForm: TMainForm
   Position = poDefaultPosOnly
   LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
-    Left = 8
+    Left = 4
     Height = 684
-    Top = 8
-    Width = 1157
+    Top = 4
+    Width = 1162
     ActivePage = GeneralTS
     Anchors = [akTop, akLeft, akRight, akBottom]
     TabIndex = 0
@@ -26,7 +26,7 @@ object MainForm: TMainForm
     object GeneralTS: TTabSheet
       Caption = 'General'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       ParentFont = False
       object Channel1GB: TGroupBox
         Left = 0
@@ -903,12 +903,12 @@ object MainForm: TMainForm
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
         Height = 656
         Top = 0
-        Width = 1150
+        Width = 1156
         AxisList = <        
           item
             Marks.Format = '%0:.4g'
@@ -1121,16 +1121,17 @@ object MainForm: TMainForm
         end
       end
       object SaveScreenshotLiveB: TButton
-        Left = 680
+        Left = 706
         Height = 26
         Top = 4
         Width = 104
+        Anchors = [akTop, akRight]
         Caption = 'Save Screenshot'
         OnClick = SaveScreenshotLiveBClick
         TabOrder = 1
       end
       object ScrollViewCB: TCheckBox
-        Left = 816
+        Left = 842
         Height = 19
         Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
         Top = 7
@@ -1146,7 +1147,7 @@ object MainForm: TMainForm
         TabOrder = 2
       end
       object ScrollIntervalSE: TSpinEdit
-        Left = 1080
+        Left = 1090
         Height = 23
         Hint = 'Interval of last shown seconds in the plot'
         Top = 5
@@ -1163,7 +1164,7 @@ object MainForm: TMainForm
         Value = 300
       end
       object Panel3: TPanel
-        Left = 920
+        Left = 936
         Height = 31
         Top = 0
         Width = 153
@@ -1179,7 +1180,6 @@ object MainForm: TMainForm
         Height = 26
         Top = 4
         Width = 104
-        Anchors = [akTop, akRight]
         BevelOuter = bvNone
         ClientHeight = 26
         ClientWidth = 104
@@ -1204,7 +1204,7 @@ object MainForm: TMainForm
     object PumpControlTS: TTabSheet
       Caption = 'Pump Control'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
         Height = 512
@@ -6631,7 +6631,7 @@ object MainForm: TMainForm
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
         Left = 215
@@ -7625,14 +7625,14 @@ object MainForm: TMainForm
     object ResultTS: TTabSheet
       Caption = 'Test Results'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
         Height = 656
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
-        Width = 1150
+        Width = 1156
         AxisList = <        
           item
             Marks.LabelBrush.Style = bsClear
@@ -7687,28 +7687,30 @@ object MainForm: TMainForm
         end
       end
       object SaveScreenshotResultB: TButton
-        Left = 50
+        Left = 706
         Height = 26
-        Top = 5
-        Width = 113
+        Top = 4
+        Width = 104
+        Anchors = [akTop, akRight]
         Caption = 'Save Screenshot'
         OnClick = SaveScreenshotResultBClick
         TabOrder = 1
       end
       object StartFitB: TButton
-        Left = 616
+        Left = 58
         Height = 26
-        Top = 5
-        Width = 113
+        Top = 4
+        Width = 104
         Caption = 'Fit Result'
         OnClick = StartFitBClick
         TabOrder = 2
       end
       object SaveCSVResultB: TButton
-        Left = 272
+        Left = 1046
         Height = 26
-        Top = 5
-        Width = 113
+        Top = 4
+        Width = 104
+        Anchors = [akTop, akRight]
         Caption = 'Save Data as CSV'
         Enabled = False
         OnClick = SaveCSVResultBClick
@@ -7718,7 +7720,7 @@ object MainForm: TMainForm
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
       ClientHeight = 656
-      ClientWidth = 1149
+      ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
         Left = 16
