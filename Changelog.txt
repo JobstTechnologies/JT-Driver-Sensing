@@ -7,6 +7,7 @@ improvements:
 - the zooming rectangle border is now properly shown
 - stop the chart data scrolling while calibrating
 - stop the chart data scrolling only when zoomed in, not when zoomed out
+- by double-clicking in a chart, the chart's background color can be changed
 
 bugfix:
 - fix initialization of the tab 'Test Settings'

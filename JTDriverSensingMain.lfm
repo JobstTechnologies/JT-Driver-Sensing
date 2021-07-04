@@ -961,6 +961,7 @@ object MainForm: TMainForm
         Toolset = ChartToolset
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
+        OnDblClick = SIXCHDblClick
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
           AxisIndexY = 0
@@ -8358,5 +8359,33 @@ object MainForm: TMainForm
     Top = 376
     object ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform
     end
+  end
+  object ColorDialog: TColorDialog
+    Title = 'Select Chart Background Color'
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    Left = 896
+    Top = 568
   end
 end

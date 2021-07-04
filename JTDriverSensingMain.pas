@@ -60,6 +60,7 @@ type
     Channel7TestGB: TGroupBox;
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
+    ColorDialog: TColorDialog;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
     Label68: TLabel;
@@ -743,6 +744,7 @@ type
     procedure SIXBiosensorsMIClick(Sender: TObject);
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
+    procedure SIXCHDblClick(Sender: TObject);
     procedure StartFitBClick(Sender: TObject);
     procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
@@ -2981,6 +2983,13 @@ begin
    SIXCH.XGraphToImage(RightLine.Position){%H-},
    SIXCH.YGraphToImage(BottomLine.Position){%H-});
  end;
+end;
+
+procedure TMainForm.SIXCHDblClick(Sender: TObject);
+begin
+ ColorDialog.Title:= 'Select Chart Background Color';
+ if ColorDialog.Execute then
+  SIXCH.BackColor:= ColorDialog.Color;
 end;
 
 procedure TMainForm.StartFitBClick(Sender: TObject);
