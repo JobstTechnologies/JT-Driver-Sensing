@@ -1,5 +1,16 @@
 Changes
 
+from version 0.92 to 0.93
+
+improvement:
+- rearrange the tab 'Pump Control' to make the main program window fit also to
+  smaller high-DPI laptop screens
+  
+bugfix:
+- assure that the buttons in the charts don't disappear when the main window
+  size is changed
+
+
 from version 0.91 to 0.92
 
 improvements:
@@ -9,6 +20,6 @@ improvements:
 - stop the chart data scrolling only when zoomed in, not when zoomed out
 - by double-clicking in a chart, the chart's background color can be changed
 
-bugfix:
+bugfixes:
 - fix initialization of the tab 'Test Settings'
 - fix some issues when changing or unloading sensor definition files

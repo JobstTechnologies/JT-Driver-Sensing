@@ -772,7 +772,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.92';
+  Version : string = '0.93';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
@@ -837,9 +837,14 @@ begin
  RightLine.Position:= Infinity;
  // for an unknown reason the preset title size is not taken on high-DPI screens
  // therefore explicitly set it on start
- SIXCH.Title.Font.Size:= 12;;
+ SIXCH.Title.Font.Size:= 12;
  // Make the bars' DatapointDragtool react only on the bars, not the data points
- LineDragTool.AffectedSeries:= Format('%d;%d;%d;%d', [TopLine.Index, BottomLine.Index, LeftLine.Index, RightLine.Index]);
+ LineDragTool.AffectedSeries:= Format('%d;%d;%d;%d',
+  [TopLine.Index, BottomLine.Index, LeftLine.Index, RightLine.Index]);
+
+ // There is an issue that on smaller high-DPI screens the bottom distance of
+ // MainForm to Main PC is too large. Therefore reset the desired ratio on start.
+ MainPC.Height:= round(MainForm.Height * 0.9595);
 
  // set the button to load the .def files as active control
  ActiveControl:= LoadDefBB;
