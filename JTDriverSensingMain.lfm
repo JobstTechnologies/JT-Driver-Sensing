@@ -1187,12 +1187,12 @@ object MainForm: TMainForm
       end
       object ScrollViewP: TPanel
         Left = 846
-        Height = 24
+        Height = 19
         Top = 6
         Width = 94
         Anchors = [akTop, akRight]
         BevelOuter = bvNone
-        ClientHeight = 24
+        ClientHeight = 19
         ClientWidth = 94
         Color = clForm
         ParentColor = False
