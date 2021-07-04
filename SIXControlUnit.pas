@@ -43,6 +43,7 @@ type
     procedure SCAnOutOfXLEChange(Sender: TObject);
     procedure SCAnOutOnOffTBChange(Sender: TObject);
     procedure SCCalibrateTBChange(Sender: TObject);
+    procedure SCChartDblClick(Sender: TObject);
 
   private
 
@@ -953,6 +954,27 @@ begin
   FitForm.Close;
  // show the form
  FitForm.Show;
+end;
+
+procedure TSIXControl.SCChartDblClick(Sender: TObject);
+var
+ SenderName : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ MainForm.ColorDialog.Title:= 'Select Chart Background Color';
+ if SenderName = 'SIXCH' then
+ begin
+  // start with current color
+  MainForm.ColorDialog.Color:= MainForm.SIXCH.BackColor;
+  if MainForm.ColorDialog.Execute then
+   MainForm.SIXCH.BackColor:= MainForm.ColorDialog.Color;
+ end
+ else if SenderName = 'ResultCH' then
+ begin
+  MainForm.ColorDialog.Color:= MainForm.ResultCH.BackColor;
+  if MainForm.ColorDialog.Execute then
+   MainForm.ResultCH.BackColor:= MainForm.ColorDialog.Color;
+ end;
 end;
 
 procedure TSIXControl.SCChannelXLEChange(Sender: TObject);

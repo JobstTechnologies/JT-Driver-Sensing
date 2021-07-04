@@ -961,7 +961,7 @@ object MainForm: TMainForm
         Toolset = ChartToolset
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
-        OnDblClick = SIXCHDblClick
+        OnDblClick = ChartDblClick
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
           AxisIndexY = 0
@@ -7666,6 +7666,7 @@ object MainForm: TMainForm
         Title.Visible = True
         Toolset = ChartToolset
         Anchors = [akTop, akLeft, akRight, akBottom]
+        OnDblClick = ChartDblClick
         object ResultCHValues: TLineSeries
           Legend.Format = 'Measured values'
           LinePen.Color = clRed

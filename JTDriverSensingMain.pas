@@ -744,7 +744,7 @@ type
     procedure SIXBiosensorsMIClick(Sender: TObject);
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
-    procedure SIXCHDblClick(Sender: TObject);
+    procedure ChartDblClick(Sender: TObject);
     procedure StartFitBClick(Sender: TObject);
     procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
@@ -2985,11 +2985,9 @@ begin
  end;
 end;
 
-procedure TMainForm.SIXCHDblClick(Sender: TObject);
+procedure TMainForm.ChartDblClick(Sender: TObject);
 begin
- ColorDialog.Title:= 'Select Chart Background Color';
- if ColorDialog.Execute then
-  SIXCH.BackColor:= ColorDialog.Color;
+ SIXControl.SCChartDblClick(Sender);
 end;
 
 procedure TMainForm.StartFitBClick(Sender: TObject);
