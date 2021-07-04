@@ -12,6 +12,7 @@ object MainForm: TMainForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
+  OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
@@ -953,7 +954,7 @@ object MainForm: TMainForm
         Legend.Visible = True
         Title.Brush.Color = clBtnFace
         Title.Font.Color = clBlue
-        Title.Font.Height = -16
+        Title.Font.Height = -15
         Title.Text.Strings = (
           'SIX Values'
         )
@@ -7640,7 +7641,7 @@ object MainForm: TMainForm
         Legend.Visible = True
         Title.Brush.Color = clBtnFace
         Title.Font.Color = clBlue
-        Title.Font.Height = -16
+        Title.Font.Height = -15
         Title.Text.Strings = (
           'Test Result'
         )
