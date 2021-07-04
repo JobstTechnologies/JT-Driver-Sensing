@@ -839,6 +839,7 @@ begin
  // for an unknown reason the preset title size is not taken on high-DPI screens
  // therefore explicitly set it on start
  SIXCH.Title.Font.Size:= 11;
+ ResultCH.Title.Font.Size:= 11;
  // Make the bars' DatapointDragtool react only on the bars, not the data points
  LineDragTool.AffectedSeries:= Format('%d;%d;%d;%d',
   [TopLine.Index, BottomLine.Index, LeftLine.Index, RightLine.Index]);

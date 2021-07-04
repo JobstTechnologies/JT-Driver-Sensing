@@ -1123,7 +1123,7 @@ object MainForm: TMainForm
       end
       object SaveScreenshotLiveB: TButton
         Left = 706
-        Height = 26
+        Height = 24
         Top = 4
         Width = 104
         Anchors = [akTop, akRight]
@@ -1151,7 +1151,7 @@ object MainForm: TMainForm
         Left = 1090
         Height = 23
         Hint = 'Interval of last shown seconds in the plot'
-        Top = 5
+        Top = 4
         Width = 56
         Alignment = taRightJustify
         Anchors = [akTop, akRight]
@@ -1166,8 +1166,8 @@ object MainForm: TMainForm
       end
       object Panel3: TPanel
         Left = 936
-        Height = 31
-        Top = 0
+        Height = 24
+        Top = 4
         Width = 153
         Anchors = [akTop, akRight]
         BevelOuter = bvNone
@@ -1178,18 +1178,18 @@ object MainForm: TMainForm
       end
       object Panel5: TPanel
         Left = 58
-        Height = 26
+        Height = 24
         Top = 4
         Width = 104
         BevelOuter = bvNone
-        ClientHeight = 26
+        ClientHeight = 24
         ClientWidth = 104
         Color = clBtnFace
         ParentColor = False
         TabOrder = 5
         object CalibrateTB: TToggleBox
           Left = 0
-          Height = 26
+          Height = 24
           Hint = 'To calibrate:'#13#10'1. a definition file must be loaded'#13#10'2. click this button'#13#10'3. left-click into the chart and drag the mouse'#13#10'    to select a range of data'#13#10'4. when you selected the desired data range,'#13#10'   click this button again'#13#10'5. Set the calibration values the appearing dialog'#13#10'6. a new definition file will automatically be'#13#10'   created and loaded'
           Top = 0
           Width = 104
@@ -7670,7 +7670,7 @@ object MainForm: TMainForm
       end
       object SaveScreenshotResultB: TButton
         Left = 706
-        Height = 26
+        Height = 24
         Top = 4
         Width = 104
         Anchors = [akTop, akRight]
@@ -7680,7 +7680,7 @@ object MainForm: TMainForm
       end
       object StartFitB: TButton
         Left = 58
-        Height = 26
+        Height = 24
         Top = 4
         Width = 104
         Caption = 'Fit Result'
@@ -7689,7 +7689,7 @@ object MainForm: TMainForm
       end
       object SaveCSVResultB: TButton
         Left = 1046
-        Height = 26
+        Height = 24
         Top = 4
         Width = 104
         Anchors = [akTop, akRight]
