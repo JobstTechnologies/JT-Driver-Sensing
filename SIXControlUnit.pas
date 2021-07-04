@@ -408,7 +408,7 @@ begin
   else
   begin
    // subtract blank values
-   // since the blank has no temperature connection, we cannot just subtract
+   // since the blank has no temperature correction, we cannot just subtract
    for i:= 1 to NumChannels do
     if (not isBlank[i]) and (Chan[i] <> 0) then
      ChanDbl[i]:= ChanDbl[i] * (Chan[i] - Chan[Subtracts[i]]) / Chan[i];

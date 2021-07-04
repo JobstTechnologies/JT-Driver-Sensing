@@ -1765,15 +1765,19 @@ begin
   RawCurrentCB.Checked:= false;
 
  // the previous .def file might have had less channels defined
- // to calculate later the slopes fill the new channels with zeroes
+ // to calculate later the slopes fill the missing x-values of the new channels
+ // with zeroes as y-values
  diff:= SIXControl.NumChannels - NumChannelsPrev;
- if diff > 0 then
+ // if channel 1 is empty, there is nothing to do
+ if (diff > 0) and (SIXCh1Values.Count > 0) then
  begin
-  for j:= 0 to SIXControl.signalCounter do
+  for i:= 1 to diff do
   begin
-   for i:= 1 to diff do
+   for j:= (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
+           as TLineSeries).Count to SIXCh1Values.Count-1 do
+    // since channel 1 always exists, we can take its x-values
     (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
-     as TLineSeries).AddXY(0, 0);
+     as TLineSeries).AddXY(SIXCh1Values.XValue[j], 0);
   end;
  end;
 
@@ -1830,7 +1834,7 @@ begin
   HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
    '.def"' + LineEnding;
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-  // the blank channels have the unit nA
+  // determine what are the blank channels
   for i:= 1 to 6 do
   begin
    if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
@@ -1855,6 +1859,25 @@ begin
   HeaderLine:= HeaderLine + LineEnding;
   // write line
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end;
+
+ // assure that at least one channel is displayed in the chart
+ j:= 0;
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  if (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked then
+   inc(j);
+ end;
+ if j = 0 then // no channel is on
+ begin
+  for i:= 1 to SIXControl.NumChannels do
+   if not SIXControl.isBlank[i] then
+   begin
+    (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked:= true;
+    exit; // just one channel
+   end;
  end;
 
 end;
@@ -1892,19 +1915,24 @@ begin
  NoSubtractBlankCB.Checked:= false;
  NoSubtractBlankCB.Enabled:= false;
 
- // we have now all 6 possible channels
- // but the previous .def file might have had less
- // to calculate later the slopes fill the new channels with zeroes
+ // store previous channel number and set to 6 channels
  NumChannelsPrev:= SIXControl.NumChannels;
  SIXControl.NumChannels:= 6;
+
+ // the previous .def file might have had less channels defined
+ // to calculate later the slopes fill the missing x-values of the new channels
+ // with zeroes as y-values
  diff:= SIXControl.NumChannels - NumChannelsPrev;
- if diff > 0 then
+ // if channel 1 is empty, there is nothing to do
+ if (diff > 0) and (SIXCh1Values.Count > 0) then
  begin
-  for j:= 0 to SIXControl.signalCounter do
+  for i:= 1 to diff do
   begin
-   for i:= 1 to diff do
+   for j:= (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
+           as TLineSeries).Count to SIXCh1Values.Count-1 do
+    // since channel 1 always exists, we can take its x-values
     (FindComponent('SIXCh' + IntToStr(7-i) + 'Values')
-     as TLineSeries).AddXY(0, 0);
+     as TLineSeries).AddXY(SIXCh1Values.XValue[j], 0);
   end;
  end;
 
