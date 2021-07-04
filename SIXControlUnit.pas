@@ -1400,6 +1400,8 @@ begin
      as TCheckBox).Checked:= false;
     (MainForm.FindComponent('Channel' + IntToStr(i) + 'LE')
      as TLabeledEdit).Text:= '';
+    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= '';
    end;
   end;
   // update the possible operations
