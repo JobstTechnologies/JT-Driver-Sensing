@@ -277,7 +277,6 @@ type
     DutyCycle7GB: TGroupBox;
     GenerateCommandBB: TBitBtn;
     ActionsGB: TGroupBox;
-    CommandL: TLabel;
     CommandM: TMemo;
     FirmwareUpdateMI: TMenuItem;
     AboutMI: TMenuItem;
@@ -477,7 +476,6 @@ type
     PumpControlTS: TTabSheet;
     TotalTimeLE: TLabeledEdit;
     Panel1: TPanel;
-    Panel2: TPanel;
     RunTime1FSE: TFloatSpinEdit;
     RunTime2FSE: TFloatSpinEdit;
     RunTime3FSE: TFloatSpinEdit;
@@ -837,6 +835,9 @@ begin
  BottomLine.Position:= -Infinity;
  LeftLine.Position:= -Infinity;
  RightLine.Position:= Infinity;
+ // for an unknown reason the preset title size is not taken on high-DPI screens
+ // therefore explicitly set it on start
+ SIXCH.Title.Font.Size:= 12;;
  // Make the bars' DatapointDragtool react only on the bars, not the data points
  LineDragTool.AffectedSeries:= Format('%d;%d;%d;%d', [TopLine.Index, BottomLine.Index, LeftLine.Index, RightLine.Index]);
 

@@ -1,22 +1,22 @@
 object MainForm: TMainForm
   Left = 324
-  Height = 710
-  Top = 191
-  Width = 1171
+  Height = 642
+  Top = 190
+  Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 690
-  ClientWidth = 1171
+  ClientHeight = 622
+  ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
   OnClose = FormClose
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
-  Position = poDefaultPosOnly
+  Position = poDesktopCenter
   LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
     Left = 4
-    Height = 684
+    Height = 616
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -25,7 +25,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       ParentFont = False
       object Channel1GB: TGroupBox
@@ -902,11 +902,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 656
+        Height = 588
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1134,7 +1134,7 @@ object MainForm: TMainForm
         Left = 842
         Height = 19
         Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
-        Top = 7
+        Top = 6
         Width = 90
         Anchors = [akTop, akRight]
         Caption = 'Scolling View'
@@ -1203,7 +1203,7 @@ object MainForm: TMainForm
     end
     object PumpControlTS: TTabSheet
       Caption = 'Pump Control'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
@@ -6506,21 +6506,21 @@ object MainForm: TMainForm
         end
       end
       object ActionsGB: TGroupBox
-        Left = 8
-        Height = 64
-        Top = 528
-        Width = 529
+        Left = 552
+        Height = 234
+        Top = 24
+        Width = 148
         Caption = 'Actions'
-        ClientHeight = 44
-        ClientWidth = 525
+        ClientHeight = 214
+        ClientWidth = 144
         ParentColor = False
         ParentFont = False
         TabOrder = 3
         object RunBB: TBitBtn
-          Left = 8
+          Left = 20
           Height = 39
           Hint = 'Starts the pump action according to the current settings.'#13#10'To enable the button you must first connect to the pump driver'#13#10'using the menu ''Connection''.'
-          Top = 0
+          Top = 4
           Width = 104
           Caption = 'Run Pumps'
           Enabled = False
@@ -6531,10 +6531,10 @@ object MainForm: TMainForm
           TabOrder = 0
         end
         object StopBB: TBitBtn
-          Left = 120
+          Left = 20
           Height = 39
           Hint = 'Stops the pump action and all running pumps'
-          Top = 0
+          Top = 52
           Width = 104
           Caption = 'Stop Pumps'
           Enabled = False
@@ -6545,10 +6545,10 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object GenerateCommandBB: TBitBtn
-          Left = 376
+          Left = 8
           Height = 39
           Hint = 'This button has 3 features:'#13#10'1. It generates the serial command that will be sent to the pump driver'#13#10'by clicking ''Run Pumps'' using the current settings'#13#10'2. It calculates the Total Time'#13#10'3. It enables editing the settings for a loaded action file'
-          Top = 0
+          Top = 168
           Width = 128
           Caption = 'Generate Command'
           OnClick = GenerateCommandBBClick
@@ -6558,11 +6558,11 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object RunFreeBB: TBitBtn
-          Left = 248
+          Left = 20
           Height = 39
           Hint = 'Starts the method to free pumps after they have been unused'#13#10'for a longer time resulting in a closed pump hose.'#13#10'When the pump hose is closed you will in most cases hear a'#13#10'sound on every pump rotation. As soon as this sound disappears,'#13#10'the hose should be open and you can click ''Stop Pumps''.'#13#10#13#10'If a ''Free Pumps'' run does not open the pump hose'#13#10'the pump is broken and cannot be repaired.'
-          Top = 0
-          Width = 98
+          Top = 116
+          Width = 104
           Caption = 'Free Pumps'
           Enabled = False
           OnClick = RunFreeBBClick
@@ -6572,33 +6572,22 @@ object MainForm: TMainForm
           TabOrder = 3
         end
         object Panel1: TPanel
-          Left = 235
-          Height = 42
-          Top = 0
-          Width = 1
+          Left = 8
+          Height = 1
+          Top = 104
+          Width = 124
           BevelColor = clBtnShadow
           BevelInner = bvRaised
           BevelOuter = bvNone
           ParentFont = False
           TabOrder = 4
         end
-        object Panel2: TPanel
-          Left = 361
-          Height = 41
-          Top = 0
-          Width = 1
-          BevelColor = clBtnShadow
-          BevelInner = bvSpace
-          BevelOuter = bvNone
-          ParentFont = False
-          TabOrder = 5
-        end
       end
       object CommandM: TMemo
         Left = 8
         Height = 56
         Hint = 'The command that will be sent by clicking ''Run Pumps'''
-        Top = 600
+        Top = 528
         Width = 529
         ParentFont = False
         ParentShowHint = False
@@ -6606,14 +6595,6 @@ object MainForm: TMainForm
         ScrollBars = ssAutoVertical
         ShowHint = True
         TabOrder = 4
-      end
-      object CommandL: TLabel
-        Left = 18
-        Height = 15
-        Top = 608
-        Width = 57
-        Caption = 'Command'
-        ParentFont = False
       end
       object LiveModeCB: TCheckBox
         Left = 400
@@ -6630,7 +6611,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -7624,12 +7605,12 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 656
+        Height = 588
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -7719,7 +7700,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 656
+      ClientHeight = 588
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
