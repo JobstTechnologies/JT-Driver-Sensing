@@ -11,3 +11,4 @@ improvements:
 
 bugfix:
 - fix initialization of the tab 'Test Settings'
+- fix some issues when changing or unloading sensor definition files
