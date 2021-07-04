@@ -1131,22 +1131,6 @@ object MainForm: TMainForm
         OnClick = SaveScreenshotLiveBClick
         TabOrder = 1
       end
-      object ScrollViewCB: TCheckBox
-        Left = 842
-        Height = 19
-        Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
-        Top = 6
-        Width = 90
-        Anchors = [akTop, akRight]
-        Caption = 'Scolling View'
-        Checked = True
-        Enabled = False
-        OnChange = ScrollViewCBChange
-        ParentShowHint = False
-        ShowHint = True
-        State = cbChecked
-        TabOrder = 2
-      end
       object ScrollIntervalSE: TSpinEdit
         Left = 1090
         Height = 23
@@ -1161,10 +1145,10 @@ object MainForm: TMainForm
         MinValue = 11
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 3
+        TabOrder = 2
         Value = 300
       end
-      object Panel3: TPanel
+      object LastShownP: TPanel
         Left = 936
         Height = 24
         Top = 4
@@ -1174,9 +1158,9 @@ object MainForm: TMainForm
         Caption = 'Last shown seconds in plot:'
         Color = clBtnFace
         ParentColor = False
-        TabOrder = 4
+        TabOrder = 3
       end
-      object Panel5: TPanel
+      object CalibrateP: TPanel
         Left = 58
         Height = 24
         Top = 4
@@ -1186,7 +1170,7 @@ object MainForm: TMainForm
         ClientWidth = 104
         Color = clBtnFace
         ParentColor = False
-        TabOrder = 5
+        TabOrder = 4
         object CalibrateTB: TToggleBox
           Left = 0
           Height = 24
@@ -1198,6 +1182,34 @@ object MainForm: TMainForm
           OnChange = CalibrateTBChange
           ParentShowHint = False
           ShowHint = True
+          TabOrder = 0
+        end
+      end
+      object ScrollViewP: TPanel
+        Left = 846
+        Height = 24
+        Top = 6
+        Width = 94
+        Anchors = [akTop, akRight]
+        BevelOuter = bvNone
+        ClientHeight = 24
+        ClientWidth = 94
+        Color = clForm
+        ParentColor = False
+        TabOrder = 5
+        object ScrollViewCB: TCheckBox
+          Left = 0
+          Height = 19
+          Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
+          Top = 0
+          Width = 90
+          Caption = 'Scolling View'
+          Checked = True
+          Enabled = False
+          OnChange = ScrollViewCBChange
+          ParentShowHint = False
+          ShowHint = True
+          State = cbChecked
           TabOrder = 0
         end
       end

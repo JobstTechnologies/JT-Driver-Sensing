@@ -67,7 +67,8 @@ type
     Label69: TLabel;
     LoadedDefFileM: TMemo;
     LoadedDefFileTestM: TMemo;
-    Panel5: TPanel;
+    ScrollViewP: TPanel;
+    CalibrateP: TPanel;
     TopLine: TConstantLine;
     BottomLine: TConstantLine;
     LeftLine: TConstantLine;
@@ -240,7 +241,7 @@ type
     Label2Parse: TLabel;
     Channel2GB: TGroupBox;
     MainPC: TPageControl;
-    Panel3: TPanel;
+    LastShownP: TPanel;
     PumpDriverMI: TMenuItem;
     ResultCH: TChart;
     ResultCHAverages: TLineSeries;
