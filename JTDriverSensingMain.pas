@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, ExtCtrls, Spin, Buttons, LCLType, Registry, Process, LazFileUtils,
-  SynaSer, Crt, StrUtils, PopupNotifier, TAGraph, Windows,// FIXME: Win-only
+  SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Streamex, Types, TATextElements, TALegend,
   // the custom forms
   SerialUSBSelection, AboutForm, TAChartAxis, TATransformations, TAChartUtils;
@@ -692,7 +692,6 @@ type
       Title: TChartTitle);
     procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
-    procedure ColorDialogShow(Sender: TObject);
     procedure ConnComPortPumpLEChange;
     procedure ConnComPortSensLEChange(Sender: TObject);
     procedure DutyCycleXFSEChange(Sender: TObject);
@@ -1690,33 +1689,6 @@ begin
  // for information: We purposely don't rely later on SIXCH.IsZoomed
  // because after calibration and turning on/off scrolling we want to
  // get out of the isZoomed mode and .IsZoomed cannot be changed by code.
-end;
-
-// the following 2 functions are taken from to workaround a bug in the LCL
-// https://forum.lazarus.freepascal.org/index.php/topic,55236.msg410696.html#msg410696
-// FIXME: this is Win-only
-function CCHookProc(H:THandle; msg:Cardinal;
-  W{%H-}:Wparam; L{%H-}:Lparam):UintPtr; StdCall;
-var
- str : string;
-begin
- if (H <> 0) and (Msg = Wm_InitDialog) then
- begin
-  str:= MainForm.ColorDialog.Title;
-  SetWindowText(H, Pchar(str));
- end;
- Result:= 0;
-end;
-procedure TMainForm.ColorDialogShow(Sender: TObject);
-var
- ChooseColor : PChooseColor;
-begin
- with TColorDialog(Sender) do
- begin
-  ChooseColor:= Pointer(Handle); // this handle is actually a pointer to a ChooseColor record
-  ChooseColor^.lpfnHook := @CCHookPRoc;
-  ChooseColor^.Flags := ChooseColor^.Flags or CC_ENABLEHOOK;
- end;
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);
