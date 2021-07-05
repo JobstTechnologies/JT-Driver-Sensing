@@ -504,7 +504,7 @@ begin
  // scroll axis if desired by the user
  ScrollInterval:= MainForm.ScrollIntervalSE.Value/60;
  // don't scroll when user zoomed in and when in calibration mode
- if (MainForm.ScrollViewCB.Checked = true)
+ if MainForm.ScrollViewCB.Checked
     and (not wasZoomDragged) and (not inCalibration)
     and (timeCounter > ScrollInterval) then
  begin
@@ -520,8 +520,20 @@ begin
  end;
 
  if (not  wasZoomDragged) and (not inCalibration) then
+ begin
   // fix the extent to the determined x and y-range
   MainForm.SIXCH.Extent.FixTo(Extent);
+  // we scrolled so we can go back with the line pen to width 2
+  // see procedure SCScrollViewCBChange why we might be at 1
+  if (MainForm.SIXTempValues.LinePen.Width = 1)
+   and MainForm.ScrollViewCB.Checked then
+  begin
+   for i:= 1 to 8 do
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).LinePen.Width:= 2;
+   MainForm.SIXTempValues.LinePen.Width:= 2;
+  end;
+ end;
 
  // if we are in the first run there are no previous values
  // and no slopes can be calculated
@@ -839,7 +851,7 @@ begin
  Result:= false;
  // propose a file name
  InNameCSV:= 'SIXMeasurements';
- if Overwrite = true then
+ if Overwrite then
  begin
   // proposal according to currently active tab
   if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then
@@ -849,7 +861,7 @@ begin
  end;
  CSVOutName:= MainForm.SaveHandling(InNameCSV, '.csv'); // opens file dialog
 
- if (CSVOutName <> '') and (FileExists(CSVOutName) = true) then
+ if (CSVOutName <> '') and FileExists(CSVOutName) then
  begin
   try
     stream:= TFileStream.Create(CSVOutName, fmCreate);
@@ -876,16 +888,25 @@ begin
 
   Result:= true;
  end;
-
 end;
 
 procedure TSIXControl.SCScrollViewCBChange(Sender: TObject);
 var
  Extent : TDoubleRect;
+ i : integer;
 begin
  if MainForm.ScrollViewCB.Checked = false then
  begin
   MainForm.ScrollIntervalSE.Enabled:= false;
+
+  // We might have many data points. And wwhen now the line thickess is not 1
+  // Windows will perform some calculations that slow down the display of the
+  // chart a lot. Therefore go down to 1.
+  for i:= 1 to 8 do
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LinePen.Width:= 1;
+  MainForm.SIXTempValues.LinePen.Width:= 1;
+
   // zoom back to normal
   // if no scrolling took place, we can just zoom out fully
   if MinExtentY = Infinity then
@@ -910,6 +931,8 @@ begin
   MainForm.ScrollIntervalSE.Enabled:= true;
   // also in case it is zoomed, enable scrolling
   wasZoomDragged:= false;
+  // we cannot go back to LinePen width 2 here because this would have an
+  // immediate effect. Thus first do it after the next scrolling occurs.
  end;
 end;
 
@@ -928,7 +951,7 @@ begin
  Result:= false;
  // propose a file name
  OutNameHelp:= 'Screenshot';
- if Overwrite = true then
+ if Overwrite then
  begin
   // proposal according to currently active tab
   if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then

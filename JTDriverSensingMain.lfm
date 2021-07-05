@@ -965,6 +965,7 @@ object MainForm: TMainForm
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
           AxisIndexY = 0
+          LinePen.Width = 2
         end
         object SIXCh1Results: TLineSeries
           Active = False
@@ -980,6 +981,7 @@ object MainForm: TMainForm
           Title = 'Channel 2'
           AxisIndexY = 0
           LinePen.Color = clYellow
+          LinePen.Width = 2
           Pointer.Style = psCircle
         end
         object SIXCh2Results: TLineSeries
@@ -997,6 +999,7 @@ object MainForm: TMainForm
           Title = 'Channel 3'
           AxisIndexY = 0
           LinePen.Color = clAqua
+          LinePen.Width = 2
         end
         object SIXCh3Results: TLineSeries
           Active = False
@@ -1013,6 +1016,7 @@ object MainForm: TMainForm
           Title = 'Channel 4'
           AxisIndexY = 0
           LinePen.Color = 33023
+          LinePen.Width = 2
         end
         object SIXCh4Results: TLineSeries
           Active = False
@@ -1029,6 +1033,7 @@ object MainForm: TMainForm
           Title = 'Channel 5'
           AxisIndexY = 0
           LinePen.Color = clRed
+          LinePen.Width = 2
         end
         object SIXCh5Results: TLineSeries
           Active = False
@@ -1045,6 +1050,7 @@ object MainForm: TMainForm
           Title = 'Channel 6'
           AxisIndexY = 0
           LinePen.Color = clLime
+          LinePen.Width = 2
         end
         object SIXCh6Results: TLineSeries
           Active = False
@@ -1060,6 +1066,7 @@ object MainForm: TMainForm
           Active = False
           AxisIndexY = 0
           LinePen.Color = clCream
+          LinePen.Width = 2
         end
         object SIXCh7Results: TLineSeries
           Active = False
@@ -1075,6 +1082,7 @@ object MainForm: TMainForm
           Active = False
           AxisIndexY = 0
           LinePen.Color = clFuchsia
+          LinePen.Width = 2
         end
         object SIXCh8Results: TLineSeries
           Active = False
@@ -1091,6 +1099,7 @@ object MainForm: TMainForm
           Title = 'Temperature'
           AxisIndexY = 2
           LinePen.Color = clMaroon
+          LinePen.Width = 2
         end
         object TopLine: TConstantLine
           Legend.Visible = False
