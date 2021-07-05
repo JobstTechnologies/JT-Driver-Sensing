@@ -801,7 +801,7 @@ begin
  x:= MainForm.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
  y:= MainForm.SIXCH.YGraphToImage(series.ListSource[ATool.PointIndex]^.Y);
 
- // Get hint text - just call the event handler of OnHint
+ // get hint text - just call the event handler of OnHint
  MainForm.ChartToolsetDataPointHintToolHint(ATool, APoint, HintText);
 
  HintWindow:= THintWindow.Create(nil);
@@ -813,11 +813,11 @@ begin
   HintWindow.Free;
  end;
 
- // Center hint horizontally relative to data point
+ // center hint horizontally relative to data point
  APoint.x:= x - HintWidth div 2;
- // Move hint 10 pixels above the "High" data point
+ // move hint 10 pixels above the "High" data point
  APoint.y:= y - HintHeight - 10;
- // Hint coordinates are relative to screen
+ // hint coordinates are relative to screen
  APoint:= MainForm.SIXCH.ClientToScreen(APoint);
 end;
 
@@ -845,7 +845,6 @@ var
  InNameCSV, line : string;
  stream : TStream;
  i: Integer;
- //dyp, dyn: Double;
 
 begin
  Result:= false;
@@ -899,7 +898,7 @@ begin
  begin
   MainForm.ScrollIntervalSE.Enabled:= false;
 
-  // We might have many data points. And wwhen now the line thickess is not 1
+  // We might have many data points. And when now the line thickess is not 1
   // Windows will perform some calculations that slow down the display of the
   // chart a lot. Therefore go down to 1.
   for i:= 1 to 8 do
@@ -940,7 +939,6 @@ procedure TSIXControl.SCSaveCSVResultBClick(Sender: TObject);
 begin
  CSVOutName:= '';
  SaveCSV(true, MainForm.ResultCHValues.Name);
- //SaveCSV(true, ResultCHAverages.Name);
 end;
 
 function TSIXControl.SaveScreenshot(Overwrite: Boolean; ChartName: string) : Boolean;
