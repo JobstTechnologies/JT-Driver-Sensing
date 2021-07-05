@@ -924,7 +924,7 @@ object MainForm: TMainForm
           item
             Intervals.NiceSteps = '0.5|1.0|2.0'
             Alignment = calBottom
-            Marks.Format = '%0:.2f'
+            Marks.Format = '%0:.3g'
             Marks.LabelBrush.Style = bsClear
             Marks.Style = smsCustom
             Minors = <>
@@ -935,7 +935,7 @@ object MainForm: TMainForm
           item
             Visible = False
             Alignment = calRight
-            Marks.Format = '%0:.2f'
+            Marks.Format = '%0:.4g'
             Marks.LabelBrush.Style = bsClear
             Marks.Style = smsCustom
             Minors = <>
@@ -7628,7 +7628,7 @@ object MainForm: TMainForm
           end        
           item
             Alignment = calBottom
-            Marks.Format = '%0:.2f'
+            Marks.Format = '%0:.3g'
             Marks.LabelBrush.Style = bsClear
             Marks.Style = smsCustom
             Minors = <>
