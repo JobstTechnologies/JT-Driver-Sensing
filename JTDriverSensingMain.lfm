@@ -7628,7 +7628,9 @@ object MainForm: TMainForm
           end        
           item
             Alignment = calBottom
+            Marks.Format = '%0:.2f'
             Marks.LabelBrush.Style = bsClear
+            Marks.Style = smsCustom
             Minors = <>
             Title.Visible = True
             Title.Caption = 'Time [min]'

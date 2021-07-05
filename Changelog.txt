@@ -1,5 +1,14 @@
 Changes
 
+from version 0.93 to 0.94
+
+bugfixes:
+- when the chart contained more than 20.000 data points the program began
+  to become slow
+- when the chart is not in scrolling mode the data range was not updated in
+  every case for the new data  
+
+
 from version 0.92 to 0.93
 
 improvement:
