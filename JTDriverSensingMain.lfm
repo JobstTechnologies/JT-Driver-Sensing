@@ -8348,6 +8348,7 @@ object MainForm: TMainForm
     end
   end
   object ColorDialog: TColorDialog
+    OnShow = ColorDialogShow
     Title = 'Select Chart Background Color'
     Color = clBlack
     CustomColors.Strings = (
