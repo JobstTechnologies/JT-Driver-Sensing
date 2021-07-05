@@ -2538,13 +2538,13 @@ begin
   OpenDialog.FileName:= ExtractFileName(InName);
  if OpenDialog.FileName <> '' then
   OpenDialog.FileName:= ExtractFileName(OpenDialog.FileName);
- if OpenDialog.Execute = true then
+ if OpenDialog.Execute then
  begin
   OutNameTemp:= OpenDialog.FileName;
   // add file extension if it is missing
   if (ExtractFileExt(OutNameTemp) <> FileExt) then
    Insert(FileExt, OutNameTemp, Length(OutNameTemp) + 1);
-  if not FileExists(OutNameTemp) = true then
+  if (not FileExists(OutNameTemp)) then
   begin
    MessageDlg('The file does not exist!', mtError, [mbOK], 0);
    result:= '';
@@ -2579,7 +2579,7 @@ begin
  if OutName <> '' then
  begin
   try
-   if FileExists(OutName) = true then
+   if FileExists(OutName) then
     begin
      SaveFileStream:= TFileStream.Create(OutName, fmOpenReadWrite);
      // the new command might be shorter, therefore delete its content
@@ -2818,7 +2818,7 @@ begin
  if InNameSensor <> '' then
  begin
   try
-   if FileExists(InNameSensor) = true then
+   if FileExists(InNameSensor) then
    begin
     SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenWrite or fmShareDenyNone);
     // the new command might be shorter, therefore delete its content
@@ -3109,14 +3109,14 @@ begin
   SaveDialog.FileName:= ExtractFileName(InName);
  if SaveDialog.FileName <> '' then
   SaveDialog.FileName:= ExtractFileName(SaveDialog.FileName);
- if SaveDialog.Execute = true then
+ if SaveDialog.Execute then
  begin
   OutNameTemp:= SaveDialog.FileName;
   // add file extension if it is missing
   if (ExtractFileExt(OutNameTemp) <> FileExt) then
    Insert(FileExt, OutNameTemp, Length(OutNameTemp) + 1);
 
-  if (FileExists(OutNameTemp) = true) and (FileExt = '.def') then
+  if FileExists(OutNameTemp) and (FileExt = '.def') then
   begin
    MessageDlgPos('The new definition file must have a unique filename'
     + LineEnding + 'to distinguish it from prior definition files.',
@@ -3124,7 +3124,7 @@ begin
    exit;
   end;
 
-  if FileExists(OutNameTemp) = true then
+  if FileExists(OutNameTemp) then
   begin
    with CreateMessageDialog // MessageDlg with mbNo as default
        ('Do you want to overwrite the existing file' + LineEnding
@@ -3153,7 +3153,7 @@ begin
   result:= OutNameTemp;
   // store last used name
   SaveDialog.FileName:= ExtractFileName(OutNameTemp);
- end; // end if SaveDialog.Execute = true
+ end; // end if SaveDialog.Execute
 
 end;
 

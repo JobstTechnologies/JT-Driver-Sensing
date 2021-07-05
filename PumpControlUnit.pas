@@ -87,7 +87,7 @@ begin
  for j:= 2 to StepNum-1 do
  begin
   if (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
-      as TCheckBox).Checked = True then
+      as TCheckBox).Checked then
    (MainForm.FindComponent('Step' + IntToStr(j+1) + 'TS')
     as TTabSheet).TabVisible:= True
   else
@@ -1542,7 +1542,7 @@ begin
   for j:= 2 to StepNum-1 do
   begin
    if (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
-       as TCheckBox).Checked = True then
+       as TCheckBox).Checked then
     (MainForm.FindComponent('Step' + IntToStr(j+1) + 'TS')
      as TTabSheet).TabVisible:= True
    else
@@ -1642,7 +1642,7 @@ begin
   for j:= 2 to StepNum-1 do
   begin
    if (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
-       as TCheckBox).Checked = True then
+       as TCheckBox).Checked then
     (MainForm.FindComponent('Step' + IntToStr(j+1) + 'TS')
      as TTabSheet).TabVisible:= True
   else
