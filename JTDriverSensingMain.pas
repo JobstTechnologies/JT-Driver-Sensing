@@ -774,7 +774,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.93';
+  Version : string = '0.94';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
@@ -1686,9 +1686,9 @@ begin
  // thus read the right x-position of the current chart position in
  // respect to the one when the zooming started
  SIXControl.wasZoomDragged:= SIXCH.IsZoomed;
- // just for information: When a new datapoint is set, the extent is updated
- // and that would be a zooming as well. Therefore we can only take the
- // state after a ZoomDragging.
+ // for information: We purposely don't rely later on SIXCH.IsZoomed
+ // because after calibration and turning on/off scrolling we want to
+ // get out of the isZoomed mode and .IsZoomed cannot be changed by code.
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);
