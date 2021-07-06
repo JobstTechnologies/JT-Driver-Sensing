@@ -256,7 +256,7 @@ procedure TChartAxisFrame.cbAutoMaxChange(Sender: TObject);
 begin
   FAxis.Range.UseMax := not cbAutoMax.Checked;
   seMaximum.Visible := FAxis.Range.UseMax;
-  // setting only maxiimum but no minimum does not work
+  // setting only maximum but no minimum does not work
   // therefore assure minimum is set too
   if cbAutoMax.Checked and (not cbAutoMin.Checked) then
    cbAutoMin.Checked:= true;
@@ -268,7 +268,7 @@ procedure TChartAxisFrame.cbAutoMinChange(Sender: TObject);
 begin
   FAxis.Range.UseMin := not cbAutoMin.Checked;
   seMinimum.Visible := FAxis.Range.UseMin;
-  // setting only maxiimum but no minimum does not work
+  // setting only maximum but no minimum does not work
   // therefore assure minimum is set too
   if cbAutoMin.Checked and (not cbAutoMax.Checked) then
    cbAutoMax.Checked:= true;
@@ -402,6 +402,8 @@ begin
     seMinimum.Value := Axis.Range.Min
   else
    seMinimum.Value := mn;
+  seMaximum.MaxValue := MaxDouble;
+  seMinimum.MinValue := -MaxDouble;
   cbAutoMax.Checked := not Axis.Range.UseMax;
   cbAutoMin.Checked := not Axis.Range.UseMin;
   cbInverted.Checked := Axis.Inverted;
