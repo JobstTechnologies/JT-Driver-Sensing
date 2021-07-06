@@ -1,5 +1,17 @@
 Changes
 
+from version 0.94 to 0.95
+
+improvement:
+- to change the background color of a chart, right-click on the chart
+  The advantage is that now every left double-click on a chart axis will
+  open the axis settings dialog and not sometimes the color dialog.
+  
+bugfix:
+- when temperature was displayed in the SIX chart it axis range was
+  sometimes incorrect
+
+
 from version 0.93 to 0.94
 
 bugfixes:
