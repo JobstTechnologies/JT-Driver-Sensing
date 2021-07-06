@@ -745,6 +745,8 @@ type
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
     procedure ChartDblClick(Sender: TObject);
+    procedure SIXCHMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift{%H-}: TShiftState; X{%H-}, Y{%H-}: Integer);
     procedure StartFitBClick(Sender: TObject);
     procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
@@ -2999,6 +3001,15 @@ end;
 procedure TMainForm.ChartDblClick(Sender: TObject);
 begin
  SIXControl.SCChartDblClick(Sender);
+end;
+
+procedure TMainForm.SIXCHMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ // start the color selection on right-click because left double-click at the
+ // axes often triggered the color dialog
+ if Button = mbRight then
+  ChartDblClick(Sender);
 end;
 
 procedure TMainForm.StartFitBClick(Sender: TObject);
