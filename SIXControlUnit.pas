@@ -43,7 +43,7 @@ type
     procedure SCAnOutOfXLEChange(Sender: TObject);
     procedure SCAnOutOnOffTBChange(Sender: TObject);
     procedure SCCalibrateTBChange(Sender: TObject);
-    procedure SCChartDblClick(Sender: TObject);
+    procedure SCChangeBackColorMIClick(Sender: TObject);
 
   private
 
@@ -1018,19 +1018,16 @@ begin
  FitForm.Show;
 end;
 
-procedure TSIXControl.SCChartDblClick(Sender: TObject);
-var
- SenderName : string;
+procedure TSIXControl.SCChangeBackColorMIClick(Sender: TObject);
 begin
- SenderName:= (Sender as TComponent).Name;
- if SenderName = 'SIXCH' then
+ if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then
  begin
   // start with current color
   MainForm.ColorDialog.Color:= MainForm.SIXCH.BackColor;
   if MainForm.ColorDialog.Execute then
    MainForm.SIXCH.BackColor:= MainForm.ColorDialog.Color;
  end
- else if SenderName = 'ResultCH' then
+ else if MainForm.MainPC.ActivePage = MainForm.ResultTS then
  begin
   MainForm.ColorDialog.Color:= MainForm.ResultCH.BackColor;
   if MainForm.ColorDialog.Execute then

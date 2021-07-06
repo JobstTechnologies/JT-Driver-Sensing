@@ -961,7 +961,7 @@ object MainForm: TMainForm
         Toolset = ChartToolset
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
-        OnMouseDown = SIXCHMouseDown
+        PopupMenu = ContextMenu
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
           AxisIndexY = 0
@@ -7661,7 +7661,7 @@ object MainForm: TMainForm
         Title.Visible = True
         Toolset = ChartToolset
         Anchors = [akTop, akLeft, akRight, akBottom]
-        OnDblClick = ChartDblClick
+        PopupMenu = ContextMenu
         object ResultCHValues: TLineSeries
           Legend.Format = 'Measured values'
           LinePen.Color = clRed
@@ -8385,5 +8385,13 @@ object MainForm: TMainForm
     )
     Left = 896
     Top = 568
+  end
+  object ContextMenu: TPopupMenu
+    Left = 896
+    Top = 512
+    object ChangeBackColorMI: TMenuItem
+      Caption = 'Change Background Color'
+      OnClick = ChangeBackColorMIClick
+    end
   end
 end

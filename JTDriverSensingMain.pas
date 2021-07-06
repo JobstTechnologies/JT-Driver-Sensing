@@ -67,6 +67,8 @@ type
     Label69: TLabel;
     LoadedDefFileM: TMemo;
     LoadedDefFileTestM: TMemo;
+    ChangeBackColorMI: TMenuItem;
+    ContextMenu: TPopupMenu;
     ScrollViewP: TPanel;
     CalibrateP: TPanel;
     TopLine: TConstantLine;
@@ -677,6 +679,7 @@ type
     procedure AnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure AppearanceXBBClick(Sender: TObject);
     procedure CalibrateTBChange(Sender: TObject);
+    procedure ChangeBackColorMIClick(Sender: TObject);
     procedure ChannelXLEChange(Sender: TObject);
     procedure ChannelXCBChange(Sender: TObject);
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
@@ -744,9 +747,6 @@ type
     procedure SIXBiosensorsMIClick(Sender: TObject);
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
-    procedure ChartDblClick(Sender: TObject);
-    procedure SIXCHMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift{%H-}: TShiftState; X{%H-}, Y{%H-}: Integer);
     procedure StartFitBClick(Sender: TObject);
     procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
@@ -776,7 +776,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.94';
+  Version : string = '0.95';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
@@ -1626,6 +1626,11 @@ end;
 procedure TMainForm.CalibrateTBChange(Sender: TObject);
 begin
  SIXControl.SCCalibrateTBChange(Sender);
+end;
+
+procedure TMainForm.ChangeBackColorMIClick(Sender: TObject);
+begin
+ SIXControl.SCChangeBackColorMIClick(Sender);
 end;
 
 procedure TMainForm.ChannelXLEChange(Sender: TObject);
@@ -2996,20 +3001,6 @@ begin
    SIXCH.XGraphToImage(RightLine.Position){%H-},
    SIXCH.YGraphToImage(BottomLine.Position){%H-});
  end;
-end;
-
-procedure TMainForm.ChartDblClick(Sender: TObject);
-begin
- SIXControl.SCChartDblClick(Sender);
-end;
-
-procedure TMainForm.SIXCHMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
- // start the color selection on right-click because left double-click at the
- // axes often triggered the color dialog
- if Button = mbRight then
-  ChartDblClick(Sender);
 end;
 
 procedure TMainForm.StartFitBClick(Sender: TObject);
