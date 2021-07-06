@@ -762,23 +762,42 @@ end;
 function TSIXControl.AdjustExtent : TDoubleRect;
 var
   i: Integer;
-  dummyValue : double;
+  dummyValue, dummyMax, dummyMin : double;
   Extent: TDoubleRect;
 begin
   // since all series have the same time we can take a series of our choice
   Extent:= MainForm.SIXCh1Values.Extent;
+  dummyMax:= -infinity;
+  dummyMin:= infinity;
   // determine the y-range
   for i:= 1 to 8 do
   begin
+   if (not (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+                 as TLineSeries).Active) then
+    continue; // only acive series count
    dummyValue:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
                  as TLineSeries).MaxYValue;
    if dummyValue > Extent.b.y then
     Extent.b.y:= dummyValue;
+   if dummyValue > dummyMax then
+    dummyMax:= dummyValue;
    dummyValue:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
                  as TLineSeries).MinYValue;
    if dummyValue < Extent.a.y then
     Extent.a.y:= dummyValue;
+   if dummyValue < dummyMin then
+    dummyMin:= dummyValue;
   end;
+  // the initial series might not be active thus check the y-range of the
+  // active series
+  if dummyMax < Extent.b.y then
+   Extent.b.y:= dummyMax;
+  if dummyMin > Extent.a.y then
+   Extent.a.y:= dummyMin;
+  // we transform the temperature to a range of 0-1, therefore Extent.b.y
+  // must be at least 1
+  if (MainForm.SIXTempValues.Active) and (Extent.b.y < 1) then
+   Extent.b.y:= 1;
   // store the y-range since this is necessary when turning off scrolling
   MinExtentY:= Extent.a.y;
   MaxExtentY:= Extent.b.y;
@@ -998,7 +1017,6 @@ var
  SenderName : string;
 begin
  SenderName:= (Sender as TComponent).Name;
- MainForm.ColorDialog.Title:= 'Select Chart Background Color';
  if SenderName = 'SIXCH' then
  begin
   // start with current color
