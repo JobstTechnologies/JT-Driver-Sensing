@@ -1687,6 +1687,8 @@ end;
 
 procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
+var
+ i : integer;
 begin
  // chart scrolling should not be performed when the user zoomed in
  // thus read the right x-position of the current chart position in
@@ -1695,6 +1697,19 @@ begin
  // for information: We purposely don't rely later on SIXCH.IsZoomed
  // because after calibration and turning on/off scrolling we want to
  // get out of the isZoomed mode and .IsZoomed cannot be changed by code.
+
+ // when not zoomed / zoomed out then we must assure that the line pen is 1
+ // otherwise we would slow down the program a lot when the chart has
+ // > 20k points, see procedure SCScrollViewCBChange for the reason
+ if (not SIXCH.IsZoomed) and (SIXTempValues.LinePen.Width = 2)
+  and ScrollViewCB.Checked
+  and (SIXControl.timeCounter > ScrollIntervalSE.Value/60) then
+ begin
+  for i:= 1 to 8 do
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LinePen.Width:= 1;
+  SIXTempValues.LinePen.Width:= 1;
+ end;
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);

@@ -920,6 +920,7 @@ object MainForm: TMainForm
             Title.Visible = True
             Title.Caption = 'Measurement Value [mmol/l]'
             Title.LabelBrush.Style = bsClear
+            Transformations = ChartAxisTransformValues
           end        
           item
             Intervals.NiceSteps = '0.5|1.0|2.0'

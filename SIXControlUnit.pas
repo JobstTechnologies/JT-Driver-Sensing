@@ -52,7 +52,6 @@ type
     function SaveScreenshot(Overwrite: Boolean; ChartName: string): Boolean;
     function ParseLine(Line: string; channel: Byte): double;
     function ParseDefFile(InFile: string): Boolean;
-    function AdjustExtent : TDoubleRect;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -498,9 +497,6 @@ begin
  end;
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
- // adjust the chart extent so that all new data fit in
- Extent:= AdjustExtent;
-
  // scroll axis if desired by the user
  ScrollInterval:= MainForm.ScrollIntervalSE.Value/60;
  // don't scroll when user zoomed in and when in calibration mode
@@ -508,21 +504,13 @@ begin
     and (not wasZoomDragged) and (not inCalibration)
     and (timeCounter > ScrollInterval) then
  begin
-  // We could scroll by setting the LogicalExtent to the x-range of the
-  // ScrollInterval. But when the user zooms out, he will see the full
-  // chart extent unless the next scrolling takes place.
-  // To avoid this, we we need to restrict the extent to the
-  // ScrollInterval and to the max range of the Y values of all series.
-  // Then zooming out can then only jump back to this extent.
-
-  // get the desired ScrollInterval x-range
+  Extent:= MainForm.SIXCH.GetFullExtent;
   Extent.a.x:= Extent.b.x - ScrollInterval;
+  MainForm.SIXCH.LogicalExtent:= Extent;
  end;
 
  if (not  wasZoomDragged) and (not inCalibration) then
  begin
-  // fix the extent to the determined x and y-range
-  MainForm.SIXCH.Extent.FixTo(Extent);
   // we scrolled so we can go back with the line pen to width 2
   // see procedure SCScrollViewCBChange why we might be at 1
   if (MainForm.SIXTempValues.LinePen.Width = 1)
@@ -757,54 +745,6 @@ begin
  end; // end for i:= 1 to 4
  end; // end if MainForm.UseAnOutCB.checked
 
-end;
-
-function TSIXControl.AdjustExtent : TDoubleRect;
-var
-  i: Integer;
-  dummyValue, dummyMax, dummyMin : double;
-  Extent: TDoubleRect;
-begin
-  // since all series have the same time we can take a series of our choice
-  Extent:= MainForm.SIXCh1Values.Extent;
-  dummyMax:= -infinity;
-  dummyMin:= infinity;
-  // determine the y-range
-  for i:= 1 to 8 do
-  begin
-   if (not (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-                 as TLineSeries).Active) then
-    continue; // only acive series count
-   dummyValue:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-                 as TLineSeries).MaxYValue;
-   if dummyValue > Extent.b.y then
-    Extent.b.y:= dummyValue;
-   if dummyValue > dummyMax then
-    dummyMax:= dummyValue;
-   dummyValue:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-                 as TLineSeries).MinYValue;
-   if dummyValue < Extent.a.y then
-    Extent.a.y:= dummyValue;
-   if dummyValue < dummyMin then
-    dummyMin:= dummyValue;
-  end;
-  // the initial series might not be active thus check the y-range of the
-  // active series
-  if dummyMax < Extent.b.y then
-   Extent.b.y:= dummyMax;
-  if dummyMin > Extent.a.y then
-   Extent.a.y:= dummyMin;
-  // we transform the temperature to a range of 0-1, therefore the
-  // entent's y must be in that range too
-  if (MainForm.SIXTempValues.Active) and (Extent.b.y < 1) then
-   Extent.b.y:= 1;
-  if (MainForm.SIXTempValues.Active) and (Extent.a.y > 0) then
-   Extent.a.y:= 0;
-  // store the y-range since this is necessary when turning off scrolling
-  MinExtentY:= Extent.a.y;
-  MaxExtentY:= Extent.b.y;
-
-  Result:= Extent;
 end;
 
 procedure TSIXControl.SCChartToolsetDataPointHintToolHintPosition(
