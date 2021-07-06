@@ -794,10 +794,12 @@ begin
    Extent.b.y:= dummyMax;
   if dummyMin > Extent.a.y then
    Extent.a.y:= dummyMin;
-  // we transform the temperature to a range of 0-1, therefore Extent.b.y
-  // must be at least 1
+  // we transform the temperature to a range of 0-1, therefore the
+  // entent's y must be in that range too
   if (MainForm.SIXTempValues.Active) and (Extent.b.y < 1) then
    Extent.b.y:= 1;
+  if (MainForm.SIXTempValues.Active) and (Extent.a.y > 0) then
+   Extent.a.y:= 0;
   // store the y-range since this is necessary when turning off scrolling
   MinExtentY:= Extent.a.y;
   MaxExtentY:= Extent.b.y;
@@ -920,10 +922,14 @@ begin
   // We might have many data points. And when now the line thickess is not 1
   // Windows will perform some calculations that slow down the display of the
   // chart a lot. Therefore go down to 1.
-  for i:= 1 to 8 do
-   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).LinePen.Width:= 1;
-  MainForm.SIXTempValues.LinePen.Width:= 1;
+  // but only if there are yet enough values
+  if timeCounter > MainForm.ScrollIntervalSE.Value/60 then
+  begin
+   for i:= 1 to 8 do
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).LinePen.Width:= 1;
+   MainForm.SIXTempValues.LinePen.Width:= 1;
+  end;
 
   // zoom back to normal
   // if no scrolling took place, we can just zoom out fully
