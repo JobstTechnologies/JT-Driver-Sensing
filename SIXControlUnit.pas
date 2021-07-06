@@ -754,15 +754,22 @@ var
  x, y, HintWidth, HintHeight : Integer;
  rect : TRect;
  HintWindow : THintWindow;
- HintText : string = '';
+ HintText, SeriesName : string;
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  series:= ATool.Series as TLineSeries;
+ SeriesName:= ATool.Series.Name;
  // get image coordinates of the point
  x:= MainForm.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
- y:= MainForm.SIXCH.YGraphToImage(
-      MainForm.SIXCH.LeftAxis.GetTransform.AxisToGraph(
-       series.ListSource[ATool.PointIndex]^.Y));
+ // all series except of SIXTempValues are connected to the left axis
+ if SeriesName <> 'SIXTempValues' then
+  y:= MainForm.SIXCH.YGraphToImage(
+       MainForm.SIXCH.AxisList[0].GetTransform.AxisToGraph(
+        series.ListSource[ATool.PointIndex]^.Y))
+ else
+  y:= MainForm.SIXCH.YGraphToImage(
+       MainForm.SIXCH.AxisList[2].GetTransform.AxisToGraph(
+        series.ListSource[ATool.PointIndex]^.Y));
 
  // get hint text - just call the event handler of OnHint
  MainForm.ChartToolsetDataPointHintToolHint(ATool, APoint, HintText);
