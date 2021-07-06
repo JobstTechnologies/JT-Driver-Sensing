@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Spin,
-  Buttons, ExtCtrls, TAChartListbox, TALegend, TACustomSeries, Math,
+  Buttons, ExtCtrls, TAChartListbox, TALegend, TACustomSeries, TAChartUtils,
+  Math,
   // custom forms
   JTDriverSensingMain;
 
@@ -31,6 +32,7 @@ type
    ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
   procedure SIXCHCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
   procedure SubstanceGBClick(Sender: TObject);
+  procedure ValueFSEChange(Sender: TObject);
  private
 
  public
@@ -98,6 +100,12 @@ begin
  CalculateMean;
 end;
 
+procedure TCalibrationF.ValueFSEChange(Sender: TObject);
+begin
+ // recalculate mean with the new calibration value
+ CalculateMean;
+end;
+
 procedure TCalibrationF.CalculateMean;
 var
  selectedSeries : TChartSeries;
@@ -120,6 +128,10 @@ begin
  x2:= Max(MainForm.LeftLine.Position, MainForm.RightLine.Position);
  y1:= Min(MainForm.TopLine.Position, MainForm.BottomLine.Position);
  y2:= Max(MainForm.TopLine.Position, MainForm.BottomLine.Position);
+ // since we have an axis transformation the positions are in respect
+ // to the range 0-1 so we need to remap them
+ y1:= MainForm.SIXCH.LeftAxis.GetTransform.GraphToAxis(y1);
+ y2:= MainForm.SIXCH.LeftAxis.GetTransform.GraphToAxis(y2);
 
  for i:= 0 to SIXCHCLB.SeriesCount-1 do
  begin

@@ -7,9 +7,11 @@ improvement:
   The advantage is that now every left double-click on a chart axis will
   open the axis settings dialog and not sometimes the color dialog.
   
-bugfix:
+bugfixes:
 - when temperature was displayed in the SIX chart it axis range was
   sometimes incorrect
+- when the calibration concentration was changed in the dialog it was not
+  always taken into account
 
 
 from version 0.93 to 0.94

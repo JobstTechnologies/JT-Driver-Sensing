@@ -50,6 +50,7 @@ object CalibrationF: TCalibrationF
       Width = 64
       Alignment = taRightJustify
       MinValue = 0.01
+      OnChange = ValueFSEChange
       TabOrder = 0
       Value = 1
     end
