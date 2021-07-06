@@ -760,7 +760,9 @@ begin
  series:= ATool.Series as TLineSeries;
  // get image coordinates of the point
  x:= MainForm.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
- y:= MainForm.SIXCH.YGraphToImage(series.ListSource[ATool.PointIndex]^.Y);
+ y:= MainForm.SIXCH.YGraphToImage(
+      MainForm.SIXCH.LeftAxis.GetTransform.AxisToGraph(
+       series.ListSource[ATool.PointIndex]^.Y));
 
  // get hint text - just call the event handler of OnHint
  MainForm.ChartToolsetDataPointHintToolHint(ATool, APoint, HintText);

@@ -1662,8 +1662,10 @@ end;
 procedure TMainForm.ChartToolsetDataPointHintToolHint(
   ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
 begin
- AHint:= Format('time = %.2f,' + LineEnding + 'value = %.2f',
-         [ATool.NearestGraphPoint.X, ATool.NearestGraphPoint.Y]);
+ AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
+         [ATool.NearestGraphPoint.X,
+          MainForm.SIXCH.LeftAxis.GetTransform.GraphToAxis(
+           ATool.NearestGraphPoint.Y)]);
 end;
 
 procedure TMainForm.ChartToolsetDataPointHintToolHintPosition(
