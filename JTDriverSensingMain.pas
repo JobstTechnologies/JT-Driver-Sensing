@@ -1879,9 +1879,18 @@ begin
     // don't show the blank channels by default
     (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
      as TCheckBox).Checked:= false;
+    // change caption
+    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
    end
    else
+   begin
     SIXControl.isBlank[i]:= false;
+    // change caption because it might have been a bank channel in a previous
+    // def file
+    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+   end;
   end;
   // output all non-blank channels
   for i:= 1 to SIXControl.NumChannels do
