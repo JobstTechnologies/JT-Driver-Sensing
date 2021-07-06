@@ -6,13 +6,13 @@ improvements:
 - to change the background color of a chart, right-click on the chart
   The advantage is that now every left double-click on a chart axis will
   open the axis settings dialog and not sometimes the color dialog.
-- when changing chart axis properties (by double-clicking on an axis)
-  the setting for min/max show now as preset the current min/max values 
+- when changing the chart axis properties (by double-clicking on an axis)
+  the settings for min/max show now as preset the current min/max values 
 
 bugfixes:
-- when temperature was displayed in the SIX chart it axis range was
+- when temperature was displayed in the SIX chart its axis range was
   sometimes incorrect
-- when the calibration concentration was changed in the dialog it was not
+- when the calibration concentration was changed in the dialog, it was not
   always taken into account
 
 
