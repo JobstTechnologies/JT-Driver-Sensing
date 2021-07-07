@@ -1878,35 +1878,35 @@ begin
  (FindComponent('Channel' + IntToStr(i) + 'TestGB') as TGroupBox).Caption:=
   (FindComponent('Channel' + IntToStr(i) + 'GB') as TGroupBox).Caption;
 
+ // determine what are the blank channels
+ for i:= 1 to 6 do
+ begin
+  if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
+   or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
+  begin
+   SIXControl.isBlank[i]:= true;
+   // don't show the blank channels by default
+   (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+    as TCheckBox).Checked:= false;
+   // change caption
+   (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+  end
+  else
+  begin
+   SIXControl.isBlank[i]:= false;
+   // change caption because it might have been a blank in previous def file
+   (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+  end;
+ end;
+
  // write a new header line to the output file
  if HaveSensorFileStream then
  begin
   HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
    '.def"' + LineEnding;
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-  // determine what are the blank channels
-  for i:= 1 to 6 do
-  begin
-   if (Pos('Blank', SIXControl.HeaderStrings[i]) <> 0)
-    or (Pos('blank', SIXControl.HeaderStrings[i]) <> 0) then
-   begin
-    SIXControl.isBlank[i]:= true;
-    // don't show the blank channels by default
-    (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
-     as TCheckBox).Checked:= false;
-    // change caption
-    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
-   end
-   else
-   begin
-    SIXControl.isBlank[i]:= false;
-    // change caption because it might have been a bank channel in a previous
-    // def file
-    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
-   end;
-  end;
   // output all non-blank channels
   for i:= 1 to SIXControl.NumChannels do
    if not SIXControl.isBlank[i] then
