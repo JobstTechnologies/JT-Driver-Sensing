@@ -1562,6 +1562,12 @@ begin
   // activate the rectangle selection
   MainForm.LineDragTool.Shift:= [ssLeft];
   MainForm.RectangleSelectionTool.Shift:= [ssLeft];
+
+  // deactivate to be able to switch to other tab when calibration not finished
+  // thus deactivate all tabs except of the current one
+  for i:= 0 to MainForm.MainPC.PageCount-1 do
+   MainForm.MainPC.Pages[i].enabled:= false;
+  MainForm.MainPC.Pages[1].enabled:= true;
  end
  else
  begin
@@ -1745,7 +1751,9 @@ begin
   // The user might have zoomed in, then calibrated and is wondering why nothing
   // happens afterwards. Therefore jump out of the wasZoomDragged mode.
   wasZoomDragged:= false;
-
+  // enable tab switching again
+  for i:= 0 to MainForm.MainPC.PageCount-1 do
+   MainForm.MainPC.Pages[i].enabled:= true;
  end;
 
 end;
