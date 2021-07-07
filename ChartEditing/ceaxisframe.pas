@@ -95,6 +95,7 @@ type
     procedure seTitleDistanceChange(Sender: TObject);
   private
     FAxis: TChartAxis;
+    FAxisMin, FAxisMax: Double;
     FTitleFontFrame: TChartFontFrame;
     FTitleShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame;
     FLabelFontFrame: TChartFontFrame;
@@ -119,6 +120,8 @@ type
     procedure CalculatePreferredSize(var PreferredWidth, PreferredHeight: integer;
       {%H-}WithThemeSpace: Boolean); override;
     function GetChart: TChart;
+    function GetRealAxisMax: Double;
+    function GetRealAxisMin: Double;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Prepare(Axis: TChartAxis);
@@ -348,6 +351,22 @@ begin
   Result := TChartAxisEditorPage(PageControl.ActivePageIndex);
 end;
 
+function TChartAxisFrame.GetRealAxisMax: Double;
+begin
+  if cbAutoMax.Checked then
+    Result := FAxisMax
+  else
+    Result := seMaximum.Value;
+end;
+
+function TChartAxisFrame.GetRealAxisMin: Double;
+begin
+  if cbAutoMin.Checked then
+    Result := FAxisMin
+  else
+    Result := seMinimum.Value;
+end;
+
 procedure TChartAxisFrame.LabelChangedHandler(Sender: TObject);
 begin
   GetChart.Invalidate;
@@ -369,8 +388,6 @@ begin
 end;
 
 procedure TChartAxisFrame.Prepare(Axis: TChartAxis);
-var
-  mn, mx: Double;
 begin
   FAxis := Axis;
 
@@ -393,15 +410,9 @@ begin
   end;
 
   // Page "Labels"
-  GetChart.GetAxisRange(Axis, mn, mx);
-  if Axis.Range.UseMax then
-    seMaximum.Value := Axis.Range.Max
-  else
-   seMaximum.Value := mx;
-  if Axis.Range.UseMin then
-    seMinimum.Value := Axis.Range.Min
-  else
-   seMinimum.Value := mn;
+  GetChart.GetAllSeriesAxisLimits(Axis, FAxisMin, FAxisMax);
+  seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max, FAxisMax);
+  seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min, FAxisMin);
   seMaximum.MaxValue := MaxDouble;
   seMinimum.MinValue := -MaxDouble;
   cbAutoMax.Checked := not Axis.Range.UseMax;
