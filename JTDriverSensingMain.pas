@@ -1656,7 +1656,7 @@ end;
 procedure TMainForm.ChartToolsetAxisClickToolClick(Sender: TChartTool;
   Axis: TChartAxis; HitInfo: TChartAxisHitTests);
 begin
- SIXControl.SCChartToolsetAxisClickTool1Click(Sender, Axis, HitInfo);
+ SIXControl.SCChartToolsetAxisClickToolClick(Sender, Axis, HitInfo);
 end;
 
 procedure TMainForm.ChartToolsetDataPointHintToolHint(

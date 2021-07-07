@@ -34,7 +34,7 @@ type
       Title: TChartTitle);
     procedure SCChartToolsetLegendClickTool1Click(Sender: TChartTool;
       Legend: TChartLegend);
-    procedure SCChartToolsetAxisClickTool1Click(Sender: TChartTool;
+    procedure SCChartToolsetAxisClickToolClick(Sender: TChartTool;
       AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
     procedure SCAppearanceXBBClick(Sender: TObject);
     procedure SCChannelXOnOffCBChange(Sender: TObject);
@@ -1215,7 +1215,7 @@ begin
  end;
 end;
 
-procedure TSIXControl.SCChartToolsetAxisClickTool1Click(Sender: TChartTool;
+procedure TSIXControl.SCChartToolsetAxisClickToolClick(Sender: TChartTool;
   AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
 var
   page : TChartAxisEditorPage;
@@ -1237,6 +1237,9 @@ begin
   editor.Prepare(AnAxis, 'Edit chart axis "%s"');
   editor.Page:= page;
   editor.ShowModal;
+  // assure that the data scrolling continues since calling the dialog
+  // triggered ChartToolsetZoomDragToolAfterMouseUp
+  wasZoomDragged:= false;
  finally
   editor.Free;
  end;
