@@ -378,7 +378,7 @@ begin
   else
   begin
    calibFactorA:= calibValue / yMeanA;
-   calibFactorB:= calibFactorA * yMeanA / yMeanB;
+   calibFactorB:= calibValue / yMeanB;
   end;
 
  end;
