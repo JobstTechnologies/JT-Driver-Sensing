@@ -754,7 +754,8 @@ var
  x, y, HintWidth, HintHeight : Integer;
  rect : TRect;
  HintWindow : THintWindow;
- HintText, SeriesName : string;
+ HintText : string = '';
+ SeriesName : string;
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  series:= ATool.Series as TLineSeries;
@@ -1506,7 +1507,7 @@ procedure TSIXControl.SCCalibrateTBChange(Sender: TObject);
    used as calibration value}
 var
  extent : TDoubleRect;
- height, width, calibFactorA, calibFactorB : double;
+ height, width : double;
  center : TDoublePoint;
  OutName, DummyString, HeaderLine : string;
  StringList : TStringList;
@@ -1561,7 +1562,7 @@ begin
   // if user pressed OK and there is a valid mean value, write a new .def file
   if CalibrationF.ModalResult = mrOK then
   begin
-   if calibChannel = 0 then // something went wrong
+   if calibChannelA = 0 then // something went wrong
    begin
     // move lines back to infinity
     MainForm.TopLine.Position:= Infinity;
@@ -1587,83 +1588,80 @@ begin
      // the first line needs to be changed
      // we get the calibrated channel and the factor for the gain
      StringArray:= StringList[0].Split(',');
-     if calibChannel < 7 then // we can change the single channel
+     if calibChannelB = 0 then // we can change the single channel
      begin
       // the new gain is the current one times the factor
       if MainForm.RawCurrentCB.Checked then
        // then we must take the temperature correction into account
-       calibFactor:= calibFactor * GainsRaw[calibChannel]
-                     * exp(TemperGains[calibChannel] / 100
+       calibFactorA:= calibFactorA * GainsRaw[calibChannelA]
+                     * exp(TemperGains[calibChannelA] / 100
                      * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
       else
        // the existing gain includes the temperature correction
-       calibFactor:= calibFactor * Gains[calibChannel];
-      StringArray[calibChannel-1]:= FloatToStr(RoundTo(calibFactor, -4));
+       calibFactorA:= calibFactorA * Gains[calibChannelA];
+      StringArray[calibChannelA-1]:= FloatToStr(RoundTo(calibFactorA, -4));
      end
      else // for channel operations
      begin
-      if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#2, #5)' then
+      if calibChannelA = 2 then
       begin
        if MainForm.RawCurrentCB.Checked then
        begin
         // then we must take the temperature correction into account
-        calibFactorA:= calibFactor * GainsRaw[2]
+        calibFactorA:= calibFactorA * GainsRaw[2]
                       * exp(TemperGains[2] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-        calibFactorB:= calibFactor * GainsRaw[5]
+        calibFactorB:= calibFactorB * GainsRaw[5]
                       * exp(TemperGains[5] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
        end
        else
        begin
         // the existing gain includes the temperature correction
-        calibFactorA:= calibFactor * Gains[2];
-        calibFactorB:= calibFactor * Gains[5];
+        calibFactorA:= calibFactorA * Gains[2];
+        calibFactorB:= calibFactorB * Gains[5];
        end;
        StringArray[2-1]:= FloatToStr(RoundTo(calibFactorA, -4));
        StringArray[5-1]:= FloatToStr(RoundTo(calibFactorB, -4));
       end
-      else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#3, #6)' then
+      else if calibChannelA = 3 then
       begin
        if MainForm.RawCurrentCB.Checked then
        begin
         // then we must take the temperature correction into account
-        calibFactorA:= calibFactor * GainsRaw[3]
+        calibFactorA:= calibFactorA * GainsRaw[3]
                       * exp(TemperGains[3] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-        calibFactorB:= calibFactor * GainsRaw[6]
+        calibFactorB:= calibFactorB * GainsRaw[6]
                       * exp(TemperGains[6] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
        end
        else
        begin
         // the existing gain includes the temperature correction
-        calibFactorA:= calibFactor * Gains[3];
-        calibFactorB:= calibFactor * Gains[6];
+        calibFactorA:= calibFactorA * Gains[3];
+        calibFactorB:= calibFactorB * Gains[6];
        end;
        StringArray[3-1]:= FloatToStr(RoundTo(calibFactorA, -4));
        StringArray[6-1]:= FloatToStr(RoundTo(calibFactorB, -4));
       end
-      else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#1, #4)' then
+      else if calibChannelA = 1 then
       begin
        if MainForm.RawCurrentCB.Checked then
        begin
         // then we must take the temperature correction into account
-        calibFactorA:= calibFactor * GainsRaw[1]
+        calibFactorA:= calibFactorA * GainsRaw[1]
                       * exp(TemperGains[1] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-        calibFactorB:= calibFactor * GainsRaw[4]
+        calibFactorB:= calibFactorB * GainsRaw[4]
                       * exp(TemperGains[4] / 100
                       * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
        end
        else
        begin
         // the existing gain includes the temperature correction
-        calibFactorA:= calibFactor * Gains[1];
-        calibFactorB:= calibFactor * Gains[4];
+        calibFactorA:= calibFactorA * Gains[1];
+        calibFactorB:= calibFactorB * Gains[4];
        end;
        StringArray[1-1]:= FloatToStr(RoundTo(calibFactorA, -4));
        StringArray[4-1]:= FloatToStr(RoundTo(calibFactorB, -4));
@@ -1730,7 +1728,7 @@ begin
   MainForm.LeftLine.Position:= -Infinity;
   MainForm.RightLine.Position:= Infinity;
   //reset calibChannel
-  calibChannel:= 0;
+  calibChannelA:= 0;
   // The user might have zoomed in, then calibrated and is wondering why nothing
   // happens afterwards. Therefore jump out of the wasZoomDragged mode.
   wasZoomDragged:= false;

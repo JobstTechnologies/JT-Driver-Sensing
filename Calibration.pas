@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Spin,
   Buttons, ExtCtrls, TAChartListbox, TALegend, TACustomSeries, TAChartUtils,
-  Math,
+  TASeries, Math,
   // custom forms
   JTDriverSensingMain;
 
@@ -42,8 +42,10 @@ type
 
 var
   CalibrationF: TCalibrationF;
-  calibChannel : integer = 0;
-  calibFactor : double = 0.0;
+  calibChannelA : integer = 0;
+  calibChannelB : integer = 0;
+  calibFactorA : double = 0.0;
+  calibFactorB : double = 0.0;
 
 implementation
 
@@ -108,9 +110,11 @@ end;
 
 procedure TCalibrationF.CalculateMean;
 var
- selectedSeries : TChartSeries;
- i, j, n : integer;
- x, y, yMean, x1, x2, y1, y2, calibValue, molWeight : double;
+ selectedSeries, selectedSeriesMean : TChartSeries;
+ selectedSeriesA : TLineSeries;
+ i, k, n, calibChannel : integer;
+ x, y, yMean, x1, x2, y1, y2, calibValue, molWeight,
+ yMeanA, yMeanB, yMeanMean  : double;
  selSeriesName : string;
 begin
 
@@ -146,6 +150,15 @@ begin
   // so get the 6th character of the name
   calibChannel:= StrToInt(Copy(selSeriesName, 6, 1));
 
+  // initialize
+  yMean:= 0.0;
+  yMeanA:= 0.0;
+  yMeanB:= 0.0;
+  n:= 0;
+  // silence compiler
+  selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+  selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
+
   // check if selected series fits to the substance
   if calibChannel < 7 then
   begin
@@ -169,115 +182,181 @@ begin
                      + 'perform the calibration';
     exit;
    end;
-  end
-  else // if an operation channel
-  begin
-   for j:= 7 to 8 do
+
+   // calculate the mean
+   for k:= 0 to selectedSeries.Count-1 do
    begin
-    if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#2, #5)' then
+    x:= selectedSeries.XValue[k];
+    y:= selectedSeries.YValue[k];
+    // only calculate the values that are within the selection rectangle
+    if (x >= x1) and (x <= x2)
+     and (y >= y1) and (y <= y2) then
     begin
-     if ( (pos('Glu' , (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+     yMean:= yMean + y;
+     inc(n);
+    end;
+   end;
+   // catch the case that no data is within the selection
+   if n = 0 then
+   begin
+    MeanValueLE.Text:= 'no data in selection';
+    CalibOKBB.Enabled:= false;
+    CalibOKBB.Hint:= 'No data available to' + LineEnding
+                     + 'perform the calibration';
+    exit;
+   end;
+   yMeanMean:= yMean / n;
+
+   calibChannelA:= calibChannel;
+   calibChannelB:= 0;
+  end
+
+  // if an operation channel
+  else
+  begin
+   if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+       as TComboBox).Text = 'mean(#2, #5)' then
+   begin
+    if ( (pos('Glu' , (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and
+      (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (GlucoseRB.Checked) )
+     or
+      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
          as TGroupBox).Caption) = 0)
-       and
-       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (GlucoseRB.Checked) )
-      or
-       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-          as TGroupBox).Caption) = 0)
-       and
-        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (LactateRB.Checked) ) then
-     begin
-      MeanValueLE.Text:= 'wrong substance';
-      CalibOKBB.Enabled:= false;
-      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                       + 'perform the calibration';
-      exit;
-     end;
+      and
+       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (LactateRB.Checked) ) then
+    begin
+     MeanValueLE.Text:= 'wrong substance';
+     CalibOKBB.Enabled:= false;
+     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                      + 'perform the calibration';
+     exit;
     end
-    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#3, #6)' then
+    else
     begin
-     if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and
-        (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (GlucoseRB.Checked) )
-      or
-       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and
-        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (LactateRB.Checked) ) then
-     begin
-      MeanValueLE.Text:= 'wrong substance';
-      CalibOKBB.Enabled:= false;
-      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                       + 'perform the calibration';
-      exit;
-     end;
+     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+     selectedSeriesA:= MainForm.SIXCH.Series[2] as TLineSeries;
+     calibChannelA:= 2;
+     calibChannelB:= 5;
+    end;
+   end
+   else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+       as TComboBox).Text = 'mean(#3, #6)' then
+   begin
+    if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and
+       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (GlucoseRB.Checked) )
+     or
+      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and
+       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (LactateRB.Checked) ) then
+    begin
+     MeanValueLE.Text:= 'wrong substance';
+     CalibOKBB.Enabled:= false;
+     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                      + 'perform the calibration';
+     exit;
     end
-    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
-        as TComboBox).Text = 'mean(#1, #4)' then
+    else
     begin
-     if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and
-        (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (GlucoseRB.Checked) )
-      or
-       ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and
-        (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-         as TGroupBox).Caption) = 0)
-       and (LactateRB.Checked) ) then
+     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+     selectedSeriesA:= MainForm.SIXCH.Series[4] as TLineSeries;
+     calibChannelA:= 3;
+     calibChannelB:= 6;
+    end;
+   end
+   else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+       as TComboBox).Text = 'mean(#1, #4)' then
+   begin
+    if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and
+       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (GlucoseRB.Checked) )
+     or
+      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and
+       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
+        as TGroupBox).Caption) = 0)
+      and (LactateRB.Checked) ) then
+    begin
+     MeanValueLE.Text:= 'wrong substance';
+     CalibOKBB.Enabled:= false;
+     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                      + 'perform the calibration';
+     exit;
+    end
+    else
+    begin
+     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+     selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
+     calibChannelA:= 1;
+     calibChannelB:= 4;
+    end;
+   end; // end if 'mean(#1, #4)'
+
+   // calculate now the mean of the two channels
+   // we purposely use the mean channel because the user set the range
+   // according to this and not a single channel
+   for k:= 0 to selectedSeriesMean.Count-1 do
+    begin
+     x:= selectedSeriesMean.XValue[k];
+     y:= selectedSeriesMean.YValue[k];
+     // only calculate the values that are within the selection rectangle
+     if (x >= x1) and (x <= x2)
+      and (y >= y1) and (y <= y2) then
      begin
-      MeanValueLE.Text:= 'wrong substance';
-      CalibOKBB.Enabled:= false;
-      CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                       + 'perform the calibration';
-      exit;
+      yMean:= yMean + y;
+      inc(n);
      end;
     end;
-   end; // end for j:= 7 to 8
-  end;
+    // catch the case that no data is within the selection
+    if n = 0 then
+    begin
+     MeanValueLE.Text:= 'no data in selection';
+     CalibOKBB.Enabled:= false;
+     CalibOKBB.Hint:= 'No data available to' + LineEnding
+                      + 'perform the calibration';
+     exit;
+    end;
+    yMeanMean:= yMean / n;
 
-  yMean:= 0.0;
-  n:= 0;
-  for j:= 0 to selectedSeries.Count-1 do
-  begin
-   x:= selectedSeries.XValue[j];
-   y:= selectedSeries.YValue[j];
-   // only calculate the values that are within the selection rectangle
-   if (x >= x1) and (x <= x2)
-      and (y >= y1) and (y <= y2) then
-   begin
-    yMean:= yMean + selectedSeries.YValue[j];
-    inc(n);
-   end;
-  end;
+    // now get the mean of the first channel
+    yMean:= 0.0;
+    n:= 0;
+    for k:= 0 to selectedSeriesA.Count-1 do
+    begin
+     x:= selectedSeriesA.XValue[k];
+     // only calculate the values that are within the x-range
+     if (x >= x1) and (x <= x2) then
+     begin
+      yMean:= yMean + selectedSeriesA.YValue[k];
+      inc(n);
+     end;
+    end;
+    yMeanA:= yMean / n;
 
-  // catch the case that no data is within the selection
-  if n = 0 then
-  begin
-   MeanValueLE.Text:= 'no data in selection';
-   CalibOKBB.Enabled:= false;
-   CalibOKBB.Hint:= 'No data available to' + LineEnding
-                    + 'perform the calibration';
-   exit;
-  end;
+    // we can now calculate the mean of the second channel
+    yMeanB:= 2*yMeanMean - YMeanA;
 
-  yMean:= yMean / n;
-  MeanValueLE.Text:= FloatToStr(RoundTo(yMean, -4));
+  end; //end else
+
   CalibOKBB.Enabled:= true;
   CalibOKBB.Hint:= '';
+  MeanValueLE.Text:= FloatToStr(RoundTo(yMeanMean, -4));
 
   // check units
   calibValue:= ValueFSE.Value; // mmol/l
@@ -290,8 +369,17 @@ begin
   else if UnitCB.ItemIndex = 2 then // mg/dl
    calibValue:= ValueFSE.Value / molWeight / 1000 / 100;
 
-  // we found the factor with which the current gain must be multiplied
-  calibFactor:= calibValue / yMean;
+  // output the factor(s) with which the current gain must be multiplied
+  if calibChannel < 7 then
+  begin
+   calibFactorA:= calibValue / yMeanMean;
+   calibFactorB:= 0.0;
+  end
+  else
+  begin
+   calibFactorA:= calibValue / yMeanA;
+   calibFactorB:= calibFactorA * yMeanA / yMeanB;
+  end;
 
  end;
 
