@@ -10,7 +10,8 @@ uses
   SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Streamex, Types, TATextElements, TALegend,
   // the custom forms
-  SerialUSBSelection, AboutForm, TAChartAxis, TATransformations, TAChartUtils;
+  SerialUSBSelection, AboutForm, TAChartAxis, TATransformations, TAChartUtils,
+  TAChartLiveView;
 
 type
 
@@ -60,7 +61,9 @@ type
     Channel7TestGB: TGroupBox;
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
+    ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
+    ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
     Label68: TLabel;
@@ -252,7 +255,6 @@ type
     SaveCSVResultB: TButton;
     SaveScreenshotLiveB: TButton;
     SaveScreenshotResultB: TButton;
-    ScrollIntervalSE: TSpinEdit;
     ScrollViewCB: TCheckBox;
     GeneralTS: TTabSheet;
     SIXBiosensorsMI: TMenuItem;
@@ -723,6 +725,7 @@ type
     procedure SaveCSVResultBClick(Sender: TObject);
     procedure SaveScreenshotLiveBClick(Sender: TObject);
     procedure SaveScreenshotResultBClick(Sender: TObject);
+    procedure ScrollIntervalFSEChange(Sender: TObject);
     procedure ScrollViewCBChange(Sender: TObject);
     procedure ChannelXGBDblClick(Sender: TObject);
     procedure PumpConnectionMIClick(Sender: TObject);
@@ -1715,7 +1718,7 @@ begin
  // > 20k points, see procedure SCScrollViewCBChange for the reason
  if (not SIXCH.IsZoomed) and (SIXTempValues.LinePen.Width = 2)
   and ScrollViewCB.Checked
-  and (SIXControl.timeCounter > ScrollIntervalSE.Value/60) then
+  and (SIXControl.timeCounter > ScrollIntervalFSE.Value) then
  begin
   for i:= 1 to 8 do
    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
@@ -1733,7 +1736,7 @@ procedure TMainForm.EvalTimeFSEChange(Sender: TObject);
 begin
  SIXControl.evalTimeChanged:= true;
  // change the chart scrolling time so that at least 3 data points are visible
- ScrollIntervalSE.MinValue:= floor(EvalTimeFSE.Value * 3.99);
+ ScrollIntervalFSE.MinValue:= EvalTimeFSE.Value * 3.99 / 60;
 end;
 
 procedure TMainForm.LoadDefBBClick(Sender: TObject);
@@ -2117,6 +2120,11 @@ end;
 procedure TMainForm.SaveScreenshotResultBClick(Sender: TObject);
 begin
  SIXControl.SCSaveScreenshotResultBClick(Sender);
+end;
+
+procedure TMainForm.ScrollIntervalFSEChange(Sender: TObject);
+begin
+ ChartLiveView.ViewportSize:= ScrollIntervalFSE.Value;
 end;
 
 procedure TMainForm.ScrollViewCBChange(Sender: TObject);

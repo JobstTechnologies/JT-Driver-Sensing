@@ -1140,23 +1140,6 @@ object MainForm: TMainForm
         OnClick = SaveScreenshotLiveBClick
         TabOrder = 1
       end
-      object ScrollIntervalSE: TSpinEdit
-        Left = 1090
-        Height = 23
-        Hint = 'Interval of last shown seconds in the plot'
-        Top = 4
-        Width = 56
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        Constraints.MaxWidth = 56
-        Increment = 30
-        MaxValue = 10000
-        MinValue = 11
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 2
-        Value = 300
-      end
       object LastShownP: TPanel
         Left = 936
         Height = 24
@@ -1164,7 +1147,7 @@ object MainForm: TMainForm
         Width = 153
         Anchors = [akTop, akRight]
         BevelOuter = bvNone
-        Caption = 'Last shown seconds in plot:'
+        Caption = 'Last shown minutes in plot:'
         Color = clBtnFace
         ParentColor = False
         TabOrder = 3
@@ -1221,6 +1204,21 @@ object MainForm: TMainForm
           State = cbChecked
           TabOrder = 0
         end
+      end
+      object ScrollIntervalFSE: TFloatSpinEdit
+        Left = 1090
+        Height = 23
+        Hint = 'Interval of last shown minutes in the plot'
+        Top = 4
+        Width = 56
+        Alignment = taCenter
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        MaxValue = 100000
+        MinValue = 0.1
+        OnChange = ScrollIntervalFSEChange
+        TabOrder = 2
+        Value = 5
       end
     end
     object PumpControlTS: TTabSheet
@@ -8403,5 +8401,12 @@ object MainForm: TMainForm
       Caption = 'Change Background Color'
       OnClick = ChangeBackColorMIClick
     end
+  end
+  object ChartLiveView: TChartLiveView
+    Chart = SIXCH
+    ExtentY = lveLogical
+    ViewportSize = 5
+    Left = 800
+    Top = 568
   end
 end

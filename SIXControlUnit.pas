@@ -81,8 +81,6 @@ var
   ErrorCount : integer = 0; // counts how many times we did not reeive a stop bit
   wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
   inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
-  MinExtentY : double = Infinity; // store the chart's extent min Y value
-  MaxExtentY : double = Infinity; // store the chart's extent max Y value
 
 implementation
 
@@ -103,7 +101,6 @@ var
  OutLine : string;
  slope, temperature, lastInterval, ScrollInterval : double;
  i, k, StopPos, ItemIndex: integer;
- Extent : TDoubleRect;
  MousePointer : TPoint;
  dataArray : array[0..24] of byte;
  HiLowArray : array[0..1] of byte;
@@ -497,19 +494,40 @@ begin
  end;
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
- // scroll axis if desired by the user
- ScrollInterval:= MainForm.ScrollIntervalSE.Value/60;
- // don't scroll when user zoomed in and when in calibration mode
- if MainForm.ScrollViewCB.Checked
-    and (not wasZoomDragged) and (not inCalibration)
-    and (timeCounter > ScrollInterval) then
+
+ ScrollInterval:= MainForm.ScrollIntervalFSE.Value;
+ // don't scroll when user zoomed in or when in calibration mode
+ if (wasZoomDragged) or (inCalibration) then
  begin
-  Extent:= MainForm.SIXCH.GetFullExtent;
-  Extent.a.x:= Extent.b.x - ScrollInterval;
-  MainForm.SIXCH.LogicalExtent:= Extent;
+  MainForm.ChartLiveView.Active:= false;
+ end;
+ // don't scroll when not enough data
+ if (timeCounter <= ScrollInterval)
+  and (not wasZoomDragged) and (not inCalibration) then
+ begin
+  MainForm.ChartLiveView.Active:= false;
+  MainForm.SIXCH.ZoomFull;
+ end;
+ // activate scrolling if not already on
+ if MainForm.ScrollViewCB.Checked
+   and (not MainForm.ChartLiveView.Active)
+   and (not wasZoomDragged) and (not inCalibration)
+   and (timeCounter > ScrollInterval) then
+  MainForm.ChartLiveView.Active:= true;
+
+ // catch a case in which the pen width must be 1
+ // see procedure SCScrollViewCBChange why this must be assured
+ if (timeCounter > ScrollInterval)
+  and (not MainForm.ScrollViewCB.Checked)
+  and (MainForm.SIXTempValues.LinePen.Width > 1) then
+ begin
+  for i:= 1 to 8 do
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LinePen.Width:= 1;
+  MainForm.SIXTempValues.LinePen.Width:= 1;
  end;
 
- if (not  wasZoomDragged) and (not inCalibration) then
+ if (not wasZoomDragged) and (not inCalibration) then
  begin
   // we scrolled so we can go back with the line pen to width 2
   // see procedure SCScrollViewCBChange why we might be at 1
@@ -862,48 +880,33 @@ end;
 
 procedure TSIXControl.SCScrollViewCBChange(Sender: TObject);
 var
- Extent : TDoubleRect;
  i : integer;
 begin
+ // don't scroll when not enough data
+ if (timeCounter > MainForm.ScrollIntervalFSE.Value) then
+  MainForm.ChartLiveView.Active:= MainForm.ScrollViewCB.Checked;
+
+ MainForm.ScrollIntervalFSE.Enabled:= MainForm.ScrollViewCB.Checked;
+
  if MainForm.ScrollViewCB.Checked = false then
  begin
-  MainForm.ScrollIntervalSE.Enabled:= false;
-
   // We might have many data points. And when now the line thickess is not 1
   // Windows will perform some calculations that slow down the display of the
   // chart a lot. Therefore go down to 1.
   // but only if there are yet enough values
-  if timeCounter > MainForm.ScrollIntervalSE.Value/60 then
+  if timeCounter > MainForm.ScrollIntervalFSE.Value then
   begin
    for i:= 1 to 8 do
     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).LinePen.Width:= 1;
    MainForm.SIXTempValues.LinePen.Width:= 1;
   end;
-
   // zoom back to normal
-  // if no scrolling took place, we can just zoom out fully
-  if MinExtentY = Infinity then
-   MainForm.SIXCH.ZoomFull
-  // if scrolled, the chart extent is limited to the scrolled chart content
-  // to get back to the full range:
-  // - get the extent of one series, this gixes us the X since all series have
-  //   the same X value range
-  // - Y is the max/min of all series contents that we already stored after
-  //   every scrollong action
-  else
-  begin
-   Extent:= MainForm.SIXCh1Values.Extent;
-   Extent.a.y:= MinExtentY; // determined in procedure SCReadTimerTimerFinished
-   Extent.b.y:= MaxExtentY;
-   // override the extent from the scrolling action with the new extent
-   MainForm.SIXCH.Extent.FixTo(Extent);
-  end;
+  MainForm.SIXCH.ZoomFull;
  end
  // if checked
  else
  begin
-  MainForm.ScrollIntervalSE.Enabled:= true;
   // also in case it is zoomed, enable scrolling
   wasZoomDragged:= false;
   // the user might have set a range and then turned on scrolling
