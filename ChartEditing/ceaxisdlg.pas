@@ -107,8 +107,7 @@ type
     procedure RestoreAxisParams; virtual;
     procedure SaveAxisParams; virtual;
   public
-    procedure Prepare(Axis: TChartAxis; ACaptionMask: String;
-      MinMaxEnabled: Boolean);
+    procedure Prepare(Axis: TChartAxis; ACaptionMask: String);
     property Page: TChartAxisEditorPage read GetPage write SetPage;
 
   end;
@@ -184,8 +183,7 @@ begin
   FOKClicked := true;
 end;
 
-procedure TChartAxisEditor.Prepare(Axis: TChartAxis;
-  ACaptionMask: String; MinMaxEnabled: Boolean);
+procedure TChartAxisEditor.Prepare(Axis: TChartAxis; ACaptionMask: String);
 begin
   FAxis := Axis;
   SaveAxisParams;
@@ -195,7 +193,7 @@ begin
   else
     Caption := Format(ACaptionMask, ['#' + IntToStr(FAxis.Index)]);
 
-  FAxisFrame.Prepare(Axis, MinMaxEnabled);
+  FAxisFrame.Prepare(Axis);
 end;
 
 procedure TChartAxisEditor.RestoreAxisParams;

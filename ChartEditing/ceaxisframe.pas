@@ -9,7 +9,8 @@ uses
   Classes, SysUtils, Graphics, Forms,
   Controls, ExtCtrls, ComCtrls, StdCtrls, Dialogs, Spin,
   TATextElements, TAChartAxis, TAGraph,
-  ceFontFrame, cePenFrame, ceShapeBrushPenMarginsFrame;
+  ceFontFrame, cePenFrame, ceShapeBrushPenMarginsFrame,
+  JTDriverSensingMain;
 
 type
   TChartAxisEditorPage = (aepTitle, aepLabels, aepGrid, aepLine);
@@ -124,7 +125,7 @@ type
     function GetRealAxisMin: Double;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure Prepare(Axis: TChartAxis; MinMaxEnabled: Boolean);
+    procedure Prepare(Axis: TChartAxis);
     property Page: TChartAxisEditorPage read GetPage write SetPage;
   end;
 
@@ -387,7 +388,7 @@ begin
   FAxis.Title.Caption := mmoTitle.Lines.Text;
 end;
 
-procedure TChartAxisFrame.Prepare(Axis: TChartAxis; MinMaxEnabled: Boolean);
+procedure TChartAxisFrame.Prepare(Axis: TChartAxis);
 begin
   FAxis := Axis;
 
@@ -417,10 +418,14 @@ begin
   seMinimum.MinValue := -MaxDouble;
   cbAutoMax.Checked := not Axis.Range.UseMax;
   cbAutoMin.Checked := not Axis.Range.UseMin;
-  cbAutoMax.Enabled := MinMaxEnabled;
-  cbAutoMin.Enabled := MinMaxEnabled;
-  cbAutoMax.ShowHint := not MinMaxEnabled;
-  cbAutoMin.ShowHint := not MinMaxEnabled;
+  // if scrolling is active the x-axis range cannot be changed
+  if Axis = MainForm.SIXCH.AxisList[1] then
+  begin
+   cbAutoMax.Enabled := not MainForm.ScrollViewCB.Checked;
+   cbAutoMin.Enabled := not MainForm.ScrollViewCB.Checked;
+   cbAutoMax.ShowHint := MainForm.ScrollViewCB.Checked;
+   cbAutoMin.ShowHint := MainForm.ScrollViewCB.Checked;
+  end;
   cbInverted.Checked := Axis.Inverted;
   seTickLength.Value := Axis.TickLength;
   seTickInnerLength.Value := Axis.TickInnerLength;

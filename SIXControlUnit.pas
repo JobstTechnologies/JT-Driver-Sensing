@@ -1240,15 +1240,7 @@ begin
   exit;
  editor:= TChartAxisEditor.Create(nil);
  try
-  // if scrolling is active the x-axis range cannot be changed
-  if (AnAxis = MainForm.SIXCH.AxisList[1])
-   and MainForm.ScrollViewCB.Checked then
-  begin
-   editor.Prepare(AnAxis, 'Edit chart axis "%s"', false);
-  end
-  else
-   editor.Prepare(AnAxis, 'Edit chart axis "%s"', true);
-
+  editor.Prepare(AnAxis, 'Edit chart axis "%s"');
   editor.Page:= page;
   editor.ShowModal; // shows the dialog
 
