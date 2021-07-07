@@ -900,12 +900,18 @@ begin
    MainForm.SIXCH.Extent.FixTo(Extent);
   end;
  end
+ // if checked
  else
  begin
   MainForm.ScrollIntervalSE.Enabled:= true;
   // also in case it is zoomed, enable scrolling
   wasZoomDragged:= false;
-  // we cannot go back to LinePen width 2 here because this would have an
+  // the user might have set a range and then turned on scrolling
+  // therefore assure the range is not used
+  MainForm.SIXCH.BottomAxis.Range.UseMax:= false;
+  MainForm.SIXCH.BottomAxis.Range.UseMin:= false;
+
+  // info: we cannot go back to LinePen width 2 here because this would have an
   // immediate effect. Thus first do it after the next scrolling occurs.
  end;
 end;
@@ -1234,9 +1240,18 @@ begin
   exit;
  editor:= TChartAxisEditor.Create(nil);
  try
-  editor.Prepare(AnAxis, 'Edit chart axis "%s"');
+  // if scrolling is active the x-axis range cannot be changed
+  if (AnAxis = MainForm.SIXCH.AxisList[1])
+   and MainForm.ScrollViewCB.Checked then
+  begin
+   editor.Prepare(AnAxis, 'Edit chart axis "%s"', false);
+  end
+  else
+   editor.Prepare(AnAxis, 'Edit chart axis "%s"', true);
+
   editor.Page:= page;
-  editor.ShowModal;
+  editor.ShowModal; // shows the dialog
+
   // assure that the data scrolling continues since calling the dialog
   // triggered ChartToolsetZoomDragToolAfterMouseUp
   wasZoomDragged:= false;

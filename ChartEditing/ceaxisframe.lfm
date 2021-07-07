@@ -253,6 +253,7 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideTop.Side = asrBottom
           Left = 32
           Height = 19
+          Hint = 'Not available when scrolling is active'
           Top = 31
           Width = 75
           BorderSpacing.Left = 16
@@ -267,6 +268,7 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideTop.Side = asrBottom
           Left = 32
           Height = 19
+          Hint = 'Not available when scrolling is active'
           Top = 62
           Width = 73
           BorderSpacing.Top = 12

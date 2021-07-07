@@ -124,7 +124,7 @@ type
     function GetRealAxisMin: Double;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure Prepare(Axis: TChartAxis);
+    procedure Prepare(Axis: TChartAxis; MinMaxEnabled: Boolean);
     property Page: TChartAxisEditorPage read GetPage write SetPage;
   end;
 
@@ -387,7 +387,7 @@ begin
   FAxis.Title.Caption := mmoTitle.Lines.Text;
 end;
 
-procedure TChartAxisFrame.Prepare(Axis: TChartAxis);
+procedure TChartAxisFrame.Prepare(Axis: TChartAxis; MinMaxEnabled: Boolean);
 begin
   FAxis := Axis;
 
@@ -417,6 +417,10 @@ begin
   seMinimum.MinValue := -MaxDouble;
   cbAutoMax.Checked := not Axis.Range.UseMax;
   cbAutoMin.Checked := not Axis.Range.UseMin;
+  cbAutoMax.Enabled := MinMaxEnabled;
+  cbAutoMin.Enabled := MinMaxEnabled;
+  cbAutoMax.ShowHint := not MinMaxEnabled;
+  cbAutoMin.ShowHint := not MinMaxEnabled;
   cbInverted.Checked := Axis.Inverted;
   seTickLength.Value := Axis.TickLength;
   seTickInnerLength.Value := Axis.TickInnerLength;
