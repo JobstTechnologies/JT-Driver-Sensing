@@ -1776,11 +1776,10 @@ begin
   InNameDef:= DropfileNameDef
  else
   InNameDef:= DummyString;
- SaveDialog.FileName:= ''; // will be re-set in SaveHandling()
 
  // the previous .def file might have had less channels defined
- // to calculate later the slopes we must therefore use for the next readout still
- // the old channel nummber and thus know this previous value
+ // to calculate later the slopes we must therefore use for the next readout
+ // still the old channel nummber and thus know this previous value
  NumChannelsPrev:= SIXControl.NumChannels;
 
  // parse the file
