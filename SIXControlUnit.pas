@@ -1569,6 +1569,7 @@ begin
    MainForm.MainPC.Pages[i].enabled:= false;
   MainForm.MainPC.Pages[1].enabled:= true;
  end
+ // if not checked
  else
  begin
   // deactivate the rectangle selection
@@ -1751,10 +1752,13 @@ begin
   // The user might have zoomed in, then calibrated and is wondering why nothing
   // happens afterwards. Therefore jump out of the wasZoomDragged mode.
   wasZoomDragged:= false;
+  // the data range is different so we need to refresh the y-axis range
+  MainForm.SIXCH.LogicalExtent:= MainForm.SIXCH.GetFullExtent;
   // enable tab switching again
   for i:= 0 to MainForm.MainPC.PageCount-1 do
    MainForm.MainPC.Pages[i].enabled:= true;
- end;
+
+ end; // end if not checked
 
 end;
 
