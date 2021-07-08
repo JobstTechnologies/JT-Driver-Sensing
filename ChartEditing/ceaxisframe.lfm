@@ -579,6 +579,7 @@ object ChartAxisFrame: TChartAxisFrame
           BorderSpacing.Right = 16
           BorderSpacing.Bottom = 8
           Caption = 'Visible'
+          OnChange = cbGridVisibleChange
           TabOrder = 0
         end
       end

@@ -77,6 +77,7 @@ type
     procedure cbAutoMinChange(Sender: TObject);
     procedure cbAxisLineVisibleChange(Sender: TObject);
     procedure cbFrameVisibleChange(Sender: TObject);
+    procedure cbGridVisibleChange(Sender: TObject);
     procedure cbInvertedChange(Sender: TObject);
     procedure cbLabelsVisibleChange(Sender: TObject);
     procedure cbShowChange(Sender: TObject);
@@ -282,12 +283,17 @@ end;
 
 procedure TChartAxisFrame.cbAxisLineVisibleChange(Sender: TObject);
 begin
-  FAxis.Grid.Visible := cbGridVisible.Checked;
+  FAxis.AxisPen.Visible := cbAxisLineVisible.Checked;
 end;
 
 procedure TChartAxisFrame.cbFrameVisibleChange(Sender: TObject);
 begin
   GetChart.Frame.Visible := cbFrameVisible.Checked;
+end;
+
+procedure TChartAxisFrame.cbGridVisibleChange(Sender: TObject);
+begin
+  FAxis.Grid.Visible := cbGridVisible.Checked;
 end;
 
 procedure TChartAxisFrame.cbInvertedChange(Sender: TObject);
