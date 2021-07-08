@@ -181,7 +181,7 @@ begin
    inc(DelayReadCounter);
    if DelayReadCounter > 50 then
    // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
-   // can also occur if USB cable was removed
+   // this will for example occur if USB cable was removed
    begin
     // often the SIX only stops telling it has not enough data
     // to try to read data
@@ -192,8 +192,9 @@ begin
      if k <> 25 then
      begin
       MainForm.ReadTimer.Enabled:= false;
-      MessageDlgPos('Error: ' + MainForm.ConnComPortSensLE.Text +
-       ' did not deliver data within 5.1 s.',
+      MessageDlgPos('Error: ' + MainForm.ConnComPortSensLE.Text
+       + ' did not deliver data within 5.1 s.' + LineEnding
+       + 'Check the USB cable for a loose contact.',
        mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
       MainForm.ConnComPortSensLE.Color:= clRed;
       MainForm.IndicatorSensorP.Caption:= 'SIX error';
@@ -217,11 +218,18 @@ begin
     break;
   end;
  finally
-  if serSensor.LastError <> 0 then // occurs if USB cable was removed
+  if serSensor.LastError <> 0 then // can occur if USB cable was removed
   begin
+   // Skip further error messages when there was already an error and thus
+   // the timer is already stopped. This happens when the user pulled the
+   // USB cable out while the SIX was running.
+   if MainForm.ReadTimer.Enabled = false then
+    exit;
    MainForm.ReadTimer.Enabled:= False;
-   MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on connecting to SIX: '
-    + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MessageDlgPos(MainForm.ConnComPortSensLE.Text
+    + ' error on connecting to SIX: ' + serSensor.LastErrorDesc + LineEnding
+    + 'Check the USB cable for a loose contact.', mtError, [mbOK], 0,
+    MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortSensLE.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'Check USB cable';
    MainForm.IndicatorSensorP.Color:= clRed;
