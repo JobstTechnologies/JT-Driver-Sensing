@@ -1482,11 +1482,44 @@ begin
     if NumChannels >= 4 then
      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
       as TComboBox).Items.Add('mean(#1, #4)');
+    // handle cases when indices do no longer exist
+    if NumChannels = 4 then
+    begin
+     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text = 'mean(#1, #4)' then
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex:= 0;
+     if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+          as TComboBox).Text = 'mean(#2, #5)')
+      or ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+           as TComboBox).Text = 'mean(#3, #6)') then
+     begin
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text:= 'mean(#1, #4)';
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex:= 0;
+     end;
+    end;
+    if NumChannels = 5 then
+    begin
+     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text = 'mean(#1, #4)' then
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex:= 1;
+     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text = 'mean(#2, #5)' then
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex:= 0;
+     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text = 'mean(#3, #6)' then
+     begin
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+        as TComboBox).Text:= 'mean(#2, #5)';
+      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex:= 0;
+     end;
+    end;
    end;
-  // set new item index
-  for i:= 7 to 8 do
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-    as TComboBox).ItemIndex:= i - 7;
 
   // read line 5
   LineReader.ReadLine(ReadLine);
