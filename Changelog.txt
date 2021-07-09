@@ -2,8 +2,10 @@ Changes
 
 from version 0.95 to 0.96
 
-bugfix:
-- fix the calibration on a channel with the mean of two other channels
+bugfixes:
+- fix the calibration on a channel containing the mean of two other channels
+- axis settings dialog fixes
+- definition file handling fixes
 
 
 from version 0.94 to 0.95
