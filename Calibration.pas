@@ -347,6 +347,14 @@ begin
       inc(n);
      end;
     end;
+    if n = 0 then
+    begin
+     MeanValueLE.Text:= 'no data in first channel';
+     CalibOKBB.Enabled:= false;
+     CalibOKBB.Hint:= 'No data available to' + LineEnding
+                      + 'perform the calibration';
+     exit;
+    end;
     yMeanA:= yMean / n;
 
     // we can now calculate the mean of the second channel
