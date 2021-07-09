@@ -1927,6 +1927,12 @@ begin
      as TCheckBox).Checked then
    inc(j);
  end;
+ for i:= 7 to 8 do
+ begin
+  if (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked then
+   inc(j);
+ end;
  if j = 0 then // no channel is on
  begin
   for i:= 1 to SIXControl.NumChannels do
