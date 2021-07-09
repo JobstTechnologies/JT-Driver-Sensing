@@ -1591,13 +1591,13 @@ begin
   height:= extent.b.y - extent.a.y; // vertical range of data
   center:= DoublePoint((extent.a.x + extent.b.x)/2, (extent.a.y + extent.b.y)/2);
   // make a preset for the selection line positions
-  if MainForm.TopLine.Position = Infinity then
+  if IsInfinite(MainForm.TopLine.Position) then
    MainForm.TopLine.Position:= center.y + height/4;
-  if MainForm.BottomLine.Position = -Infinity then
+  if IsInfinite(-MainForm.BottomLine.Position) then
    MainForm.BottomLine.Position:= center.y - height/4;
-  if MainForm.LeftLine.Position = -Infinity then
+  if IsInfinite(-MainForm.LeftLine.Position) then
    MainForm.LeftLine.Position:= center.x - width/4;
-  if MainForm.RightLine.Position = Infinity then
+  if IsInfinite(MainForm.RightLine.Position) then
    MainForm.RightLine.Position:= center.x + width/4;
 
   // activate the rectangle selection
