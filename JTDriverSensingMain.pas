@@ -63,6 +63,7 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
+    AbortCalibrationMI: TMenuItem;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
@@ -677,6 +678,7 @@ type
     Unit6RBs: TRadioButton;
     Unit7RBs: TRadioButton;
     WaitTimeSE1: TSpinEdit;
+    procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
     procedure AnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure AppearanceXBBClick(Sender: TObject);
@@ -1614,6 +1616,12 @@ begin
  AboutFormF.VersionNumber.Caption:= Version;
  // open the dialog
  AboutFormF.ShowModal;
+end;
+
+procedure TMainForm.AbortCalibrationMIClick(Sender: TObject);
+begin
+ SIXControl.SCCalibrateTBChange(Sender, true);
+ MainForm.AbortCalibrationMI.Visible:= false;
 end;
 
 procedure TMainForm.AnOutConnectorXOnOffCBChange(Sender: TObject);

@@ -2,6 +2,9 @@ Changes
 
 from version 0.95 to 0.96
 
+improvement:
+- a started calibration can now be aborted by right-clicking on the chart
+
 bugfixes:
 - fix the calibration on a channel containing the mean of two other channels
 - axis settings dialog fixes

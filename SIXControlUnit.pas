@@ -42,7 +42,7 @@ type
     procedure SCAnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure SCAnOutOfXLEChange(Sender: TObject);
     procedure SCAnOutOnOffTBChange(Sender: TObject);
-    procedure SCCalibrateTBChange(Sender: TObject);
+    procedure SCCalibrateTBChange(Sender: TObject; aborted: Boolean = false);
     procedure SCChangeBackColorMIClick(Sender: TObject);
 
   private
@@ -1551,7 +1551,7 @@ begin
  result:= true;
 end;
 
-procedure TSIXControl.SCCalibrateTBChange(Sender: TObject);
+procedure TSIXControl.SCCalibrateTBChange(Sender: TObject; aborted: Boolean);
 {the calibration is done the following way:
  - after clicking the calibrate button, the user can select data by clicking
    and dragging in the chart. This way a selection rectangle is created.
@@ -1567,6 +1567,7 @@ var
  StringList : TStringList;
  StringArray : TStringArray;
  i : integer;
+ Event : TNotifyEvent;
 begin
  // show/hide the lines and en/disable the rectangle tool
  MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
@@ -1586,6 +1587,21 @@ begin
 
  if MainForm.CalibrateTB.Checked then
  begin
+  if aborted then
+  // toggle the button but without triggering this way an event
+  begin
+   Event:= MainForm.CalibrateTB.OnChange;
+   try
+    MainForm.CalibrateTB.OnChange:= nil;
+    MainForm.CalibrateTB.Checked:= false;
+    // call the event function to undo all calibration-specific settings
+    SCCalibrateTBChange(Sender, true);
+    exit;
+   finally
+    MainForm.CalibrateTB.OnChange:= Event;
+   end;
+  end;
+
   extent:= MainForm.SIXCH.LogicalExtent;
   width:= extent.b.x - extent.a.x; // horizontal range of data
   height:= extent.b.y - extent.a.y; // vertical range of data
@@ -1609,19 +1625,19 @@ begin
   for i:= 0 to MainForm.MainPC.PageCount-1 do
    MainForm.MainPC.Pages[i].enabled:= false;
   MainForm.MainPC.Pages[1].enabled:= true;
+
+  // show menu entry to cancel the calibration
+  MainForm.AbortCalibrationMI.Visible:= true;
  end
  // if not checked
  else
  begin
-  // deactivate the rectangle selection
-  MainForm.LineDragTool.Shift:= [];
-  MainForm.RectangleSelectionTool.Shift:= [];
-
-  // show the calibration dialog
-  CalibrationF.ShowModal;
+  if (not aborted) then
+   // show the calibration dialog
+   CalibrationF.ShowModal;
 
   // if user pressed OK and there is a valid mean value, write a new .def file
-  if CalibrationF.ModalResult = mrOK then
+  if (not aborted) and (CalibrationF.ModalResult = mrOK) then
   begin
    if calibChannelA = 0 then // something went wrong
    begin
@@ -1782,6 +1798,10 @@ begin
    end; //end if OutName <> ''
 
   end; // end mrOK
+
+  // deactivate the rectangle selection
+  MainForm.LineDragTool.Shift:= [];
+  MainForm.RectangleSelectionTool.Shift:= [];
 
   // move lines back to infinity
   MainForm.TopLine.Position:= Infinity;

@@ -8397,6 +8397,11 @@ object MainForm: TMainForm
   object ContextMenu: TPopupMenu
     Left = 896
     Top = 512
+    object AbortCalibrationMI: TMenuItem
+      Caption = 'Abort Calibration'
+      Visible = False
+      OnClick = AbortCalibrationMIClick
+    end
     object ChangeBackColorMI: TMenuItem
       Caption = 'Change Background Color'
       OnClick = ChangeBackColorMIClick
