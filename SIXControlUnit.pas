@@ -52,6 +52,8 @@ type
     function SaveScreenshot(Overwrite: Boolean; ChartName: string): Boolean;
     function ParseLine(Line: string; channel: Byte): double;
     function ParseDefFile(InFile: string): Boolean;
+    function Nonlinear(X: double): double;
+    function Linear(X: double): double;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -99,7 +101,7 @@ type intArray = array[1..4] of byte;
      PintArray = ^intArray;
 var
  OutLine : string;
- slope, temperature, lastInterval, ScrollInterval : double;
+ slope, temperature, lastInterval, ScrollInterval, X : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
  dataArray : array[0..24] of byte;
@@ -610,167 +612,313 @@ begin
  end;
 
  // output analog voltages
- if MainForm.UseAnOutCB.checked then
- begin
+ if (not MainForm.UseAnOutCB.checked) then
+  exit;
  // first calculate the values
- for i:= 1 to 4 do // we limit to output channels (4 times pump driver)
+ for i:= 1 to 4 do // we limit to output channels (4-way pump driver)
  begin
-  if (MainForm.FindComponent('AnOutConnector' + IntToStr(i) + 'OnOffCB')
-   as TCheckBox).Checked then
-  begin
-   if MainForm.RawCurrentCB.Checked then // use raw signals
-   begin
-    // if just a channel
-    // we calculate the values in nA
-    ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
-     as TComboBox).ItemIndex;
-    if ItemIndex < 6 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF(ChanRawDbl[ItemIndex + 1]
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3)
-    else
-     // if mean
-    begin
-     if ItemIndex = 6 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[2]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 7 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[3]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 8 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 9 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 10 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[1] + ChanRawDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 11 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[3]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 12 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 13 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 14 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[2] + ChanRawDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 15 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 16 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 17 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[3] + ChanRawDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 18 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[4] + ChanRawDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 19 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[4] + ChanRawDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 20 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanRawDbl[5] + ChanRawDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-    end;
-   end
-   else // values in mM according to .def file
-   begin
-    // if just a channel
-    ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
-     as TComboBox).ItemIndex;
-    if ItemIndex < 6 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF(ChanDbl[ItemIndex + 1]
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3)
-    else
-     // if mean
-    begin
-     if ItemIndex = 6 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[2]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 7 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[3]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 8 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 9 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 10 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[1] + ChanDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 11 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[3]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 12 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 13 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 14 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[2] + ChanDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 15 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[4]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 16 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 17 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[3] + ChanDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 18 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[4] + ChanDbl[5]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 19 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[4] + ChanDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-     if ItemIndex = 20 then
-     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
-     as TLabeledEdit).Text:= FloatToStrF((ChanDbl[5] + ChanDbl[6]) / 2
-      / MainForm.AnOutMaxSignalFSE.Value * 3.3, ffFixed, 3, 3);
-    end;
-   end;
-  end;
- end; // end for i:= 1 to 4
- end; // end if MainForm.UseAnOutCB.checked
+  if (not (MainForm.FindComponent('AnOutConnector' + IntToStr(i) + 'OnOffCB')
+   as TCheckBox).Checked) then
+   continue;
 
+  if MainForm.RawCurrentCB.Checked then // use raw signals
+  begin
+   // if just a channel
+   // we calculate the values in nA
+   ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
+    as TComboBox).ItemIndex;
+   if ItemIndex < 6 then
+   begin
+    // the voltage out of the current value
+    X:= ChanRawDbl[ItemIndex + 1] / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+    // correction to linearize the result
+    // Nonlinear(x) described the measured analog output voltage to measured
+    // voltage dependency, Linear(x) the linear curve defined by the points
+    // Nonlinear(3.3) and Nonlinear (0.1) (range of the possible analog output)
+    X:= X - Nonlinear(X) + Linear(X);
+    (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+   end
+   // if mean
+   else
+   begin
+    if ItemIndex = 6 then
+    begin
+     X:= (ChanRawDbl[1] + ChanRawDbl[2]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 7 then
+    begin
+     X:= (ChanRawDbl[1] + ChanRawDbl[3]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 8 then
+    begin
+     X:= (ChanRawDbl[1] + ChanRawDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 9 then
+    begin
+     X:= (ChanRawDbl[1] + ChanRawDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 10 then
+    begin
+     X:= (ChanRawDbl[1] + ChanRawDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 11 then
+    begin
+     X:= (ChanRawDbl[2] + ChanRawDbl[3]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 12 then
+    begin
+     X:= (ChanRawDbl[2] + ChanRawDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 13 then
+    begin
+     X:= (ChanRawDbl[2] + ChanRawDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 14 then
+    begin
+     X:= (ChanRawDbl[2] + ChanRawDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 15 then
+    begin
+     X:= (ChanRawDbl[3] + ChanRawDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 16 then
+    begin
+     X:= (ChanRawDbl[3] + ChanRawDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 17 then
+    begin
+     X:= (ChanRawDbl[3] + ChanRawDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 18 then
+    begin
+     X:= (ChanRawDbl[4] + ChanRawDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 19 then
+    begin
+     X:= (ChanRawDbl[4] + ChanRawDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end;
+    if ItemIndex = 20 then
+    begin
+     X:= (ChanRawDbl[5] + ChanRawDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end;
+   end; // end else if mean
+  end
+  // values in mM according to .def file
+  else
+  begin
+   // if just a channel
+   ItemIndex:= (MainForm.FindComponent('AnOutputOf' + IntToStr(i) + 'CB')
+    as TComboBox).ItemIndex;
+   if ItemIndex < 6 then
+   begin
+    // the voltage out of the current value
+    X:= ChanDbl[ItemIndex + 1] / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+    X:= X - Nonlinear(X) + Linear(X);
+    (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:=  FloatToStrF(X, ffFixed, 3, 3);
+   end
+   // if mean
+   else
+   begin
+    if ItemIndex = 6 then
+    begin
+     X:= (ChanDbl[1] + ChanDbl[2]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 7 then
+    begin
+     X:= (ChanDbl[1] + ChanDbl[3]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 8 then
+    begin
+     X:= (ChanDbl[1] + ChanDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 9 then
+    begin
+     X:= (ChanDbl[1] + ChanDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 10 then
+    begin
+     X:= (ChanDbl[1] + ChanDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 11 then
+    begin
+     X:= (ChanDbl[2] + ChanDbl[3]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 12 then
+    begin
+     X:= (ChanDbl[2] + ChanDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 13 then
+    begin
+     X:= (ChanDbl[2] + ChanDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 14 then
+    begin
+     X:= (ChanDbl[2] + ChanDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 15 then
+    begin
+     X:= (ChanDbl[3] + ChanDbl[4]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 16 then
+    begin
+     X:= (ChanDbl[3] + ChanDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 17 then
+    begin
+     X:= (ChanDbl[3] + ChanDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 18 then
+    begin
+     X:= (ChanDbl[4] + ChanDbl[5]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end
+    else if ItemIndex = 19 then
+    begin
+     X:= (ChanDbl[4] + ChanDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end;
+    if ItemIndex = 20 then
+    begin
+     X:= (ChanDbl[5] + ChanDbl[6]) / 2
+         / MainForm.AnOutMaxSignalFSE.Value * 3.3;
+     X:= X - Nonlinear(X) + Linear(X);
+     (MainForm.FindComponent('AnOutOf' + IntToStr(i) + 'LE')
+     as TLabeledEdit).Text:= FloatToStrF(X, ffFixed, 3, 3);
+    end;
+   end; // end else if mean
+  end; // end values in mM
+ end; // end for i:= 1 to 4
+
+end;
+
+function TSIXControl.Nonlinear(X: double): double;
+// the measured analog output voltage to measured voltage dependency
+begin
+ result:= -0.177*power(X, 2) + 1.773*X + 3.923 + MainForm.OffsetFSE.Value;
+end;
+
+function TSIXControl.Linear(X: double): double;
+// linear curve defined by the points
+// Nonlinear(3.3) and Nonlinear (0.1) (range of the possible analog output)
+begin
+ result:= (Nonlinear(3.3) - Nonlinear(0.1))/(3.3 - 0.1) * (X - 0.1)
+          + Nonlinear(0.1);
 end;
 
 procedure TSIXControl.SCChartToolsetDataPointHintToolHintPosition(
