@@ -19,7 +19,6 @@ type
 
   TMainForm = class(TForm)
     ActionSensGB1: TGroupBox;
-    AnOutOffsetLabel: TLabel;
     AnOutPump2GB: TGroupBox;
     AnOutPump3GB: TGroupBox;
     AnOutPump4GB: TGroupBox;
@@ -65,7 +64,6 @@ type
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
     AbortCalibrationMI: TMenuItem;
-    OffsetFSE: TFloatSpinEdit;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
