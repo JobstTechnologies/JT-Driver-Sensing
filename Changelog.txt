@@ -1,5 +1,11 @@
 Changes
 
+from version 0.96 to 0.97
+
+bugfix:
+- fix that endless repeats of multiple pumping steps could lead to a crash
+
+
 from version 0.95 to 0.96
 
 improvement:

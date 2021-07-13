@@ -781,7 +781,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.96';
+  Version : string = '0.97';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
