@@ -1,5 +1,14 @@
 Changes
 
+from version 0.97 to 0.98
+
+improvement:
+- When the SIX values chart is in scrolling mode the the y-axis range
+  is automatically set, the range is now set so that the data of the last shown
+  minutes fit in.
+  (Previously the y-range was the one of all data in the chart.) 
+
+
 from version 0.96 to 0.97
 
 bugfix:
