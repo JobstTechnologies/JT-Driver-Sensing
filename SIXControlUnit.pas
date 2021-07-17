@@ -9,7 +9,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
   TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
   Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
-  TAGeometry,
+  TAGeometry, TAChartLiveView,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -1407,6 +1407,8 @@ begin
   // assure that the data scrolling continues since calling the dialog
   // triggered ChartToolsetZoomDragToolAfterMouseUp
   wasZoomDragged:= false;
+  // update the axis settings for the LiveView
+  MainForm.ChartLiveView.StoreAxisRanges;
  finally
   editor.Free;
  end;
