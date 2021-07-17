@@ -183,7 +183,8 @@ begin
   FOKClicked := true;
 end;
 
-procedure TChartAxisEditor.Prepare(Axis: TChartAxis; ACaptionMask: String);
+procedure TChartAxisEditor.Prepare(Axis: TChartAxis;
+  ACaptionMask: String);
 begin
   FAxis := Axis;
   SaveAxisParams;
