@@ -6,7 +6,11 @@ improvement:
 - When the SIX values chart is in scrolling mode the the y-axis range
   is automatically set, the range is now set so that the data of the last shown
   minutes fit in.
-  (Previously the y-range was the one of all data in the chart.) 
+  (Previously the y-range was the one of all data in the chart.)
+
+bugfix:
+- action files created with versions of JT Pump Driver that only support 4 pumps
+  can now be loaded and executed without errors
 
 
 from version 0.96 to 0.97

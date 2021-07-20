@@ -44,6 +44,7 @@ type
      RepeatTime : Double;
      StepNum : integer; // number of steps
      PumpNum : integer; // number of pumps
+     PumpNumFile : integer; // number of pumps defined in a loaded action file
 
   end;
 
@@ -111,7 +112,7 @@ var
  SOrder : array of char;
  LastParsed : char = 'X';
  StepCounter, MCounter, ICounter, i, j, k, G1, p,
-   posSfirst, posSlast: integer;
+   posSfirst, posSlast : integer;
  MousePointer : TPoint;
  StepTime, M1, M2, DutyStepTime : Double;
  Have2M : Boolean;
@@ -121,8 +122,8 @@ begin
  M1:= 0; M2:= 0; G1:= 0;
  result:= false; Have2M:= false; StepTime:= 0;
  SOrder:= nil;
- setLength(SOrder, PumpNum);
- for k:= 0 to PumpNum-1 do
+ setLength(SOrder, PumpNumFile);
+ for k:= 0 to PumpNumFile-1 do
   SOrder[k]:= '0';
 
  // first check address
@@ -198,7 +199,7 @@ begin
    MCounter:= 0; // there can be several occurrences of 'M' for every step
    ICounter:= 0; // there can be several occurrences of 'I' for every step
    // initialize
-   for k:= 0 to PumpNum-1 do
+   for k:= 0 to PumpNumFile-1 do
     SOrder[k]:= '0';
    LastParsed:= 'S';
    // determine the length
@@ -210,7 +211,7 @@ begin
    k:= 1;
    while k < j-i do
    begin
-    for p:= 1 to PumpNum do
+    for p:= 1 to PumpNumFile do
      if command[i+k] = IntToStr(p) then
      begin
      (MainForm.FindComponent('Pump' + IntToStr(p) + 'VoltageFS' + IntToStr(StepCounter))
@@ -259,14 +260,14 @@ begin
    if (LastParsed = 'M') and (StepTime >= 1) then
    begin
     // check if there is a next 'M' with 1s
-    if (command[i+PumpNum+1] = 'M') then
+    if (command[i+PumpNumFile+1] = 'M') then
     begin
      // determine the length
-     j:= i + PumpNum + 1;
+     j:= i + PumpNumFile + 1;
      repeat
       inc(j)
      until IsDigit(command[j]) = false;
-     StepTime:= StrToFloat(Copy(command, i+PumpNum+2, j-i-(PumpNum+2))) / 1000;
+     StepTime:= StrToFloat(Copy(command, i+PumpNumFile+2, j-i-(PumpNumFile+2))) / 1000;
      if (StepTime >= 1) then
      begin
       inc(StepCounter);
@@ -276,7 +277,7 @@ begin
     end;
    end;
    if (StepCounter = 0)
-    or ((LastParsed = 'G') and (command[i+PumpNum+2] <> 'R')) then // not if last 'I'
+    or ((LastParsed = 'G') and (command[i+PumpNumFile+2] <> 'R')) then // not if last 'I'
    begin
     inc(StepCounter);
     ICounter:= 0;
@@ -297,7 +298,7 @@ begin
     else
      (MainForm.FindComponent('Pump1OnOffCB' + IntToStr(StepCounter))
       as TCheckBox).Checked:= false;
-    for p:= 2 to PumpNum do
+    for p:= 2 to PumpNumFile do
     begin
      if (command[i+p] = '0') or (command[i+p] = '1') then
       if command[i+p] = '1' then
