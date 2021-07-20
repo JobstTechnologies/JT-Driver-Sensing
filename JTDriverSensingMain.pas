@@ -2526,7 +2526,6 @@ function TMainForm.OpenActionFile(InputName: string): Boolean;
 // read file content
 var
  StringList : TStringList;
- PumpName : string;
  j, k : integer;
 begin
  result:= False;
@@ -2546,28 +2545,20 @@ begin
   if StringList.Count = 1 then // no pump names defined (in old files)
   begin
    for k:= 1 to PumpControl.PumpNum do
-   begin
-    PumpName:= 'Pump ' + IntToStr(k);
     (FindComponent('Pump' + IntToStr(k) + 'GB1')
-     as TGroupBox).Caption:= PumpName;
-   end;
+     as TGroupBox).Caption:= 'Pump ' + IntToStr(k);
   end
   else
   begin
    // read the pump names
    for k:= 1 to PumpControl.PumpNumFile do
-   begin
     (FindComponent('Pump' + IntToStr(k) + 'GB1')
      as TGroupBox).Caption:= StringList[k];
-   end;
    if PumpControl.PumpNumFile < PumpControl.PumpNum then // reset names of undefined pumps
    begin
     for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNum do
-    begin
-     PumpName:= 'Pump ' + IntToStr(k);
      (FindComponent('Pump' + IntToStr(k) + 'GB1')
-      as TGroupBox).Caption:= PumpName;
-    end;
+      as TGroupBox).Caption:= 'Pump ' + IntToStr(k);
    end;
   end;
 
@@ -2612,7 +2603,7 @@ begin
   // add file extension if it is missing
   if (ExtractFileExt(OutNameTemp) <> FileExt) then
    Insert(FileExt, OutNameTemp, Length(OutNameTemp) + 1);
-  if (not FileExists(OutNameTemp)) then
+  if not FileExists(OutNameTemp) then
   begin
    MessageDlg('The file does not exist!', mtError, [mbOK], 0);
    result:= '';
