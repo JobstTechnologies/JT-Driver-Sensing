@@ -28,7 +28,6 @@ object MainForm: TMainForm
       Caption = 'General'
       ClientHeight = 588
       ClientWidth = 1154
-      ParentFont = False
       object Channel1GB: TGroupBox
         Left = 0
         Height = 90
@@ -63,7 +62,6 @@ object MainForm: TMainForm
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           State = cbChecked
           TabOrder = 1
         end
@@ -128,7 +126,6 @@ object MainForm: TMainForm
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           State = cbChecked
           TabOrder = 1
         end
@@ -233,7 +230,6 @@ object MainForm: TMainForm
           Color = clRed
           ParentBackground = False
           ParentColor = False
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -249,8 +245,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 138
           EditLabel.Caption = 'Connected Port'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           TabOrder = 0
@@ -308,7 +302,6 @@ object MainForm: TMainForm
             Width = 94
             Caption = 'Show in Chart'
             OnChange = ShowTempCBChange
-            ParentFont = False
             TabOrder = 1
           end
         end
@@ -395,7 +388,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
         object Appearance7BB: TBitBtn
@@ -444,7 +436,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 1
         end
         object Appearance4BB: TBitBtn
@@ -507,7 +498,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 1
         end
         object Appearance5BB: TBitBtn
@@ -596,7 +586,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
         object Appearance8BB: TBitBtn
@@ -708,7 +697,6 @@ object MainForm: TMainForm
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           State = cbChecked
           TabOrder = 1
         end
@@ -772,7 +760,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 1
         end
         object Appearance6BB: TBitBtn
@@ -855,7 +842,6 @@ object MainForm: TMainForm
           BevelOuter = bvNone
           ParentBackground = False
           ParentColor = False
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -870,8 +856,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 124
           EditLabel.Caption = 'Connected Port'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           TabOrder = 0
@@ -1231,7 +1215,6 @@ object MainForm: TMainForm
         Top = 8
         Width = 368
         ActivePage = Step1TS
-        ParentFont = False
         ParentShowHint = False
         TabIndex = 0
         TabOrder = 0
@@ -1239,7 +1222,6 @@ object MainForm: TMainForm
           Caption = 'Step 1'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           object ActionTime1GB: TGroupBox
             Left = 54
             Height = 49
@@ -1249,7 +1231,6 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             ParentColor = False
-            ParentFont = False
             TabOrder = 0
             object Unit1RBs: TRadioButton
               Left = 88
@@ -1258,7 +1239,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -1268,7 +1248,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime1FSE: TFloatSpinEdit
@@ -1279,7 +1258,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -1291,7 +1269,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -1304,7 +1281,6 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Label2: TLabel
               Left = 64
@@ -1337,7 +1313,6 @@ object MainForm: TMainForm
             Caption = 'Use'
             Checked = True
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             State = cbChecked
             TabOrder = 2
@@ -1365,7 +1340,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -1378,7 +1352,6 @@ object MainForm: TMainForm
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -1403,8 +1376,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1412,13 +1383,12 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1430,7 +1400,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB1: TGroupBox
@@ -1443,7 +1412,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -1455,7 +1423,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG1: TRadioGroup
@@ -1480,8 +1447,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1489,14 +1454,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1508,7 +1472,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB1: TGroupBox
@@ -1521,7 +1484,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -1533,7 +1495,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG1: TRadioGroup
@@ -1558,8 +1519,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1567,14 +1526,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1586,7 +1544,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB1: TGroupBox
@@ -1599,7 +1556,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -1611,7 +1567,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG1: TRadioGroup
@@ -1636,8 +1591,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1645,14 +1598,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1664,7 +1616,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -1681,8 +1632,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -1694,7 +1643,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG1: TRadioGroup
@@ -1718,8 +1666,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1727,13 +1673,12 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1745,7 +1690,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB1: TGroupBox
@@ -1757,8 +1701,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -1770,7 +1712,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG1: TRadioGroup
@@ -1795,8 +1736,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1804,14 +1743,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1823,7 +1761,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB1: TGroupBox
@@ -1835,8 +1772,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -1848,7 +1783,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG1: TRadioGroup
@@ -1873,8 +1807,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1882,14 +1814,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1901,7 +1832,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB1: TGroupBox
@@ -1913,8 +1843,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -1926,7 +1854,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG1: TRadioGroup
@@ -1951,8 +1878,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -1960,14 +1885,13 @@ object MainForm: TMainForm
                   Left = 8
                   Height = 23
                   Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Enabled = False
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -1979,7 +1903,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -1990,7 +1913,6 @@ object MainForm: TMainForm
           Caption = 'Step 2'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           object Step2UseCB: TCheckBox
             Left = 8
             Height = 19
@@ -1999,7 +1921,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -2014,7 +1935,6 @@ object MainForm: TMainForm
             ClientWidth = 188
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit2RBs: TRadioButton
               Left = 88
@@ -2023,7 +1943,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -2033,7 +1952,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime2FSE: TFloatSpinEdit
@@ -2044,7 +1962,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -2056,7 +1973,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -2070,7 +1986,6 @@ object MainForm: TMainForm
             ClientWidth = 84
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 2
             object Label1: TLabel
               Left = 64
@@ -2117,25 +2032,23 @@ object MainForm: TMainForm
                 ClientWidth = 152
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB2: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
                 object Pump1DirectionRG2: TRadioGroup
                   Left = 8
                   Height = 72
-                  Top = 40
+                  Top = 34
                   Width = 128
                   AutoFill = True
                   Caption = 'Pump Direction'
@@ -2153,31 +2066,25 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump1VoltageFS2: TFloatSpinEdit
                   Left = 8
                   Height = 23
-                  Top = 140
+                  Top = 136
                   Width = 103
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label17: TLabel
                   Left = 8
                   Height = 15
-                  Top = 120
+                  Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB2: TGroupBox
@@ -2190,23 +2097,21 @@ object MainForm: TMainForm
                 ClientWidth = 152
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB2: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG2: TRadioGroup
                   Left = 8
                   Height = 72
-                  Top = 40
+                  Top = 34
                   Width = 128
                   AutoFill = True
                   Caption = 'Pump Direction'
@@ -2225,9 +2130,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump2VoltageFS2: TFloatSpinEdit
@@ -2239,18 +2141,15 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label15: TLabel
                   Left = 8
                   Height = 15
-                  Top = 120
+                  Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB2: TGroupBox
@@ -2263,23 +2162,21 @@ object MainForm: TMainForm
                 ClientWidth = 152
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB2: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG2: TRadioGroup
                   Left = 8
                   Height = 72
-                  Top = 40
+                  Top = 34
                   Width = 128
                   AutoFill = True
                   Caption = 'Pump Direction'
@@ -2298,8 +2195,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2312,8 +2207,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2323,7 +2216,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB2: TGroupBox
@@ -2336,23 +2228,21 @@ object MainForm: TMainForm
                 ClientWidth = 152
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB2: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG2: TRadioGroup
                   Left = 8
                   Height = 72
-                  Top = 40
+                  Top = 34
                   Width = 128
                   AutoFill = True
                   Caption = 'Pump Direction'
@@ -2371,9 +2261,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump4VoltageFS2: TFloatSpinEdit
@@ -2385,8 +2272,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2396,7 +2281,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -2407,16 +2291,11 @@ object MainForm: TMainForm
               object Pump5GB2: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB2: TCheckBox
@@ -2426,7 +2305,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG2: TRadioGroup
@@ -2450,7 +2328,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2463,9 +2340,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2475,22 +2349,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB2: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB2: TCheckBox
@@ -2500,7 +2368,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG2: TRadioGroup
@@ -2526,7 +2393,7 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
+                  ParentColor = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2540,9 +2407,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2552,22 +2416,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB2: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB2: TCheckBox
@@ -2577,13 +2435,12 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG2: TRadioGroup
                   Left = 8
                   Height = 72
-                  Top = 34
+                  Top = 32
                   Width = 128
                   AutoFill = True
                   Caption = 'Pump Direction'
@@ -2603,8 +2460,7 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
+                  ParentColor = False
                   TabOrder = 1
                 end
                 object Pump7VoltageFS2: TFloatSpinEdit
@@ -2617,9 +2473,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2629,22 +2482,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB2: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB2: TCheckBox
@@ -2654,7 +2501,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG2: TRadioGroup
@@ -2680,7 +2526,7 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
+                  ParentColor = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2694,9 +2540,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -2706,7 +2549,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -2716,7 +2558,6 @@ object MainForm: TMainForm
           Caption = 'Step 3'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           TabVisible = False
           object Step3UseCB: TCheckBox
             Left = 8
@@ -2726,7 +2567,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -2741,7 +2581,6 @@ object MainForm: TMainForm
             ClientWidth = 188
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit3RBs: TRadioButton
               Left = 88
@@ -2750,7 +2589,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -2760,7 +2598,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime3FSE: TFloatSpinEdit
@@ -2771,7 +2608,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 0.1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -2783,7 +2619,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -2797,7 +2632,6 @@ object MainForm: TMainForm
             ClientWidth = 84
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 2
             object Label3: TLabel
               Left = 64
@@ -2844,18 +2678,16 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB3: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -2880,8 +2712,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2893,7 +2723,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -2904,7 +2733,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB3: TGroupBox
@@ -2917,17 +2745,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB3: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG3: TRadioGroup
@@ -2952,8 +2778,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -2966,7 +2790,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -2977,7 +2800,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB3: TGroupBox
@@ -2990,17 +2812,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB3: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG3: TRadioGroup
@@ -3025,8 +2845,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3039,7 +2857,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3050,7 +2867,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB3: TGroupBox
@@ -3063,17 +2879,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB3: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG3: TRadioGroup
@@ -3098,8 +2912,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3112,7 +2924,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3123,7 +2934,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -3141,7 +2951,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -3153,7 +2962,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG3: TRadioGroup
@@ -3177,7 +2985,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3190,7 +2997,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -3202,7 +3008,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB3: TGroupBox
@@ -3215,7 +3020,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -3227,7 +3031,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG3: TRadioGroup
@@ -3253,7 +3056,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3267,7 +3069,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -3279,7 +3080,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB3: TGroupBox
@@ -3292,7 +3092,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -3304,7 +3103,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG3: TRadioGroup
@@ -3330,7 +3128,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3344,7 +3141,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -3356,7 +3152,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB3: TGroupBox
@@ -3369,7 +3164,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -3381,7 +3175,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG3: TRadioGroup
@@ -3407,7 +3200,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3421,7 +3213,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -3433,7 +3224,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -3443,7 +3233,6 @@ object MainForm: TMainForm
           Caption = 'Step 4'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           TabVisible = False
           object Step4UseCB: TCheckBox
             Left = 8
@@ -3453,7 +3242,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -3470,7 +3258,6 @@ object MainForm: TMainForm
             Enabled = False
             ParentBackground = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit4RBs: TRadioButton
               Left = 88
@@ -3479,7 +3266,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -3489,7 +3275,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime4FSE: TFloatSpinEdit
@@ -3500,7 +3285,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 0.1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -3512,7 +3296,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -3526,7 +3309,6 @@ object MainForm: TMainForm
             ClientWidth = 84
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 2
             object Label4: TLabel
               Left = 64
@@ -3573,18 +3355,16 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB4: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -3609,8 +3389,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3622,7 +3400,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3633,7 +3410,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB4: TGroupBox
@@ -3646,17 +3422,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB4: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG4: TRadioGroup
@@ -3681,8 +3455,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3695,7 +3467,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3706,7 +3477,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB4: TGroupBox
@@ -3719,17 +3489,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB4: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG4: TRadioGroup
@@ -3754,8 +3522,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3768,7 +3534,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3779,7 +3544,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB4: TGroupBox
@@ -3792,17 +3556,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB4: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG4: TRadioGroup
@@ -3827,8 +3589,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3841,7 +3601,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -3852,7 +3611,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -3870,7 +3628,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -3882,7 +3639,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG4: TRadioGroup
@@ -3906,7 +3662,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3919,7 +3674,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -3931,7 +3685,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB4: TGroupBox
@@ -3944,7 +3697,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -3956,7 +3708,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG4: TRadioGroup
@@ -3982,7 +3733,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3996,7 +3746,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4008,7 +3757,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB4: TGroupBox
@@ -4021,7 +3769,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -4033,7 +3780,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG4: TRadioGroup
@@ -4059,7 +3805,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4073,7 +3818,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4085,7 +3829,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB4: TGroupBox
@@ -4098,7 +3841,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -4110,7 +3852,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG4: TRadioGroup
@@ -4136,7 +3877,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4150,7 +3890,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4162,7 +3901,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -4172,7 +3910,6 @@ object MainForm: TMainForm
           Caption = 'Step 5'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           TabVisible = False
           object Step5UseCB: TCheckBox
             Left = 8
@@ -4182,7 +3919,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -4197,7 +3933,6 @@ object MainForm: TMainForm
             ClientWidth = 188
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit5RBs: TRadioButton
               Left = 88
@@ -4206,7 +3941,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -4216,7 +3950,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime5FSE: TFloatSpinEdit
@@ -4227,7 +3960,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 0.1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -4239,7 +3971,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -4253,7 +3984,6 @@ object MainForm: TMainForm
             ClientWidth = 84
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 2
             object Label5: TLabel
               Left = 64
@@ -4300,18 +4030,16 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB5: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -4336,8 +4064,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4349,7 +4075,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -4360,7 +4085,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB5: TGroupBox
@@ -4373,17 +4097,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB5: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG5: TRadioGroup
@@ -4408,8 +4130,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4422,7 +4142,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -4433,7 +4152,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB5: TGroupBox
@@ -4446,17 +4164,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB5: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG5: TRadioGroup
@@ -4481,8 +4197,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4495,7 +4209,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -4506,7 +4219,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB5: TGroupBox
@@ -4519,17 +4231,15 @@ object MainForm: TMainForm
                 ClientWidth = 151
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB5: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG5: TRadioGroup
@@ -4554,8 +4264,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4568,7 +4276,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -4579,7 +4286,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -4597,7 +4303,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentColor = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -4609,7 +4314,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG5: TRadioGroup
@@ -4633,7 +4337,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4646,7 +4349,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4658,7 +4360,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB5: TGroupBox
@@ -4671,7 +4372,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -4683,7 +4383,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG5: TRadioGroup
@@ -4709,7 +4408,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4723,7 +4421,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4735,7 +4432,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB5: TGroupBox
@@ -4748,7 +4444,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -4760,7 +4455,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG5: TRadioGroup
@@ -4786,7 +4480,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4800,7 +4493,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4812,7 +4504,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB5: TGroupBox
@@ -4825,7 +4516,6 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 ParentBackground = False
-                ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -4837,7 +4527,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG5: TRadioGroup
@@ -4863,7 +4552,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4877,7 +4565,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -4889,7 +4576,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -4899,7 +4585,6 @@ object MainForm: TMainForm
           Caption = 'Step 6'
           ClientHeight = 484
           ClientWidth = 360
-          ParentFont = False
           TabVisible = False
           object Step6UseCB: TCheckBox
             Left = 8
@@ -4909,7 +4594,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -4924,7 +4608,6 @@ object MainForm: TMainForm
             ClientWidth = 188
             Enabled = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit6RBs: TRadioButton
               Left = 88
@@ -4933,7 +4616,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -4943,7 +4625,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime6FSE: TFloatSpinEdit
@@ -4954,7 +4635,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 0.1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -4966,7 +4646,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -4982,7 +4661,6 @@ object MainForm: TMainForm
             Enabled = False
             ParentBackground = False
             ParentColor = False
-            ParentFont = False
             TabOrder = 2
             object Label6: TLabel
               Left = 64
@@ -5028,19 +4706,16 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 151
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB6: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -5065,8 +4740,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5078,7 +4751,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -5089,7 +4761,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB6: TGroupBox
@@ -5101,18 +4772,15 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 151
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB6: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG6: TRadioGroup
@@ -5137,8 +4805,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5151,7 +4817,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -5162,7 +4827,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB6: TGroupBox
@@ -5174,18 +4838,15 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 151
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB6: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG6: TRadioGroup
@@ -5210,8 +4871,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5224,7 +4883,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -5235,7 +4893,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB6: TGroupBox
@@ -5247,18 +4904,15 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 151
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB6: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG6: TRadioGroup
@@ -5283,8 +4937,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5297,7 +4949,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 2
                   Value = 3.3
@@ -5308,7 +4959,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -5319,16 +4969,11 @@ object MainForm: TMainForm
               object Pump5GB6: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB6: TCheckBox
@@ -5338,7 +4983,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG6: TRadioGroup
@@ -5362,7 +5006,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5375,7 +5018,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5387,22 +5029,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB6: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB6: TCheckBox
@@ -5412,7 +5048,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG6: TRadioGroup
@@ -5438,7 +5073,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5452,7 +5086,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5464,22 +5097,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB6: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB6: TCheckBox
@@ -5489,7 +5116,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG6: TRadioGroup
@@ -5515,7 +5141,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5529,7 +5154,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5541,22 +5165,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB6: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB6: TCheckBox
@@ -5566,7 +5184,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG6: TRadioGroup
@@ -5592,7 +5209,6 @@ object MainForm: TMainForm
                     'Counterclockwise'
                   )
                   ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5606,7 +5222,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5618,7 +5233,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -5638,7 +5252,6 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             ParentColor = False
-            ParentFont = False
             TabOrder = 0
             object Label12: TLabel
               Left = 64
@@ -5672,7 +5285,6 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             ParentColor = False
-            ParentFont = False
             TabOrder = 1
             object Unit7RBs: TRadioButton
               Left = 88
@@ -5681,7 +5293,6 @@ object MainForm: TMainForm
               Width = 25
               Caption = 's'
               Checked = True
-              ParentFont = False
               TabOrder = 1
               TabStop = True
             end
@@ -5691,7 +5302,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 41
               Caption = 'min'
-              ParentFont = False
               TabOrder = 2
             end
             object RunTime7FSE: TFloatSpinEdit
@@ -5702,7 +5312,6 @@ object MainForm: TMainForm
               Width = 72
               MaxValue = 9999
               MinValue = 1
-              ParentFont = False
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -5714,7 +5323,6 @@ object MainForm: TMainForm
               Top = 2
               Width = 27
               Caption = 'h'
-              ParentFont = False
               TabOrder = 3
             end
           end
@@ -5726,7 +5334,6 @@ object MainForm: TMainForm
             Width = 39
             Caption = 'Use'
             OnChange = StepXUseCBChange
-            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 2
@@ -5736,8 +5343,8 @@ object MainForm: TMainForm
             Height = 422
             Top = 60
             Width = 336
-            ActivePage = S7P14
-            TabIndex = 0
+            ActivePage = S7P58
+            TabIndex = 1
             TabOrder = 3
             object S7P14: TTabSheet
               Caption = 'Pumps 1-4'
@@ -5752,19 +5359,16 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 152
                 Enabled = False
-                ParentColor = False
-                ParentFont = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB7: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   Checked = True
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   State = cbChecked
                   TabOrder = 0
                 end
@@ -5789,8 +5393,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump1VoltageFS7: TFloatSpinEdit
@@ -5802,7 +5404,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5814,31 +5415,26 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump2GB7: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'The higher the voltage the higher the'
                 Top = 8
                 Width = 156
                 Caption = 'Pump 2'
                 ClientHeight = 172
                 ClientWidth = 152
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB7: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump2DirectionRG7: TRadioGroup
@@ -5863,9 +5459,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump2VoltageFS7: TFloatSpinEdit
@@ -5878,7 +5471,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5890,7 +5482,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump3GB7: TGroupBox
@@ -5902,18 +5493,15 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 152
                 Enabled = False
-                ParentBackground = False
-                ParentFont = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB7: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump3DirectionRG7: TRadioGroup
@@ -5938,9 +5526,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump3VoltageFS7: TFloatSpinEdit
@@ -5953,7 +5538,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -5965,7 +5549,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump4GB7: TGroupBox
@@ -5978,17 +5561,15 @@ object MainForm: TMainForm
                 ClientWidth = 152
                 Enabled = False
                 ParentBackground = False
-                ParentFont = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB7: TCheckBox
                   Left = 8
                   Height = 19
-                  Top = 8
+                  Top = 6
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump4DirectionRG7: TRadioGroup
@@ -6013,8 +5594,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6028,7 +5607,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -6040,7 +5618,6 @@ object MainForm: TMainForm
                   Top = 120
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -6051,16 +5628,11 @@ object MainForm: TMainForm
               object Pump5GB7: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentColor = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB7: TCheckBox
@@ -6070,7 +5642,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump5DirectionRG7: TRadioGroup
@@ -6094,8 +5665,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump5VoltageFS7: TFloatSpinEdit
@@ -6107,7 +5676,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -6119,22 +5687,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump6GB7: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB7: TCheckBox
@@ -6144,7 +5706,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump6DirectionRG7: TRadioGroup
@@ -6169,9 +5730,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump6VoltageFS7: TFloatSpinEdit
@@ -6184,7 +5742,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -6196,22 +5753,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump7GB7: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB7: TCheckBox
@@ -6221,7 +5772,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump7DirectionRG7: TRadioGroup
@@ -6246,9 +5796,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump7VoltageFS7: TFloatSpinEdit
@@ -6261,7 +5808,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -6273,22 +5819,16 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
               object Pump8GB7: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
-                ParentBackground = False
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB7: TCheckBox
@@ -6298,7 +5838,6 @@ object MainForm: TMainForm
                   Width = 36
                   Caption = 'On'
                   OnChange = PumpOnOffCBLoopChange
-                  ParentFont = False
                   TabOrder = 0
                 end
                 object Pump8DirectionRG7: TRadioGroup
@@ -6323,9 +5862,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentBackground = False
-                  ParentFont = False
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump8VoltageFS7: TFloatSpinEdit
@@ -6338,7 +5874,6 @@ object MainForm: TMainForm
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
-                  ParentFont = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 2
@@ -6350,7 +5885,6 @@ object MainForm: TMainForm
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
-                  ParentFont = False
                 end
               end
             end
@@ -6376,8 +5910,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 84
           EditLabel.Caption = 'Current Repeat'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ReadOnly = True
           TabOrder = 2
           Visible = False
@@ -6390,7 +5922,6 @@ object MainForm: TMainForm
           BevelOuter = bvNone
           ParentBackground = False
           ParentColor = False
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
@@ -6406,8 +5937,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 124
           EditLabel.Caption = 'Connected Port'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           TabOrder = 1
@@ -6424,8 +5953,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 124
           EditLabel.Caption = 'Total Time'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -6440,8 +5967,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 124
           EditLabel.Caption = 'Start Time'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -6456,8 +5981,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 124
           EditLabel.Caption = 'Finish Time'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -6504,7 +6027,6 @@ object MainForm: TMainForm
           Width = 138
           Caption = 'Run until Stop pressed'
           OnChange = RunEndlessCBChange
-          ParentFont = False
           TabOrder = 1
         end
         object RepeatL: TLabel
@@ -6513,7 +6035,6 @@ object MainForm: TMainForm
           Top = 12
           Width = 71
           Caption = 'Repeat times:'
-          ParentFont = False
         end
         object RepeatSE: TSpinEdit
           Left = 87
@@ -6521,7 +6042,6 @@ object MainForm: TMainForm
           Top = 8
           Width = 49
           MaxValue = 9999
-          ParentFont = False
           TabOrder = 0
         end
       end
@@ -6534,7 +6054,6 @@ object MainForm: TMainForm
         ClientHeight = 214
         ClientWidth = 144
         ParentColor = False
-        ParentFont = False
         TabOrder = 3
         object RunBB: TBitBtn
           Left = 20
@@ -6545,7 +6064,6 @@ object MainForm: TMainForm
           Caption = 'Run Pumps'
           Enabled = False
           OnClick = RunBBClick
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
@@ -6559,7 +6077,6 @@ object MainForm: TMainForm
           Caption = 'Stop Pumps'
           Enabled = False
           OnClick = StopBBClick
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -6572,7 +6089,6 @@ object MainForm: TMainForm
           Width = 128
           Caption = 'Generate Command'
           OnClick = GenerateCommandBBClick
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
@@ -6586,7 +6102,6 @@ object MainForm: TMainForm
           Caption = 'Free Pumps'
           Enabled = False
           OnClick = RunFreeBBClick
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
@@ -6599,7 +6114,6 @@ object MainForm: TMainForm
           BevelColor = clBtnShadow
           BevelInner = bvRaised
           BevelOuter = bvNone
-          ParentFont = False
           TabOrder = 4
         end
       end
@@ -6609,7 +6123,6 @@ object MainForm: TMainForm
         Hint = 'The command that will be sent by clicking ''Run Pumps'''
         Top = 528
         Width = 529
-        ParentFont = False
         ParentShowHint = False
         ReadOnly = True
         ScrollBars = ssAutoVertical
@@ -6627,6 +6140,29 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
+      end
+      object RadioGroup1: TRadioGroup
+        Left = 644
+        Height = 49
+        Top = 292
+        Width = 70
+        AutoFill = True
+        Caption = 'RadioGroup1'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        TabOrder = 6
+      end
+      object Label70: TLabel
+        Left = 631
+        Height = 15
+        Top = 366
+        Width = 40
+        Caption = 'Label70'
       end
     end
     object TestSettingsTS: TTabSheet
@@ -6749,7 +6285,6 @@ object MainForm: TMainForm
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           State = cbChecked
           TabOrder = 4
         end
@@ -6844,7 +6379,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 4
         end
         object ChannelTest4LE: TLabeledEdit
@@ -6938,7 +6472,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 4
         end
         object ChannelTest5LE: TLabeledEdit
@@ -7033,7 +6566,6 @@ object MainForm: TMainForm
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           State = cbChecked
           TabOrder = 4
         end
@@ -7128,7 +6660,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 4
         end
         object ChannelTest3LE: TLabeledEdit
@@ -7222,7 +6753,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 4
         end
         object ChannelTest6LE: TLabeledEdit
@@ -7343,7 +6873,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 5
         end
       end
@@ -7451,7 +6980,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = ChanAnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 5
         end
       end
@@ -7526,7 +7054,6 @@ object MainForm: TMainForm
           Color = clRed
           ParentBackground = False
           ParentColor = False
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -7541,8 +7068,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 138
           EditLabel.Caption = 'Connected Port'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           TabOrder = 0
@@ -7557,8 +7082,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 137
           EditLabel.Caption = 'Start Time'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -7573,8 +7096,6 @@ object MainForm: TMainForm
           EditLabel.Height = 15
           EditLabel.Width = 136
           EditLabel.Caption = 'Finish Time'
-          EditLabel.ParentFont = False
-          ParentFont = False
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -7802,7 +7323,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = AnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
       end
@@ -7856,7 +7376,6 @@ object MainForm: TMainForm
           BevelOuter = bvNone
           ParentBackground = False
           ParentColor = False
-          ParentFont = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
@@ -7940,7 +7459,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = AnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
       end
@@ -8021,7 +7539,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = AnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
       end
@@ -8102,7 +7619,6 @@ object MainForm: TMainForm
           Width = 36
           Caption = 'On'
           OnChange = AnOutConnectorXOnOffCBChange
-          ParentFont = False
           TabOrder = 2
         end
       end
