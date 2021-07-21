@@ -490,9 +490,6 @@ begin
   seMinimum.MaxValue := seMaximum.Value;
   FAxis.Range.Max := seMaximum.Value;
   cbAutoMax.Checked := false;
-  // wee need to set explicitly that UseMax is not used
-  // because TAChart's the LiveView feature need this info
-  FAxis.Range.UseMax := true;
 end;
 
 procedure TChartAxisFrame.seMinimumChange(Sender: TObject);
@@ -501,9 +498,6 @@ begin
   seMaximum.MinValue := seMinimum.Value;
   FAxis.Range.Min := seMinimum.Value;
   cbAutoMin.Checked := false;
-  // wee need to set explicitly that UseMin is not used
-  // because TAChart's the LiveView feature need this info
-  FAxis.Range.UseMin := true;
 end;
 
 procedure TChartAxisFrame.SetPage(AValue: TChartAxisEditorPage);
