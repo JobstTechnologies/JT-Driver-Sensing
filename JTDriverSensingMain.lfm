@@ -315,7 +315,6 @@ object MainForm: TMainForm
         object LoadedDefFileM: TMemo
           Left = 8
           Height = 40
-          Hint = 'No definition file loaded'
           Top = 122
           Width = 136
           Alignment = taCenter
@@ -323,9 +322,7 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = LoadedDefFileMChange
-          ParentShowHint = False
           ReadOnly = True
-          ShowHint = True
           TabOrder = 4
         end
       end
@@ -862,7 +859,7 @@ object MainForm: TMainForm
           Text = 'Not connected'
         end
         object LoadedActionFileGeneralM: TMemo
-          Left = 8
+          Left = 7
           Height = 40
           Hint = 'No action file loaded'
           Top = 122
