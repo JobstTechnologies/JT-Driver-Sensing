@@ -1028,6 +1028,9 @@ begin
   MainForm.PumpDriverMI.Enabled:= False;
   MainForm.FirmwareUpdateMI.Enabled:= False;
   MainForm.FirmwareResetMI.Enabled:= False;
+  // disable menu to load and save action files
+  MainForm.LoadActionMI.Enabled:= False;
+  MainForm.SaveActionMI.Enabled:= False;
   // send the command
   serPump.SendString(command);
   if serPump.LastError <> 0 then
@@ -1363,6 +1366,9 @@ begin
    MainForm.PumpDriverMI.Enabled:= False;
    MainForm.FirmwareUpdateMI.Enabled:= False;
    MainForm.FirmwareResetMI.Enabled:= False;
+   // disable menu to load and save action files
+   MainForm.LoadActionMI.Enabled:= False;
+   MainForm.SaveActionMI.Enabled:= False;
    // send the command
    serPump.SendString(command);
    if serPump.LastError <> 0 then
@@ -1467,6 +1473,9 @@ begin
  MainForm.PumpDriverMI.Enabled:= True;
  MainForm.FirmwareUpdateMI.Enabled:= True;
  MainForm.FirmwareResetMI.Enabled:= True;
+ // re-enable menu to load and save action files
+ MainForm.LoadActionMI.Enabled:= True;
+ MainForm.SaveActionMI.Enabled:= True;
  command:= '';
  // address
  command:= '/0';
@@ -1613,6 +1622,8 @@ begin
  MainForm.PumpDriverMI.Enabled:= True;
  MainForm.FirmwareUpdateMI.Enabled:= True;
  MainForm.FirmwareResetMI.Enabled:= True;
+ MainForm.LoadActionMI.Enabled:= True;
+ MainForm.SaveActionMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
  MainForm.RunBB.Enabled:= True;
  MainForm.RunFreeBB.Enabled:= True;
