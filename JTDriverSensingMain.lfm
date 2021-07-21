@@ -7,6 +7,7 @@ object MainForm: TMainForm
   Caption = 'JT Driver Sensing'
   ClientHeight = 622
   ClientWidth = 1170
+  Color = clWindow
   Menu = MainMenu
   OnClose = FormClose
   OnCreate = FormCreate
@@ -935,7 +936,7 @@ object MainForm: TMainForm
         Legend.BackgroundBrush.Color = clSilver
         Legend.UseSidebar = False
         Legend.Visible = True
-        Title.Brush.Color = clBtnFace
+        Title.Brush.Color = clWindow
         Title.Font.Color = clBlue
         Title.Font.Height = -15
         Title.Text.Strings = (
@@ -945,6 +946,7 @@ object MainForm: TMainForm
         Toolset = ChartToolset
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
+        ParentColor = True
         PopupMenu = ContextMenu
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
@@ -1131,8 +1133,6 @@ object MainForm: TMainForm
         Anchors = [akTop, akRight]
         BevelOuter = bvNone
         Caption = 'Last shown minutes in plot:'
-        Color = clBtnFace
-        ParentColor = False
         TabOrder = 3
       end
       object CalibrateP: TPanel
@@ -1143,8 +1143,6 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         ClientHeight = 24
         ClientWidth = 104
-        Color = clBtnFace
-        ParentColor = False
         TabOrder = 4
         object CalibrateTB: TToggleBox
           Left = 0
@@ -1169,8 +1167,6 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         ClientHeight = 19
         ClientWidth = 94
-        Color = clForm
-        ParentColor = False
         TabOrder = 5
         object ScrollViewCB: TCheckBox
           Left = 0
