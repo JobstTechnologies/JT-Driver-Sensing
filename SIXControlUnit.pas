@@ -1451,7 +1451,7 @@ begin
   editor.Free;
  end;
  // change back to tab from where we started
- MainForm.MainPC.ActivePage:= MainForm.GeneralTS;
+ //MainForm.MainPC.ActivePage:= MainForm.GeneralTS;
 end;
 
 procedure TSIXControl.SCChannelXOnOffCBChange(Sender: TObject);
