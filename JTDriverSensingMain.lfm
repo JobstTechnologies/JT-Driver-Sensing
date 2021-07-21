@@ -7,7 +7,6 @@ object MainForm: TMainForm
   Caption = 'JT Driver Sensing'
   ClientHeight = 622
   ClientWidth = 1170
-  Color = clWindow
   Menu = MainMenu
   OnClose = FormClose
   OnCreate = FormCreate
