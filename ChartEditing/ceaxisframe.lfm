@@ -40,10 +40,11 @@ object ChartAxisFrame: TChartAxisFrame
     Height = 446
     Top = 25
     Width = 646
-    ActivePage = pgLabels
+    ActivePage = pgGrid
     Align = alClient
-    TabIndex = 1
+    TabIndex = 2
     TabOrder = 1
+    OnChanging = PageControlChanging
     object pgTitle: TTabSheet
       Caption = 'Title'
       ClientHeight = 418

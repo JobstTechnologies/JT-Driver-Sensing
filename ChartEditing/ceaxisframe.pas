@@ -85,6 +85,7 @@ type
     procedure cbTitleVisibleChange(Sender: TObject);
     procedure edLabelFormatEditingDone(Sender: TObject);
     procedure mmoTitleChange(Sender: TObject);
+    procedure PageControlChanging(Sender: TObject; var AllowChange: Boolean);
     procedure rgTitleAlignmentClick(Sender: TObject);
     procedure seArrowBaseLengthChange(Sender: TObject);
     procedure seArrowLengthChange(Sender: TObject);
@@ -127,6 +128,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure Prepare(Axis: TChartAxis);
+    function Validate(out AMsg: String; out AControl: TWinControl): Boolean;
     property Page: TChartAxisEditorPage read GetPage write SetPage;
   end;
 
@@ -394,6 +396,20 @@ begin
   FAxis.Title.Caption := mmoTitle.Lines.Text;
 end;
 
+procedure TChartAxisFrame.PageControlChanging(Sender: TObject;
+  var AllowChange: Boolean);
+var
+  msg: String;
+  C: TWinControl;
+begin
+  if not Validate(msg, C) then
+  begin
+    C.SetFocus;
+    MessageDlg(msg, mtError, [mbOK], 0);
+    AllowChange := false;
+  end;
+end;
+
 procedure TChartAxisFrame.Prepare(Axis: TChartAxis);
 begin
   FAxis := Axis;
@@ -432,6 +448,11 @@ begin
    cbAutoMax.ShowHint := MainForm.ScrollViewCB.Checked;
    cbAutoMin.ShowHint := MainForm.ScrollViewCB.Checked;
   end;
+  // the axis inversion is done by inverting the globar chart coordinates
+  // therefore it is not axis-indepndent. To save a lo of code, simply disable
+  // the inversion for the right axis
+  if Axis = MainForm.SIXCH.AxisList[2] then
+   cbInverted.Visible := false;
   cbInverted.Checked := Axis.Inverted;
   seTickLength.Value := Axis.TickLength;
   seTickInnerLength.Value := Axis.TickInnerLength;
@@ -542,6 +563,23 @@ end;
 procedure TChartAxisFrame.TitleShapeChangedHandler(AShape: TChartLabelShape);
 begin
   FAxis.Title.Shape := AShape;
+end;
+
+function TChartAxisFrame.Validate(out AMsg: String; out AControl: TWinControl): Boolean;
+begin
+  Result := false;
+  if GetRealAxisMin >= GetRealAxisMax then
+  begin
+    AMsg := 'The axis minimum must be smaller than the axis maximum.';
+    if seMaximum.Visible then
+      AControl := seMaximum
+    else if seMinimum.Visible then
+      AControl := seMinimum
+    else
+      AControl := cbAutoMax;
+    exit;
+  end;
+  Result := true;
 end;
 
 
