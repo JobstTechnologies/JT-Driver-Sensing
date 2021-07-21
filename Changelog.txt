@@ -2,9 +2,10 @@ Changes
 
 from version 0.97 to 0.98
 
-bugfix:
+bugfixes:
 - action files created with versions of JT Pump Driver that only support 4 pumps
   can now be loaded and executed without errors
+- the settings for pump 5 - 8 are now disabled when their step is not used
 
 
 from version 0.96 to 0.97
