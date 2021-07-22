@@ -7922,7 +7922,6 @@ object MainForm: TMainForm
   end
   object ChartLiveView: TChartLiveView
     Chart = SIXCH
-    ExtentY = lveLogical
     ViewportSize = 5
     Left = 800
     Top = 568

@@ -1408,7 +1408,7 @@ begin
   // triggered ChartToolsetZoomDragToolAfterMouseUp
   wasZoomDragged:= false;
   // update the axis settings for the LiveView
-  MainForm.ChartLiveView.StoreAxisRanges;
+  MainForm.ChartLiveView.StoreSingleAxisRange(AnAxis);
  finally
   editor.Free;
  end;
