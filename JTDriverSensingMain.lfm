@@ -7140,7 +7140,6 @@ object MainForm: TMainForm
             Title.LabelBrush.Style = bsClear
           end>
         BackColor = clGray
-        Foot.Brush.Color = clDefault
         Foot.Font.Color = clBlue
         Legend.Alignment = laTopLeft
         Legend.BackgroundBrush.Color = clSilver
