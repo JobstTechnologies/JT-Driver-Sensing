@@ -1700,42 +1700,19 @@ end;
 procedure TMainForm.ChartToolsetLegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 begin
- SIXControl.SCChartToolsetLegendClickTool1Click(Sender, Legend)
+ SIXControl.SCChartToolsetLegendClickToolClick(Sender, Legend)
 end;
 
 procedure TMainForm.ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
   Title: TChartTitle);
 begin
- SIXControl.SCChartToolsetTitleFootClickTool1Click(Sender, Title);
+ SIXControl.SCChartToolsetTitleFootClickToolClick(Sender, Title);
 end;
 
 procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
-var
- i : integer;
 begin
-
- // find out if the user zoomed in we cannot use SIXCH.IsZoomed because
- // the LiveView will ermanently  change the extent so that SIXCH.IsZoomed is
- // always true
- // Thus compare the x coordinate of the extent with the previous one instead
- if SIXCH.LogicalExtent.a.X > SIXCH.PrevLogicalExtent.a.X then
-  SIXControl.wasZoomDragged:= true
- else
-  SIXControl.wasZoomDragged:= false;
-
- // when not zoomed / zoomed out then we must assure that the line pen is 1
- // otherwise we would slow down the program a lot when the chart has
- // > 20k points, see procedure SCScrollViewCBChange for the reason
- if (not SIXCH.IsZoomed) and (SIXTempValues.LinePen.Width = 2)
-  and ScrollViewCB.Checked
-  and (SIXControl.timeCounter > ScrollIntervalFSE.Value) then
- begin
-  for i:= 1 to 8 do
-   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).LinePen.Width:= 1;
-  SIXTempValues.LinePen.Width:= 1;
- end;
+ SIXControl.SCChartToolsetZoomDragToolAfterMouseUp(ATool, APoint);
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);

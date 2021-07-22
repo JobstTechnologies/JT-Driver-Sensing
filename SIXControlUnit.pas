@@ -30,9 +30,11 @@ type
     procedure SCNoSubtractBlankCBChange(Sender: TObject);
     procedure SCRawCurrentCBChange(Sender: TObject);
     procedure SCReadTimerTimerFinished(Sender: TObject);
-    procedure SCChartToolsetTitleFootClickTool1Click(Sender: TChartTool;
+    procedure SCChartToolsetTitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
-    procedure SCChartToolsetLegendClickTool1Click(Sender: TChartTool;
+    procedure SCChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
+      APoint{%H-}: TPoint);
+    procedure SCChartToolsetLegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
     procedure SCChartToolsetAxisClickToolClick(Sender: TChartTool;
       AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
@@ -83,6 +85,7 @@ var
   ErrorCount : integer = 0; // counts how many times we did not reeive a stop bit
   wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
   inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
+  LiveViewWasAuto : Boolean = false; // if the left axis was in auto range when LiveView was turned off
 
 implementation
 
@@ -101,7 +104,7 @@ type intArray = array[1..4] of byte;
      PintArray = ^intArray;
 var
  OutLine : string;
- slope, temperature, lastInterval, ScrollInterval, X : double;
+ slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
  dataArray : array[0..24] of byte;
@@ -504,12 +507,28 @@ begin
  end;
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
-
  ScrollInterval:= MainForm.ScrollIntervalFSE.Value;
  // don't scroll when user zoomed in or when in calibration mode
- if (wasZoomDragged) or (inCalibration) then
+ if ((wasZoomDragged) or (inCalibration))
+  and (timeCounter > ScrollInterval) then
  begin
+  // turning of LiveView restores the axis properties from the time it was
+  // started. This would change the axis but when zoomed, we don't want this
+  // Therefore first save the axis state
+  OldMax:= MainForm.SIXCH.LeftAxis.Range.Max;
+  OldMin:= MainForm.SIXCH.LeftAxis.Range.Min;
+  // turn LiveView off
   MainForm.ChartLiveView.Active:= false;
+  // we only need to act when the restored setting was auto range
+  if not MainForm.SIXCH.LeftAxis.Range.UseMax then
+  begin
+   LiveViewWasAuto:= true;
+   // set the axis to the last used range before LiveView was turned off
+   MainForm.SIXCH.LeftAxis.Range.UseMax:= true;
+   MainForm.SIXCH.LeftAxis.Range.UseMin:= true;
+   MainForm.SIXCH.LeftAxis.Range.Max:= OldMax;
+   MainForm.SIXCH.LeftAxis.Range.Min:= OldMin;
+  end;
  end;
  // don't scroll when not enough data
  if (timeCounter <= ScrollInterval)
@@ -523,7 +542,16 @@ begin
    and (not MainForm.ChartLiveView.Active)
    and (not wasZoomDragged) and (not inCalibration)
    and (timeCounter > ScrollInterval) then
+ begin
+  if LiveViewWasAuto then
+  begin
+   // set the axis back to auto range
+   MainForm.SIXCH.LeftAxis.Range.UseMax:= false;
+   MainForm.SIXCH.LeftAxis.Range.UseMin:= false;
+   LiveViewWasAuto:= false;
+  end;
   MainForm.ChartLiveView.Active:= true;
+ end;
 
  // catch a case in which the pen width must be 1
  // see procedure SCScrollViewCBChange why this must be assured
@@ -1353,7 +1381,7 @@ begin
 
 end;
 
-procedure TSIXControl.SCChartToolsetTitleFootClickTool1Click(Sender: TChartTool;
+procedure TSIXControl.SCChartToolsetTitleFootClickToolClick(Sender: TChartTool;
   Title: TChartTitle);
 var
  editor : TChartTitleFootEditor;
@@ -1367,7 +1395,39 @@ begin
  end;
 end;
 
-procedure TSIXControl.SCChartToolsetLegendClickTool1Click(Sender: TChartTool;
+procedure TSIXControl.SCChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
+  APoint: TPoint);
+var
+ i : integer;
+begin
+ // find out if the user zoomed in
+ // we cannot use SIXCH.IsZoomed because the LiveView will permanently change
+ // the extent so that SIXCH.IsZoomed is always true
+ // Thus compare the x coordinate of the extent with the previous one instead
+ if MainForm.SIXCH.LogicalExtent.a.X > MainForm.SIXCH.PrevLogicalExtent.a.X then
+  wasZoomDragged:= true
+ else
+  wasZoomDragged:= false;
+
+ // when it will be zoomed out then we must assure that the line pen is 1
+ // otherwise we would slow down the program a lot when the chart has
+ // > 20k points, see procedure SCScrollViewCBChange for the reason
+ // To test of if the next tep is the zoom out, check the selection rect since
+ // when it is directed to the left, it will be zoomed out.
+ if (MainForm.ChartToolsetZoomDragTool.SelectionRect.TopLeft.X >
+     MainForm.ChartToolsetZoomDragTool.SelectionRect.BottomRight.X)
+  and (MainForm.SIXTempValues.LinePen.Width = 2)
+  and MainForm.ScrollViewCB.Checked
+  and (timeCounter > MainForm.ScrollIntervalFSE.Value) then
+ begin
+  for i:= 1 to 8 do
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LinePen.Width:= 1;
+  MainForm.SIXTempValues.LinePen.Width:= 1;
+ end;
+end;
+
+procedure TSIXControl.SCChartToolsetLegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 var
  editor : TChartLegendEditor;
