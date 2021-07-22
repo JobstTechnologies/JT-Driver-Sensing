@@ -44,7 +44,6 @@ object ChartAxisFrame: TChartAxisFrame
     Align = alClient
     TabIndex = 2
     TabOrder = 1
-    OnChanging = PageControlChanging
     object pgTitle: TTabSheet
       Caption = 'Title'
       ClientHeight = 418

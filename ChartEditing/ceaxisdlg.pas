@@ -179,17 +179,8 @@ begin
 end;
 
 procedure TChartAxisEditor.OKButtonClick(Sender: TObject);
-var
-  msg: String;
-  C: TWinControl;
 begin
-  if not FAxisFrame.Validate(msg, C) then
-  begin
-    C.SetFocus;
-    MessageDlg(msg, mtError, [mbOK], 0);
-    ModalResult := mrNone;
-  end else
-    FOKClicked := true;
+  FOKClicked := true;
 end;
 
 procedure TChartAxisEditor.Prepare(Axis: TChartAxis;
