@@ -261,8 +261,10 @@ procedure TChartAxisFrame.cbAutoMaxChange(Sender: TObject);
 begin
   FAxis.Range.UseMax := not cbAutoMax.Checked;
   seMaximum.Visible := FAxis.Range.UseMax;
-  // setting only maximum but no minimum does not work
-  // therefore assure minimum is set too
+  // setting only maximum but no minimum does not work because the values
+  // must be scaled according to the axis scaling. Scaling only one value
+  // fails and it is tricky to do the scaling right if one value is auto
+  // therefore assure that the minimum is set too
   if cbAutoMax.Checked and (not cbAutoMin.Checked) then
    cbAutoMin.Checked:= true;
   if (not cbAutoMax.Checked) and (cbAutoMin.Checked) then
@@ -273,8 +275,7 @@ procedure TChartAxisFrame.cbAutoMinChange(Sender: TObject);
 begin
   FAxis.Range.UseMin := not cbAutoMin.Checked;
   seMinimum.Visible := FAxis.Range.UseMin;
-  // setting only maximum but no minimum does not work
-  // therefore assure minimum is set too
+  // assure that the maximum is set too, see procedure cbAutoMaxChange why
   if cbAutoMin.Checked and (not cbAutoMax.Checked) then
    cbAutoMax.Checked:= true;
   if (not cbAutoMin.Checked) and (cbAutoMax.Checked) then
@@ -418,10 +419,10 @@ begin
 
   // Page "Labels"
   GetChart.GetAllSeriesAxisLimits(Axis, FAxisMin, FAxisMax);
-  seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max, FAxisMax);
-  seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min, FAxisMin);
   seMaximum.MaxValue := MaxDouble;
   seMinimum.MinValue := -MaxDouble;
+  seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max, FAxisMax);
+  seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min, FAxisMin);
   cbAutoMax.Checked := not Axis.Range.UseMax;
   cbAutoMin.Checked := not Axis.Range.UseMin;
   // if scrolling is active the x-axis range cannot be changed
