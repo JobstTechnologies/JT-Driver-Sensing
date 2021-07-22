@@ -9,7 +9,7 @@
         <Filename Value="JTDriverSensing.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <CursorPos X="26" Y="15"/>
+        <CursorPos X="10" Y="10"/>
         <UsageCount Value="205"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -92,7 +92,7 @@
       <Unit8>
         <Filename Value="ChartEditing\ceaxisdlg.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="AxisEditor"/>
+        <ComponentName Value="ChartAxisEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ceAxisDlg"/>
@@ -217,7 +217,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="64"/>
         <CursorPos X="22" Y="86"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit18>
       <Unit19>
@@ -487,123 +487,127 @@
         <UsageCount Value="10"/>
       </Unit53>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="JTDriverSensingMain.pas"/>
-        <Caret Line="2991" TopLine="2974"/>
-      </Position1>
-      <Position2>
         <Filename Value="SIXControlUnit.pas"/>
         <Caret Line="968" TopLine="950"/>
-      </Position2>
-      <Position3>
+      </Position1>
+      <Position2>
         <Filename Value="JTDriverSensingMain.pas"/>
         <Caret Line="2990" TopLine="2974"/>
+      </Position2>
+      <Position3>
+        <Filename Value="SIXControlUnit.pas"/>
+        <Caret Line="963" TopLine="950"/>
       </Position3>
       <Position4>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="963" TopLine="950"/>
+        <Caret Line="964" TopLine="950"/>
       </Position4>
       <Position5>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="964" TopLine="950"/>
+        <Caret Line="965" TopLine="950"/>
       </Position5>
       <Position6>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="965" TopLine="950"/>
+        <Caret Line="962" TopLine="950"/>
       </Position6>
       <Position7>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="962" TopLine="950"/>
+        <Caret Line="971" TopLine="950"/>
       </Position7>
       <Position8>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="971" TopLine="950"/>
+        <Caret Line="962" TopLine="950"/>
       </Position8>
       <Position9>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="962" TopLine="950"/>
+        <Caret Line="971" TopLine="950"/>
       </Position9>
       <Position10>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="971" TopLine="950"/>
+        <Caret Line="968" Column="9" TopLine="950"/>
       </Position10>
       <Position11>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="968" Column="9" TopLine="950"/>
+        <Caret Line="963" TopLine="950"/>
       </Position11>
       <Position12>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="963" TopLine="950"/>
+        <Caret Line="964" TopLine="950"/>
       </Position12>
       <Position13>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="964" TopLine="950"/>
+        <Caret Line="965" TopLine="950"/>
       </Position13>
       <Position14>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="965" TopLine="950"/>
+        <Caret Line="968" TopLine="950"/>
       </Position14>
       <Position15>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="968" TopLine="950"/>
+        <Caret Line="963" TopLine="950"/>
       </Position15>
       <Position16>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="963" TopLine="950"/>
+        <Caret Line="964" TopLine="950"/>
       </Position16>
       <Position17>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="964" TopLine="950"/>
+        <Caret Line="965" TopLine="950"/>
       </Position17>
       <Position18>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="965" TopLine="950"/>
+        <Caret Line="962" TopLine="950"/>
       </Position18>
       <Position19>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="962" TopLine="950"/>
+        <Caret Line="967" Column="58" TopLine="950"/>
       </Position19>
       <Position20>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="967" Column="58" TopLine="950"/>
+        <Caret Line="963" TopLine="950"/>
       </Position20>
       <Position21>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="963" TopLine="950"/>
+        <Caret Line="964" TopLine="950"/>
       </Position21>
       <Position22>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="964" TopLine="950"/>
+        <Caret Line="965" TopLine="950"/>
       </Position22>
       <Position23>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="965" TopLine="950"/>
+        <Caret Line="968" TopLine="950"/>
       </Position23>
       <Position24>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="968" TopLine="950"/>
+        <Caret Line="969" TopLine="950"/>
       </Position24>
       <Position25>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="969" TopLine="950"/>
+        <Caret Line="963" TopLine="950"/>
       </Position25>
       <Position26>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="963" TopLine="950"/>
+        <Caret Line="968" TopLine="950"/>
       </Position26>
       <Position27>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="968" TopLine="950"/>
+        <Caret Line="969" TopLine="950"/>
       </Position27>
       <Position28>
         <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="969" TopLine="950"/>
+        <Caret Line="970" TopLine="950"/>
       </Position28>
       <Position29>
-        <Filename Value="SIXControlUnit.pas"/>
-        <Caret Line="970" TopLine="950"/>
+        <Filename Value="JTDriverSensingMain.pas"/>
+        <Caret Line="2990" Column="37" TopLine="2974"/>
       </Position29>
+      <Position30>
+        <Filename Value="JTDriverSensing.lpr"/>
+        <Caret Line="10" Column="10"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

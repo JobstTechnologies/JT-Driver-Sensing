@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, tachartlazaruspkg, lazcontrols, JTDriverSensingMain,
+  Forms, lazcontrols, JTDriverSensingMain,
   SerialUSBSelection, NameSetting, SIXControlUnit, Fitting, PumpControlUnit,
   AboutForm, ceFontFrame, ceAxisDlg, ceBrushFrame, ceLegendDlg, cePenFrame,
   cePointerFrame, ceSeriesDlg, ceShapeBrushPenMarginsFrame, ceTitleFootDlg,

@@ -1350,6 +1350,7 @@ object MainForm: TMainForm
                 object Pump1DirectionRG1: TRadioGroup
                   Left = 8
                   Height = 72
+                  Hint = 'Set pump direction'
                   Top = 34
                   Width = 128
                   AutoFill = True
@@ -1368,7 +1369,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump1VoltageFS1: TFloatSpinEdit
@@ -1381,14 +1381,13 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label7: TLabel
                   Left = 8
                   Height = 15
+                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
@@ -1420,6 +1419,7 @@ object MainForm: TMainForm
                 object Pump2DirectionRG1: TRadioGroup
                   Left = 8
                   Height = 72
+                  Hint = 'Set pump direction'
                   Top = 34
                   Width = 128
                   AutoFill = True
@@ -1439,7 +1439,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump2VoltageFS1: TFloatSpinEdit
@@ -1453,14 +1452,13 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label10: TLabel
                   Left = 8
                   Height = 15
+                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
@@ -1492,6 +1490,7 @@ object MainForm: TMainForm
                 object Pump3DirectionRG1: TRadioGroup
                   Left = 8
                   Height = 72
+                  Hint = 'Set pump direction'
                   Top = 34
                   Width = 128
                   AutoFill = True
@@ -1511,7 +1510,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump3VoltageFS1: TFloatSpinEdit
@@ -1525,14 +1523,13 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label9: TLabel
                   Left = 8
                   Height = 15
+                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
@@ -1564,6 +1561,7 @@ object MainForm: TMainForm
                 object Pump4DirectionRG1: TRadioGroup
                   Left = 8
                   Height = 72
+                  Hint = 'Set pump direction'
                   Top = 34
                   Width = 128
                   AutoFill = True
@@ -1583,7 +1581,6 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump4VoltageFS1: TFloatSpinEdit
@@ -1597,14 +1594,13 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
                 object Label11: TLabel
                   Left = 8
                   Height = 15
+                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 116
                   Width = 39
                   Caption = 'Voltage'
@@ -1618,15 +1614,12 @@ object MainForm: TMainForm
               object Pump5GB1: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB1: TCheckBox
@@ -1659,21 +1652,17 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump5VoltageFS1: TFloatSpinEdit
                   Left = 8
                   Height = 23
-                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 136
                   Width = 103
                   Increment = 0.1
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -1688,15 +1677,12 @@ object MainForm: TMainForm
               object Pump6GB1: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 8
                 Width = 148
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB1: TCheckBox
@@ -1730,13 +1716,11 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump6VoltageFS1: TFloatSpinEdit
                   Left = 8
                   Height = 23
-                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 136
                   Width = 103
                   Enabled = False
@@ -1744,8 +1728,6 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -1760,15 +1742,12 @@ object MainForm: TMainForm
               object Pump7GB1: TGroupBox
                 Left = 8
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB1: TCheckBox
@@ -1802,13 +1781,11 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump7VoltageFS1: TFloatSpinEdit
                   Left = 8
                   Height = 23
-                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 136
                   Width = 103
                   Enabled = False
@@ -1816,8 +1793,6 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
@@ -1832,15 +1807,12 @@ object MainForm: TMainForm
               object Pump8GB1: TGroupBox
                 Left = 168
                 Height = 192
-                Hint = 'Double-click to change the pump name'
                 Top = 200
                 Width = 148
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
-                ParentShowHint = False
-                ShowHint = True
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB1: TCheckBox
@@ -1874,13 +1846,11 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
-                  ParentShowHint = False
                   TabOrder = 1
                 end
                 object Pump8VoltageFS1: TFloatSpinEdit
                   Left = 8
                   Height = 23
-                  Hint = 'The higher the voltage the higher the'#13#10'pumping speed. Maximum value 3.3 V.'
                   Top = 136
                   Width = 103
                   Enabled = False
@@ -1888,8 +1858,6 @@ object MainForm: TMainForm
                   MaxValue = 3.3
                   MinValue = 0.1
                   OnChange = PumpVoltageFSChange
-                  ParentShowHint = False
-                  ShowHint = True
                   TabOrder = 2
                   Value = 3.3
                 end
