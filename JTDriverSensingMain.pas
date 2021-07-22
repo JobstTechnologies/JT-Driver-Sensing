@@ -1714,13 +1714,15 @@ procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
 var
  i : integer;
 begin
- // chart scrolling should not be performed when the user zoomed in
- // thus read the right x-position of the current chart position in
- // respect to the one when the zooming started
- SIXControl.wasZoomDragged:= SIXCH.IsZoomed;
- // for information: We purposely don't rely later on SIXCH.IsZoomed
- // because after calibration and turning on/off scrolling we want to
- // get out of the isZoomed mode and .IsZoomed cannot be changed by code.
+
+ // find out if the user zoomed in we cannot use SIXCH.IsZoomed because
+ // the LiveView will ermanently  change the extent so that SIXCH.IsZoomed is
+ // always true
+ // Thus compare the x coordinate of the extent with the previous one instead
+ if SIXCH.LogicalExtent.a.X > SIXCH.PrevLogicalExtent.a.X then
+  SIXControl.wasZoomDragged:= true
+ else
+  SIXControl.wasZoomDragged:= false;
 
  // when not zoomed / zoomed out then we must assure that the line pen is 1
  // otherwise we would slow down the program a lot when the chart has
