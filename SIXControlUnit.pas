@@ -939,7 +939,7 @@ function TSIXControl.Nonlinear(X: double): double;
 // the measured analog output voltage to measured voltage dependency
 begin
  // note that the offset can be neglected since the linearization is independent
- result:= -0.177*power(X, 2) + 1.773*X;
+ result:= -0.1678*power(X, 2) + 1.7397*X;
 end;
 
 function TSIXControl.Linear(X: double): double;
