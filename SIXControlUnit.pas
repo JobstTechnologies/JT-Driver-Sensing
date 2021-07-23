@@ -1092,7 +1092,8 @@ begin
  // if checked
  else
  begin
-  // also in case it is zoomed, enable scrolling
+  // also in case it is zoomed, enable scrolling since the user turned this
+  // on purposely
   wasZoomDragged:= false;
   // the user might have set a range and then turned on scrolling
   // therefore assure the range is not used
@@ -1425,6 +1426,10 @@ begin
     as TLineSeries).LinePen.Width:= 1;
   MainForm.SIXTempValues.LinePen.Width:= 1;
  end;
+
+ // if not in scrollong mode, zoom out when clicked
+ if (not MainForm.ScrollViewCB.Checked) and (not wasZoomDragged) then
+  MainForm.SIXCH.ZoomFull;
 end;
 
 procedure TSIXControl.SCChartToolsetLegendClickToolClick(Sender: TChartTool;
@@ -1464,9 +1469,9 @@ begin
   editor.Page:= page;
   editor.ShowModal; // shows the dialog
 
-  // assure that the data scrolling continues since calling the dialog
-  // triggered ChartToolsetZoomDragToolAfterMouseUp
-  wasZoomDragged:= false;
+  // Info: calling the dialog triggers ChartToolsetZoomDragToolAfterMouseUp
+  // keep that in mind
+
   // update the axis settings for the LiveView
   MainForm.ChartLiveView.StoreAxisRange(AnAxis);
  finally
