@@ -510,7 +510,7 @@ begin
  ScrollInterval:= MainForm.ScrollIntervalFSE.Value;
  // don't scroll when user zoomed in or when in calibration mode
  if ((wasZoomDragged) or (inCalibration))
-  and (timeCounter > ScrollInterval) then
+  and MainForm.ChartLiveView.Active then
  begin
   // turning of LiveView restores the axis properties from the time it was
   // started. This would change the axis but when zoomed, we don't want this
