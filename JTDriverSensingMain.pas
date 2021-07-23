@@ -1125,6 +1125,9 @@ begin
     IndicatorPumpPPaint;
     ConnComPortPumpLE.Color:= clRed;
     ConnComPortPumpLEChange;
+    serPump.CloseSocket;
+    serPump.Free;
+    HaveSerialPump:= False;
     exit;
    end;
    // JT Pump Driver requires a certain firmware version
