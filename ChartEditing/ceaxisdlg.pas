@@ -141,6 +141,17 @@ begin
   if not FOKClicked then begin
     RestoreAxisParams;
     GetChart.Invalidate;
+  end
+  else
+  // when LiveView is used, LiveView can have set the min/max values of axis
+  // because new data points might have been set while the axis dialog was open
+  // therefore check if the min/max set in the dialog are the ones in the axis
+  // and if not set them
+  begin
+    if FAxis.Range.Max <> FAxisFrame.seMaximum.Value then
+      FAxis.Range.Max := FAxisFrame.seMaximum.Value;
+    if FAxis.Range.Min <> FAxisFrame.seMinimum.Value then
+      FAxis.Range.Min := FAxisFrame.seMinimum.Value;
   end;
 end;
 
