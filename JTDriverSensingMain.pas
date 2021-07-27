@@ -2327,14 +2327,7 @@ end;
 
 procedure TMainForm.StepTimer1Finished(Sender: TObject);
 begin
- StepTimer1.Enabled:= False;
- // if there is a step 2, start its timer and show its tab
- if Step2UseCB.checked then
- begin
-  // the interval is calculated in TMainForm.GenerateCommand
-  StepTimer2.Enabled:= True;
-  RepeatPC.ActivePage:= Step2TS;
- end;
+ PumpControl.PCStepTimer1Finished(Sender);
 end;
 
 procedure TMainForm.StepTimerXFinished(Sender: TObject);

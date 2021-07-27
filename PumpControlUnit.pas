@@ -15,6 +15,7 @@ type
 
   TPumpControl = class
     procedure PCDutyCycleXFSEChange(Sender: TObject);
+    procedure PCStepTimer1Finished(Sender: TObject);
     procedure PCStepTimerXFinished(Sender: TObject);
     procedure PCGenerateCommandBBClick(Sender: TObject);
     procedure PCRunFreeBBClick(Sender: TObject);
@@ -1002,7 +1003,7 @@ var
   CommandResult : Boolean = False;
 begin
  // generate command
- CommandResult:= PumpControl.GenerateCommand(command);
+ CommandResult:= GenerateCommand(command);
  // if GenerateCommand returns e.g. a too long time stop
  if not CommandResult then
  begin
@@ -1250,6 +1251,22 @@ begin
       as TTabSheet).TabVisible:= True;
 end;
 
+procedure TPumpControl.PCStepTimer1Finished(Sender: TObject);
+begin
+ MainForm.StepTimer1.Enabled:= False;
+ // remove possible asterisk from step caption
+ MainForm.Step1TS.Caption:= 'Step 1';
+ // if there is a step 2, start its timer and show its tab
+ if MainForm.Step2UseCB.checked then
+ begin
+  // the interval is calculated in GenerateCommand
+  MainForm.StepTimer2.Enabled:= True;
+  MainForm.RepeatPC.ActivePage:= MainForm.Step2TS;
+  // highlight it as active by adding an asterisk to the step name
+  MainForm.Step2TS.Caption:= 'Step 2 *';
+ end;
+end;
+
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
  Step : integer;
@@ -1260,22 +1277,30 @@ begin
  // so get the 10th character of the name
  Step:= StrToInt(Copy(SenderName, 10, 1));
  (MainForm.FindComponent('StepTimer' + IntToStr(Step))
-        as TTimer).Enabled:= False;
+  as TTimer).Enabled:= False;
+ // remove asterisk from current step caption
+ (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
+  as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
  // if there is a step+1, start its timer and show its tab
  if (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'UseCB')
-        as TCheckBox).checked then
+     as TCheckBox).checked then
  begin
-  // the interval is calculated in TMainForm.GenerateCommand
+  // the interval is calculated in GenerateCommand
   (MainForm.FindComponent('StepTimer' + IntToStr(Step+1))
-        as TTimer).Enabled:= True;
-  MainForm.RepeatPC.ActivePage:= (MainForm.FindComponent('StepTimer' + IntToStr(Step+1) + 'TS')
-        as TTabSheet);
+   as TTimer).Enabled:= True;
+  MainForm.RepeatPC.ActivePage:=
+   (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS') as TTabSheet);
+  // highlight the new active step by adding an asterisk to the step name
+  (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS')
+   as TTabSheet).Caption:= 'Step ' + IntToStr(Step+1) + ' *';
  end
  else // there might be a repeat
  begin
   // switch to step 1
   MainForm.StepTimer1.Enabled:= True;
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
+  // highlight it as active by adding an asterisk to the step name
+  MainForm.Step1TS.Caption:= 'Step 1 *';
  end;
 end;
 
@@ -1348,7 +1373,7 @@ var
   CommandResult : Boolean = False;
 begin
   // generate command
-  CommandResult:= PumpControl.GenerateCommand(command);
+  CommandResult:= GenerateCommand(command);
   // if GenerateCommand returns e.g. a too long time do nothing
   if not CommandResult then
    exit;
@@ -1384,7 +1409,8 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
+     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
+                MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1474,6 +1500,10 @@ begin
   // show first tab and start its timer
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
   MainForm.StepTimer1.Enabled:= true;
+  // if there are more steps, highlight the first one as being active
+  // by adding an asterisk to the step name
+  if MainForm.Step2UseCB.Checked then
+   MainForm.Step1TS.Caption:= 'Step 1 *';
   // do not show unused steps
   for j:= 2 to StepNum do
   begin
@@ -1548,10 +1578,14 @@ begin
  MainForm.RunBB.Enabled:= False;
  MainForm.RunFreeBB.Enabled:= False;
  MainForm.GenerateCommandBB.Enabled:= True;
- // stop all timers
+ // stop all timers and reset captions
  for j:= 1 to StepNum do
+ begin
   (MainForm.FindComponent('StepTimer' + IntToStr(j))
    as TTimer).Enabled:= False;
+  (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
+   as TTabSheet).Caption:= 'Step ' + IntToStr(j);
+ end;
  // enable all setting possibilities only if no file is loaded
  if (MainForm.LoadedActionFileM.Text = 'None')
   or (MainForm.LoadedActionFileM.Text = 'Free Pumps') then
@@ -1659,10 +1693,14 @@ begin
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;
  MainForm.RepeatOutputLE.Visible:= False;
- // stop all timers
+ // stop all timers and reset captions
  for j:= 1 to StepNum do
+ begin
   (MainForm.FindComponent('StepTimer' + IntToStr(j))
    as TTimer).Enabled:= False;
+  (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
+   as TTabSheet).Caption:= 'Step ' + IntToStr(j);
+ end;
  // enable all setting possibilities only if no file is loaded
  if (MainForm.LoadedActionFileM.Text = 'None')
   or (MainForm.LoadedActionFileM.Text = 'Free Pumps') then
