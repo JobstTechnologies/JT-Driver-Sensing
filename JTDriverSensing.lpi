@@ -22,9 +22,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="9"/>
-      <RevisionNr Value="8"/>
+      <RevisionNr Value="9"/>
       <Attributes pvaPreRelease="True"/>
-      <StringTable CompanyName="Jobst Technologies" FileDescription="Program to control CCP1 pumps and to sense SIX biosensors" LegalCopyright="Jobst Technologies GmbH" ProductName="JT DriverSensing" ProductVersion="0.98"/>
+      <StringTable CompanyName="Jobst Technologies" FileDescription="Program to control CCP1 pumps and to sense SIX biosensors" LegalCopyright="Jobst Technologies GmbH" ProductName="JT DriverSensing" ProductVersion="0.99"/>
     </VersionInfo>
     <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
@@ -79,7 +79,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="JTDriverSensing0-98"/>
+            <Filename Value="JTDriverSensing0-99"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>

@@ -781,7 +781,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.98';
+  Version : string = '0.99';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
@@ -2472,8 +2472,8 @@ begin
   for j:= 1 to PumpControl.StepNum do
   begin
    // the user must be able to see if the pumps 5 - 8 are set
-   // therefore we cannot just disable the StepXTS component but it
-   // child component except of SXPC
+   // therefore we cannot just disable the StepXTS component but its
+   // child components except of SXPC
    (FindComponent('Step' + IntToStr(j) + 'UseCB')
     as TCheckBox).Enabled:= False;
    (FindComponent('ActionTime' + IntToStr(j) + 'GB')
@@ -2484,9 +2484,10 @@ begin
     as TTabSheet).Enabled:= False;
    (FindComponent('S' + IntToStr(j) + 'P58')
     as TTabSheet).Enabled:= False;
-   for i:= 1 to PumpControl.PumpNum do
-   (FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
-    as TGroupBox).ShowHint:= False;
+   if j = 1 then
+    for i:= 1 to PumpControl.PumpNum do
+    (FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
+     as TGroupBox).ShowHint:= False;
   end;
   RepeatOutputLE.Visible:= False;
   // do not show unused steps
