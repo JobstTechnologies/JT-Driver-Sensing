@@ -1195,14 +1195,19 @@ begin
  // SenderName is in the form "StepxTS" and we need the x
  // so get the 5th character of the name
  Step:= StrToInt(Copy(SenderName, 5, 1));
- if (MainForm.FindComponent('Step' + IntToStr(Step) + 'UseCB') as TCheckBox).Checked then
+ if (MainForm.FindComponent('Step' + IntToStr(Step) + 'UseCB')
+     as TCheckBox).Checked then
  begin
   if Step <> StepNum then
-   (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS') as TTabSheet).TabVisible:= True;
-  (MainForm.FindComponent('ActionTime' + IntToStr(Step) + 'GB') as TGroupBox).Enabled:= True;
-  (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'GB') as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS')
+    as TTabSheet).TabVisible:= True;
+  (MainForm.FindComponent('ActionTime' + IntToStr(Step) + 'GB')
+   as TGroupBox).Enabled:= True;
+  (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'GB')
+   as TGroupBox).Enabled:= True;
   for j:= 1 to PumpNum do
-   (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step)) as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step))
+    as TGroupBox).Enabled:= True;
   // in case it was disabled on unchecking step 2
   if (Step = 2) and (not MainForm.ActionTime1GB.Enabled) then
    MainForm.ActionTime1GB.Enabled:= True;
@@ -1210,11 +1215,15 @@ begin
  else
  begin
   if Step <> StepNum then
-   (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS') as TTabSheet).TabVisible:= False;
-  (MainForm.FindComponent('ActionTime' + IntToStr(Step) + 'GB') as TGroupBox).Enabled:= False;
-  (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'GB') as TGroupBox).Enabled:= False;
+   (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'TS')
+    as TTabSheet).TabVisible:= False;
+  (MainForm.FindComponent('ActionTime' + IntToStr(Step) + 'GB')
+   as TGroupBox).Enabled:= False;
+  (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'GB')
+   as TGroupBox).Enabled:= False;
   for j:= 1 to PumpNum do
-   (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step)) as TGroupBox).Enabled:= False;
+   (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step))
+    as TGroupBox).Enabled:= False;
   // if there is only one step and endless repeat disable time settings
   if (Step = 2) and (MainForm.RunEndlessCB.Checked) then
    MainForm.ActionTime1GB.Enabled:= False;
@@ -1662,12 +1671,21 @@ begin
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
   for j:= 1 to StepNum do
   begin
-   (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
+   (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
+    as TCheckBox).Enabled:= True;
+   (MainForm.FindComponent('ActionTime' + IntToStr(j) + 'GB')
+    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent('DutyCycle' + IntToStr(j) + 'GB')
+    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
     as TTabSheet).Enabled:= True;
-   // enable tooltips for pump name
-   for i:= 1 to PumpNum do
-   (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
-    as TGroupBox).ShowHint:= True;
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
+    as TTabSheet).Enabled:= True;
+   if j = 1 then
+    // enable tooltips for pump name
+    for i:= 1 to PumpNum do
+    (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
+     as TGroupBox).ShowHint:= True;
   end;
   // view tab after last used step
   for j:= 2 to StepNum-1 do
