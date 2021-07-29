@@ -9,7 +9,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
   TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
   Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
-  TAGeometry, TAChartLiveView,
+  TAGeometry, TAChartLiveView, StrUtils,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -46,6 +46,8 @@ type
     procedure SCAnOutOnOffTBChange(Sender: TObject);
     procedure SCCalibrateTBChange(Sender: TObject; aborted: Boolean = false);
     procedure SCChangeBackColorMIClick(Sender: TObject);
+    procedure SCSaveAppearance(iniFile : string);
+    procedure SCLoadAppearance(iniFile : string);
 
   private
 
@@ -56,6 +58,7 @@ type
     function ParseDefFile(InFile: string): Boolean;
     function Nonlinear(X: double): double;
     function Linear(X: double): double;
+    function FontStylesToString(FontStyles: TFontStyles): string;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -2037,6 +2040,154 @@ begin
 
  end; // end if not checked
 
+end;
+
+procedure TSIXControl.SCSaveAppearance(iniFile : string);
+var
+ i : integer;
+ Axis : TChartAxis;
+ tempStr : string;
+ List: TStringList;
+begin
+
+try
+ List:= TStringList.Create;
+
+ List.Add('Chart SIXCH');
+ for i:= 0 to MainForm.SIXCH.AxisList.Count-1 do
+ begin
+  Axis:= MainForm.SIXCH.AxisList[i];
+  List.Add('Axis ' + IntToStr(i));
+  // General visibility
+  List.Add('Visible ' + BoolToStr(Axis.Visible));
+  // Axis title
+  if Axis.Title.Visible then tempStr:= 'true' else tempStr:= 'false';
+  List.Add('Title.Visible ' + tempStr);
+  List.Add('Title.Caption ' + Axis.Title.Caption);
+  WriteStr(tempStr, Axis.Title.Alignment);
+  List.Add('Title.Alignment ' + tempStr);
+  List.Add('Title.LabelFont.Name ' + Axis.Title.LabelFont.Name);
+  List.Add('Title.LabelFont.Size ' + IntToStr(Axis.Title.LabelFont.Size));
+  List.Add('Title.LabelFont.Color ' + ColorToString(Axis.Title.LabelFont.Color));
+  List.Add('Title.LabelFont.Style ' + FontStylesToString(Axis.Title.LabelFont.Style));
+  List.Add('Title.LabelFont.Orientation ' + IntToStr(Axis.Title.LabelFont.Orientation));
+  List.Add('Title.Distance ' + IntToStr(Axis.Title.Distance));
+  WriteStr(tempStr, Axis.Title.Shape);
+  List.Add('Title.Shape ' + tempStr);
+  List.Add('Title.LabelBrush.Color ' + ColorToString(Axis.Title.LabelBrush.Color));
+  WriteStr(tempStr, Axis.Title.LabelBrush.Style);
+  List.Add('Title.LabelBrush.Style ' + tempStr);
+  List.Add('Title.Frame.Visible ' + BoolToStr(Axis.Title.Frame.Visible));
+  List.Add('Title.Frame.Color ' + ColorToString(Axis.Title.Frame.Color));
+  List.Add('Title.Margins.Left ' + IntToStr(Axis.Title.Margins.Left));
+  List.Add('Title.Margins.Top ' + IntToStr(Axis.Title.Margins.Top));
+  List.Add('Title.Margins.Right ' + IntToStr(Axis.Title.Margins.Right));
+  List.Add('Title.Margins.Bottom ' + IntToStr(Axis.Title.Margins.Bottom));
+
+      // Axis range
+  List.Add('Range.Max ' + FloatToStr(Axis.Range.Max));
+  List.Add('Range.Min ' + FloatToStr(Axis.Range.Min));
+  List.Add('Range.UseMax ' + BoolToStr(Axis.Range.UseMax));
+  List.Add('Range.UseMin ' + BoolToStr(Axis.Range.UseMin));
+  List.Add('Inverted ' + BoolToStr(Axis.Inverted));
+
+  // Tick labels
+  List.Add('Marks.Visible ' + BoolToStr(Axis.Marks.Visible));
+  List.Add('Marks.Format ' + Axis.Marks.Format);
+  List.Add('Marks.Distance ' + IntToStr(Axis.Marks.Distance));
+  List.Add('TickLength ' + IntToStr(Axis.TickLength));
+  List.Add('TickInnerLength ' + IntToStr(Axis.TickInnerLength));
+  List.Add('TickColor ' + ColorToString(Axis.TickColor));
+  List.Add('Marks.LabelFont.Name ' + Axis.Marks.LabelFont.Name);
+  List.Add('Marks.LabelFont.Size ' + IntToStr(Axis.Marks.LabelFont.Size));
+  List.Add('Marks.LabelFont.Color ' + ColorToString(Axis.Marks.LabelFont.Color));
+  List.Add('Marks.LabelFont.Style ' + FontStylesToString(Axis.Marks.LabelFont.Style));
+  WriteStr(tempStr, Axis.Marks.Shape);
+  List.Add('Marks.Shape ' + tempStr);
+  List.Add('Marks.LabelBrush.Color ' + ColorToString(Axis.Marks.LabelBrush.Color));
+  WriteStr(tempStr, Axis.Marks.LabelBrush.Style);
+  List.Add('Marks.LabelBrush.Style ' + tempStr);
+  List.Add('Marks.Frame.Visible ' + BoolToStr(Axis.Marks.Frame.Visible));
+  List.Add('Marks.Frame.Color ' + ColorToString(Axis.Marks.Frame.Color));
+  List.Add('Marks.Margins.Left ' + IntToStr(Axis.Marks.Margins.Left));
+  List.Add('Marks.Margins.Top ' + IntToStr(Axis.Marks.Margins.Top));
+  List.Add('Marks.Margins.Right ' + IntToStr(Axis.Marks.Margins.Right));
+  List.Add('Marks.Margins.Bottom ' + IntToStr(Axis.Marks.Margins.Bottom));
+
+  // Grid
+  List.Add('Grid.Visible ' + BoolToStr(Axis.Grid.Visible));
+  WriteStr(tempStr, Axis.Grid.Style);
+  List.Add('Grid.Style ' + tempStr);
+  List.Add('Grid.Width ' + IntToStr(Axis.Grid.Width));
+  List.Add('Grid.Color ' + ColorToString(Axis.Grid.Color));
+
+  // Frame
+  List.Add('Frame.Visible ' + BoolToStr(MainForm.SIXCH.Frame.Visible));
+  WriteStr(tempStr, MainForm.SIXCH.Frame.Style);
+  List.Add('Frame.Style ' + tempStr);
+  List.Add('Frame.Width ' + IntToStr(MainForm.SIXCH.Frame.Width));
+  List.Add('Frame.Color ' + ColorToString(MainForm.SIXCH.Frame.Color));
+
+  // Arrow
+  List.Add('Arrow.Visible ' + BoolToStr(Axis.Arrow.Visible));
+  List.Add('Arrow.BaseLength ' + IntToStr(Axis.Arrow.BaseLength));
+  List.Add('Arrow.Length ' + IntToStr(Axis.Arrow.Length));
+  List.Add('Arrow.Width ' + IntToStr(Axis.Arrow.Width));
+ end;
+
+ // save the list
+ List.SaveToFile(iniFile);
+
+finally
+ List.Free;
+end;
+
+end;
+
+function TSIXControl.FontStylesToString(FontStyles: TFontStyles): string;
+begin
+  result := '';
+  if fsBold in FontStyles then
+   result:= result + IntToStr(Ord(fsBold)) + ',';
+  if fsItalic in FontStyles then
+   result:= result + IntToStr(Ord(fsItalic)) + ',';
+  if fsUnderline in FontStyles then
+   result:= result + IntToStr(Ord(fsUnderline)) + ',';
+  if fsStrikeOut in FontStyles then
+   result:= result + IntToStr(Ord(fsStrikeOut)) + ',';
+  RemoveTrailingChars(result, [',']);
+end;
+
+procedure TSIXControl.SCLoadAppearance(iniFile : string);
+var
+ i, j, k : integer;
+ Axis : TChartAxis;
+ List : TStringList;
+ chartName : string;
+begin
+ k:= 56; // number of appearances per axis
+ try
+  List:= TStringList.Create;
+  List.LoadFromFile(iniFile);
+  for i:= 0 to 0 do // to be extended to several charts
+  begin
+   chartName:= Copy(List[0], Pos(' ', List[0]) + 1, List[0].Length);
+   for j:= 0 to (MainForm.FindComponent(chartName) as TChart).AxisList.Count-1 do
+   begin
+    Axis:= (MainForm.FindComponent(chartName)
+            as TChart).AxisList[StrToInt(
+             Copy(List[j*k + 1], Pos(' ', List[j*k + 1]) + 1, List[j*k + 1].Length)
+             )];
+    // General visibility
+    Axis.Visible:= StrToBool(
+     Copy(List[j*k + 2], Pos(' ', List[j*k + 2]) + 1, List[j*k + 2].Length));
+    // Axis title
+   end;
+
+  end;
+ finally
+  List.Free;
+ end;
 end;
 
 end. //unit

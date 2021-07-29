@@ -795,6 +795,7 @@ var
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor definition file
+  const AppearanceFile : string = 'Appearance-JT-DS.ini'; // filename to store appearance
 
 implementation
 
@@ -804,6 +805,8 @@ uses
   PumpControlUnit, SIXControlUnit;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+ iniFile : string;
 begin
  MainForm.Caption:= 'JT Driver Sensing ' + Version;
  DefaultFormatSettings.DecimalSeparator:= '.'; // we use English numbers
@@ -855,11 +858,18 @@ begin
 
  // set the button to load the .def files as active control
  ActiveControl:= LoadDefBB;
+
+ // load the current chart appearance settings
+ // we write into the same folder than the program .exe
+ iniFile:= ExtractFilePath(Application.ExeName) + AppearanceFile;
+ if FileExists(iniFile) then
+  SIXControl.SCLoadAppearance(iniFile);
+
 end;
 
 procedure TMainForm.FormClose(Sender: TObject);
 var
- command : string;
+ command, iniFile : string;
  k : integer;
 begin
  // stop SIX reader timer
@@ -894,6 +904,12 @@ begin
  end;
  if HaveSensorFileStream then
   SensorFileStream.Free;
+
+ // save the current chart appearance settings
+ // we write into the same folder than the program .exe
+ iniFile:= ExtractFilePath(Application.ExeName) + AppearanceFile;
+ SIXControl.SCSaveAppearance(iniFile);
+
 end;
 
 procedure TMainForm.PumpConnectionMIClick(Sender: TObject);
