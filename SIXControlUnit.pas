@@ -59,6 +59,7 @@ type
     function Nonlinear(X: double): double;
     function Linear(X: double): double;
     function FontStylesToString(FontStyles: TFontStyles): string;
+    function StringToFontStyles(s: string): TFontStyles;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -2045,7 +2046,9 @@ end;
 procedure TSIXControl.SCSaveAppearance(iniFile : string);
 var
  i : integer;
+ Chart : TChart;
  Axis : TChartAxis;
+ Series : TLineSeries;
  tempStr : string;
  List: TStringList;
 begin
@@ -2053,16 +2056,20 @@ begin
 try
  List:= TStringList.Create;
 
+ Chart:= MainForm.SIXCH;
  List.Add('Chart SIXCH');
- for i:= 0 to MainForm.SIXCH.AxisList.Count-1 do
+ // Background
+ List.Add('BackColor ' + ColorToString(Chart.BackColor));
+ // Title
+ //List.Add('Title.Caption ' + Chart.Title.Text);
+ for i:= 0 to Chart.AxisList.Count-1 do
  begin
-  Axis:= MainForm.SIXCH.AxisList[i];
+  Axis:= Chart.AxisList[i];
   List.Add('Axis ' + IntToStr(i));
   // General visibility
   List.Add('Visible ' + BoolToStr(Axis.Visible));
   // Axis title
-  if Axis.Title.Visible then tempStr:= 'true' else tempStr:= 'false';
-  List.Add('Title.Visible ' + tempStr);
+  List.Add('Title.Visible ' + BoolToStr(Axis.Title.Visible));
   List.Add('Title.Caption ' + Axis.Title.Caption);
   WriteStr(tempStr, Axis.Title.Alignment);
   List.Add('Title.Alignment ' + tempStr);
@@ -2084,11 +2091,12 @@ try
   List.Add('Title.Margins.Right ' + IntToStr(Axis.Title.Margins.Right));
   List.Add('Title.Margins.Bottom ' + IntToStr(Axis.Title.Margins.Bottom));
 
-      // Axis range
-  List.Add('Range.Max ' + FloatToStr(Axis.Range.Max));
-  List.Add('Range.Min ' + FloatToStr(Axis.Range.Min));
-  List.Add('Range.UseMax ' + BoolToStr(Axis.Range.UseMax));
-  List.Add('Range.UseMin ' + BoolToStr(Axis.Range.UseMin));
+  // Axis range
+  // purposely don't store the range since this depends on the actual values
+  //List.Add('Range.Max ' + FloatToStr(Axis.Range.Max));
+  //List.Add('Range.Min ' + FloatToStr(Axis.Range.Min));
+  //List.Add('Range.UseMax ' + BoolToStr(Axis.Range.UseMax));
+  //List.Add('Range.UseMin ' + BoolToStr(Axis.Range.UseMin));
   List.Add('Inverted ' + BoolToStr(Axis.Inverted));
 
   // Tick labels
@@ -2122,17 +2130,29 @@ try
   List.Add('Grid.Color ' + ColorToString(Axis.Grid.Color));
 
   // Frame
-  List.Add('Frame.Visible ' + BoolToStr(MainForm.SIXCH.Frame.Visible));
-  WriteStr(tempStr, MainForm.SIXCH.Frame.Style);
+  List.Add('Frame.Visible ' + BoolToStr(Chart.Frame.Visible));
+  WriteStr(tempStr, Chart.Frame.Style);
   List.Add('Frame.Style ' + tempStr);
-  List.Add('Frame.Width ' + IntToStr(MainForm.SIXCH.Frame.Width));
-  List.Add('Frame.Color ' + ColorToString(MainForm.SIXCH.Frame.Color));
+  List.Add('Frame.Width ' + IntToStr(Chart.Frame.Width));
+  List.Add('Frame.Color ' + ColorToString(Chart.Frame.Color));
 
   // Arrow
   List.Add('Arrow.Visible ' + BoolToStr(Axis.Arrow.Visible));
   List.Add('Arrow.BaseLength ' + IntToStr(Axis.Arrow.BaseLength));
   List.Add('Arrow.Length ' + IntToStr(Axis.Arrow.Length));
   List.Add('Arrow.Width ' + IntToStr(Axis.Arrow.Width));
+ end;
+
+ // Series
+ for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
+ begin
+  Series:= (Chart.Series[i]) as TLineSeries;
+  List.Add('LineSeries ' + Series.Name);
+
+  // we don't store the Title since this is set via the .def file
+  // also don't show the Active state for the same reason
+
+  List.Add('SeriesColor ' + ColorToString(Series.SeriesColor));
  end;
 
  // save the list
@@ -2160,34 +2180,252 @@ end;
 
 procedure TSIXControl.SCLoadAppearance(iniFile : string);
 var
- i, j, k : integer;
+ i, m : integer;
+ Chart : TChart;
  Axis : TChartAxis;
+ Series : TLineSeries;
  List : TStringList;
- chartName : string;
+ tempAlignment : TAlignment;
+ tempShape : TChartLabelShape;
+ tempBrushStyle : TBrushStyle;
+ tempStyle : TPenStyle;
 begin
- k:= 56; // number of appearances per axis
+
  try
   List:= TStringList.Create;
   List.LoadFromFile(iniFile);
-  for i:= 0 to 0 do // to be extended to several charts
-  begin
-   chartName:= Copy(List[0], Pos(' ', List[0]) + 1, List[0].Length);
-   for j:= 0 to (MainForm.FindComponent(chartName) as TChart).AxisList.Count-1 do
+   m:= 0;
+   Chart:= (MainForm.FindComponent(
+            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
+            as TChart);
+   // Background
+   inc(m);
+   Chart.BackColor:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // read parameters for every axis
+   for i:= 0 to Chart.AxisList.Count-1 do
    begin
-    Axis:= (MainForm.FindComponent(chartName)
-            as TChart).AxisList[StrToInt(
-             Copy(List[j*k + 1], Pos(' ', List[j*k + 1]) + 1, List[j*k + 1].Length)
-             )];
+    inc(m);
+    Axis:= Chart.AxisList[StrToInt(
+            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length)
+           )];
     // General visibility
+    inc(m);
     Axis.Visible:= StrToBool(
-     Copy(List[j*k + 2], Pos(' ', List[j*k + 2]) + 1, List[j*k + 2].Length));
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
     // Axis title
+    inc(m);
+    Axis.Title.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Caption:=
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempAlignment);
+    Axis.Title.Alignment:= tempAlignment;
+    inc(m);
+    Axis.Title.LabelFont.Name:=
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    inc(m);
+    Axis.Title.LabelFont.Size:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.LabelFont.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.LabelFont.Style:= StringToFontStyles(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.LabelFont.Orientation:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Distance:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempShape);
+    Axis.Title.Shape:= tempShape;
+    inc(m);
+    Axis.Title.LabelBrush.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempBrushStyle);
+    Axis.Title.LabelBrush.Style:= tempBrushStyle;
+    inc(m);
+    Axis.Title.Frame.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Frame.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Margins.Left:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Margins.Top:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Margins.Right:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Title.Margins.Bottom:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+
+    // Axis range
+    {inc(m);
+    Axis.Range.Max:= StrToFloat(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Range.Min:= StrToFloat(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Range.UseMax:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Range.UseMin:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));}
+    inc(m);
+    Axis.Inverted:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+
+    // Tick labels
+    inc(m);
+    Axis.Marks.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Format:=
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    inc(m);
+    Axis.Marks.Distance:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.TickLength:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.TickInnerLength:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.TickColor:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.LabelFont.Name:=
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    inc(m);
+    Axis.Marks.LabelFont.Size:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.LabelFont.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.LabelFont.Style:= StringToFontStyles(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempShape);
+    Axis.Marks.Shape:= tempShape;
+    inc(m);
+    Axis.Marks.LabelBrush.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempBrushStyle);
+    Axis.Marks.LabelBrush.Style:= tempBrushStyle;
+    inc(m);
+    Axis.Marks.Frame.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Frame.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Margins.Left:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Margins.Top:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Margins.Right:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Marks.Margins.Bottom:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+
+    // Grid
+    inc(m);
+    Axis.Grid.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempStyle);
+    Axis.Grid.Style:= tempStyle;
+    inc(m);
+    Axis.Grid.Width:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Grid.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+
+    // Frame
+    inc(m);
+    Chart.Frame.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempStyle);
+    Chart.Frame.Style:= tempStyle;
+    inc(m);
+    Chart.Frame.Width:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Chart.Frame.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+
+    // Arrow
+    inc(m);
+    Axis.Arrow.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Arrow.BaseLength:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Arrow.Length:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Axis.Arrow.Width:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    end;
 
-  end;
+   // Series
+   for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
+   begin
+    inc(m);
+    Series:= (MainForm.FindComponent(
+              Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
+              as TLineSeries);
+    inc(m);
+    Series.SeriesColor:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   end;
+
  finally
   List.Free;
  end;
+end;
+
+function TSIXControl.StringToFontStyles(s: string): TFontStyles;
+var
+ i: integer;
+begin
+ result:= [];
+ for i:= 1 to WordCount(s, [',']) do
+  result:= result + [TFontStyle(StrToInt(ExtractWord(i, s, [','])))];
 end;
 
 end. //unit
