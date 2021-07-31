@@ -2058,10 +2058,8 @@ try
 
  Chart:= MainForm.SIXCH;
  List.Add('Chart SIXCH');
- // Background
- List.Add('BackColor ' + ColorToString(Chart.BackColor));
- // Title
- //List.Add('Title.Caption ' + Chart.Title.Text);
+
+ // Axes
  for i:= 0 to Chart.AxisList.Count-1 do
  begin
   Axis:= Chart.AxisList[i];
@@ -2138,6 +2136,39 @@ try
   List.Add('Arrow.Width ' + IntToStr(Axis.Arrow.Width));
  end;
 
+ // Background
+ List.Add('BackColor ' + ColorToString(Chart.BackColor));
+
+ // Legend
+ // purposely don't store the legend visibility
+ WriteStr(tempStr, Chart.Legend.Alignment);
+ List.Add('Legend.Alignment ' + tempStr);
+ List.Add('Legend.BackgroundBrush.Color '
+  + ColorToString(Chart.Legend.BackgroundBrush.Color));
+ WriteStr(tempStr, Chart.Legend.BackgroundBrush.Style);
+ List.Add('Legend.BackgroundBrush.Style ' + tempStr);
+ List.Add('Legend.ColumnCount ' + IntToStr(Chart.Legend.ColumnCount));
+ List.Add('Legend.Inverted ' + BoolToStr(Chart.Legend.Inverted));
+ WriteStr(tempStr, Chart.Legend.ItemFillOrder);
+ List.Add('Legend.ItemFillOrder ' + tempStr);
+ List.Add('Legend.MarginX ' + IntToStr(Chart.Legend.MarginX));
+ List.Add('Legend.MarginY ' + IntToStr(Chart.Legend.MarginY));
+ List.Add('Legend.Spacing ' + IntToStr(Chart.Legend.Spacing));
+ List.Add('Legend.SymbolWidth ' + IntToStr(Chart.Legend.SymbolWidth));
+ List.Add('Legend.UseSidebar ' + BoolToStr(Chart.Legend.UseSidebar));
+ // Legend Font
+ List.Add('Legend.Font.Color ' + ColorToString(Chart.Legend.Font.Color));
+ List.Add('Legend.Font.Name ' + Chart.Legend.Font.Name);
+ List.Add('Legend.Font.Orientation ' + IntToStr(Chart.Legend.Font.Orientation));
+ List.Add('Legend.Font.Size ' + IntToStr(Chart.Legend.Font.Size));
+ List.Add('Legend.Font.Style ' + FontStylesToString(Chart.Legend.Font.Style));
+ // Legend Frame
+ List.Add('Legend.Frame.Color ' + ColorToString(Chart.Legend.Frame.Color));
+ WriteStr(tempStr, Chart.Legend.Frame.Style);
+ List.Add('Legend.Frame.Style ' + tempStr);
+ List.Add('Legend.Frame.Visible ' + BoolToStr(Chart.Legend.Frame.Visible));
+ List.Add('Legend.Frame.Width ' + IntToStr(Chart.Legend.Frame.Width));
+
  // Series
  for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
  begin
@@ -2175,6 +2206,9 @@ try
   List.Add('Pointer.Style ' + tempStr);
  end;
 
+ // Title
+ //List.Add('Title.Caption ' + Chart.Title.Text);
+
  // save the list
  List.SaveToFile(iniFile);
 
@@ -2209,6 +2243,8 @@ var
  tempShape : TChartLabelShape;
  tempBrushStyle : TBrushStyle;
  tempStyle : TPenStyle;
+ tempLegendAlignment : TLegendAlignment;
+ tempFillOrder : TLegendItemFillOrder;
  tempMultiplicity : TLegendMultiplicity;
  tempMarksStyle : TSeriesMarksStyle;
  tempPointerStyle : TSeriesPointerStyle;
@@ -2217,272 +2253,339 @@ begin
  try
   List:= TStringList.Create;
   List.LoadFromFile(iniFile);
-   m:= 0;
-   Chart:= (MainForm.FindComponent(
-            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
-            as TChart);
-   // Background
+  m:= 0;
+  Chart:= (MainForm.FindComponent(
+           Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
+           as TChart);
+  // Axes
+  for i:= 0 to Chart.AxisList.Count-1 do
+  begin
    inc(m);
-   Chart.BackColor:= StringToColor(
+   Axis:= Chart.AxisList[StrToInt(
+           Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length)
+          )];
+   // Axis title
+   inc(m);
+   Axis.Title.Visible:= StrToBool(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-   // read parameters for every axis
-   for i:= 0 to Chart.AxisList.Count-1 do
-   begin
-    inc(m);
-    Axis:= Chart.AxisList[StrToInt(
-            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length)
-           )];
-    // Axis title
-    inc(m);
-    Axis.Title.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Caption:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempAlignment);
-    Axis.Title.Alignment:= tempAlignment;
-    inc(m);
-    Axis.Title.LabelFont.Name:=
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-    inc(m);
-    Axis.Title.LabelFont.Size:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.LabelFont.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.LabelFont.Style:= StringToFontStyles(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.LabelFont.Orientation:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Distance:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempShape);
-    Axis.Title.Shape:= tempShape;
-    inc(m);
-    Axis.Title.LabelBrush.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempBrushStyle);
-    Axis.Title.LabelBrush.Style:= tempBrushStyle;
-    inc(m);
-    Axis.Title.Frame.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Frame.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Margins.Left:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Margins.Top:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Margins.Right:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Title.Margins.Bottom:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Caption:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempAlignment);
+   Axis.Title.Alignment:= tempAlignment;
+   inc(m);
+   Axis.Title.LabelFont.Name:=
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   Axis.Title.LabelFont.Size:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.LabelFont.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.LabelFont.Style:= StringToFontStyles(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.LabelFont.Orientation:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Distance:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempShape);
+   Axis.Title.Shape:= tempShape;
+   inc(m);
+   Axis.Title.LabelBrush.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempBrushStyle);
+   Axis.Title.LabelBrush.Style:= tempBrushStyle;
+   inc(m);
+   Axis.Title.Frame.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Frame.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Margins.Left:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Margins.Top:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Margins.Right:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Title.Margins.Bottom:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Axis range
+   // purposely don't store the range since this depends on the actual values
+   inc(m);
+   Axis.Inverted:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Tick labels
+   inc(m);
+   Axis.Marks.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   Axis.Marks.Distance:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.TickLength:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.TickInnerLength:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.TickColor:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.LabelFont.Name:=
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   Axis.Marks.LabelFont.Size:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.LabelFont.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.LabelFont.Style:= StringToFontStyles(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempShape);
+   Axis.Marks.Shape:= tempShape;
+   inc(m);
+   Axis.Marks.LabelBrush.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempBrushStyle);
+   Axis.Marks.LabelBrush.Style:= tempBrushStyle;
+   inc(m);
+   Axis.Marks.Frame.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Frame.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Margins.Left:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Margins.Top:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Margins.Right:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Marks.Margins.Bottom:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Grid
+   inc(m);
+   Axis.Grid.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Axis.Grid.Style:= tempStyle;
+   inc(m);
+   Axis.Grid.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Grid.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Frame
+   inc(m);
+   Chart.Frame.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Chart.Frame.Style:= tempStyle;
+   inc(m);
+   Chart.Frame.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Chart.Frame.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Arrow
+   inc(m);
+   Axis.Arrow.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Arrow.BaseLength:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Arrow.Length:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Axis.Arrow.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  end;
 
-    // Axis range
-    // purposely don't store the range since this depends on the actual values
-    inc(m);
-    Axis.Inverted:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Background
+  inc(m);
+  Chart.BackColor:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
-    // Tick labels
-    inc(m);
-    Axis.Marks.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-    inc(m);
-    Axis.Marks.Distance:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.TickLength:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.TickInnerLength:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.TickColor:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.LabelFont.Name:=
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-    inc(m);
-    Axis.Marks.LabelFont.Size:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.LabelFont.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.LabelFont.Style:= StringToFontStyles(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempShape);
-    Axis.Marks.Shape:= tempShape;
-    inc(m);
-    Axis.Marks.LabelBrush.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempBrushStyle);
-    Axis.Marks.LabelBrush.Style:= tempBrushStyle;
-    inc(m);
-    Axis.Marks.Frame.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Frame.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Margins.Left:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Margins.Top:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Margins.Right:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Marks.Margins.Bottom:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Legend
+  inc(m);
+  ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempLegendAlignment);
+  Chart.Legend.Alignment:= tempLegendAlignment;
+  inc(m);
+  Chart.Legend.BackgroundBrush.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempBrushStyle);
+  Chart.Legend.BackgroundBrush.Style:= tempBrushStyle;
+  inc(m);
+  Chart.Legend.ColumnCount:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Inverted:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempFillOrder);
+  Chart.Legend.ItemFillOrder:= tempFillOrder;
+  inc(m);
+  Chart.Legend.MarginX:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.MarginY:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Spacing:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.SymbolWidth:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.UseSidebar:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Legend Font
+  inc(m);
+  Chart.Legend.Font.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Font.Name:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+  inc(m);
+  Chart.Legend.Font.Orientation:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Font.Size:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Font.Style:= StringToFontStyles(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Legend Frame
+  inc(m);
+  Chart.Legend.Frame.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+  Chart.Legend.Frame.Style:= tempStyle;
+  inc(m);
+  Chart.Legend.Frame.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Legend.Frame.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
-    // Grid
-    inc(m);
-    Axis.Grid.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempStyle);
-    Axis.Grid.Style:= tempStyle;
-    inc(m);
-    Axis.Grid.Width:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Grid.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Series
+  for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
+  begin
+   inc(m);
+   Series:= (MainForm.FindComponent(
+             Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
+             as TLineSeries);
 
-    // Frame
-    inc(m);
-    Chart.Frame.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempStyle);
-    Chart.Frame.Style:= tempStyle;
-    inc(m);
-    Chart.Frame.Width:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Chart.Frame.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-
-    // Arrow
-    inc(m);
-    Axis.Arrow.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Arrow.BaseLength:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Arrow.Length:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Arrow.Width:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-   end;
-
-   // Series
-   for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
-   begin
-    inc(m);
-    Series:= (MainForm.FindComponent(
-              Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
-              as TLineSeries);
-
-    // Legend
-    inc(m);
-    Series.Legend.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempMultiplicity);
-    Series.Legend.Multiplicity:= tempMultiplicity;
-    // Marks
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempMarksStyle);
-    Series.Marks.Style:= tempMarksStyle;
-    inc(m);
-    Series.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-    inc(m);
-    Series.Marks.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    // Lines
-    inc(m);
-    Series.ShowLines:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Series.SeriesColor:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempStyle);
-    Series.LinePen.Style:= tempStyle;
-    inc(m);
-    Series.LinePen.Width:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    // Points
-    inc(m);
-    Series.ShowPoints:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Series.Pointer.Brush.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempBrushStyle);
-    Series.Pointer.Brush.Style:= tempBrushStyle;
-    inc(m);
-    Series.Pointer.HorizSize:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Series.Pointer.Pen.Color:= StringToColor(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempStyle);
-    Series.Pointer.Pen.Style:= tempStyle;
-    inc(m);
-    Series.Pointer.Pen.Width:= StrToInt(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    ReadStr(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-     tempPointerStyle);
-    Series.Pointer.Style:= tempPointerStyle;
-   end;
+   // Legend
+   inc(m);
+   Series.Legend.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempMultiplicity);
+   Series.Legend.Multiplicity:= tempMultiplicity;
+   // Marks
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempMarksStyle);
+   Series.Marks.Style:= tempMarksStyle;
+   inc(m);
+   Series.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   Series.Marks.Visible:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Lines
+   inc(m);
+   Series.ShowLines:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Series.SeriesColor:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Series.LinePen.Style:= tempStyle;
+   inc(m);
+   Series.LinePen.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   // Points
+   inc(m);
+   Series.ShowPoints:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Series.Pointer.Brush.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempBrushStyle);
+   Series.Pointer.Brush.Style:= tempBrushStyle;
+   inc(m);
+   Series.Pointer.HorizSize:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Series.Pointer.Pen.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Series.Pointer.Pen.Style:= tempStyle;
+   inc(m);
+   Series.Pointer.Pen.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempPointerStyle);
+   Series.Pointer.Style:= tempPointerStyle;
+  end;
 
  finally
   List.Free;
