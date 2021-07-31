@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Graphics,
-  Forms, Controls, ExtCtrls, ColorBox, StdCtrls, Spin,
-  TALegend, TAGraph,
+  Forms, Controls, ExtCtrls, ColorBox, StdCtrls, Spin, Dialogs,
+  TALegend, TAGraph, TAChartCombos,
   ceFontFrame;
 
 type
@@ -16,11 +16,13 @@ type
 
   TChartLegendFrame = class(TFrame)
     Bevel1: TBevel;
-    cbBorderColor: TColorBox;
     cbFillColor: TColorBox;
     cbFilled: TCheckBox;
     cbInverted: TCheckBox;
     cbItemFillOrder: TComboBox;
+    cbBorderColor: TColorButton;
+    cbBorderStyle: TChartComboBox;
+    cbBorderWidth: TChartComboBox;
     cbShow: TCheckBox;
     cbShowBorder: TCheckBox;
     cbUseSideBar: TCheckBox;
@@ -34,6 +36,8 @@ type
     lblItemFillOrder: TLabel;
     lblMarginX: TLabel;
     lblMarginY: TLabel;
+    lblPenStyle: TLabel;
+    lblPenWidth: TLabel;
     lblSpacing: TLabel;
     lblSymbolWidth: TLabel;
     PanelTop: TPanel;
@@ -52,10 +56,12 @@ type
     seSpacing: TSpinEdit;
     seSymbolWidth: TSpinEdit;
     procedure cbBorderColorChange(Sender: TObject);
+    procedure cbBorderWidthChange(Sender: TObject);
     procedure cbFillColorChange(Sender: TObject);
     procedure cbFilledChange(Sender: TObject);
     procedure cbInvertedChange(Sender: TObject);
-    procedure cbItemFillOrderChange(Sender: TObject);
+    procedure cbBorderStyleChange(Sender: TObject);
+    procedure cItemFillOrderChange(Sender: TObject);
     procedure cbShowBorderChange(Sender: TObject);
     procedure cbShowChange(Sender: TObject);
     procedure cbUseSideBarChange(Sender: TObject);
@@ -106,7 +112,17 @@ end;
 
 procedure TChartLegendFrame.cbBorderColorChange(Sender: TObject);
 begin
-  FLegend.Frame.Color := cbBorderColor.Selected;
+  FLegend.Frame.Color := cbBorderColor.ButtonColor;
+end;
+
+procedure TChartLegendFrame.cbBorderStyleChange(Sender: TObject);
+begin
+  FLegend.Frame.Style := TPenStyle(cbBorderStyle.ItemIndex);
+end;
+
+procedure TChartLegendFrame.cbBorderWidthChange(Sender: TObject);
+begin
+  FLegend.Frame.Width := cbBorderWidth.PenWidth;
 end;
 
 procedure TChartLegendFrame.cbFilledChange(Sender: TObject);
@@ -128,7 +144,7 @@ begin
   FLegend.Inverted := cbInverted.Checked;
 end;
 
-procedure TChartLegendFrame.cbItemFillOrderChange(Sender: TObject);
+procedure TChartLegendFrame.cItemFillOrderChange(Sender: TObject);
 begin
   FLegend.ItemFillOrder := TLegendItemFillOrder(cbItemFillOrder.ItemIndex);
 end;
@@ -177,7 +193,9 @@ begin
   cbFillColor.Selected := ColorToRGB(ALegend.BackgroundBrush.Color);
 
   cbShowBorder.Checked := (ALegend.Frame.Style <> psClear) and ALegend.Frame.Visible;
-  cbBorderColor.Selected := ColorToRGB(ALegend.Frame.Color);
+  cbBorderColor.ButtonColor := ColorToRGB(ALegend.Frame.Color);
+  cbBorderStyle.PenStyle := ALegend.Frame.Style;
+  cbBorderWidth.PenWidth := ALegend.Frame.Width;
 
   seMarginX.Value := ALegend.MarginX;
   seMarginY.Value := ALegend.MarginY;
