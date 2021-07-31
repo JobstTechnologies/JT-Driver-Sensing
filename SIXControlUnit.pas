@@ -2143,10 +2143,6 @@ try
  // purposely don't store the legend visibility
  WriteStr(tempStr, Chart.Legend.Alignment);
  List.Add('Legend.Alignment ' + tempStr);
- List.Add('Legend.BackgroundBrush.Color '
-  + ColorToString(Chart.Legend.BackgroundBrush.Color));
- WriteStr(tempStr, Chart.Legend.BackgroundBrush.Style);
- List.Add('Legend.BackgroundBrush.Style ' + tempStr);
  List.Add('Legend.ColumnCount ' + IntToStr(Chart.Legend.ColumnCount));
  List.Add('Legend.Inverted ' + BoolToStr(Chart.Legend.Inverted));
  WriteStr(tempStr, Chart.Legend.ItemFillOrder);
@@ -2156,6 +2152,11 @@ try
  List.Add('Legend.Spacing ' + IntToStr(Chart.Legend.Spacing));
  List.Add('Legend.SymbolWidth ' + IntToStr(Chart.Legend.SymbolWidth));
  List.Add('Legend.UseSidebar ' + BoolToStr(Chart.Legend.UseSidebar));
+ // Legend Brush
+ List.Add('Legend.BackgroundBrush.Color '
+  + ColorToString(Chart.Legend.BackgroundBrush.Color));
+ WriteStr(tempStr, Chart.Legend.BackgroundBrush.Style);
+ List.Add('Legend.BackgroundBrush.Style ' + tempStr);
  // Legend Font
  List.Add('Legend.Font.Color ' + ColorToString(Chart.Legend.Font.Color));
  List.Add('Legend.Font.Name ' + Chart.Legend.Font.Name);
@@ -2210,12 +2211,25 @@ try
  //List.Add('Title.Caption ' + Chart.Title.Text);
  WriteStr(tempStr, Chart.Title.Alignment);
  List.Add('Title.Alignment ' + tempStr);
+ WriteStr(tempStr, Chart.Title.Shape);
+ List.Add('Title.Shape ' + tempStr);
+ // Title Brush
+ List.Add('Title.Brush.Color '
+  + ColorToString(Chart.Title.Brush.Color));
+ WriteStr(tempStr, Chart.Title.Brush.Style);
+ List.Add('Title.Brush.Style ' + tempStr);
  // Title Font
  List.Add('Title.Font.Color ' + ColorToString(Chart.Title.Font.Color));
  List.Add('Title.Font.Name ' + Chart.Title.Font.Name);
  List.Add('Title.Font.Orientation ' + IntToStr(Chart.Title.Font.Orientation));
  List.Add('Title.Font.Size ' + IntToStr(Chart.Title.Font.Size));
  List.Add('Title.Font.Style ' + FontStylesToString(Chart.Title.Font.Style));
+ // Legend Frame
+ List.Add('Title.Frame.Color ' + ColorToString(Chart.Title.Frame.Color));
+ WriteStr(tempStr, Chart.Title.Frame.Style);
+ List.Add('Title.Frame.Style ' + tempStr);
+ List.Add('Title.Frame.Visible ' + BoolToStr(Chart.Title.Frame.Visible));
+ List.Add('Title.Frame.Width ' + IntToStr(Chart.Title.Frame.Width));
 
  // save the list
  List.SaveToFile(iniFile);
@@ -2455,14 +2469,6 @@ begin
    tempLegendAlignment);
   Chart.Legend.Alignment:= tempLegendAlignment;
   inc(m);
-  Chart.Legend.BackgroundBrush.Color:= StringToColor(
-   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-  inc(m);
-  ReadStr(
-   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-   tempBrushStyle);
-  Chart.Legend.BackgroundBrush.Style:= tempBrushStyle;
-  inc(m);
   Chart.Legend.ColumnCount:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
@@ -2488,6 +2494,15 @@ begin
   inc(m);
   Chart.Legend.UseSidebar:= StrToBool(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Legend Brush
+  inc(m);
+  Chart.Legend.BackgroundBrush.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempBrushStyle);
+  Chart.Legend.BackgroundBrush.Style:= tempBrushStyle;
   // Legend Font
   inc(m);
   Chart.Legend.Font.Color:= StringToColor(
@@ -2601,6 +2616,20 @@ begin
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
    tempAlignment);
   Chart.Title.Alignment:= tempAlignment;
+  inc(m);
+  ReadStr(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempShape);
+  Chart.Title.Shape:= tempShape;
+  // Title Brush
+  inc(m);
+  Chart.Title.Brush.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempBrushStyle);
+  Chart.Title.Brush.Style:= tempBrushStyle;
   // Title Font
   inc(m);
   Chart.Title.Font.Color:= StringToColor(
@@ -2615,6 +2644,21 @@ begin
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Title.Font.Style:= StringToFontStyles(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // Title Frame
+  inc(m);
+  Chart.Title.Frame.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  ReadStr(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempStyle);
+  Chart.Title.Frame.Style:= tempStyle;
+  inc(m);
+  Chart.Title.Frame.Visible:= StrToBool(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Frame.Width:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
  finally
