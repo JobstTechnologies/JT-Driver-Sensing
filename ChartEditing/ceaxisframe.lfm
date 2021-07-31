@@ -211,6 +211,7 @@ object ChartAxisFrame: TChartAxisFrame
           Alignment = taRightJustify
           BorderSpacing.Left = 8
           BorderSpacing.Top = 16
+          MaxValue = 1000
           OnChange = seTitleDistanceChange
           TabOrder = 2
         end
@@ -438,6 +439,7 @@ object ChartAxisFrame: TChartAxisFrame
           Alignment = taRightJustify
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Bottom = 12
+          MaxValue = 1000
           OnChange = seLabelDistanceChange
           TabOrder = 2
         end
@@ -493,6 +495,7 @@ object ChartAxisFrame: TChartAxisFrame
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 16
           BorderSpacing.Top = 2
+          MaxValue = 1000
           OnChange = seTickLengthChange
           TabOrder = 0
         end
@@ -508,6 +511,7 @@ object ChartAxisFrame: TChartAxisFrame
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 8
           BorderSpacing.Bottom = 12
+          MaxValue = 1000
           OnChange = seTickInnerLengthChange
           TabOrder = 1
         end
@@ -723,6 +727,7 @@ object ChartAxisFrame: TChartAxisFrame
           BorderSpacing.Left = 24
           BorderSpacing.Top = 8
           BorderSpacing.Right = 16
+          MaxValue = 1000
           OnChange = seArrowBaseLengthChange
           TabOrder = 1
         end
@@ -739,6 +744,7 @@ object ChartAxisFrame: TChartAxisFrame
           Alignment = taRightJustify
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 8
+          MaxValue = 1000
           OnChange = seArrowLengthChange
           TabOrder = 2
         end
@@ -756,6 +762,7 @@ object ChartAxisFrame: TChartAxisFrame
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 8
           BorderSpacing.Bottom = 16
+          MaxValue = 1000
           OnChange = seArrowWidthChange
           TabOrder = 3
         end
