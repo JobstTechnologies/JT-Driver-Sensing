@@ -2213,6 +2213,7 @@ try
  List.Add('Title.Alignment ' + tempStr);
  WriteStr(tempStr, Chart.Title.Shape);
  List.Add('Title.Shape ' + tempStr);
+ List.Add('Title.Wordwrap ' + BoolToStr(Chart.Title.Wordwrap));
  // Title Brush
  List.Add('Title.Brush.Color '
   + ColorToString(Chart.Title.Brush.Color));
@@ -2224,12 +2225,17 @@ try
  List.Add('Title.Font.Orientation ' + IntToStr(Chart.Title.Font.Orientation));
  List.Add('Title.Font.Size ' + IntToStr(Chart.Title.Font.Size));
  List.Add('Title.Font.Style ' + FontStylesToString(Chart.Title.Font.Style));
- // Legend Frame
+ // Title Frame
  List.Add('Title.Frame.Color ' + ColorToString(Chart.Title.Frame.Color));
  WriteStr(tempStr, Chart.Title.Frame.Style);
  List.Add('Title.Frame.Style ' + tempStr);
  List.Add('Title.Frame.Visible ' + BoolToStr(Chart.Title.Frame.Visible));
  List.Add('Title.Frame.Width ' + IntToStr(Chart.Title.Frame.Width));
+ // Title Margins
+ List.Add('Title.Margins.Left ' + IntToStr(Chart.Title.Margins.Left));
+ List.Add('Title.Margins.Top ' + IntToStr(Chart.Title.Margins.Top));
+ List.Add('Title.Margins.Right ' + IntToStr(Chart.Title.Margins.Right));
+ List.Add('Title.Margins.Bottom ' + IntToStr(Chart.Title.Margins.Bottom));
 
  // save the list
  List.SaveToFile(iniFile);
@@ -2621,6 +2627,9 @@ begin
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
    tempShape);
   Chart.Title.Shape:= tempShape;
+  inc(m);
+  Chart.Title.Wordwrap:= StrToBool(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   // Title Brush
   inc(m);
   Chart.Title.Brush.Color:= StringToColor(
@@ -2659,6 +2668,19 @@ begin
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Title.Frame.Width:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  // Title Margins
+  Chart.Title.Margins.Left:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Margins.Top:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Margins.Right:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Margins.Bottom:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
  finally
