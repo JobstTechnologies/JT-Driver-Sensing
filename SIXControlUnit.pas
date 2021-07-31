@@ -9,7 +9,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
   TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
   Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
-  TAGeometry, TAChartLiveView, StrUtils,
+  TATypes, TAGeometry, TAChartLiveView, StrUtils,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -2066,8 +2066,7 @@ try
  begin
   Axis:= Chart.AxisList[i];
   List.Add('Axis ' + IntToStr(i));
-  // General visibility
-  List.Add('Visible ' + BoolToStr(Axis.Visible));
+  // purposely don't store the axis visibility
   // Axis title
   List.Add('Title.Visible ' + BoolToStr(Axis.Title.Visible));
   List.Add('Title.Caption ' + Axis.Title.Caption);
@@ -2093,10 +2092,6 @@ try
 
   // Axis range
   // purposely don't store the range since this depends on the actual values
-  //List.Add('Range.Max ' + FloatToStr(Axis.Range.Max));
-  //List.Add('Range.Min ' + FloatToStr(Axis.Range.Min));
-  //List.Add('Range.UseMax ' + BoolToStr(Axis.Range.UseMax));
-  //List.Add('Range.UseMin ' + BoolToStr(Axis.Range.UseMin));
   List.Add('Inverted ' + BoolToStr(Axis.Inverted));
 
   // Tick labels
@@ -2148,11 +2143,36 @@ try
  begin
   Series:= (Chart.Series[i]) as TLineSeries;
   List.Add('LineSeries ' + Series.Name);
-
   // we don't store the Title since this is set via the .def file
   // also don't show the Active state for the same reason
 
+  // Legend
+  List.Add('Legend.Visible ' + BoolToStr(Series.Legend.Visible));
+  WriteStr(tempStr, Series.Legend.Multiplicity);
+  List.Add('Legend.Multiplicity ' + tempStr);
+  // Marks
+  WriteStr(tempStr, Series.Marks.Style);
+  List.Add('Marks.Style ' + tempStr);
+  List.Add('Marks.Format ' + Series.Marks.Format);
+  List.Add('Marks.Visible ' + BoolToStr(Series.Marks.Visible));
+  // Lines
+  List.Add('ShowLines ' + BoolToStr(Series.ShowLines));
   List.Add('SeriesColor ' + ColorToString(Series.SeriesColor));
+  WriteStr(tempStr, Series.LinePen.Style);
+  List.Add('LinePen.Style ' + tempStr);
+  List.Add('LinePen.Width ' + IntToStr(Series.LinePen.Width));
+  // Points
+  List.Add('ShowPoints ' + BoolToStr(Series.ShowPoints));
+  List.Add('Pointer.Brush.Color ' + ColorToString(Series.Pointer.Brush.Color));
+  WriteStr(tempStr, Series.Pointer.Brush.Style);
+  List.Add('Pointer.Brush.Style ' + tempStr);
+  List.Add('Pointer.HorizSize ' + IntToStr(Series.Pointer.HorizSize));
+  List.Add('Pointer.Pen.Color ' + ColorToString(Series.Pointer.Pen.Color));
+  WriteStr(tempStr, Series.Pointer.Pen.Style);
+  List.Add('Pointer.Pen.Style ' + tempStr);
+  List.Add('Pointer.Pen.Width ' + IntToStr(Series.Pointer.Pen.Width));
+  WriteStr(tempStr, Series.Pointer.Style);
+  List.Add('Pointer.Style ' + tempStr);
  end;
 
  // save the list
@@ -2189,6 +2209,9 @@ var
  tempShape : TChartLabelShape;
  tempBrushStyle : TBrushStyle;
  tempStyle : TPenStyle;
+ tempMultiplicity : TLegendMultiplicity;
+ tempMarksStyle : TSeriesMarksStyle;
+ tempPointerStyle : TSeriesPointerStyle;
 begin
 
  try
@@ -2209,17 +2232,12 @@ begin
     Axis:= Chart.AxisList[StrToInt(
             Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length)
            )];
-    // General visibility
-    inc(m);
-    Axis.Visible:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
     // Axis title
     inc(m);
     Axis.Title.Visible:= StrToBool(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
     inc(m);
-    Axis.Title.Caption:=
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    Axis.Title.Caption:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
     inc(m);
     ReadStr(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
@@ -2276,18 +2294,7 @@ begin
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
     // Axis range
-    {inc(m);
-    Axis.Range.Max:= StrToFloat(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Range.Min:= StrToFloat(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Range.UseMax:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-    inc(m);
-    Axis.Range.UseMin:= StrToBool(
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));}
+    // purposely don't store the range since this depends on the actual values
     inc(m);
     Axis.Inverted:= StrToBool(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
@@ -2297,8 +2304,7 @@ begin
     Axis.Marks.Visible:= StrToBool(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
     inc(m);
-    Axis.Marks.Format:=
-     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    Axis.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
     inc(m);
     Axis.Marks.Distance:= StrToInt(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
@@ -2409,9 +2415,73 @@ begin
     Series:= (MainForm.FindComponent(
               Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
               as TLineSeries);
+
+    // Legend
+    inc(m);
+    Series.Legend.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempMultiplicity);
+    Series.Legend.Multiplicity:= tempMultiplicity;
+    // Marks
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempMarksStyle);
+    Series.Marks.Style:= tempMarksStyle;
+    inc(m);
+    Series.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+    inc(m);
+    Series.Marks.Visible:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    // Lines
+    inc(m);
+    Series.ShowLines:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
     inc(m);
     Series.SeriesColor:= StringToColor(
      Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempStyle);
+    Series.LinePen.Style:= tempStyle;
+    inc(m);
+    Series.LinePen.Width:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    // Points
+    inc(m);
+    Series.ShowPoints:= StrToBool(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Series.Pointer.Brush.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempBrushStyle);
+    Series.Pointer.Brush.Style:= tempBrushStyle;
+    inc(m);
+    Series.Pointer.HorizSize:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    Series.Pointer.Pen.Color:= StringToColor(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempStyle);
+    Series.Pointer.Pen.Style:= tempStyle;
+    inc(m);
+    Series.Pointer.Pen.Width:= StrToInt(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+    ReadStr(
+     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+     tempPointerStyle);
+    Series.Pointer.Style:= tempPointerStyle;
    end;
 
  finally
