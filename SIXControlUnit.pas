@@ -2208,6 +2208,14 @@ try
 
  // Title
  //List.Add('Title.Caption ' + Chart.Title.Text);
+ WriteStr(tempStr, Chart.Title.Alignment);
+ List.Add('Title.Alignment ' + tempStr);
+ // Title Font
+ List.Add('Title.Font.Color ' + ColorToString(Chart.Title.Font.Color));
+ List.Add('Title.Font.Name ' + Chart.Title.Font.Name);
+ List.Add('Title.Font.Orientation ' + IntToStr(Chart.Title.Font.Orientation));
+ List.Add('Title.Font.Size ' + IntToStr(Chart.Title.Font.Size));
+ List.Add('Title.Font.Style ' + FontStylesToString(Chart.Title.Font.Style));
 
  // save the list
  List.SaveToFile(iniFile);
@@ -2443,43 +2451,43 @@ begin
   // Legend
   inc(m);
   ReadStr(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-    tempLegendAlignment);
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempLegendAlignment);
   Chart.Legend.Alignment:= tempLegendAlignment;
   inc(m);
   Chart.Legend.BackgroundBrush.Color:= StringToColor(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   ReadStr(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-    tempBrushStyle);
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempBrushStyle);
   Chart.Legend.BackgroundBrush.Style:= tempBrushStyle;
   inc(m);
   Chart.Legend.ColumnCount:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.Inverted:= StrToBool(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   ReadStr(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-    tempFillOrder);
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempFillOrder);
   Chart.Legend.ItemFillOrder:= tempFillOrder;
   inc(m);
   Chart.Legend.MarginX:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.MarginY:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.Spacing:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.SymbolWidth:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.UseSidebar:= StrToBool(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   // Legend Font
   inc(m);
   Chart.Legend.Font.Color:= StringToColor(
@@ -2488,28 +2496,28 @@ begin
   Chart.Legend.Font.Name:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
   inc(m);
   Chart.Legend.Font.Orientation:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.Font.Size:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.Font.Style:= StringToFontStyles(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   // Legend Frame
   inc(m);
   Chart.Legend.Frame.Color:= StringToColor(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   ReadStr(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
-    tempStyle);
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempStyle);
   Chart.Legend.Frame.Style:= tempStyle;
   inc(m);
   Chart.Legend.Frame.Visible:= StrToBool(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Legend.Frame.Width:= StrToInt(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
   // Series
   for i:= 0 to Chart.SeriesCount-5 do // omit the TConstantLines
@@ -2586,6 +2594,28 @@ begin
     tempPointerStyle);
    Series.Pointer.Style:= tempPointerStyle;
   end;
+
+  // Title
+  inc(m);
+  ReadStr(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+   tempAlignment);
+  Chart.Title.Alignment:= tempAlignment;
+  // Title Font
+  inc(m);
+  Chart.Title.Font.Color:= StringToColor(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Font.Name:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+  inc(m);
+  Chart.Title.Font.Orientation:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Font.Size:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+  Chart.Title.Font.Style:= StringToFontStyles(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
  finally
   List.Free;
