@@ -573,6 +573,10 @@ begin
           Add('No fit parameters specified');
         fitSingular:
           Add('Matrix is (nearly) singular');
+        fitNoBaseFunctions:
+          Add('No user-provided base functions');
+        fitOverflow:
+          Add('Numerical overflow');
       end;
     finally
       EndUpdate;
