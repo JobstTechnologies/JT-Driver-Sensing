@@ -105,12 +105,19 @@ end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbBorderStyleChange(Sender: TObject);
 begin
+  // if style psClear was changed, enable cbShowBorder
+  // because then the frame is automatically shown
+  if (FPen.Style = psClear)
+    and (TPenStyle(cbBorderStyle.ItemIndex) <> psClear) then
+   cbShowBorder.Checked := true;
   FPen.Style := TPenStyle(cbBorderStyle.ItemIndex);
+  DoChanged;
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbBorderWidthChange(Sender: TObject);
 begin
   FPen.Width := cbBorderWidth.PenWidth;
+  DoChanged;
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbFillColorColorChanged(Sender: TObject);
@@ -187,10 +194,10 @@ begin
     else
       ABrush.Style := bsClear;
     ABrush.Color := cbFillColor.ButtonColor;
-    APen.Visible := cbShowBorder.Checked;
-    APen.Style := cbBorderStyle.PenStyle;
-    APen.Width := cbBorderWidth.PenWidth;
     APen.Color := cbBorderColor.ButtonColor;
+    APen.Style := cbBorderStyle.PenStyle;
+    APen.Visible := cbShowBorder.Checked;
+    APen.Width := cbBorderWidth.PenWidth;
   end;
   AMargins.Top := seTopMargin.Value;
   AMargins.Left := seLeftMargin.Value;
@@ -210,6 +217,8 @@ begin
   cbFilled.Checked := ABrush.Style <> bsClear;
   cbFillColor.ButtonColor := ColorToRGB(ABrush.Color);
   cbShowBorder.Checked := APen.EffVisible;
+  cbBorderStyle.PenStyle := APen.Style;
+  cbBorderWidth.PenWidth := APen.Width;
   if APen.Color = clDefault then
     cbBorderColor.ButtonColor := ColorToRGB(clWindowText)
   else

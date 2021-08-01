@@ -32,6 +32,8 @@ type
     TitleBackgroundColor: TColor;
     TitleBorderVisible: Boolean;
     TitleBorderColor: TColor;
+    TitleBorderStyle: TPenStyle;
+    TitleBorderWidth: Integer;
     TitleMarginLeft: Integer;
     TitleMarginTop: Integer;
     TitleMarginRight: Integer;
@@ -61,6 +63,8 @@ type
     LabelBackgroundColor: TColor;
     LabelBorderVisible: Boolean;
     LabelBorderColor: TColor;
+    LabelBorderStyle: TPenStyle;
+    LabelBorderWidth: Integer;
     LabelMarginLeft: Integer;
     LabelMarginTop: Integer;
     LabelMarginRight: Integer;
@@ -232,6 +236,8 @@ begin
       FAxis.Title.LabelBrush.Style := TitleBackgroundStyle;
       FAxis.Title.Frame.Visible := TitleBorderVisible;
       FAxis.Title.Frame.Color := TitleBorderColor;
+      FAxis.Title.Frame.Style := TitleBorderStyle;
+      FAxis.Title.Frame.Width := TitleBorderWidth;
       FAxis.Title.Margins.Left := TitleMarginLeft;
       FAxis.Title.Margins.Top := TitleMarginTop;
       FAxis.Title.Margins.Right := TitleMarginRight;
@@ -260,6 +266,8 @@ begin
       FAxis.Marks.LabelBrush.Style := LabelBackgroundStyle;
       FAxis.Marks.Frame.Visible := LabelBorderVisible;
       FAxis.Marks.Frame.Color := LabelBorderColor;
+      FAxis.Marks.Frame.Style := LabelBorderStyle;
+      FAxis.Marks.Frame.Width := LabelBorderWidth;
       FAxis.Marks.Margins.Left := LabelMarginLeft;
       FAxis.Marks.Margins.Top := LabelMarginTop;
       FAxis.Marks.Margins.Right := LabelMarginRight;
@@ -311,6 +319,8 @@ begin
     TitleBackgroundColor := FAxis.Title.LabelBrush.Color;
     TitleBorderVisible := FAxis.Title.Frame.Visible;
     TitleBorderColor := FAxis.Title.Frame.Color;
+    TitleBorderStyle := FAxis.Title.Frame.Style;
+    TitleBorderWidth := FAxis.Title.Frame.Width;
     TitleMarginLeft := FAxis.Title.Margins.Left;
     TitleMarginTop := FAXis.Title.Margins.Top;
     TitleMarginRight := FAxis.Title.Margins.Right;
@@ -339,6 +349,8 @@ begin
     LabelBackgroundColor := FAxis.Marks.LabelBrush.Color;
     LabelBorderVisible := FAxis.Marks.Frame.Visible;
     LabelBorderColor := FAxis.Marks.Frame.Color;
+    LabelBorderStyle := FAxis.Marks.Frame.Style;
+    LabelBorderWidth := FAxis.Marks.Frame.Width;
     LabelMarginLeft := FAxis.Marks.Margins.Left;
     LabelMarginTop := FAxis.Marks.Margins.Top;
     LabelMarginRight := FAxis.Marks.Margins.Right;
