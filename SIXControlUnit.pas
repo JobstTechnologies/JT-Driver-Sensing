@@ -2083,6 +2083,9 @@ try
   List.Add('Title.LabelBrush.Style ' + tempStr);
   List.Add('Title.Frame.Visible ' + BoolToStr(Axis.Title.Frame.Visible));
   List.Add('Title.Frame.Color ' + ColorToString(Axis.Title.Frame.Color));
+  WriteStr(tempStr, Axis.Title.Frame.Style);
+  List.Add('Title.Frame.Style ' + tempStr);
+  List.Add('Title.Frame.Width ' + IntToStr(Axis.Title.Frame.Width));
   List.Add('Title.Margins.Left ' + IntToStr(Axis.Title.Margins.Left));
   List.Add('Title.Margins.Top ' + IntToStr(Axis.Title.Margins.Top));
   List.Add('Title.Margins.Right ' + IntToStr(Axis.Title.Margins.Right));
@@ -2110,6 +2113,9 @@ try
   List.Add('Marks.LabelBrush.Style ' + tempStr);
   List.Add('Marks.Frame.Visible ' + BoolToStr(Axis.Marks.Frame.Visible));
   List.Add('Marks.Frame.Color ' + ColorToString(Axis.Marks.Frame.Color));
+  WriteStr(tempStr, Axis.Marks.Frame.Style);
+  List.Add('Marks.Frame.Style ' + tempStr);
+  List.Add('Marks.Frame.Width ' + IntToStr(Axis.Marks.Frame.Width));
   List.Add('Marks.Margins.Left ' + IntToStr(Axis.Marks.Margins.Left));
   List.Add('Marks.Margins.Top ' + IntToStr(Axis.Marks.Margins.Top));
   List.Add('Marks.Margins.Right ' + IntToStr(Axis.Marks.Margins.Right));
@@ -2341,6 +2347,14 @@ begin
    Axis.Title.Frame.Color:= StringToColor(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Axis.Title.Frame.Style:= tempStyle;
+   inc(m);
+   Axis.Title.Frame.Width:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
    Axis.Title.Margins.Left:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
@@ -2405,6 +2419,14 @@ begin
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    Axis.Marks.Frame.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   ReadStr(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
+    tempStyle);
+   Axis.Marks.Frame.Style:= tempStyle;
+   inc(m);
+   Axis.Marks.Frame.Width:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    Axis.Marks.Margins.Left:= StrToInt(
@@ -2669,8 +2691,8 @@ begin
   inc(m);
   Chart.Title.Frame.Width:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-  inc(m);
   // Title Margins
+  inc(m);
   Chart.Title.Margins.Left:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);

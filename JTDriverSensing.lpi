@@ -235,7 +235,7 @@
       <Unit15>
         <Filename Value="ChartEditing\ceshapebrushpenmarginsframe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="ShapeBrushPenMarginsFrame"/>
+        <ComponentName Value="ChartShapeBrushPenMarginsFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ceShapeBrushPenMarginsFrame"/>
