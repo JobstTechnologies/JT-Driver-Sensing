@@ -2214,7 +2214,8 @@ try
  end;
 
  // Title
- //List.Add('Title.Caption ' + Chart.Title.Text);
+ // purposely don't store the title text since this can cause issues
+ // when another user starts the program for another measurement
  WriteStr(tempStr, Chart.Title.Alignment);
  List.Add('Title.Alignment ' + tempStr);
  WriteStr(tempStr, Chart.Title.Shape);
