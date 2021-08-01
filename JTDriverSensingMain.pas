@@ -734,7 +734,7 @@ type
     procedure FirmwareUpdateMIClick(Sender: TObject);
     procedure FormClose(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure FormDropFiles(Sender: TObject; const FileNames{%H-}: array of String);
     procedure GenerateCommandBBClick(Sender: TObject);
     procedure GetFirmwareVersionMIClick(Sender: TObject);
     procedure LiveModeCBChange(Sender: TObject);

@@ -36,7 +36,7 @@ type
       APoint{%H-}: TPoint);
     procedure SCChartToolsetLegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
-    procedure SCChartToolsetAxisClickToolClick(Sender: TChartTool;
+    procedure SCChartToolsetAxisClickToolClick(Sender{%H-}: TChartTool;
       AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
     procedure SCAppearanceXBBClick(Sender: TObject);
     procedure SCChannelXOnOffCBChange(Sender: TObject);
