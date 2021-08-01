@@ -68,10 +68,9 @@ begin
   FShapeBrushPenMarginsFrame := TChartShapeBrushPenMarginsFrame.Create(self);
   FShapeBrushPenMarginsFrame.Parent := gbShapeBrushPenMargins;
   FShapeBrushPenMarginsFrame.Align := alClient;
-  FShapeBrushPenMarginsFrame.BorderSpacing.Left := 8;
-  FShapeBrushPenMarginsFrame.BorderSpacing.Right := 8;
-  FShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 8;
-  FShapeBrushPenMarginsFrame.Constraints.MinWidth := 230;
+  FShapeBrushPenMarginsFrame.BorderSpacing.Left := 4;
+  FShapeBrushPenMarginsFrame.BorderSpacing.Right := 4;
+  FShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 4;
   FShapeBrushPenMarginsFrame.OnChange := @ChangedHandler;
   FShapeBrushPenMarginsFrame.OnShapeChange := @ShapeChangedHandler;
   FShapeBrushPenMarginsFrame.AutoSize := true;

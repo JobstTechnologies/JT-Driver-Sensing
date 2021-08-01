@@ -69,7 +69,6 @@ type
     seTickInnerLength: TSpinEdit;
     seTickLength: TSpinEdit;
     seTitleDistance: TSpinEdit;
-    Spacer: TBevel;
     TitleMemoPanel: TPanel;
     TitleParamsPanel: TPanel;
     procedure cbArrowVisibleChange(Sender: TObject);
@@ -156,9 +155,9 @@ begin
   FTitleShapeBrushPenMarginsFrame.Parent := gbTitleShapeBrushPenMargins;
   FTitleShapeBrushPenMarginsFrame.Name := '';
   FTitleShapeBrushPenMarginsFrame.Align := alClient;
-  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Left := 8;
-  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Right := 8;
-  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 8;
+  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Left := 4;
+  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Right := 4;
+  FTitleShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 4;
   FTitleShapeBrushPenMarginsFrame.OnChange := @TitleChangedHandler;
   FTitleShapeBrushPenMarginsFrame.OnShapeChange := @TitleShapeChangedHandler;
   FTitleShapeBrushPenMarginsFrame.AutoSize := true;
@@ -179,9 +178,9 @@ begin
   FLabelShapeBrushPenMarginsFrame.Parent := gbShapeFillBorder;
   FLabelShapeBrushPenMarginsFrame.Name := '';
   FLabelShapeBrushPenMarginsFrame.Align := alClient;
-  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Left := 8;
-  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Right := 8;
-  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 8;
+  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Left := 4;
+  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Right := 4;
+  FLabelShapeBrushPenMarginsFrame.BorderSpacing.Bottom := 4;
   FLabelShapeBrushPenMarginsFrame.OnChange := @LabelChangedHandler;
   FLabelShapeBrushPenMarginsFrame.OnShapeChange := @LabelShapeChangedHandler;
   FLabelShapeBrushPenMarginsFrame.AutoSize := true;
@@ -246,7 +245,8 @@ begin
   PreferredHeight :=
     Max(
       gbTicks.Top + gbTicks.Height + gbTicks.BorderSpacing.Bottom,
-      gbShapeFillBorder.Top + gbShapeFillBorder.Height + gbShapeFillBorder.BorderSpacing.Bottom
+      gbShapeFillBorder.Top + gbShapeFillBorder.Height
+       + gbShapeFillBorder.BorderSpacing.Bottom
     ) +
     PageControl.Height - PageControl.ClientHeight +
     PanelTop.Height;
@@ -552,4 +552,3 @@ end;
 
 
 end.
-

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, Forms, Controls, StdCtrls, Dialogs, Spin, ExtCtrls,
-  TATypes, TATextElements;
+  TATypes, TATextElements, TAChartCombos;
 
 type
 
@@ -15,20 +15,25 @@ type
   { TChartShapeBrushPenMarginsFrame }
 
   TChartShapeBrushPenMarginsFrame = class(TFrame)
-    Spacer: TBevel;
     cbBorderColor: TColorButton;
+    cbBorderStyle: TChartComboBox;
+    cbBorderWidth: TChartComboBox;
+    cbShowBorder: TCheckBox;
+    gbBorder: TGroupBox;
+    lblPenStyle: TLabel;
+    lblPenWidth: TLabel;
     cbFillColor: TColorButton;
     cbFilled: TCheckBox;
-    cbShowBorder: TCheckBox;
     cmbShape: TComboBox;
     gbBackground: TGroupBox;
-    gbBorder: TGroupBox;
     gbMargins: TGroupBox;
     seBottomMargin: TSpinEdit;
     seLeftMargin: TSpinEdit;
     seRightMargin: TSpinEdit;
     seTopMargin: TSpinEdit;
     procedure cbBorderColorColorChanged(Sender: TObject);
+    procedure cbBorderStyleChange(Sender: TObject);
+    procedure cbBorderWidthChange(Sender: TObject);
     procedure cbFillColorColorChanged(Sender: TObject);
     procedure cbFilledChange(Sender: TObject);
     procedure cbShowBorderChange(Sender: TObject);
@@ -47,7 +52,6 @@ type
     FLockEvents: Integer;
     procedure DoChanged;
     procedure DoShapeChanged(AShape: TChartLabelShape);
-    procedure UpdateControls;
   protected
     procedure CalculatePreferredSize(var PreferredWidth, PreferredHeight: integer;
       {%H-}WithThemeSpace: Boolean); override;
@@ -88,16 +92,25 @@ begin
     gbMargins.BorderSpacing.Top + gbMargins.Height;
 
   PreferredWidth := Max(
-    Max(gbBackground.Width, gbBorder.Width) * 2 + Spacer.Width,
+    Max(gbBackground.Width, gbBorder.Width) * 2,
     gbMargins.Width
-  );;
+  );
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbBorderColorColorChanged(Sender: TObject);
 begin
   FPen.Color := cbBorderColor.ButtonColor;
-//  if FPen.Style <> psClear then
-    DoChanged;
+  DoChanged;
+end;
+
+procedure TChartShapeBrushPenMarginsFrame.cbBorderStyleChange(Sender: TObject);
+begin
+  FPen.Style := TPenStyle(cbBorderStyle.ItemIndex);
+end;
+
+procedure TChartShapeBrushPenMarginsFrame.cbBorderWidthChange(Sender: TObject);
+begin
+  FPen.Width := cbBorderWidth.PenWidth;
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbFillColorColorChanged(Sender: TObject);
@@ -107,22 +120,18 @@ begin
   bs := FBrush.Style;
   FBrush.Color := cbFillColor.ButtonColor;
   FBrush.Style := bs;
-//  if FBrush.Style <> bsClear then
-    DoChanged;
+  DoChanged;
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbFilledChange(Sender: TObject);
 begin
   if cbFilled.Checked then FBrush.Style := bsSolid else FBrush.Style := bsClear;
-  UpdateControls;
   DoChanged;
 end;
 
 procedure TChartShapeBrushPenMarginsFrame.cbShowBorderChange(Sender: TObject);
 begin
   FPen.Visible := cbShowBorder.Checked;
-  if FPen.Visible and (FPen.Style = psClear) then FPen.Style := psSolid;
-  UpdateControls;
   DoChanged;
 end;
 
@@ -173,10 +182,14 @@ begin
   AShape := TChartLabelShape(cmbShape.ItemIndex);
   if HandleAllocated then
   begin
-    if cbFilled.Checked then ABrush.Style := bsSolid else ABrush.Style := bsClear;
+    if cbFilled.Checked then
+      ABrush.Style := bsSolid
+    else
+      ABrush.Style := bsClear;
     ABrush.Color := cbFillColor.ButtonColor;
     APen.Visible := cbShowBorder.Checked;
-    APen.Style := psSolid;
+    APen.Style := cbBorderStyle.PenStyle;
+    APen.Width := cbBorderWidth.PenWidth;
     APen.Color := cbBorderColor.ButtonColor;
   end;
   AMargins.Top := seTopMargin.Value;
@@ -206,13 +219,6 @@ begin
   seRightMargin.Value := AMargins.Right;
   seBottomMargin.Value := AMargins.Bottom;
   dec(FLockEvents);
-end;
-
-procedure TChartShapeBrushPenMarginsFrame.UpdateControls;
-begin
-  cbBorderColor.Visible := cbShowBorder.Checked;
-  cmbShape.Enabled := cbShowBorder.Checked or cbFilled.Checked;
-  cbFillColor.Visible := cbFilled.Checked;
 end;
 
 end.

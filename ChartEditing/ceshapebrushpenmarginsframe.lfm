@@ -1,57 +1,30 @@
 object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
   Left = 0
-  Height = 237
+  Height = 222
   Top = 0
-  Width = 227
-  ClientHeight = 237
-  ClientWidth = 227
+  Width = 278
+  ClientHeight = 222
+  ClientWidth = 278
   TabOrder = 0
-  DesignLeft = 1498
-  DesignTop = 388
-  object cmbShape: TComboBox
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Owner
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Side = asrBottom
-    Left = 0
-    Height = 23
-    Top = 0
-    Width = 227
-    Anchors = [akTop, akLeft, akRight]
-    Enabled = False
-    ItemHeight = 15
-    ItemIndex = 0
-    Items.Strings = (
-      'Rectangle'
-      'Ellipse'
-      'Rounded rectangle'
-      'Rounded sides'
-    )
-    OnChange = cmbShapeChange
-    Style = csDropDownList
-    TabOrder = 0
-    Text = 'Rectangle'
-  end
+  DesignLeft = 1049
+  DesignTop = 130
   object gbBackground: TGroupBox
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = cmbShape
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Spacer
+    AnchorSideLeft.Control = gbMargins
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = gbMargins
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Side = asrBottom
-    Left = 0
+    Left = 164
     Height = 54
-    Top = 31
-    Width = 106
-    Anchors = [akTop, akLeft, akRight]
+    Top = 0
+    Width = 110
     AutoSize = True
-    BorderSpacing.Top = 8
+    BorderSpacing.Left = 8
     BorderSpacing.Right = 8
     Caption = 'Background'
     ClientHeight = 34
-    ClientWidth = 102
-    TabOrder = 1
+    ClientWidth = 106
+    TabOrder = 0
     object cbFilled: TCheckBox
       AnchorSideLeft.Control = gbBackground
       AnchorSideTop.Control = cbFillColor
@@ -60,7 +33,7 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       Left = 10
       Height = 19
       Top = 3
-      Width = 44
+      Width = 48
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 10
       BorderSpacing.Top = 6
@@ -74,7 +47,7 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       AnchorSideTop.Control = gbBackground
       AnchorSideRight.Control = gbBackground
       AnchorSideRight.Side = asrBottom
-      Left = 62
+      Left = 66
       Height = 25
       Top = 0
       Width = 32
@@ -86,91 +59,31 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       ButtonColorSize = 16
       ButtonColor = clBlack
       Margin = 2
-      Visible = False
       OnColorChanged = cbFillColorColorChanged
     end
   end
-  object gbBorder: TGroupBox
-    AnchorSideLeft.Control = Spacer
-    AnchorSideTop.Control = gbBackground
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = gbBackground
-    AnchorSideBottom.Side = asrBottom
-    Left = 121
-    Height = 54
-    Top = 31
-    Width = 106
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    AutoSize = True
-    BorderSpacing.Left = 8
-    Caption = 'Border'
-    ClientHeight = 34
-    ClientWidth = 102
-    TabOrder = 2
-    object cbShowBorder: TCheckBox
-      AnchorSideLeft.Control = gbBorder
-      AnchorSideTop.Control = cbBorderColor
-      AnchorSideTop.Side = asrCenter
-      AnchorSideRight.Control = cbBorderColor
-      Left = 10
-      Height = 19
-      Top = 3
-      Width = 50
-      Anchors = [akTop, akLeft, akRight]
-      BorderSpacing.Left = 10
-      BorderSpacing.Top = 6
-      BorderSpacing.Bottom = 12
-      Caption = 'Visible  '
-      OnChange = cbShowBorderChange
-      TabOrder = 0
-    end
-    object cbBorderColor: TColorButton
-      AnchorSideTop.Control = gbBorder
-      AnchorSideRight.Control = gbBorder
-      AnchorSideRight.Side = asrBottom
-      Left = 64
-      Height = 25
-      Top = 0
-      Width = 30
-      Anchors = [akTop, akRight]
-      BorderSpacing.Left = 4
-      BorderSpacing.Right = 8
-      BorderSpacing.Bottom = 8
-      BorderWidth = 2
-      ButtonColorSize = 16
-      ButtonColor = clBlack
-      Margin = 2
-      Visible = False
-      OnColorChanged = cbBorderColorColorChanged
-    end
-  end
   object gbMargins: TGroupBox
-    AnchorSideLeft.Control = gbBackground
-    AnchorSideTop.Control = gbBackground
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = gbBorder
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Side = asrBottom
-    Left = 0
+    Left = 4
     Height = 97
-    Top = 93
-    Width = 227
-    Anchors = [akTop, akLeft, akRight]
-    AutoSize = True
-    BorderSpacing.Top = 8
+    Top = 0
+    Width = 152
+    BorderSpacing.Left = 4
     Caption = 'Margins'
     ClientHeight = 77
-    ClientWidth = 223
-    TabOrder = 3
+    ClientWidth = 148
+    TabOrder = 1
     object seTopMargin: TSpinEdit
       AnchorSideLeft.Control = gbMargins
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = gbMargins
-      Left = 86
+      Left = 54
       Height = 23
       Top = 0
-      Width = 50
+      Width = 40
       Alignment = taRightJustify
       MaxValue = 1000
       OnChange = seTopMarginChange
@@ -180,10 +93,10 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       AnchorSideTop.Control = seTopMargin
       AnchorSideTop.Side = asrBottom
       AnchorSideRight.Control = seTopMargin
-      Left = 28
+      Left = 6
       Height = 23
       Top = 23
-      Width = 50
+      Width = 40
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
       BorderSpacing.Left = 28
@@ -197,10 +110,10 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = seTopMargin
       AnchorSideTop.Side = asrBottom
-      Left = 144
+      Left = 102
       Height = 23
       Top = 23
-      Width = 50
+      Width = 40
       Alignment = taRightJustify
       BorderSpacing.Left = 8
       BorderSpacing.Right = 28
@@ -215,10 +128,10 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       AnchorSideTop.Side = asrBottom
       AnchorSideBottom.Control = gbMargins
       AnchorSideBottom.Side = asrBottom
-      Left = 86
+      Left = 54
       Height = 23
       Top = 46
-      Width = 50
+      Width = 40
       Alignment = taRightJustify
       BorderSpacing.Bottom = 8
       MaxValue = 1000
@@ -226,15 +139,138 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       TabOrder = 3
     end
   end
-  object Spacer: TBevel
-    AnchorSideLeft.Control = cmbShape
-    AnchorSideLeft.Side = asrCenter
-    AnchorSideTop.Control = cmbShape
+  object gbBorder: TGroupBox
+    AnchorSideLeft.Control = gbMargins
+    AnchorSideTop.Control = gbMargins
     AnchorSideTop.Side = asrBottom
-    Left = 113
-    Height = 50
-    Top = 23
-    Width = 1
-    Shape = bsSpacer
+    AnchorSideRight.Control = gbBackground
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Side = asrBottom
+    Left = 4
+    Height = 113
+    Top = 103
+    Width = 270
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 6
+    Caption = 'Border'
+    ClientHeight = 93
+    ClientWidth = 266
+    TabOrder = 2
+    object cbShowBorder: TCheckBox
+      AnchorSideLeft.Control = gbBorder
+      AnchorSideTop.Control = gbBorder
+      Left = 8
+      Height = 19
+      Top = 6
+      Width = 54
+      BorderSpacing.Left = 8
+      BorderSpacing.Top = 6
+      Caption = 'Visible'
+      OnChange = cbShowBorderChange
+      TabOrder = 0
+    end
+    object cbBorderColor: TColorButton
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = gbBorder
+      AnchorSideRight.Side = asrBottom
+      Left = 226
+      Height = 25
+      Top = 2
+      Width = 32
+      Anchors = [akRight]
+      BorderSpacing.Left = 8
+      BorderSpacing.Right = 8
+      BorderSpacing.Bottom = 8
+      BorderWidth = 2
+      ButtonColorSize = 16
+      ButtonColor = clBlack
+      Margin = 2
+      OnColorChanged = cbBorderColorColorChanged
+    end
+    object cbBorderStyle: TChartComboBox
+      AnchorSideLeft.Control = cbShowBorder
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = cmbShape
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Side = asrBottom
+      Left = 70
+      Height = 22
+      Top = 33
+      Width = 148
+      PenPattern = '1|1'
+      PointerStyle = psNone
+      BorderSpacing.Left = 8
+      BorderSpacing.Top = 8
+      ItemHeight = 16
+      ItemIndex = 0
+      TabOrder = 1
+      OnChange = cbBorderStyleChange
+    end
+    object cbBorderWidth: TChartComboBox
+      AnchorSideLeft.Control = cbShowBorder
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = cbBorderStyle
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = cbBorderStyle
+      AnchorSideRight.Side = asrBottom
+      Left = 70
+      Height = 22
+      Top = 63
+      Width = 148
+      Mode = ccmPenWidth
+      PenPattern = '1|1'
+      PointerStyle = psNone
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 8
+      BorderSpacing.Top = 8
+      ItemHeight = 16
+      ItemIndex = 0
+      TabOrder = 2
+      OnChange = cbBorderWidthChange
+    end
+    object lblPenWidth: TLabel
+      AnchorSideTop.Control = cbBorderWidth
+      AnchorSideTop.Side = asrCenter
+      Left = 8
+      Height = 15
+      Top = 67
+      Width = 32
+      Caption = 'Width'
+    end
+    object lblPenStyle: TLabel
+      AnchorSideTop.Control = cbBorderStyle
+      AnchorSideTop.Side = asrCenter
+      Left = 8
+      Height = 15
+      Top = 37
+      Width = 25
+      Caption = 'Style'
+    end
+    object cmbShape: TComboBox
+      AnchorSideLeft.Control = cbShowBorder
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideRight.Control = cbBorderStyle
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Side = asrBottom
+      Left = 70
+      Height = 23
+      Top = 2
+      Width = 148
+      Anchors = [akLeft, akRight]
+      BorderSpacing.Left = 8
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Rectangle'
+        'Ellipse'
+        'Rounded rectangle'
+        'Rounded sides'
+      )
+      OnChange = cmbShapeChange
+      Style = csDropDownList
+      TabOrder = 3
+      Text = 'Rectangle'
+    end
   end
 end
