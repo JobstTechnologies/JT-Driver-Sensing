@@ -9,7 +9,7 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
   OnCreate = FormCreate
   OnShow = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '2.2.0.2'
   object SerialUSBPortL: TLabel
     Left = 16
     Height = 15

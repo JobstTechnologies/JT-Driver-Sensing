@@ -14,7 +14,7 @@ object MainForm: TMainForm
   OnDropFiles = FormDropFiles
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '2.2.0.2'
   object MainPC: TPageControl
     Left = 4
     Height = 616

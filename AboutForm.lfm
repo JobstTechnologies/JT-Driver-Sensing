@@ -7,7 +7,7 @@ object AboutFormF: TAboutFormF
   ClientHeight = 201
   ClientWidth = 330
   Position = poMainFormCenter
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '2.2.0.2'
   object SourceCodeText: TLabel
     Left = 16
     Height = 15

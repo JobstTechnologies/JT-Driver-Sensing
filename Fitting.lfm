@@ -9,7 +9,7 @@ object FitForm: TFitForm
   OnCreate = FormCreate
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '2.2.0.2'
   object pnlParams: TPanel
     Left = 8
     Height = 487
