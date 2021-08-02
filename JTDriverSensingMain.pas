@@ -2341,8 +2341,18 @@ end;
 procedure TMainForm.ResetChartAppearanceMIClick(Sender: TObject);
 var
  defaultFile : string;
+ MousePointer : TPoint;
 begin
  defaultFile:= ExtractFilePath(Application.ExeName) + AppearanceDefault;
+ if not FileExists(defaultFile) then
+ begin
+  MousePointer:= Mouse.CursorPos; // store mouse position
+  MessageDlgPos('The file "' + AppearanceDefault
+   + '" is not in the same folder as this program.'
+   + LineEnding + 'The appearance cannot be reset.',
+   mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
+  exit;
+ end;
  SIXControl.SCLoadAppearance(defaultFile);
 end;
 
