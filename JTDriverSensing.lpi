@@ -187,7 +187,7 @@
       <Unit9>
         <Filename Value="ChartEditing\cebrushframe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="BrushFrame"/>
+        <ComponentName Value="ChartBrushFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ceBrushFrame"/>
@@ -195,7 +195,7 @@
       <Unit10>
         <Filename Value="ChartEditing\cefontframe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="FontFrame"/>
+        <ComponentName Value="ChartFontFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ceFontFrame"/>
@@ -211,7 +211,7 @@
       <Unit12>
         <Filename Value="ChartEditing\cepenframe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="PenFrame"/>
+        <ComponentName Value="ChartPenFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="cePenFrame"/>
@@ -219,7 +219,7 @@
       <Unit13>
         <Filename Value="ChartEditing\cepointerframe.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="PointerFrame"/>
+        <ComponentName Value="ChartPointerFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="cePointerFrame"/>
@@ -243,7 +243,7 @@
       <Unit16>
         <Filename Value="ChartEditing\cetitlefootdlg.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="TitleFootEditor"/>
+        <ComponentName Value="ChartTitleFootEditor"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ceTitleFootDlg"/>

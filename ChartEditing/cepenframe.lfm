@@ -1,4 +1,4 @@
-object PenFrame: TChartPenFrame
+object ChartPenFrame: TChartPenFrame
   Left = 0
   Height = 56
   Top = 0
@@ -36,7 +36,6 @@ object PenFrame: TChartPenFrame
     Top = 4
     Width = 25
     Caption = 'Style'
-    ParentColor = False
   end
   object cbPenWidth: TChartComboBox
     AnchorSideLeft.Control = lblPenWidth
@@ -67,7 +66,6 @@ object PenFrame: TChartPenFrame
     Top = 34
     Width = 32
     Caption = 'Width'
-    ParentColor = False
   end
   object cbPenColor: TColorButton
     AnchorSideLeft.Side = asrBottom

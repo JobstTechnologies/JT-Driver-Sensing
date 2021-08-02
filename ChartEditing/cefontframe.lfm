@@ -1,4 +1,4 @@
-object FontFrame: TChartFontFrame
+object ChartFontFrame: TChartFontFrame
   Left = 0
   Height = 84
   Top = 0
@@ -127,7 +127,6 @@ object FontFrame: TChartFontFrame
         Width = 31
         Caption = 'Angle'
         FocusControl = seOrientation
-        ParentColor = False
       end
       object seOrientation: TSpinEdit
         AnchorSideLeft.Control = lblOrientation
