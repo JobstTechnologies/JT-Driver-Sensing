@@ -64,6 +64,7 @@ type
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
     AbortCalibrationMI: TMenuItem;
+    ResetChartAppearanceMI: TMenuItem;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
@@ -716,6 +717,7 @@ type
     procedure LoadedActionFileMChange(Sender: TObject);
     procedure LoadedDefFileMChange(Sender: TObject);
     procedure LoadedFileSensMChange(Sender: TObject);
+    procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
     procedure RawCurrentCBChange(Sender: TObject);
@@ -796,6 +798,7 @@ var
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor definition file
   const AppearanceFile : string = 'Appearance-JT-DS.ini'; // filename to store appearance
+  const AppearanceDefault : string = 'Appearance-JT-DS.default'; // filename with default appearance
 
 implementation
 
@@ -2333,6 +2336,14 @@ begin
  LoadedFileSensTestM.Text:= LoadedFileSensM.Text;
  LoadedFileSensTestM.Color:= LoadedFileSensM.Color;
  LoadedFileSensTestM.Hint:= LoadedFileSensM.Hint;
+end;
+
+procedure TMainForm.ResetChartAppearanceMIClick(Sender: TObject);
+var
+ defaultFile : string;
+begin
+ defaultFile:= ExtractFilePath(Application.ExeName) + AppearanceDefault;
+ SIXControl.SCLoadAppearance(defaultFile);
 end;
 
 procedure TMainForm.OverallTimerFinished;

@@ -10,7 +10,10 @@ improvements:
 - when more than one step is used, the currently executed step is
   highlighted by an asterisk in its name
 - it is now possible to view the state of pumps 5 - 8 while the pumps
-  are running 
+  are running
+- the program stores now the chart settings when it is closed
+  To get the default appearance, use the new menu
+  Miscellaneous -> Reset Chart Appearance
 
 
 from version 0.97 to 0.98

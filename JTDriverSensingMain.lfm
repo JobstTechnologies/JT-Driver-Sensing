@@ -7637,6 +7637,10 @@ object MainForm: TMainForm
         Visible = False
         OnClick = FirmwareResetMIClick
       end
+      object ResetChartAppearanceMI: TMenuItem
+        Caption = 'Reset Chart Appearance'
+        OnClick = ResetChartAppearanceMIClick
+      end
     end
   end
   object OverallTimer: TTimer
