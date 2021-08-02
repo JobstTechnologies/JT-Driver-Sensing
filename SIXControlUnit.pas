@@ -2064,10 +2064,9 @@ try
  begin
   Axis:= Chart.AxisList[i];
   List.Add('Axis ' + IntToStr(i));
-  // purposely don't store the axis visibility
+  // purposely don't store the axis visibility and caption since
+  // this can lead to confusion
   // Axis title
-  List.Add('Title.Visible ' + BoolToStr(Axis.Title.Visible));
-  List.Add('Title.Caption ' + Axis.Title.Caption);
   WriteStr(tempStr, Axis.Title.Alignment);
   List.Add('Title.Alignment ' + tempStr);
   List.Add('Title.LabelFont.Name ' + Axis.Title.LabelFont.Name);
@@ -2301,11 +2300,6 @@ begin
           )];
    // Axis title
    inc(m);
-   Axis.Title.Visible:= StrToBool(
-    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-   inc(m);
-   Axis.Title.Caption:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
-   inc(m);
    ReadStr(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
     tempAlignment);
@@ -2368,7 +2362,6 @@ begin
    Axis.Title.Margins.Bottom:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    // Axis range
-   // purposely don't store the range since this depends on the actual values
    inc(m);
    Axis.Inverted:= StrToBool(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
