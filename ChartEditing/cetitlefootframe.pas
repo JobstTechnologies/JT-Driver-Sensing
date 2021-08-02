@@ -22,7 +22,6 @@ type
     lblText: TLabel;
     MemoPanel: TPanel;
     mmoText: TMemo;
-    PanelTop: TPanel;
     ParamsPanel: TPanel;
     rgAlignment: TRadioGroup;
     procedure cbShowChange(Sender: TObject);
@@ -85,9 +84,9 @@ procedure TChartTitleFootFrame.CalculatePreferredSize(
   var PreferredWidth, PreferredHeight: integer;
   WithThemeSpace: Boolean);
 begin
-  PreferredHeight := PanelTop.Height +
-    MemoPanel.Constraints.MinHeight +
-    ParamsPanel.Height + ParamsPanel.BorderSpacing.Top + ParamsPanel.BorderSpacing.Bottom;
+  PreferredHeight := MemoPanel.Constraints.MinHeight
+    + ParamsPanel.Height + ParamsPanel.BorderSpacing.Top
+    + ParamsPanel.BorderSpacing.Bottom;
 
   PreferredWidth := gbFont.Width +
     gbShapeBrushPenMargins.Width + gbShapeBrushPenMargins.BorderSpacing.Left;
@@ -133,6 +132,11 @@ end;
 
 procedure TChartTitleFootFrame.mmoTextChange(Sender: TObject);
 begin
+  // we must assure that the title is not empty because of the
+  // elements we have on top of the chart
+  // thus set a space when the user emptied it
+  if mmoText.Text = '' then
+    mmoText.Text := ' ';
   FTitle.Text.Assign(mmoText.Lines);
 end;
 
