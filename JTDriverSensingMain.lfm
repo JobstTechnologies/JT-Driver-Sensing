@@ -7145,7 +7145,7 @@ object MainForm: TMainForm
         Legend.BackgroundBrush.Color = clSilver
         Legend.UseSidebar = False
         Legend.Visible = True
-        Title.Brush.Color = clBtnFace
+        Title.Brush.Color = clWindow
         Title.Font.Color = clBlue
         Title.Font.Height = -15
         Title.Text.Strings = (
@@ -7154,6 +7154,7 @@ object MainForm: TMainForm
         Title.Visible = True
         Toolset = ChartToolset
         Anchors = [akTop, akLeft, akRight, akBottom]
+        Color = clWindow
         PopupMenu = ContextMenu
         object ResultCHValues: TLineSeries
           Legend.Format = 'Measured values'
@@ -7175,7 +7176,7 @@ object MainForm: TMainForm
         end
       end
       object SaveScreenshotResultB: TButton
-        Left = 706
+        Left = 928
         Height = 24
         Top = 4
         Width = 104
@@ -7214,7 +7215,7 @@ object MainForm: TMainForm
         Left = 16
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 144
+        Top = 128
         Width = 240
         Caption = 'Output to Pump Connector 1'
         ClientHeight = 76
@@ -7350,7 +7351,7 @@ object MainForm: TMainForm
         Left = 272
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 144
+        Top = 128
         Width = 240
         Caption = 'Output to Pump Connector 2'
         ClientHeight = 76
@@ -7430,7 +7431,7 @@ object MainForm: TMainForm
         Left = 16
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 264
+        Top = 240
         Width = 240
         Caption = 'Output to Pump Connector 3'
         ClientHeight = 76
@@ -7510,7 +7511,7 @@ object MainForm: TMainForm
         Left = 272
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 264
+        Top = 240
         Width = 240
         Caption = 'Output to Pump Connector 4'
         ClientHeight = 76
