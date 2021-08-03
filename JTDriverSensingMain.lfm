@@ -1113,7 +1113,7 @@ object MainForm: TMainForm
         end
       end
       object SaveScreenshotLiveB: TButton
-        Left = 706
+        Left = 712
         Height = 24
         Top = 4
         Width = 104

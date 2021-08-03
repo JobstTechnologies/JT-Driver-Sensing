@@ -1122,14 +1122,14 @@ var
 begin
  Result:= false;
  // propose a file name
- OutNameHelp:= 'Screenshot';
+ OutNameHelp:= 'Screenshot-' + MainForm.LoadedFileSensM.Text;
  if Overwrite then
  begin
   // proposal according to currently active tab
   if MainForm.MainPC.ActivePage = MainForm.SIXValuesTS then
    OutNameHelp:= OutNameHelp + '-Live';
   if MainForm.MainPC.ActivePage = MainForm.ResultTS then
-   OutNameHelp:= OutNameHelp + '-Fit';
+   OutNameHelp:= OutNameHelp + '-Result';
  end;
  ScreenOutName:= MainForm.SaveHandling(OutNameHelp, '.svg'); // opens file dialog
 
