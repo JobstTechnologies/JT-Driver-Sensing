@@ -3172,11 +3172,16 @@ begin
   SaveDialog.Filter:= 'SIX definition file (*.def)|*.def';
   SaveDialog.Title:= 'Save changed definition file as';
  end;
+ // clear filename if the extension does not fit
+ if (SaveDialog.FileName <> '')
+   and (ExtractFileExt(SaveDialog.FileName) <> FileExt) then
+  SaveDialog.FileName:= '';
  // propose a file name
- if (InName <> '') and (SaveDialog.FileName = '') then
+ if ((InName <> '') and (SaveDialog.FileName = ''))
+  or
+   ((InName <> '') and (SaveDialog.FileName <> '')
+    and (ExtractFileExt(InName) <> ExtractFileExt(SaveDialog.FileName))) then
   SaveDialog.FileName:= ExtractFileName(InName);
- if SaveDialog.FileName <> '' then
-  SaveDialog.FileName:= ExtractFileName(SaveDialog.FileName);
  if SaveDialog.Execute then
  begin
   OutNameTemp:= SaveDialog.FileName;
