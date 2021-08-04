@@ -16,17 +16,14 @@ type
 
   TChartTitleFootFrame = class(TFrame)
     cbShow: TCheckBox;
-    cbWordwrap: TCheckBox;
     gbFont: TGroupBox;
     gbShapeBrushPenMargins: TGroupBox;
-    lblText: TLabel;
-    MemoPanel: TPanel;
-    mmoText: TMemo;
+    leText: TLabeledEdit;
+    TextPanel: TPanel;
     ParamsPanel: TPanel;
     rgAlignment: TRadioGroup;
     procedure cbShowChange(Sender: TObject);
-    procedure cbWordwrapClick(Sender: TObject);
-    procedure mmoTextChange(Sender: TObject);
+    procedure leTextChange(Sender: TObject);
     procedure rgAlignmentClick(Sender: TObject);
   private
     FTitle: TChartTitle;
@@ -84,7 +81,7 @@ procedure TChartTitleFootFrame.CalculatePreferredSize(
   var PreferredWidth, PreferredHeight: integer;
   WithThemeSpace: Boolean);
 begin
-  PreferredHeight := MemoPanel.Constraints.MinHeight
+  PreferredHeight := TextPanel.Constraints.MinHeight
     + ParamsPanel.Height + ParamsPanel.BorderSpacing.Top
     + ParamsPanel.BorderSpacing.Bottom;
 
@@ -96,17 +93,10 @@ end;
 procedure TChartTitleFootFrame.cbShowChange(Sender: TObject);
 begin
   FTitle.Visible := cbShow.Checked;
-  lblText.Visible := cbShow.Checked;
-  mmoText.Visible := cbShow.Checked;
+  leText.Visible := cbShow.Checked;
   rgAlignment.Visible := cbShow.Checked;
   gbShapeBrushPenMargins.Visible := cbShow.Checked;
   gbFont.Visible := cbShow.Checked;
-  cbWordwrap.Visible := cbShow.Checked;
-end;
-
-procedure TChartTitleFootFrame.cbWordwrapClick(Sender: TObject);
-begin
-  FTitle.Wordwrap := cbWordwrap.Checked;
 end;
 
 procedure TChartTitleFootFrame.ChangedHandler(Sender: TObject);
@@ -130,14 +120,14 @@ begin
   Result := FTitle.GetOwner as TChart;
 end;
 
-procedure TChartTitleFootFrame.mmoTextChange(Sender: TObject);
+procedure TChartTitleFootFrame.leTextChange(Sender: TObject);
 begin
   // we must assure that the title is not empty because of the
   // elements we have on top of the chart
   // thus set a space when the user emptied it
-  if mmoText.Text = '' then
-    mmoText.Text := ' ';
-  FTitle.Text.Assign(mmoText.Lines);
+  if leText.Text = '' then
+    leText.Text := ' ';
+  FTitle.Text[0] := leText.Text;
 end;
 
 procedure TChartTitleFootFrame.rgAlignmentClick(Sender: TObject);
@@ -150,8 +140,7 @@ begin
   FTitle := ATitle;
 
   cbShow.Checked := ATitle.Visible;
-  cbWordwrap.Checked := ATitle.Wordwrap;
-  mmoText.Lines.Assign(ATitle.Text);
+  leText.Text := ATitle.Text[0];
   {$IFDEF WYSIWYG_TITLE}
   mmoText.Font.Assign(ATitle.Font);
   mmoText.Font.Orientation := 0;
