@@ -3,6 +3,7 @@ Changes
 from version 0.99 to 0.992
 
 bugfix:
+- fix wrong channel assignment when changing channel appearance
 - propose valid filenames for all file types when saving them
 
 
