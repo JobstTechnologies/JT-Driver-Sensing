@@ -1076,6 +1076,8 @@ begin
   for j:= 2 to StepNum do
    (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
     as TTabSheet).TabVisible:= false;
+  // assure that step 2 is not used
+  MainForm.Step2UseCB.Checked:= false;
   MainForm.RunSettingsGB.Enabled:= false;
   MainForm.RunFreeBB.Enabled:= false;
   MainForm.Step1TS.Caption:= 'Live';

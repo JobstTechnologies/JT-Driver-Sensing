@@ -1,5 +1,11 @@
 Changes
 
+from version 0.992 to 0.993
+
+bugfix:
+- when entering Live mode assure that the other action steps are ignored
+
+
 from version 0.99 to 0.992
 
 bugfix:
