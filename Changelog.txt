@@ -8,8 +8,9 @@ bugfix:
 
 from version 0.99 to 0.992
 
-bugfix:
-- propose valid filenames for all file types when saving them
+bugfixes:
+- fix wrong channel assignment when changing channel appearance
+- propose valid filenames for all file types when saving
 
 
 from version 0.98 to 0.99

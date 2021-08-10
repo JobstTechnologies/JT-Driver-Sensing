@@ -1495,18 +1495,14 @@ begin
  ChannelNumber:= Copy(SenderName, 11, 1);
  Channel:= StrToInt(ChannelNumber);
  // we have this assignment:
- // 1 -> Series 0, 2 -> Series 2, 4 -> Series 4, 5 -> Series 6
- // 6 -> Series 8, 7 -> Series 10
- if Channel < 4 then
-  Channel:= 2 * Channel - 2
- else
-  Channel:= 2 * Channel - 4;
+ // 1 -> Series 0, 2 -> Series 2 and so on
+ Channel:= 2 * Channel - 2;
  // change to the chart tab to see the changes immediately
  MainForm.MainPC.ActivePage:= MainForm.SIXValuesTS;
  // get name of GroupBox or ComboBox
- if Channel < 8 then
- GBCaption:= (MainForm.FindComponent('Channel' + ChannelNumber + 'GB')
-  as TGroupBox).Caption
+ if StrToInt(ChannelNumber) < 7 then
+  GBCaption:= (MainForm.FindComponent('Channel' + ChannelNumber + 'GB')
+   as TGroupBox).Caption
  else
   GBCaption:= (MainForm.FindComponent('Channel' + ChannelNumber + 'CB')
   as TComboBox).Text;
