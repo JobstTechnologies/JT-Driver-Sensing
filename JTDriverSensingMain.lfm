@@ -1,11 +1,11 @@
 object MainForm: TMainForm
   Left = 324
-  Height = 702
+  Height = 708
   Top = 190
   Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 682
+  ClientHeight = 688
   ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
@@ -215,7 +215,7 @@ object MainForm: TMainForm
         Height = 382
         Top = 88
         Width = 156
-        Caption = 'SIX Status Info'
+        Caption = 'Sensor Status Info'
         ClientHeight = 362
         ClientWidth = 152
         ParentColor = False
@@ -804,14 +804,11 @@ object MainForm: TMainForm
         object PerformTestsCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'To perform tests a definition'#13#10'file must be loaded'
           Top = 3
           Width = 92
           Caption = 'Perform Tests'
-          Enabled = False
           OnChange = PerformTestsCBChange
           ParentShowHint = False
-          ShowHint = True
           TabOrder = 0
         end
         object UseAnOutCB: TCheckBox
@@ -6184,10 +6181,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 88
-        Width = 344
+        Width = 352
         Caption = 'Channel 1'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6279,10 +6276,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 228
-        Width = 344
+        Width = 352
         Caption = 'Channel 4'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6372,10 +6369,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 370
-        Width = 344
+        Width = 352
         Caption = 'Channel 5'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentBackground = False
         ParentShowHint = False
         ShowHint = True
@@ -6447,13 +6444,13 @@ object MainForm: TMainForm
           TabOrder = 4
         end
         object ChannelTest5LE: TLabeledEdit
-          Left = 248
+          Left = 256
           Height = 23
           Top = 40
-          Width = 82
+          Width = 74
           Alignment = taCenter
           EditLabel.Height = 15
-          EditLabel.Width = 82
+          EditLabel.Width = 74
           EditLabel.Caption = 'Channel'
           Enabled = False
           TabOrder = 5
@@ -6465,10 +6462,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 88
-        Width = 344
+        Width = 352
         Caption = 'Channel 2'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6560,10 +6557,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 228
-        Width = 344
+        Width = 352
         Caption = 'Channel 3'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6653,10 +6650,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 370
-        Width = 344
+        Width = 352
         Caption = 'Channel 6'
         ClientHeight = 116
-        ClientWidth = 340
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6746,10 +6743,10 @@ object MainForm: TMainForm
         Height = 136
         Hint = 'Channel name can be changed in the tab'#13#10'''General'' by double-clicking on the name'
         Top = 512
-        Width = 360
+        Width = 352
         Caption = 'Channel Operation 2'
         ClientHeight = 116
-        ClientWidth = 356
+        ClientWidth = 348
         ParentColor = False
         ParentShowHint = False
         ShowHint = True
@@ -6791,7 +6788,7 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object Channel8TestCB: TComboBox
-          Left = 256
+          Left = 248
           Height = 23
           Hint = 'The action can be changed in the tab ''General'''
           Top = 40
@@ -6811,7 +6808,7 @@ object MainForm: TMainForm
           Text = 'mean(#3, #6)'
         end
         object Label1Ch9: TLabel
-          Left = 256
+          Left = 248
           Height = 15
           Top = 24
           Width = 82
@@ -7007,7 +7004,7 @@ object MainForm: TMainForm
         end
       end
       object StatusTestGB1: TGroupBox
-        Left = 728
+        Left = 720
         Height = 392
         Top = 88
         Width = 156

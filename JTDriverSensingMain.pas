@@ -1845,11 +1845,10 @@ begin
  // setup UI to start
  IndicatorSensorP.Color:= clDefault;
  IndicatorSensorP.Caption:= '';
- StartTestBB.enabled:= true;
+ if HaveSerialSensor then
+  StartTestBB.enabled:= true;
  SIXBiosensorsMI.enabled:= true;
  NoSubtractBlankCB.enabled:= true;
- PerformTestsCB.enabled:= true;
- PerformTestsCB.ShowHint:= false;
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
@@ -1985,8 +1984,6 @@ begin
  StartTestBB.enabled:= false;
  UnloadDefBB.visible:= false;
  CalibrateTB.Enabled:= false;
- PerformTestsCB.enabled:= false;
- PerformTestsCB.ShowHint:= true;
  // the values are then in nA
  RawCurrentCB.Checked:= true;
  RawCurrentCB.Enabled:= false;
