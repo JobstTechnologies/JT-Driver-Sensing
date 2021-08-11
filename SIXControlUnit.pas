@@ -113,6 +113,7 @@ var
  MousePointer : TPoint;
  dataArray : array[0..24] of byte;
  HiLowArray : array[0..1] of byte;
+ IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
  ChanDbl : array [0..8] of double; // start from zero purposely for non-existing subtracts
  ChanRawDbl : array [1..8] of double;
@@ -139,7 +140,7 @@ begin
   MessageDlgPos('The connection to the data file was lost!' + LineEnding
     + 'To restart you must call again the menu Connection -> SIX bisensors',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  MainForm.ConnComPortSensLE.Color:= clRed;
+  MainForm.ConnComPortSensM.Color:= clRed;
   MainForm.IndicatorSensorP.Caption:= 'Connection lost';
   MainForm.IndicatorSensorP.Color:= clRed;
   // disable all buttons
@@ -170,7 +171,7 @@ begin
     MessageDlgPos('The received last 100 bytes do not contain a stop bit.'
     + LineEnding + 'Try to reconnect to the SIX.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-    MainForm.ConnComPortSensLE.Color:= clRed;
+    MainForm.ConnComPortSensM.Color:= clRed;
     MainForm.IndicatorSensorP.Caption:= 'SIX error';
     MainForm.IndicatorSensorP.Color:= clRed;
     MainForm.StartTestBB.Enabled:= false;
@@ -201,11 +202,11 @@ begin
      if k <> 25 then
      begin
       MainForm.ReadTimer.Enabled:= false;
-      MessageDlgPos('Error: ' + MainForm.ConnComPortSensLE.Text
+      MessageDlgPos('Error: ' + MainForm.ConnComPortSensM.Lines[0]
        + ' did not deliver data within 5.1 s.' + LineEnding
        + 'Check the USB cable for a loose contact.',
        mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-      MainForm.ConnComPortSensLE.Color:= clRed;
+      MainForm.ConnComPortSensM.Color:= clRed;
       MainForm.IndicatorSensorP.Caption:= 'SIX error';
       MainForm.IndicatorSensorP.Color:= clRed;
       MainForm.StartTestBB.Enabled:= false;
@@ -235,11 +236,11 @@ begin
    if MainForm.ReadTimer.Enabled = false then
     exit;
    MainForm.ReadTimer.Enabled:= False;
-   MessageDlgPos(MainForm.ConnComPortSensLE.Text
+   MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
     + ' error on connecting to SIX: ' + serSensor.LastErrorDesc + LineEnding
     + 'Check the USB cable for a loose contact.', mtError, [mbOK], 0,
     MousePointer.X, MousePointer.Y);
-   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'Check USB cable';
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.StartTestBB.Enabled:= false;
@@ -276,12 +277,12 @@ begin
   begin
    MainForm.ReadTimer.Enabled:= False;
    if serSensor.LastError <> 0 then
-    MessageDlgPos(MainForm.ConnComPortSensLE.Text + ' error on reading signal data: '
+    MessageDlgPos(MainForm.ConnComPortSensM.Lines[0] + ' error on reading signal data: '
      + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
    else
     MessageDlgPos('Error: Could not read 25 bytes. Got only ' + IntToStr(k) + ' bytes.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
    // disable all buttons
@@ -326,7 +327,7 @@ begin
    MessageDlgPos('The received last 300 bytes do not contain a stop bit.'
     + LineEnding + 'Try to reconnect to the SIX.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   MainForm.ConnComPortSensLE.Color:= clRed;
+   MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.StartTestBB.Enabled:= false;
@@ -398,6 +399,18 @@ begin
  // the temperature value must be divided by 16 to get the value in deg celsius
  temperature:= tempInt16 / 16;
  MainForm.SIXTempLE.Text:= FloatToStr(RoundTo(temperature, -2));
+
+ // get the SIX device ID if not yet shown
+ if copy(MainForm.ConnComPortSensM.Lines[1], 1, 3) <> 'SIX' then
+ begin
+  for i:= 0 to 3 do
+   IDArray[3 - i]:= dataArray[14 + i];
+  k:= Int32(IDArray);
+  // we don't just add a line because this would add a linebreak so that a
+  // third memo line would be shown and the memo size is designed for 2 lines
+  MainForm.ConnComPortSensM.Text:= MainForm.ConnComPortSensM.Lines[0]
+   + LineEnding + 'SIX ID #: ' + (IntToStr(k));
+ end;
 
  // get the raw values in nA
  for i:= 1 to NumChannels do

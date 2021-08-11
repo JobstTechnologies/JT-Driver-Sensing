@@ -64,6 +64,10 @@ type
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
     AbortCalibrationMI: TMenuItem;
+    ConnComPortSensM: TMemo;
+    ConnComPortSensTestM: TMemo;
+    Label70: TLabel;
+    Label71: TLabel;
     ResetChartAppearanceMI: TMenuItem;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
@@ -84,7 +88,6 @@ type
     RectangleSelectionTool: TUserDefinedTool;
     LineDragTool: TDataPointDragTool;
     ConnComPortPumpGeneralLE: TLabeledEdit;
-    ConnComPortSensTestLE: TLabeledEdit;
     FinishTimeSensLE1: TLabeledEdit;
     FirmwareResetMI: TMenuItem;
     IndicatorPumpGeneralP: TPanel;
@@ -199,7 +202,6 @@ type
     Slope4LE: TLabeledEdit;
     Slope5LE: TLabeledEdit;
     NoSubtractBlankCB: TCheckBox;
-    ConnComPortSensLE: TLabeledEdit;
     CurrChannel7LE: TLabeledEdit;
     CurrChannel8LE: TLabeledEdit;
     CurrChannel4LE: TLabeledEdit;
@@ -701,7 +703,7 @@ type
     procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
-    procedure ConnComPortSensLEChange(Sender: TObject);
+    procedure ConnComPortSensMChange(Sender: TObject);
     procedure DutyCycleXFSEChange(Sender: TObject);
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
@@ -945,7 +947,7 @@ begin
      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
     // in case a SIX is already connected, remove its COM port from the list
     for i:= 0 to SerialUSBPortCB.Items.Count-1 do
-     if SerialUSBPortCB.Items[i] = ConnComPortSensLE.Text then
+     if SerialUSBPortCB.Items[i] = ConnComPortSensM.Lines[0] then
      begin
       SerialUSBPortCB.Items.Delete(i);
       break;
@@ -973,7 +975,7 @@ begin
  // empty COMPort in case this one is already connected to a SIX
  // we don't empty in other cases since the user might just clicked wrong,
  // is already connected and don't want to change this
- if COMPort = ConnComPortSensLE.Text then
+ if COMPort = ConnComPortSensM.Lines[0] then
   COMPort:= '';
  // open connection dialog
  SerialUSBSelectionF.ShowModal;
@@ -1179,7 +1181,7 @@ begin
    StopBB.Enabled:= true;
    RunFreeBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
-   if ConnComPortSensLE.Color = clDefault then
+   if ConnComPortSensM.Color = clDefault then
    begin
     AnOutOnOffTB.Enabled:= true;
     AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
@@ -1847,6 +1849,7 @@ begin
  SIXBiosensorsMI.enabled:= true;
  NoSubtractBlankCB.enabled:= true;
  PerformTestsCB.enabled:= true;
+ PerformTestsCB.ShowHint:= false;
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
@@ -1982,6 +1985,8 @@ begin
  StartTestBB.enabled:= false;
  UnloadDefBB.visible:= false;
  CalibrateTB.Enabled:= false;
+ PerformTestsCB.enabled:= false;
+ PerformTestsCB.ShowHint:= true;
  // the values are then in nA
  RawCurrentCB.Checked:= true;
  RawCurrentCB.Enabled:= false;
@@ -2310,10 +2315,10 @@ begin
  ConnComPortPumpGeneralLE.Text:= ConnComPortPumpLE.Text;
 end;
 
-procedure TMainForm.ConnComPortSensLEChange(Sender: TObject);
+procedure TMainForm.ConnComPortSensMChange(Sender: TObject);
 begin
- ConnComPortSensTestLE.Color:= ConnComPortSensLE.Color;
- ConnComPortSensTestLE.Text:= ConnComPortSensLE.Text;
+ ConnComPortSensTestM.Color:= ConnComPortSensM.Color;
+ ConnComPortSensTestM.Text:= ConnComPortSensM.Text;
 end;
 
 procedure TMainForm.LoadedActionFileMChange(Sender: TObject);
@@ -2747,8 +2752,8 @@ begin
  SerialUSBSelectionF.ShowModal;
  if COMPort = 'Ignore' then // user pressed Disconnect
  begin
-  ConnComPortSensLE.Text:= 'Not connected';
-  ConnComPortSensLE.Color:= clHighlight;
+  ConnComPortSensM.Text:= 'Not connected';
+  ConnComPortSensM.Color:= clHighlight;
   IndicatorSensorP.Caption:= '';
   IndicatorSensorP.Color:= clDefault;
   StartTestBB.Enabled:= false;
@@ -2796,15 +2801,15 @@ begin
   exit;
  end;
  // open new connection if not already available
- if not (HaveSerialSensor and (COMPort = ConnComPortSensLE.Text)) then
+ if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
  try
   if HaveSerialSensor then
   begin
    CloseLazSerialConn(MousePointer);
    HaveSerialSensor:= False;
   end;
-  ConnComPortSensLE.Text:= 'Not connected';
-  ConnComPortSensLE.Color:= clHighlight;
+  ConnComPortSensM.Text:= 'Not connected';
+  ConnComPortSensM.Color:= clHighlight;
   AnOutOnOffTB.Checked:= false;
   AnOutOnOffTB.Enabled:= false;
   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
@@ -2825,11 +2830,11 @@ begin
  finally
   if serSensor.LastError <> 0 then // output the error
   begin
-   MessageDlgPos(ConnComPortSensLE.Text + ' error: ' + serSensor.LastErrorDesc,
+   MessageDlgPos(ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    IndicatorSensorP.Caption:= 'Connection failiure';
    IndicatorSensorP.Color:= clRed;
-   ConnComPortSensLE.Color:= clRed;
+   ConnComPortSensM.Color:= clRed;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
    CloseLazSerialConn(MousePointer);
@@ -2841,8 +2846,8 @@ begin
   exit;
 
  // output connected port
- ConnComPortSensLE.Text:= COMPort;
- ConnComPortSensLE.Color:= clDefault;
+ ConnComPortSensM.Text:= COMPort;
+ ConnComPortSensM.Color:= clDefault;
  IndicatorSensorP.Caption:= 'Connection successful';
  IndicatorSensorP.Color:= clDefault;
 
@@ -2855,9 +2860,9 @@ begin
   inc(k);
   if k > 29 then // we reached 3 seconds, so there is something wrong
   begin
-   MessageDlgPos('Error: ' + ConnComPortSensLE.Text + ' did not deliver data within 3 s.',
+   MessageDlgPos('Error: ' + ConnComPortSensM.Text + ' did not deliver data within 3 s.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   ConnComPortSensLE.Color:= clRed;
+   ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'Wrong device';
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
@@ -2875,7 +2880,7 @@ begin
  begin
   MessageDlgPos(COMPort + ' error on reading 25 bytes: '
    + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  ConnComPortSensLE.Color:= clRed;
+  ConnComPortSensM.Color:= clRed;
   IndicatorSensorP.Caption:= 'Wrong device';
   IndicatorSensorP.Color:= clRed;
   StartTestBB.Enabled:= false;
@@ -2910,7 +2915,7 @@ begin
  begin
   MessageDlgPos('Error: A filename must be set to store the sensor data.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   ConnComPortSensLE.Color:= clRed;
+   ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'No file to save';
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
@@ -3125,8 +3130,8 @@ begin
   // we cannot close socket or free when the connection timed out
   MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  ConnComPortSensLE.Text:= 'Not acessible';
-  ConnComPortSensLE.Color:= clRed;
+  ConnComPortSensM.Text:= 'Not acessible';
+  ConnComPortSensM.Color:= clRed;
   exit;
  end;
  if HaveSerialSensor then
@@ -3137,8 +3142,8 @@ begin
   HaveSerialSensor:= False;
  end;
 
- ConnComPortSensLE.Text:= 'Not connected';
- ConnComPortSensLE.Color:= clHighlight;
+ ConnComPortSensM.Text:= 'Not connected';
+ ConnComPortSensM.Color:= clHighlight;
 end;
 
 function TMainForm.SaveHandling(InName: string; FileExt: string): string;

@@ -1,11 +1,11 @@
 object MainForm: TMainForm
   Left = 324
-  Height = 642
+  Height = 702
   Top = 190
   Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 622
+  ClientHeight = 682
   ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
@@ -17,7 +17,7 @@ object MainForm: TMainForm
   LCLVersion = '2.2.0.2'
   object MainPC: TPageControl
     Left = 4
-    Height = 616
+    Height = 676
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -26,7 +26,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       object Channel1GB: TGroupBox
         Left = 0
@@ -232,30 +232,14 @@ object MainForm: TMainForm
           ParentColor = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 1
-          OnPaint = IndicatorSensorPPaint
-        end
-        object ConnComPortSensLE: TLabeledEdit
-          Left = 7
-          Height = 23
-          Top = 72
-          Width = 138
-          Alignment = taCenter
-          Color = clHighlight
-          EditLabel.Height = 15
-          EditLabel.Width = 138
-          EditLabel.Caption = 'Connected Port'
-          ParentShowHint = False
-          ReadOnly = True
           TabOrder = 0
-          Text = 'Not connected'
-          OnChange = ConnComPortSensLEChange
+          OnPaint = IndicatorSensorPPaint
         end
         object LoadedFileSensM: TMemo
           Left = 7
           Height = 40
           Hint = 'No data storage file selected'
-          Top = 192
+          Top = 208
           Width = 137
           Alignment = taCenter
           Lines.Strings = (
@@ -265,12 +249,12 @@ object MainForm: TMainForm
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
-          TabOrder = 2
+          TabOrder = 1
         end
         object Label66: TLabel
           Left = 8
           Height = 15
-          Top = 172
+          Top = 188
           Width = 86
           Caption = 'Sensor Data File '
         end
@@ -282,7 +266,7 @@ object MainForm: TMainForm
           Caption = 'SIX Temperature'
           ClientHeight = 78
           ClientWidth = 132
-          TabOrder = 3
+          TabOrder = 2
           object SIXTempLE: TLabeledEdit
             Left = 12
             Height = 23
@@ -308,14 +292,14 @@ object MainForm: TMainForm
         object Label68: TLabel
           Left = 7
           Height = 15
-          Top = 104
+          Top = 120
           Width = 108
           Caption = 'Sensor Definiton File'
         end
         object LoadedDefFileM: TMemo
-          Left = 8
+          Left = 7
           Height = 40
-          Top = 122
+          Top = 140
           Width = 136
           Alignment = taCenter
           Lines.Strings = (
@@ -323,7 +307,28 @@ object MainForm: TMainForm
           )
           OnChange = LoadedDefFileMChange
           ReadOnly = True
+          TabOrder = 3
+        end
+        object ConnComPortSensM: TMemo
+          Left = 7
+          Height = 40
+          Top = 72
+          Width = 136
+          Alignment = taCenter
+          Color = clMenuHighlight
+          Lines.Strings = (
+            'None'
+          )
+          OnChange = ConnComPortSensMChange
+          ReadOnly = True
           TabOrder = 4
+        end
+        object Label70: TLabel
+          Left = 8
+          Height = 15
+          Top = 54
+          Width = 73
+          Caption = 'Connected To'
         end
       end
       object Channel7GB: TGroupBox
@@ -799,12 +804,14 @@ object MainForm: TMainForm
         object PerformTestsCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'To perform tests a definition'#13#10'file must be loaded'
           Top = 3
           Width = 92
           Caption = 'Perform Tests'
           Enabled = False
           OnChange = PerformTestsCBChange
           ParentShowHint = False
+          ShowHint = True
           TabOrder = 0
         end
         object UseAnOutCB: TCheckBox
@@ -884,11 +891,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 588
+        Height = 648
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1199,7 +1206,7 @@ object MainForm: TMainForm
     end
     object PumpControlTS: TTabSheet
       Caption = 'Pump Control'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
@@ -6132,7 +6139,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -7001,11 +7008,11 @@ object MainForm: TMainForm
       end
       object StatusTestGB1: TGroupBox
         Left = 728
-        Height = 368
+        Height = 392
         Top = 88
         Width = 156
         Caption = 'Status Info'
-        ClientHeight = 348
+        ClientHeight = 372
         ClientWidth = 152
         ParentColor = False
         TabOrder = 10
@@ -7021,28 +7028,13 @@ object MainForm: TMainForm
           ParentColor = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 1
-        end
-        object ConnComPortSensTestLE: TLabeledEdit
-          Left = 7
-          Height = 23
-          Top = 72
-          Width = 138
-          Alignment = taCenter
-          Color = clHighlight
-          EditLabel.Height = 15
-          EditLabel.Width = 138
-          EditLabel.Caption = 'Connected Port'
-          ParentShowHint = False
-          ReadOnly = True
           TabOrder = 0
-          Text = 'Not connected'
         end
         object StartTimeSensLE1: TLabeledEdit
-          Left = 6
+          Left = 7
           Height = 23
           Hint = 'Time when ''Start Measurement'' was pressed'
-          Top = 260
+          Top = 288
           Width = 137
           EditLabel.Height = 15
           EditLabel.Width = 137
@@ -7050,13 +7042,13 @@ object MainForm: TMainForm
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
-          TabOrder = 2
+          TabOrder = 1
         end
         object FinishTimeSensLE1: TLabeledEdit
           Left = 7
           Height = 23
           Hint = 'Time when either the pump action was finished'#13#10'or when ''Stop Measurement'' was pressed'
-          Top = 312
+          Top = 336
           Width = 136
           EditLabel.Height = 15
           EditLabel.Width = 136
@@ -7064,13 +7056,13 @@ object MainForm: TMainForm
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
-          TabOrder = 3
+          TabOrder = 2
         end
         object LoadedFileSensTestM: TMemo
-          Left = 8
+          Left = 7
           Height = 40
           Hint = 'No data storage file selected'
-          Top = 192
+          Top = 216
           Width = 137
           Alignment = taCenter
           Lines.Strings = (
@@ -7079,44 +7071,65 @@ object MainForm: TMainForm
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
-          TabOrder = 4
+          TabOrder = 3
         end
         object Label67: TLabel
-          Left = 8
+          Left = 7
           Height = 15
-          Top = 172
+          Top = 192
           Width = 86
           Caption = 'Sensor Data File '
         end
         object Label69: TLabel
           Left = 7
           Height = 15
-          Top = 104
+          Top = 120
           Width = 108
           Caption = 'Sensor Definiton File'
         end
         object LoadedDefFileTestM: TMemo
-          Left = 8
+          Left = 7
           Height = 40
-          Top = 122
+          Top = 144
           Width = 136
           Alignment = taCenter
           Lines.Strings = (
             'None'
           )
           ReadOnly = True
+          TabOrder = 4
+        end
+        object ConnComPortSensTestM: TMemo
+          Left = 7
+          Height = 40
+          Top = 70
+          Width = 136
+          Alignment = taCenter
+          Color = clMenuHighlight
+          Lines.Strings = (
+            'None'
+          )
+          OnChange = LoadedDefFileMChange
+          ReadOnly = True
           TabOrder = 5
+        end
+        object Label71: TLabel
+          Left = 8
+          Height = 15
+          Top = 54
+          Width = 73
+          Caption = 'Connected To'
         end
       end
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 588
+        Height = 648
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -7208,7 +7221,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 588
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
