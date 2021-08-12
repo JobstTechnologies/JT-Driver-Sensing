@@ -2376,11 +2376,7 @@ end;
 
 procedure TMainForm.StepTimerLastFinished(Sender: TObject);
 begin
- (FindComponent('StepTimer' + IntToStr(PumpControl.StepNum))
-        as TTimer).Enabled:= False;
- // switch to step 1
- StepTimer1.Enabled:= True;
- RepeatPC.ActivePage:= Step1TS;
+ PumpControl.PCStepTimerLastFinished(Sender);
 end;
 
 procedure TMainForm.StopBBClick(Sender: TObject);

@@ -17,6 +17,7 @@ type
     procedure PCDutyCycleXFSEChange(Sender: TObject);
     procedure PCStepTimer1Finished(Sender: TObject);
     procedure PCStepTimerXFinished(Sender: TObject);
+    procedure PCStepTimerLastFinished(Sender: TObject);
     procedure PCGenerateCommandBBClick(Sender: TObject);
     procedure PCRunFreeBBClick(Sender: TObject);
     procedure PCRunBBClick(Sender: TObject);
@@ -1304,6 +1305,17 @@ begin
   // highlight it as active by adding an asterisk to the step name
   MainForm.Step1TS.Caption:= 'Step 1 *';
  end;
+end;
+
+procedure TPumpControl.PCStepTimerLastFinished(Sender: TObject);
+begin
+ // remove asterisk from step caption
+ MainForm.Step7TS.Caption:= 'Step 7';
+ (MainForm.FindComponent('StepTimer' + IntToStr(PumpControl.StepNum))
+        as TTimer).Enabled:= False;
+ // switch to step 1
+ MainForm.StepTimer1.Enabled:= True;
+ MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
 end;
 
 procedure TPumpControl.PCRunFreeBBClick(Sender: TObject);
