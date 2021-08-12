@@ -5,8 +5,9 @@ from version 0.992 to 0.993
 improvement:
 - display the SIX ID number below the connected port
 
-bugfix:
+bugfixes:
 - when entering Live mode assure that the other action steps are ignored
+- don't allow to enter more than 100% duty cycle
 
 
 from version 0.99 to 0.992
