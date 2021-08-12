@@ -804,11 +804,14 @@ object MainForm: TMainForm
         object PerformTestsCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Not yet implemented'
           Top = 3
           Width = 92
           Caption = 'Perform Tests'
+          Enabled = False
           OnChange = PerformTestsCBChange
           ParentShowHint = False
+          ShowHint = True
           TabOrder = 0
         end
         object UseAnOutCB: TCheckBox
@@ -1292,7 +1295,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -1969,7 +1972,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -2619,7 +2622,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -3300,7 +3303,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -3979,7 +3982,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -4660,7 +4663,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
@@ -5255,7 +5258,7 @@ object MainForm: TMainForm
               Top = 0
               Width = 50
               DecimalPlaces = 1
-              MaxValue = 0.1
+              MaxValue = 100
               MinValue = 0.1
               OnChange = DutyCycleXFSEChange
               ParentShowHint = False
