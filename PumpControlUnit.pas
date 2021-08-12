@@ -1146,30 +1146,42 @@ begin
  // reset increment to 1. If this is not sufficent,
  // it will be reset later in this procedure
  (MainForm.FindComponent('RunTime' + IntToStr(Step) + 'FSE')
-        as TFloatSpinEdit).Increment:= 1;
+   as TFloatSpinEdit).Increment:= 1;
  // if the duty cycle is not 100% we must require 1.1 V for the pumps
- // otherwise the voltage would be to low to start a short movement
- if ((MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
-        as TFloatSpinEdit).Value < 100) then
+ // otherwise the voltage would be too low to start a short movement
+ if (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
+        as TFloatSpinEdit).Value < 100 then
   for j:= 1 to PumpNum do
    (MainForm.FindComponent('Pump' + IntToStr(j) + 'VoltageFS' + IntToStr(Step))
       as TFloatSpinEdit).MinValue:= 1.1
  else
+ begin
   for j:= 1 to PumpNum do
    (MainForm.FindComponent('Pump' + IntToStr(j) + 'VoltageFS' + IntToStr(Step))
-      as TFloatSpinEdit).MinValue:= 0.1;
+     as TFloatSpinEdit).MinValue:= 0.1;
+  // also allow 50 ms OnTime because this might have been changed previously
+  (MainForm.FindComponent('RunTime' + IntToStr(Step) + 'FSE')
+   as TFloatSpinEdit).MinValue:= 0.05;
+ end;
  // calculate necessary time increment
  if ((MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
-        as TFloatSpinEdit).Value / 100) >= 0.05 then
+       as TFloatSpinEdit).Value / 100) >= 0.05 then
   DutyTime:= 1 // base time is 1s
  else // calculate a base time so that the OnTime is 50 ms
   DutyTime:= 0.05 / ((MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
         as TFloatSpinEdit).Value / 100);
  // if the unit is s, we can also set a new increment
+ // and we must adjust the MinValue if duty is < 100 %
  if (MainForm.FindComponent('Unit' + IntToStr(Step) + 'RBs')
-        as TRadioButton).Checked then
+      as TRadioButton).Checked then
+ begin
   (MainForm.FindComponent('RunTime' + IntToStr(Step) + 'FSE')
-        as TFloatSpinEdit).Increment:= round(DutyTime);
+    as TFloatSpinEdit).Increment:= round(DutyTime);
+  if (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
+       as TFloatSpinEdit).Value < 100 then
+   (MainForm.FindComponent('RunTime' + IntToStr(Step) + 'FSE')
+     as TFloatSpinEdit).MinValue:= round(DutyTime);
+ end;
  // the set time might be smaller than necessary
  StepTime:= 1; // 1s
  if (MainForm.FindComponent('Unit' + IntToStr(Step) + 'RBmin')

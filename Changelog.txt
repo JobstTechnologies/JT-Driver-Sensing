@@ -4,6 +4,7 @@ from version 0.992 to 0.993
 
 improvement:
 - display the SIX ID number below the connected port
+- it is now possible to set a time down to 0.05 s per pump action step
 
 bugfixes:
 - when entering Live mode assure that the other action steps are ignored
