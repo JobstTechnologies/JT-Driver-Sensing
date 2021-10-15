@@ -785,7 +785,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.99.3';
+  Version : string = '0.99.4';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 2.0;
   serPump: TBlockSerial;
@@ -3121,7 +3121,7 @@ begin
  if serSensor.LastError = 9997 then
  begin
   // we cannot close socket or free when the connection timed out
-  MessageDlgPos('Error: ' + COMPort + ' cannot be closed.',
+  MessageDlgPos('Error: ' + ConnComPortSensM.Lines[0] + ' cannot be closed.',
   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   ConnComPortSensM.Text:= 'Not acessible';
   ConnComPortSensM.Color:= clRed;
