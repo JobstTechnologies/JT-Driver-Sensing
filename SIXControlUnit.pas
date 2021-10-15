@@ -189,7 +189,7 @@ begin
    delay(100);
    lastInterval:= lastInterval + 0.00166; // 100 ms of the delay in min
    inc(DelayReadCounter);
-   if DelayReadCounter > 50 then
+   if DelayReadCounter > 52 then
    // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
    // this will for example occur if USB cable was removed
    begin
@@ -269,7 +269,7 @@ begin
   // if we get 3 times the same error, something is wrong and we must stop
   if ErrorCount < 4 then
   begin
-   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+   lastInterval:= lastInterval + 0.02833; // in min, every 1700 ms we get new bytes
    timeCounter:= timeCounter + lastInterval;
    exit;
   end
@@ -296,12 +296,18 @@ begin
 
  // now search the byte array for the stop bit
  StopPos:= -1;
- for i:= 0 to 24 do
+ // since a value byte can also have the value $16, we search backwards
+ // and check that the byte 20 positions earlier has the value $4 (begin of
+ // a data block)
+ for i:= 24 downto 20 do
  begin
   if dataArray[i] = $16 then
   begin
-   StopPos:= i;
-   break;
+   if dataArray[i - 20] = $4 then
+   begin
+    StopPos:= i;
+    break;
+   end;
   end;
  end;
  if StopPos = -1 then
@@ -310,14 +316,14 @@ begin
   // the read data block sometimes misses the stop bit
   // usually the stop bit appears again within the next readout, but not at the
   // expected position
-  // to re-sync then with the SIX, wait one interval and read out all byte by
+  // to re-sync then with the SIX, wait one interval and read out byte by
   // byte until a stop byte appears
   wasNoStopByte:= true;
   // however, if we cannot re-sync after 3 attempts, something is wrong with the
   // SIX and we must stop
   if ErrorCount < 4 then
   begin
-   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+   lastInterval:= lastInterval + 0.02833; // in min, every 1700 ms we get new bytes
    timeCounter:= timeCounter + lastInterval;
    exit;
   end
@@ -341,31 +347,22 @@ begin
  // reset counter since we got no error
  ErrorCount:= 0;
 
- // if StopPos > 19 we have all relevant data before
- if StopPos > 19 then
+ // we have all relevant data before the stop bit
+ // first calculate the checksum
+ checksum:= dataArray[StopPos - 2];
+ for i:= StopPos - 3 downto StopPos - 20 do
+  checksum:= checksum + dataArray[i];
+ PintegerArray:= PintArray(@checksum);
+ if PintegerArray^[1] <> dataArray[StopPos - 1] then
  begin
-  // checksum
-  checksum:= dataArray[StopPos-2];
-  for i:= StopPos-3 downto StopPos-20 do
-   checksum:= checksum + dataArray[i];
-  PintegerArray:= PintArray(@checksum);
-  if PintegerArray^[1] <> dataArray[StopPos-1] then
-  begin
-   // the data are corrupted so wait for another timer run
-   lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
-   timeCounter:= timeCounter + lastInterval;
-   exit;
-  end;
-  // transform the dataArray so that zero array position gets the first value byte
-  for i := 0 to 18 do
-   dataArray[i]:= dataArray[StopPos - 19 + i];
- end
- else // we must wait another timer run
- begin
-  lastInterval:= lastInterval + 1700 / 60000; // in min, every 1700 ms we get new bytes
+  // the data are corrupted so wait for another timer run
+  lastInterval:= lastInterval + 0.02833; // in min, every 1700 ms we get new bytes
   timeCounter:= timeCounter + lastInterval;
   exit;
  end;
+ // transform the dataArray so that zero array position gets the first value byte
+ for i := 0 to 18 do
+  dataArray[i]:= dataArray[StopPos - 19 + i];
 
  // create now a string with the line we will write to the file
  // first the time and counter
@@ -384,7 +381,6 @@ begin
 
  // now the channels
  // first convert each 2 bytes to a signed 16 bit integer
- i:= NumChannels;
  for i:= 1 to NumChannels do
  begin
   HiLowArray[0]:= dataArray[2*i-1];
