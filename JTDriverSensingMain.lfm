@@ -641,7 +641,7 @@ object MainForm: TMainForm
         object SIXTypeRG: TRadioGroup
           Left = 184
           Height = 64
-          Hint = 'Maximal current representation'#13#10'of the connected SIX device'
+          Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
           Top = -10
           Width = 82
           AutoFill = True
