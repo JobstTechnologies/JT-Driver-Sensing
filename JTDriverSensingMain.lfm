@@ -182,7 +182,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           DecimalPlaces = 1
           MaxValue = 99
-          MinValue = 1.7
+          MinValue = 2
           OnChange = EvalTimeFSEChange
           TabOrder = 0
           Value = 3
