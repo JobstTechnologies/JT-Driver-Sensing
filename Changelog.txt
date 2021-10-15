@@ -5,7 +5,7 @@ from version 0.993 to 0.994
 improvements:
 - when changing the unit of the displayed diagram values to nA or mmol/l
   all diagram values will be recalculated to this unit
-  (The CSV file will not be recalcuated since it
+  (the CSV output file will not be recalculated since it
    already contains the values in both units)
 
 bugfixes:
