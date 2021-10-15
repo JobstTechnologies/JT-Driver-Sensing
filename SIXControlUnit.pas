@@ -1331,7 +1331,7 @@ end;
 
 procedure TSIXControl.SCRawCurrentCBChange(Sender: TObject);
 var
- i : integer;
+ i, j : integer;
 begin
  if MainForm.RawCurrentCB.Checked then
  begin
@@ -1361,6 +1361,20 @@ begin
   MainForm.UseAnOutCB.Enabled:= true;
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'nA will become 3.3 V output';
+
+  // recalculate the mmol values in the plot to nA
+  // Note: this will purposely not have any influence on the output .csv file
+  for i:= 1 to NumChannels do
+  begin
+   for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LastValueIndex do
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).YValue[j]:=
+      (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+       as TLineSeries).YValue[j]
+       * exp(TemperGains[i] / 100 * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+       * GainsRaw[i] / Gains[i];
+  end;
  end
  else // not checked
  begin
@@ -1390,8 +1404,62 @@ begin
    // disable then also analog output
    MainForm.UseAnOutCB.Enabled:= false;
    MainForm.UseAnOutCB.Checked:= false;
+  end
+  else
+  begin
+   // recalculate the nA values in the plot to mmol
+   // Note: this will purposely not have any influence on the output .csv file
+   for i:= 1 to NumChannels do
+   begin
+    for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).LastValueIndex do
+     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).YValue[j]:=
+       (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+        as TLineSeries).YValue[j]
+        / exp(TemperGains[i] / 100 * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+        * Gains[i] / GainsRaw[i];
+   end;
   end;
- end;
+ end; // end not checked
+
+ // calculate mean channel 7 and 8 values
+   if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
+   begin
+    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+      MainForm.SIXCh7Values.YValue[j]:=
+       (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
+   end;
+   if MainForm.Channel8CB.Text = 'mean(#2, #5)' then
+   begin
+    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+      MainForm.SIXCh8Values.YValue[j]:=
+       (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
+   end;
+   if MainForm.Channel7CB.Text = 'mean(#3, #6)' then
+   begin
+    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+      MainForm.SIXCh7Values.YValue[j]:=
+       (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+   end;
+   if MainForm.Channel8CB.Text = 'mean(#3, #6)' then
+   begin
+    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+      MainForm.SIXCh8Values.YValue[j]:=
+       (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+   end;
+   if MainForm.Channel7CB.Text = 'mean(#1, #4)' then
+   begin
+    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+      MainForm.SIXCh7Values.YValue[j]:=
+       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+   end;
+   if MainForm.Channel8CB.Text = 'mean(#1, #4)' then
+   begin
+    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+      MainForm.SIXCh8Values.YValue[j]:=
+       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+   end;
 
 end;
 
@@ -1878,8 +1946,8 @@ begin
    MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
    // propose as filename the current date
    MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
-                                  + FormatDateTime('dd-mm-yyyy-hh-nn', now);
-
+                                  + FormatDateTime('dd-mm-yyyy-hh-nn', now)
+                                  + '.def';
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
    if (OutName <> '') then
    begin
