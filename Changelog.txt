@@ -2,6 +2,12 @@ Changes
 
 from version 0.993 to 0.994
 
+improvements:
+- when changing the unit of the displayed diagram values to nA or mmol/l
+  all diagram values will be recalculated to this unit
+  (The CSV file will not be recalcuated since it
+   already contains the values in both units)
+
 bugfixes:
 - fix bug on calculating sensor value from readout data
 - correct info in some error messages
