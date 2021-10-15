@@ -1,11 +1,5 @@
 Changes
 
-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
-
-https://github.com/JobstTechnologies/JT-SIX-Readout.git
-
-JobstTechnologies
-
 from version 0.993 to 0.994
 
 bugfixes:
