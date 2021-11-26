@@ -1622,8 +1622,10 @@ begin
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
     as TCheckBox).Enabled:= True;
-   (MainForm.FindComponent('ActionTime' + IntToStr(j) + 'GB')
-    as TGroupBox).Enabled:= True;
+   // only enable action time when not run endless
+   if not MainForm.RunEndlessCB.Checked then
+    (MainForm.FindComponent('ActionTime' + IntToStr(j) + 'GB')
+     as TGroupBox).Enabled:= True;
    (MainForm.FindComponent('DutyCycle' + IntToStr(j) + 'GB')
     as TGroupBox).Enabled:= True;
    (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
