@@ -1332,6 +1332,7 @@ end;
 procedure TSIXControl.SCRawCurrentCBChange(Sender: TObject);
 var
  i, j : integer;
+ LastIndex : integer = 0;
 begin
  if MainForm.RawCurrentCB.Checked then
  begin
@@ -1423,43 +1424,58 @@ begin
   end;
  end; // end not checked
 
- // calculate mean channel 7 and 8 values
-   if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
-   begin
-    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+ // calculate channel 7 and 8 values
+ LastIndex:= MainForm.SIXCh7Values.LastValueIndex;
+ // we can have the case that e.g. a two-channel .def file was unload
+ // then we don't have values for channel 3 to 6
+ if (MainForm.SIXCh2Values.LastValueIndex = LastIndex)
+  and (MainForm.SIXCh5Values.LastValueIndex = LastIndex) then
+ begin
+  if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
+  begin
+      for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
       MainForm.SIXCh7Values.YValue[j]:=
        (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
-   end;
-   if MainForm.Channel8CB.Text = 'mean(#2, #5)' then
-   begin
-    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
-      MainForm.SIXCh8Values.YValue[j]:=
-       (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
-   end;
-   if MainForm.Channel7CB.Text = 'mean(#3, #6)' then
-   begin
-    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
-      MainForm.SIXCh7Values.YValue[j]:=
-       (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
-   end;
-   if MainForm.Channel8CB.Text = 'mean(#3, #6)' then
-   begin
-    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
-      MainForm.SIXCh8Values.YValue[j]:=
-       (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
-   end;
-   if MainForm.Channel7CB.Text = 'mean(#1, #4)' then
-   begin
-    for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
-      MainForm.SIXCh7Values.YValue[j]:=
-       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
-   end;
-   if MainForm.Channel8CB.Text = 'mean(#1, #4)' then
-   begin
-    for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
-      MainForm.SIXCh8Values.YValue[j]:=
-       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
-   end;
+  end;
+  if MainForm.Channel8CB.Text = 'mean(#2, #5)' then
+  begin
+   for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+     MainForm.SIXCh8Values.YValue[j]:=
+      (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
+  end;
+ end;
+ if (MainForm.SIXCh3Values.LastValueIndex = LastIndex)
+  and (MainForm.SIXCh6Values.LastValueIndex = LastIndex) then
+ begin
+  if MainForm.Channel7CB.Text = 'mean(#3, #6)' then
+  begin
+   for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+     MainForm.SIXCh7Values.YValue[j]:=
+      (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel8CB.Text = 'mean(#3, #6)' then
+  begin
+   for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+     MainForm.SIXCh8Values.YValue[j]:=
+      (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+  end;
+ end;
+ if (MainForm.SIXCh1Values.LastValueIndex = LastIndex)
+  and (MainForm.SIXCh4Values.LastValueIndex = LastIndex) then
+ begin
+  if MainForm.Channel7CB.Text = 'mean(#1, #4)' then
+  begin
+   for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+     MainForm.SIXCh7Values.YValue[j]:=
+      (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel8CB.Text = 'mean(#1, #4)' then
+  begin
+   for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+     MainForm.SIXCh8Values.YValue[j]:=
+      (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+  end;
+ end;
 
 end;
 
