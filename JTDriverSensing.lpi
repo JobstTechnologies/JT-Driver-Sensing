@@ -63,6 +63,7 @@
               <DebugInfoType Value="dsDwarf3"/>
               <UseHeaptrc Value="True"/>
               <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
             </Debugging>
             <Options>
               <Win32>
@@ -265,9 +266,6 @@
         <ResourceBaseClass Value="Form"/>
       </Unit18>
     </Units>
-    <Debugger>
-      <Backend Value="{9983401B-BBC1-4101-B04B-D600E4AB6D20}"/>
-    </Debugger>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
