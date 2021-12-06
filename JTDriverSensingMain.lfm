@@ -306,7 +306,9 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = LoadedDefFileMChange
+          ParentShowHint = False
           ReadOnly = True
+          ShowHint = True
           TabOrder = 3
         end
         object ConnComPortSensM: TMemo

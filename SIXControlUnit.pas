@@ -2068,6 +2068,8 @@ begin
     DummyString:= ExtractFileName(InNameDef);
     SetLength(DummyString, Length(DummyString) - 4);
     MainForm.LoadedDefFileM.Text:= DummyString;
+    // display full path as tooltip
+    MainForm.LoadedDefFileM.hint:= InNameDef;
     // write a new header line to the output file
     if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
     begin

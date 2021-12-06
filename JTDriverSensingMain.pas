@@ -1770,6 +1770,7 @@ begin
    IndicatorSensorP.Color:= clRed;
    IndicatorSensorP.Caption:= 'No definition file loaded';
    LoadedDefFileM.Text:= 'None';
+   LoadedDefFileM.ShowHint:= false;
    LoadedDefFileM.Color:= clDefault;
    StartTestBB.enabled:= false;
    NoSubtractBlankCB.enabled:= false;
@@ -1803,6 +1804,7 @@ begin
   IndicatorSensorP.Color:= clRed;
   IndicatorSensorP.Caption:= 'No definition file loaded';
   LoadedDefFileM.Text:= 'None';
+  LoadedDefFileM.ShowHint:= false;
   LoadedDefFileM.Color:= clDefault;
   StartTestBB.enabled:= false;
   NoSubtractBlankCB.enabled:= false;
@@ -1817,6 +1819,10 @@ begin
  // display file name without suffix
  DummyString:= ExtractFileName(InNameDef);
  SetLength(DummyString, Length(DummyString) - 4);
+ // show full path as tooltip
+ LoadedDefFileM.ShowHint:= true;
+ LoadedDefFileM.Hint:= InNameDef;
+ // set Text after Hint since this change triggers the sync with the other tabs
  LoadedDefFileM.Text:= DummyString;
  LoadedDefFileM.Color:= clActiveCaption;
 
@@ -1980,6 +1986,7 @@ begin
  IndicatorSensorP.Caption:= 'No definition file loaded';
  LoadedDefFileM.Text:= 'None';
  LoadedDefFileM.Color:= clDefault;
+ LoadedDefFileM.ShowHint:= false;
  InNameDef:= '';
  StartTestBB.enabled:= false;
  UnloadDefBB.visible:= false;
@@ -2330,6 +2337,8 @@ procedure TMainForm.LoadedDefFileMChange(Sender: TObject);
 begin
  LoadedDefFileTestM.Color:= LoadedDefFileM.Color;
  LoadedDefFileTestM.Text:= LoadedDefFileM.Text;
+ LoadedDefFileTestM.ShowHint:= LoadedDefFileM.ShowHint;
+ LoadedDefFileTestM.Hint:= LoadedDefFileM.Hint;
 end;
 
 procedure TMainForm.LoadedFileSensMChange(Sender: TObject);
@@ -2452,6 +2461,7 @@ var
  i, j : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
+ DummyString:= '';
 
  if DropfileNamePump <> '' then // a file was dropped into the main window
   FileSuccess:= OpenActionFile(DropfileNamePump)
@@ -2480,12 +2490,15 @@ begin
   else
    InNamePump:= OpenDialog.FileName;
   SaveDialog.FileName:= ''; // will be re-set in SaveHandling()
+  // show the full path as tooltip
+  if DropfileNamePump <> '' then
+   LoadedActionFileM.Hint:= DropfileNamePump
+  else
+   LoadedActionFileM.Hint:= DummyString;
   // display file name without suffix
   DummyString:= ExtractFileName(InNamePump);
   SetLength(DummyString, Length(DummyString) - 9);
   LoadedActionFileM.Color:= clActiveCaption;
-  // sometimes the file name is too long to fit into the widget, thus show it as tooltip
-  LoadedActionFileM.Hint:= DummyString;
   LoadedActionFileM.Text:= DummyString;
   command:= CommandM.Text;
   // parse the command
@@ -2960,10 +2973,12 @@ begin
   exit;
  end;
 
- LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
  LoadedFileSensM.Color:= clActiveCaption;
- LoadedFileSensM.Hint:= LoadedFileSensM.Text;
+ // show the full path as tooltip
+ LoadedFileSensM.Hint:= InNameSensor;
  HaveSensorFileStream:= true;
+ // set Text after Hint since this change triggers the sync with the other tabs
+ LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
 
  // delete existing live chart data
  // but purposely not the measurement data
