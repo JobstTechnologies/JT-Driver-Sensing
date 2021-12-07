@@ -66,8 +66,10 @@ type
     AbortCalibrationMI: TMenuItem;
     ConnComPortSensM: TMemo;
     ConnComPortSensTestM: TMemo;
+    ContextSensFilePM: TPopupMenu;
     Label70: TLabel;
     Label71: TLabel;
+    ChangeSensFileMI: TMenuItem;
     ResetChartAppearanceMI: TMenuItem;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
@@ -77,7 +79,7 @@ type
     LoadedDefFileM: TMemo;
     LoadedDefFileTestM: TMemo;
     ChangeBackColorMI: TMenuItem;
-    ContextMenu: TPopupMenu;
+    ContextChartPM: TPopupMenu;
     ScrollViewP: TPanel;
     CalibrateP: TPanel;
     TopLine: TConstantLine;
@@ -684,9 +686,22 @@ type
     procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
     procedure AnOutConnectorXOnOffCBChange(Sender: TObject);
+    procedure AnOutputOf1CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
+    procedure AnOutputOf2CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
+    procedure AnOutputOf3CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
+    procedure AnOutputOf4CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure AppearanceXBBClick(Sender: TObject);
     procedure CalibrateTBChange(Sender: TObject);
     procedure ChangeBackColorMIClick(Sender: TObject);
+    procedure ChangeSensFileMIClick(Sender: TObject);
+    procedure Channel7CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
+    procedure Channel8CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure ChannelXLEChange(Sender: TObject);
     procedure ChannelXCBChange(Sender: TObject);
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
@@ -704,6 +719,8 @@ type
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
     procedure ConnComPortSensMChange(Sender: TObject);
+    procedure ConnComPortSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure DutyCycleXFSEChange(Sender: TObject);
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
@@ -716,9 +733,17 @@ type
       var AGraphPoint{%H-}: TDoublePoint);
     procedure LoadDefBBClick(Sender: TObject);
     procedure AnOutOfXLEChange(Sender: TObject);
+    procedure LoadedActionFileGeneralMContextPopup(Sender: TObject;
+      MousePos{%H-}: TPoint; var Handled: Boolean);
     procedure LoadedActionFileMChange(Sender: TObject);
+    procedure LoadedActionFileMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure LoadedDefFileMChange(Sender: TObject);
+    procedure LoadedDefFileMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure LoadedFileSensMChange(Sender: TObject);
+    procedure LoadedFileSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
+      var Handled: Boolean);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
@@ -754,6 +779,7 @@ type
     procedure SaveActionMIClick(Sender: TObject);
     procedure ShowTempCBChange(Sender: TObject);
     procedure SIXBiosensorsMIClick(Sender: TObject);
+    procedure SIXBiosensorsStart(Connected: Boolean);
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
     procedure StartFitBClick(Sender: TObject);
@@ -1669,6 +1695,11 @@ begin
  SIXControl.SCChangeBackColorMIClick(Sender);
 end;
 
+procedure TMainForm.ChangeSensFileMIClick(Sender: TObject);
+begin
+ SIXControl.SCChangeSensFileMIClick(Sender);
+end;
+
 procedure TMainForm.ChannelXLEChange(Sender: TObject);
 begin
  SIXControl.SCChannelXLEChange(Sender);
@@ -2325,6 +2356,67 @@ begin
  ConnComPortSensTestM.Text:= ConnComPortSensM.Text;
 end;
 
+// disable context menus for TMemo and TComboBoxObjects
+procedure TMainForm.ConnComPortSensMContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.LoadedActionFileMContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.LoadedActionFileGeneralMContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.LoadedDefFileMContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.Channel7CBContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.Channel8CBContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.AnOutputOf1CBContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.AnOutputOf2CBContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.AnOutputOf3CBContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
+procedure TMainForm.AnOutputOf4CBContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ Handled:= True;
+end;
+
 procedure TMainForm.LoadedActionFileMChange(Sender: TObject);
 begin
  // just forward the properties to the counterpart of in the tab General
@@ -2347,6 +2439,14 @@ begin
  LoadedFileSensTestM.Text:= LoadedFileSensM.Text;
  LoadedFileSensTestM.Color:= LoadedFileSensM.Color;
  LoadedFileSensTestM.Hint:= LoadedFileSensM.Hint;
+end;
+
+procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
+  MousePos: TPoint; var Handled: Boolean);
+begin
+ // if there is no connection to the SIX, disable the context menu
+ if not HaveSerialSensor then
+  Handled:= true;
 end;
 
 procedure TMainForm.ResetChartAppearanceMIClick(Sender: TObject);
@@ -2690,8 +2790,15 @@ begin
 end;
 
 procedure TMainForm.SIXBiosensorsMIClick(Sender: TObject);
-// opens the connection settings dialog and opens a connections according
-// to the dialog input
+begin
+ // start a new connection process
+ SIXBiosensorsStart(false);
+end;
+
+procedure TMainForm.SIXBiosensorsStart(Connected: Boolean);
+// if Connected is true opens the connection settings dialog and opens a
+// connections according to the dialog input
+// in every case set the file to store the sensor data
 var
  Reg : TRegistry;
  i, k : integer;
@@ -2702,172 +2809,195 @@ begin
  // initialize
  MousePointer:= Mouse.CursorPos;
 
- // if no .def file loaded only raw values possible
- if LoadedDefFileM.Text = 'None' then
+ // connect to SIX
+ if not Connected then
  begin
-  RawCurrentCB.Checked:= true;
-  RawCurrentCB.Enabled:= false;
- end;
 
- // determine all possible COM ports
- Reg:= TRegistry.Create;
- try
-  Reg.RootKey:= HKEY_LOCAL_MACHINE;
-  if Reg.OpenKeyReadOnly('HARDWARE\DEVICEMAP\SERIALCOMM') then
+  // if no .def file loaded only raw values possible
+  if LoadedDefFileM.Text = 'None' then
   begin
-   with SerialUSBSelectionF do
+   RawCurrentCB.Checked:= true;
+   RawCurrentCB.Enabled:= false;
+  end;
+
+  // determine all possible COM ports
+  Reg:= TRegistry.Create;
+  try
+   Reg.RootKey:= HKEY_LOCAL_MACHINE;
+   if Reg.OpenKeyReadOnly('HARDWARE\DEVICEMAP\SERIALCOMM') then
    begin
-    SerialUSBPortCB.Items.Clear;
-    SerialUSBPortCB.Sorted:= false;
-    Reg.GetValueNames(SerialUSBPortCB.Items);
-    for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
-     SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
-    // in case a pump driver is already connected, remove its COM port from the list
-    for i:= 0 to SerialUSBPortCB.Items.Count-1 do
-     if SerialUSBPortCB.Items[i] = ConnComPortPumpLE.Text then
-     begin
-      SerialUSBPortCB.Items.Delete(i);
-      break;
-     end;
-    SerialUSBPortCB.Sorted:= true;
+    with SerialUSBSelectionF do
+    begin
+     SerialUSBPortCB.Items.Clear;
+     SerialUSBPortCB.Sorted:= false;
+     Reg.GetValueNames(SerialUSBPortCB.Items);
+     for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
+      SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
+     // in case a pump driver is already connected,
+     // remove its COM port from the list
+     for i:= 0 to SerialUSBPortCB.Items.Count-1 do
+      if SerialUSBPortCB.Items[i] = ConnComPortPumpLE.Text then
+      begin
+       SerialUSBPortCB.Items.Delete(i);
+       break;
+      end;
+     SerialUSBPortCB.Sorted:= true;
+    end;
    end;
+  finally
+   Reg.Free;
   end;
- finally
-  Reg.Free;
- end;
- // if there is only one COM port, preselect it
- with SerialUSBSelectionF do
- begin
-  if SerialUSBPortCB.Items.Count = 1 then
-   SerialUSBPortCB.ItemIndex:= 0
-  else
-   SerialUSBPortCB.ItemIndex:= -1;
-  // update the text since this will be displayed
-  // as proposal when the connection dialog is shwon
-  if SerialUSBPortCB.ItemIndex > -1 then
-   SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
-  if SerialUSBPortCB.Text = '' then
+  // if there is only one COM port, preselect it
+  with SerialUSBSelectionF do
+  begin
+   if SerialUSBPortCB.Items.Count = 1 then
+    SerialUSBPortCB.ItemIndex:= 0
+   else
+    SerialUSBPortCB.ItemIndex:= -1;
+   // update the text since this will be displayed
+   // as proposal when the connection dialog is shwon
+   if SerialUSBPortCB.ItemIndex > -1 then
+    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
+   if SerialUSBPortCB.Text = '' then
+    COMPort:= '';
+  end;
+  // empty COMPort in case this one is already connected to a pump driver
+  // we don't empty in other cases since the user might just clicked wrong,
+  // is already connected and don't want to change this
+  if COMPort = ConnComPortPumpLE.Text then
    COMPort:= '';
- end;
- // empty COMPort in case this one is already connected to a pump driver
- // we don't empty in other cases since the user might just clicked wrong,
- // is already connected and don't want to change this
- if COMPort = ConnComPortPumpLE.Text then
-  COMPort:= '';
- // open connection dialog
- SerialUSBSelectionF.ShowModal;
- if COMPort = 'Ignore' then // user pressed Disconnect
- begin
-  ConnComPortSensM.Text:= 'Not connected';
-  ConnComPortSensM.Color:= clHighlight;
-  IndicatorSensorP.Caption:= '';
-  IndicatorSensorP.Color:= clDefault;
-  StartTestBB.Enabled:= false;
-  StopTestBB.Enabled:= false;
-  if HaveSerialSensor then
+  // open connection dialog
+  SerialUSBSelectionF.ShowModal;
+  if COMPort = 'Ignore' then // user pressed Disconnect
   begin
-   CloseLazSerialConn(MousePointer);
-   HaveSerialSensor:= False;
-   IndicatorSensorP.Caption:= 'SIX stopped';
-   IndicatorSensorP.Color:= clHighlight;
-   AnOutOnOffTB.Checked:= false;
-   AnOutOnOffTB.Enabled:= false;
-   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+   ConnComPortSensM.Text:= 'Not connected';
+   ConnComPortSensM.Color:= clHighlight;
+   IndicatorSensorP.Caption:= '';
+   IndicatorSensorP.Color:= clDefault;
+   StartTestBB.Enabled:= false;
+   StopTestBB.Enabled:= false;
+   if HaveSerialSensor then
+   begin
+    CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+    IndicatorSensorP.Caption:= 'SIX stopped';
+    IndicatorSensorP.Color:= clHighlight;
+    AnOutOnOffTB.Checked:= false;
+    AnOutOnOffTB.Enabled:= false;
+    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
                        + 'to the pump connectors.' + LineEnding
                        + 'Connect to a SIX and a pump driver'  + LineEnding
                        + 'to enable the button.';
+   end;
+   // SIX type can now be set again
+   SIXTypeRG.Enabled:= true;
+   RawCurrentCB.Enabled:= true;
+   LoadDefBB.Enabled:= true;
+   exit;
   end;
-  // SIX type can now be set again
-  SIXTypeRG.Enabled:= true;
-  RawCurrentCB.Enabled:= true;
-  LoadDefBB.Enabled:= true;
-  exit;
- end;
- if COMPort = '' then // user forgot to set a COM port
- begin
-  MessageDlgPos('Error: No COM port selected.',
-   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  StartTestBB.Enabled:= false;
-  StopTestBB.Enabled:= false;
-  IndicatorSensorP.Caption:= 'Connection failiure';
-  IndicatorSensorP.Color:= clRed;
-  if HaveSerialSensor then
+  if COMPort = '' then // user forgot to set a COM port
   begin
-   CloseLazSerialConn(MousePointer);
-   HaveSerialSensor:= False;
-   IndicatorSensorP.Caption:= 'SIX stopped';
-   IndicatorSensorP.Color:= clHighlight;
-   AnOutOnOffTB.Checked:= false;
-   AnOutOnOffTB.Enabled:= false;
-   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+   MessageDlgPos('Error: No COM port selected.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   StartTestBB.Enabled:= false;
+   StopTestBB.Enabled:= false;
+   IndicatorSensorP.Caption:= 'Connection failiure';
+   IndicatorSensorP.Color:= clRed;
+   if HaveSerialSensor then
+   begin
+    CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+    IndicatorSensorP.Caption:= 'SIX stopped';
+    IndicatorSensorP.Color:= clHighlight;
+    AnOutOnOffTB.Checked:= false;
+    AnOutOnOffTB.Enabled:= false;
+    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
                        + 'to the pump connectors.' + LineEnding
                        + 'Connect to a SIX and a pump driver'  + LineEnding
                        + 'to enable the button.';
+   end;
+   exit;
   end;
-  exit;
- end;
- // open new connection if not already available
- if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
- try
-  if HaveSerialSensor then
-  begin
-   CloseLazSerialConn(MousePointer);
-   HaveSerialSensor:= False;
-  end;
-  ConnComPortSensM.Text:= 'Not connected';
-  ConnComPortSensM.Color:= clHighlight;
-  AnOutOnOffTB.Checked:= false;
-  AnOutOnOffTB.Enabled:= false;
-  AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+  // open new connection if not already available
+  if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
+  try
+   if HaveSerialSensor then
+   begin
+    CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+   end;
+   ConnComPortSensM.Text:= 'Not connected';
+   ConnComPortSensM.Color:= clHighlight;
+   AnOutOnOffTB.Checked:= false;
+   AnOutOnOffTB.Enabled:= false;
+   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
                       + 'to the pump connectors.' + LineEnding
                       + 'Connect to a SIX and a pump driver'  + LineEnding
                       + 'to enable the button.';
-  // open the connection
-  try
-   serSensor:= TBlockSerial.Create;
-   serSensor.DeadlockTimeout:= 10000; //set timeout to 10 s
-   serSensor.Connect(COMPort);
-   // the config must be set after the connection
-   serSensor.config(9600, 8, 'N', SB1, False, False);
-  except
+   // open the connection
+   try
+    serSensor:= TBlockSerial.Create;
+    serSensor.DeadlockTimeout:= 10000; //set timeout to 10 s
+    serSensor.Connect(COMPort);
+    // the config must be set after the connection
+    serSensor.config(9600, 8, 'N', SB1, False, False);
+   except
+    exit;
+   end;
+   HaveSerialSensor:= True;
+  finally
+   if serSensor.LastError <> 0 then // output the error
+   begin
+    MessageDlgPos(ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    IndicatorSensorP.Caption:= 'Connection failiure';
+    IndicatorSensorP.Color:= clRed;
+    ConnComPortSensM.Color:= clRed;
+    StartTestBB.Enabled:= false;
+    StopTestBB.Enabled:= false;
+    CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+    exit;
+   end;
+  end
+  else // there is nothing to do because the connection is already open
    exit;
-  end;
-  HaveSerialSensor:= True;
- finally
-  if serSensor.LastError <> 0 then // output the error
-  begin
-   MessageDlgPos(ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
-    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   IndicatorSensorP.Caption:= 'Connection failiure';
-   IndicatorSensorP.Color:= clRed;
-   ConnComPortSensM.Color:= clRed;
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
-   CloseLazSerialConn(MousePointer);
-   HaveSerialSensor:= False;
-   exit;
-  end;
- end
- else // there is nothing to do because the connection is already open
-  exit;
 
- // output connected port
- ConnComPortSensM.Text:= COMPort;
- ConnComPortSensM.Color:= clDefault;
- IndicatorSensorP.Caption:= 'Connection successful';
- IndicatorSensorP.Color:= clDefault;
+  // output connected port
+  ConnComPortSensM.Text:= COMPort;
+  ConnComPortSensM.Color:= clDefault;
+  IndicatorSensorP.Caption:= 'Connection successful';
+  IndicatorSensorP.Color:= clDefault;
 
- // read out some data as test
- // first wait until we get bytes to read
- k:= 0;
- while serSensor.WaitingDataEx < 25 do
- begin
-  delay(100);
-  inc(k);
-  if k > 29 then // we reached 3 seconds, so there is something wrong
+  // read out some data as test
+  // first wait until we get bytes to read
+  k:= 0;
+  while serSensor.WaitingDataEx < 25 do
   begin
-   MessageDlgPos('Error: ' + ConnComPortSensM.Text + ' did not deliver data within 3 s.',
-    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   delay(100);
+   inc(k);
+   if k > 29 then // we reached 3 seconds, so there is something wrong
+   begin
+    MessageDlgPos('Error: ' + ConnComPortSensM.Text + ' did not deliver data within 3 s.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    ConnComPortSensM.Color:= clRed;
+    IndicatorSensorP.Caption:= 'Wrong device';
+    IndicatorSensorP.Color:= clRed;
+    StartTestBB.Enabled:= false;
+    StopTestBB.Enabled:= false;
+    CloseLazSerialConn(MousePointer);
+    HaveSerialSensor:= False;
+    exit;
+   end;
+  end;
+
+  // read now 25 bytes
+  k:= serSensor.RecvBufferEx(@dataArray[0], 25, 50);
+  // in case the read failed or not 25 bytes received
+  if (serSensor.LastError <> 0) or (k <> 25) then
+  begin
+   MessageDlgPos(COMPort + ' error on reading 25 bytes: '
+    + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'Wrong device';
    IndicatorSensorP.Color:= clRed;
@@ -2877,24 +3007,8 @@ begin
    HaveSerialSensor:= False;
    exit;
   end;
- end;
 
- // read now 25 bytes
- k:= serSensor.RecvBufferEx(@dataArray[0], 25, 50);
- // in case the read failed or not 25 bytes received
- if (serSensor.LastError <> 0) or (k <> 25) then
- begin
-  MessageDlgPos(COMPort + ' error on reading 25 bytes: '
-   + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  ConnComPortSensM.Color:= clRed;
-  IndicatorSensorP.Caption:= 'Wrong device';
-  IndicatorSensorP.Color:= clRed;
-  StartTestBB.Enabled:= false;
-  StopTestBB.Enabled:= false;
-  CloseLazSerialConn(MousePointer);
-  HaveSerialSensor:= False;
-  exit;
- end;
+ end; // end if Connected
 
  // now open the file dialog to select the file to save the SIX data
  InNameSensor:= '';
@@ -3033,8 +3147,7 @@ begin
   // we use the same legend name for Live and Result charts
   (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
    (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
-end;
-
+ end;
 
  // only show data that should be shown
  for i:= 1 to SIXControl.NumChannels do

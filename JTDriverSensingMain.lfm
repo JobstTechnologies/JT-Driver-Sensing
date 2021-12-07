@@ -246,6 +246,8 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = LoadedFileSensMChange
+          OnContextPopup = LoadedFileSensMContextPopup
+          PopupMenu = ContextSensFilePM
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -306,6 +308,7 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = LoadedDefFileMChange
+          OnContextPopup = LoadedDefFileMContextPopup
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -322,6 +325,7 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = ConnComPortSensMChange
+          OnContextPopup = ConnComPortSensMContextPopup
           ReadOnly = True
           TabOrder = 4
         end
@@ -373,6 +377,7 @@ object MainForm: TMainForm
             'mean(#1, #4)'
           )
           OnChange = ChannelXCBChange
+          OnContextPopup = Channel7CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -571,6 +576,7 @@ object MainForm: TMainForm
             'mean(#1, #4)'
           )
           OnChange = ChannelXCBChange
+          OnContextPopup = Channel8CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -877,6 +883,7 @@ object MainForm: TMainForm
           Lines.Strings = (
             'None'
           )
+          OnContextPopup = LoadedActionFileGeneralMContextPopup
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -953,7 +960,7 @@ object MainForm: TMainForm
         OnAfterDrawBackWall = SIXCHAfterDrawBackWall
         Anchors = [akTop, akLeft, akRight, akBottom]
         ParentColor = True
-        PopupMenu = ContextMenu
+        PopupMenu = ContextChartPM
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
           AxisIndexX = 1
@@ -5994,6 +6001,7 @@ object MainForm: TMainForm
             'None'
           )
           OnChange = LoadedActionFileMChange
+          OnContextPopup = LoadedActionFileMContextPopup
           ParentShowHint = False
           ReadOnly = True
           ShowHint = True
@@ -7170,7 +7178,7 @@ object MainForm: TMainForm
         Toolset = ChartToolset
         Anchors = [akTop, akLeft, akRight, akBottom]
         Color = clWindow
-        PopupMenu = ContextMenu
+        PopupMenu = ContextChartPM
         object ResultCHValues: TLineSeries
           Legend.Format = 'Measured values'
           LinePen.Color = clRed
@@ -7284,6 +7292,7 @@ object MainForm: TMainForm
             'mean(#4, #6)'
             'mean(#5, #6)'
           )
+          OnContextPopup = AnOutputOf1CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -7420,6 +7429,7 @@ object MainForm: TMainForm
             'mean(#4, #6)'
             'mean(#5, #6)'
           )
+          OnContextPopup = AnOutputOf2CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -7500,6 +7510,7 @@ object MainForm: TMainForm
             'mean(#4, #6)'
             'mean(#5, #6)'
           )
+          OnContextPopup = AnOutputOf3CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -7580,6 +7591,7 @@ object MainForm: TMainForm
             'mean(#4, #6)'
             'mean(#5, #6)'
           )
+          OnContextPopup = AnOutputOf4CBContextPopup
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
@@ -7894,7 +7906,7 @@ object MainForm: TMainForm
     Left = 896
     Top = 568
   end
-  object ContextMenu: TPopupMenu
+  object ContextChartPM: TPopupMenu
     Left = 896
     Top = 512
     object AbortCalibrationMI: TMenuItem
@@ -7912,5 +7924,13 @@ object MainForm: TMainForm
     ViewportSize = 5
     Left = 800
     Top = 568
+  end
+  object ContextSensFilePM: TPopupMenu
+    Left = 800
+    Top = 512
+    object ChangeSensFileMI: TMenuItem
+      Caption = 'Change File'
+      OnClick = ChangeSensFileMIClick
+    end
   end
 end

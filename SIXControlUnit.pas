@@ -46,6 +46,7 @@ type
     procedure SCAnOutOnOffTBChange(Sender: TObject);
     procedure SCCalibrateTBChange(Sender: TObject; aborted: Boolean = false);
     procedure SCChangeBackColorMIClick(Sender: TObject);
+    procedure SCChangeSensFileMIClick(Sender: TObject);
     procedure SCSaveAppearance(iniFile : string);
     procedure SCLoadAppearance(iniFile : string);
 
@@ -1191,6 +1192,12 @@ begin
   if MainForm.ColorDialog.Execute then
    MainForm.ResultCH.BackColor:= MainForm.ColorDialog.Color;
  end;
+end;
+
+procedure TSIXControl.SCChangeSensFileMIClick(Sender: TObject);
+begin
+ // restart state aquisition with a new file
+ MainForm.SIXBiosensorsStart(true);
 end;
 
 procedure TSIXControl.SCChannelXLEChange(Sender: TObject);
