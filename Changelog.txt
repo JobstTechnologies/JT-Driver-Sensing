@@ -2,13 +2,14 @@ Changes
 
 from version 0.994 to 0.995
 
-Improvement:
+improvements:
 - it is now possible with a right-click on the Sensor Data File field
   to change it and this way trigger a new data acquisition run
+- always display current channel value, independent if channel is shown in chart
 
 bugfixes:
 - fix crash on unloading a .def file for IV4 sensors
-- fix a minur UI issue in the pump control tab
+- fix a minor UI issue in the pump control tab
 - hide the Windows-specific context menu for some UI fields
 
 

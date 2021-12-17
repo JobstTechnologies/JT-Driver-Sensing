@@ -57,6 +57,7 @@ object MainForm: TMainForm
         object Channel1OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -121,6 +122,7 @@ object MainForm: TMainForm
         object Channel2OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -393,6 +395,7 @@ object MainForm: TMainForm
         object Channel7OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -441,6 +444,7 @@ object MainForm: TMainForm
         object Channel4OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -503,6 +507,7 @@ object MainForm: TMainForm
         object Channel5OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -592,6 +597,7 @@ object MainForm: TMainForm
         object Channel8OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -702,6 +708,7 @@ object MainForm: TMainForm
         object Channel3OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'
@@ -766,6 +773,7 @@ object MainForm: TMainForm
         object Channel6OnOffCB: TCheckBox
           Left = 8
           Height = 19
+          Hint = 'Displayed in chart'
           Top = 0
           Width = 36
           Caption = 'On'

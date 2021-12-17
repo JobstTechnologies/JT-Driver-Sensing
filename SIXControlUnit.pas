@@ -608,26 +608,22 @@ begin
  // calculate slopes
  for i:= 1 to NumChannels do
  begin
-  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
-   as TCheckBox).Checked then
-  begin
-   if MainForm.RawCurrentCB.Checked then
-    slope:= (ChanRawDbl[i] - prevChan[i])
-            / (lastInterval * 60) * 1000 // in pA/s
-   else
-    slope:= (ChanDbl[i] - prevChan[i])
-            / (lastInterval * 60) * 1000; // in uM/s
-   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
-   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
-   if MainForm.RawCurrentCB.Checked then
-    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
-   else
-    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
-  end;
+  if MainForm.RawCurrentCB.Checked then
+   slope:= (ChanRawDbl[i] - prevChan[i])
+           / (lastInterval * 60) * 1000 // in pA/s
+  else
+   slope:= (ChanDbl[i] - prevChan[i])
+           / (lastInterval * 60) * 1000; // in uM/s
+  (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
+  as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
+  (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
+  as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
+  if MainForm.RawCurrentCB.Checked then
+   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
+  else
+   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+   as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
  end;
  for i:= 7 to 8 do
  begin
@@ -1633,6 +1629,10 @@ begin
  if Started then
   (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Active:=
    (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
+ // for the channel operations, empty the LineEdit when turned off
+ if StrToInt(Channel) > 6 then
+  (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
+     as TLabeledEdit).Text:= ''
 end;
 
 procedure TSIXControl.SCAnOutConnectorXOnOffCBChange(Sender: TObject);
