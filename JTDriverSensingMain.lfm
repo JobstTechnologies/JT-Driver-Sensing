@@ -937,6 +937,7 @@ object MainForm: TMainForm
             Title.Visible = True
             Title.Caption = 'Time [min]'
             Title.LabelBrush.Style = bsClear
+            Transformations = ChartAxisTransformTime
           end        
           item
             Visible = False
@@ -971,7 +972,6 @@ object MainForm: TMainForm
         PopupMenu = ContextChartPM
         object SIXCh1Values: TLineSeries
           Title = 'Channel 1'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Width = 2
         end
@@ -987,7 +987,6 @@ object MainForm: TMainForm
         end
         object SIXCh2Values: TLineSeries
           Title = 'Channel 2'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clYellow
           LinePen.Width = 2
@@ -1006,7 +1005,6 @@ object MainForm: TMainForm
         end
         object SIXCh3Values: TLineSeries
           Title = 'Channel 3'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clAqua
           LinePen.Width = 2
@@ -1024,7 +1022,6 @@ object MainForm: TMainForm
         object SIXCh4Values: TLineSeries
           Active = False
           Title = 'Channel 4'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = 33023
           LinePen.Width = 2
@@ -1042,7 +1039,6 @@ object MainForm: TMainForm
         object SIXCh5Values: TLineSeries
           Active = False
           Title = 'Channel 5'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clRed
           LinePen.Width = 2
@@ -1060,7 +1056,6 @@ object MainForm: TMainForm
         object SIXCh6Values: TLineSeries
           Active = False
           Title = 'Channel 6'
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clLime
           LinePen.Width = 2
@@ -1077,7 +1072,6 @@ object MainForm: TMainForm
         end
         object SIXCh7Values: TLineSeries
           Active = False
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clCream
           LinePen.Width = 2
@@ -1094,7 +1088,6 @@ object MainForm: TMainForm
         end
         object SIXCh8Values: TLineSeries
           Active = False
-          AxisIndexX = 1
           AxisIndexY = 0
           LinePen.Color = clFuchsia
           LinePen.Width = 2
@@ -7813,7 +7806,7 @@ object MainForm: TMainForm
   end
   object ChartToolset: TChartToolset
     Left = 1000
-    Top = 328
+    Top = 256
     object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
       DrawingMode = tdmNormal
@@ -7877,13 +7870,13 @@ object MainForm: TMainForm
   object ChartAxisTransformTemp: TChartAxisTransformations
     Left = 1000
     Top = 424
-    object ChartAxisTransformTempAutoScaleAxisTransform1: TAutoScaleAxisTransform
+    object TempAutoScaleAxisTransform: TAutoScaleAxisTransform
     end
   end
   object ChartAxisTransformValues: TChartAxisTransformations
     Left = 1000
     Top = 376
-    object ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform
+    object ValuesAutoScaleAxisTransform: TAutoScaleAxisTransform
     end
   end
   object ColorDialog: TColorDialog
@@ -7926,6 +7919,19 @@ object MainForm: TMainForm
       Caption = 'Change Background Color'
       OnClick = ChangeBackColorMIClick
     end
+    object TimeMinMI: TMenuItem
+      Caption = 'Time in minutes'
+      Checked = True
+      OnClick = TimeMinMIClick
+    end
+    object TimeHourMI: TMenuItem
+      Caption = 'Time in hours'
+      OnClick = TimeHourMIClick
+    end
+    object TimeDayMI: TMenuItem
+      Caption = 'Time in days'
+      OnClick = TimeDayMIClick
+    end
   end
   object ChartLiveView: TChartLiveView
     Chart = SIXCH
@@ -7939,6 +7945,12 @@ object MainForm: TMainForm
     object ChangeSensFileMI: TMenuItem
       Caption = 'Change File'
       OnClick = ChangeSensFileMIClick
+    end
+  end
+  object ChartAxisTransformTime: TChartAxisTransformations
+    Left = 1000
+    Top = 328
+    object ValuesLinearTransform: TLinearAxisTransform
     end
   end
 end

@@ -3,7 +3,9 @@ Changes
 from version 0.994 to 0.995
 
 improvements:
-- it is now possible with a right-click on the Sensor Data File field
+- it is now possible to change the time unit in the sensro data chart
+  via the context menu (right-click into the chart)
+- with a right-click on the Sensor Data File field it is possible
   to change it and this way trigger a new data acquisition run
 - always display current channel value, independent if channel is shown in chart
 

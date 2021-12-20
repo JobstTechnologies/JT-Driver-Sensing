@@ -61,6 +61,8 @@ type
     Channel7TestGB: TGroupBox;
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
+    ChartAxisTransformTime: TChartAxisTransformations;
+    ValuesLinearTransform: TLinearAxisTransform;
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
     AbortCalibrationMI: TMenuItem;
@@ -70,6 +72,9 @@ type
     Label70: TLabel;
     Label71: TLabel;
     ChangeSensFileMI: TMenuItem;
+    TimeMinMI: TMenuItem;
+    TimeHourMI: TMenuItem;
+    TimeDayMI: TMenuItem;
     ResetChartAppearanceMI: TMenuItem;
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
@@ -115,8 +120,8 @@ type
     Channel8TestGB: TGroupBox;
     Channel8TestOnOffCB: TCheckBox;
     ChartAxisTransformValues: TChartAxisTransformations;
-    ChartAxisTransformValuesAutoScaleAxisTransform1: TAutoScaleAxisTransform;
-    ChartAxisTransformTempAutoScaleAxisTransform1: TAutoScaleAxisTransform;
+    ValuesAutoScaleAxisTransform: TAutoScaleAxisTransform;
+    TempAutoScaleAxisTransform: TAutoScaleAxisTransform;
     ChartAxisTransformTemp: TChartAxisTransformations;
     AnOutOf2LE: TLabeledEdit;
     AnOutOf3LE: TLabeledEdit;
@@ -794,6 +799,9 @@ type
     procedure OverallTimerFinished;
     procedure RepeatTimerFinished;
     procedure AnOutOnOffTBChange(Sender: TObject);
+    procedure TimeDayMIClick(Sender: TObject);
+    procedure TimeHourMIClick(Sender: TObject);
+    procedure TimeMinMIClick(Sender: TObject);
     procedure UnloadDefBBClick(Sender: TObject);
     procedure UseAnOutCBChange(Sender: TObject);
   private
@@ -2237,6 +2245,33 @@ end;
 procedure TMainForm.AnOutOnOffTBChange(Sender: TObject);
 begin
  SIXControl.SCAnOutOnOffTBChange(Sender);
+end;
+
+procedure TMainForm.TimeDayMIClick(Sender: TObject);
+begin
+ ValuesLinearTransform.Scale:= 60 * 24;
+ SIXCH.BottomAxis.Title.Caption := 'Time [day]';
+ TimeMinMI.Checked:= false;
+ TimeHourMI.Checked:= false;
+ TimeDayMI.Checked:= true;
+end;
+
+procedure TMainForm.TimeHourMIClick(Sender: TObject);
+begin
+ ValuesLinearTransform.Scale:= 60;
+ SIXCH.BottomAxis.Title.Caption := 'Time [hour]';
+ TimeMinMI.Checked:= false;
+ TimeHourMI.Checked:= true;
+ TimeDayMI.Checked:= false;
+end;
+
+procedure TMainForm.TimeMinMIClick(Sender: TObject);
+begin
+ ValuesLinearTransform.Scale:= 1;
+ SIXCH.BottomAxis.Title.Caption := 'Time [min]';
+ TimeMinMI.Checked:= true;
+ TimeHourMI.Checked:= false;
+ TimeDayMI.Checked:= false;
 end;
 
 procedure TMainForm.UseAnOutCBChange(Sender: TObject);
