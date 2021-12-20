@@ -2248,8 +2248,15 @@ begin
 end;
 
 procedure TMainForm.TimeDayMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
 begin
- ValuesLinearTransform.Scale:= 60 * 24;
+ // store current zoom state because changing scale will zoom out
+ extent:= SIXCH.LogicalExtent;
+ ValuesLinearTransform.Scale:= 1440; // 24 * 60
+ // set back zoom state
+ SIXCH.Prepare;
+ SIXCH.LogicalExtent:= extent;
  SIXCH.BottomAxis.Title.Caption := 'Time [day]';
  TimeMinMI.Checked:= false;
  TimeHourMI.Checked:= false;
@@ -2257,8 +2264,13 @@ begin
 end;
 
 procedure TMainForm.TimeHourMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
 begin
+ extent:= SIXCH.LogicalExtent;
  ValuesLinearTransform.Scale:= 60;
+ SIXCH.Prepare;
+ SIXCH.LogicalExtent:= extent;
  SIXCH.BottomAxis.Title.Caption := 'Time [hour]';
  TimeMinMI.Checked:= false;
  TimeHourMI.Checked:= true;
@@ -2266,8 +2278,13 @@ begin
 end;
 
 procedure TMainForm.TimeMinMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
 begin
+ extent:= SIXCH.LogicalExtent;
  ValuesLinearTransform.Scale:= 1;
+ SIXCH.Prepare;
+ SIXCH.LogicalExtent:= extent;
  SIXCH.BottomAxis.Title.Caption := 'Time [min]';
  TimeMinMI.Checked:= true;
  TimeHourMI.Checked:= false;
