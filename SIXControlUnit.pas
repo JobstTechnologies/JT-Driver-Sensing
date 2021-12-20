@@ -107,12 +107,13 @@ end;
 procedure TSIXControl.SCReadTimerTimerFinished(Sender: TObject);
 type intArray = array[1..4] of byte;
      PintArray = ^intArray;
+     TDataArray = array[0..24] of byte;
 var
  OutLine : string;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
- dataArray : array[0..24] of byte;
+ dataArray : TDataArray;
  HiLowArray : array[0..1] of byte;
  IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
@@ -197,6 +198,8 @@ begin
     // often the SIX only stops telling it has not enough data
     // to try to read data
     try
+     k:= 0;
+     dataArray:= default(TDataArray); // clear array
      k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
      wasRead:= true;
     finally
@@ -260,7 +263,11 @@ begin
 
  // read the data
  if not wasRead then
+ begin
+  k:= 0;
+  dataArray:= default(TDataArray); // clear array
   k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
+ end;
 
  // in case the read failed or not 25 bytes received
  if (serSensor.LastError <> 0) or (k <> 25) then
