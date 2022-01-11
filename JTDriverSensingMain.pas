@@ -3139,10 +3139,12 @@ begin
   exit;
  end;
 
+ // we have now a valid file stream
+ HaveSensorFileStream:= true;
+
  LoadedFileSensM.Color:= clActiveCaption;
  // show the full path as tooltip
  LoadedFileSensM.Hint:= InNameSensor;
- HaveSensorFileStream:= true;
  // set Text after Hint since this change triggers the sync with the other tabs
  LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
 
