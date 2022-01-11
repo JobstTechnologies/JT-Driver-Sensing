@@ -14,7 +14,7 @@ object MainForm: TMainForm
   OnDropFiles = FormDropFiles
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.2.0.3'
+  LCLVersion = '2.2.0.4'
   object MainPC: TPageControl
     Left = 4
     Height = 676
@@ -178,7 +178,7 @@ object MainForm: TMainForm
         object EvalTimeFSE: TFloatSpinEdit
           Left = 24
           Height = 23
-          Hint = 'When the absolute signal slope is the'#13#10'consecutive number of times below the'#13#10'given value, the signal is treated as stable.'#13#10'Then a measurement point is set.'
+          Hint = 'Time after a sensor value is readout'#13#10'and written to the data file'
           Top = 24
           Width = 70
           Alignment = taCenter
@@ -186,6 +186,8 @@ object MainForm: TMainForm
           MaxValue = 99
           MinValue = 2
           OnChange = EvalTimeFSEChange
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 0
           Value = 3
         end
@@ -7750,7 +7752,7 @@ object MainForm: TMainForm
     Interval = 100
     OnTimer = StepTimer1Finished
     Left = 1104
-    Top = 72
+    Top = 88
   end
   object StepTimer2: TTimer
     Enabled = False

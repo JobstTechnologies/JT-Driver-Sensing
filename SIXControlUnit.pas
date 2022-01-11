@@ -981,14 +981,14 @@ begin
  series:= ATool.Series as TLineSeries;
  SeriesName:= ATool.Series.Name;
  // get image coordinates of the point
- x:= MainForm.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
+ x:= MainForm{%H-}.SIXCH.XGraphToImage(series.ListSource[ATool.PointIndex]^.X);
  // all series except of SIXTempValues are connected to the left axis
  if SeriesName <> 'SIXTempValues' then
-  y:= MainForm.SIXCH.YGraphToImage(
+  y:= MainForm{%H-}.SIXCH.YGraphToImage(
        MainForm.SIXCH.AxisList[0].GetTransform.AxisToGraph(
         series.ListSource[ATool.PointIndex]^.Y))
  else
-  y:= MainForm.SIXCH.YGraphToImage(
+  y:= MainForm{%H-}.SIXCH.YGraphToImage(
        MainForm.SIXCH.AxisList[2].GetTransform.AxisToGraph(
         series.ListSource[ATool.PointIndex]^.Y));
 
@@ -2200,30 +2200,30 @@ try
   List.Add('Inverted ' + BoolToStr(Axis.Inverted));
 
   // Tick labels
-  List.Add('Marks.Visible ' + BoolToStr(Axis.Marks.Visible));
-  List.Add('Marks.Format ' + Axis.Marks.Format);
-  List.Add('Marks.Distance ' + IntToStr(Axis.Marks.Distance));
+  List.Add('Marks.Visible ' + BoolToStr(Axis.Marks{%H-}.Visible));
+  List.Add('Marks.Format ' + Axis.Marks{%H-}.Format);
+  List.Add('Marks.Distance ' + IntToStr(Axis.Marks{%H-}.Distance));
   List.Add('TickLength ' + IntToStr(Axis.TickLength));
   List.Add('TickInnerLength ' + IntToStr(Axis.TickInnerLength));
   List.Add('TickColor ' + ColorToString(Axis.TickColor));
-  List.Add('Marks.LabelFont.Name ' + Axis.Marks.LabelFont.Name);
-  List.Add('Marks.LabelFont.Size ' + IntToStr(Axis.Marks.LabelFont.Size));
-  List.Add('Marks.LabelFont.Color ' + ColorToString(Axis.Marks.LabelFont.Color));
-  List.Add('Marks.LabelFont.Style ' + FontStylesToString(Axis.Marks.LabelFont.Style));
-  WriteStr(tempStr, Axis.Marks.Shape);
+  List.Add('Marks.LabelFont.Name ' + Axis.Marks{%H-}.LabelFont.Name);
+  List.Add('Marks.LabelFont.Size ' + IntToStr(Axis.Marks{%H-}.LabelFont.Size));
+  List.Add('Marks.LabelFont.Color ' + ColorToString(Axis.Marks{%H-}.LabelFont.Color));
+  List.Add('Marks.LabelFont.Style ' + FontStylesToString(Axis.Marks{%H-}.LabelFont.Style));
+  WriteStr(tempStr, Axis.Marks{%H-}.Shape);
   List.Add('Marks.Shape ' + tempStr);
-  List.Add('Marks.LabelBrush.Color ' + ColorToString(Axis.Marks.LabelBrush.Color));
-  WriteStr(tempStr, Axis.Marks.LabelBrush.Style);
+  List.Add('Marks.LabelBrush.Color ' + ColorToString(Axis.Marks{%H-}.LabelBrush.Color));
+  WriteStr(tempStr, Axis.Marks{%H-}.LabelBrush.Style);
   List.Add('Marks.LabelBrush.Style ' + tempStr);
-  List.Add('Marks.Frame.Visible ' + BoolToStr(Axis.Marks.Frame.Visible));
-  List.Add('Marks.Frame.Color ' + ColorToString(Axis.Marks.Frame.Color));
-  WriteStr(tempStr, Axis.Marks.Frame.Style);
+  List.Add('Marks.Frame.Visible ' + BoolToStr(Axis.Marks{%H-}.Frame.Visible));
+  List.Add('Marks.Frame.Color ' + ColorToString(Axis.Marks{%H-}.Frame.Color));
+  WriteStr(tempStr, Axis.Marks{%H-}.Frame.Style);
   List.Add('Marks.Frame.Style ' + tempStr);
-  List.Add('Marks.Frame.Width ' + IntToStr(Axis.Marks.Frame.Width));
-  List.Add('Marks.Margins.Left ' + IntToStr(Axis.Marks.Margins.Left));
-  List.Add('Marks.Margins.Top ' + IntToStr(Axis.Marks.Margins.Top));
-  List.Add('Marks.Margins.Right ' + IntToStr(Axis.Marks.Margins.Right));
-  List.Add('Marks.Margins.Bottom ' + IntToStr(Axis.Marks.Margins.Bottom));
+  List.Add('Marks.Frame.Width ' + IntToStr(Axis.Marks{%H-}.Frame.Width));
+  List.Add('Marks.Margins.Left ' + IntToStr(Axis.Marks{%H-}.Margins.Left));
+  List.Add('Marks.Margins.Top ' + IntToStr(Axis.Marks{%H-}.Margins.Top));
+  List.Add('Marks.Margins.Right ' + IntToStr(Axis.Marks{%H-}.Margins.Right));
+  List.Add('Marks.Margins.Bottom ' + IntToStr(Axis.Marks{%H-}.Margins.Bottom));
 
   // Grid
   List.Add('Grid.Visible ' + BoolToStr(Axis.Grid.Visible));
@@ -2472,12 +2472,12 @@ begin
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    // Tick labels
    inc(m);
-   Axis.Marks.Visible:= StrToBool(
+   Axis.Marks{%H-}.Visible:= StrToBool(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   Axis.Marks{%H-}.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
    inc(m);
-   Axis.Marks.Distance:= StrToInt(
+   Axis.Marks{%H-}.Distance:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    Axis.TickLength:= StrToInt(
@@ -2489,55 +2489,55 @@ begin
    Axis.TickColor:= StringToColor(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.LabelFont.Name:=
+   Axis.Marks{%H-}.LabelFont.Name:=
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
    inc(m);
-   Axis.Marks.LabelFont.Size:= StrToInt(
+   Axis.Marks{%H-}.LabelFont.Size:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.LabelFont.Color:= StringToColor(
+   Axis.Marks{%H-}.LabelFont.Color:= StringToColor(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.LabelFont.Style:= StringToFontStyles(
+   Axis.Marks{%H-}.LabelFont.Style:= StringToFontStyles(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    ReadStr(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
     tempShape);
-   Axis.Marks.Shape:= tempShape;
+   Axis.Marks{%H-}.Shape:= tempShape;
    inc(m);
-   Axis.Marks.LabelBrush.Color:= StringToColor(
+   Axis.Marks{%H-}.LabelBrush.Color:= StringToColor(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    ReadStr(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
     tempBrushStyle);
-   Axis.Marks.LabelBrush.Style:= tempBrushStyle;
+   Axis.Marks{%H-}.LabelBrush.Style:= tempBrushStyle;
    inc(m);
-   Axis.Marks.Frame.Visible:= StrToBool(
+   Axis.Marks{%H-}.Frame.Visible:= StrToBool(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Frame.Color:= StringToColor(
+   Axis.Marks{%H-}.Frame.Color:= StringToColor(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    ReadStr(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length),
     tempStyle);
-   Axis.Marks.Frame.Style:= tempStyle;
+   Axis.Marks{%H-}.Frame.Style:= tempStyle;
    inc(m);
-   Axis.Marks.Frame.Width:= StrToInt(
+   Axis.Marks{%H-}.Frame.Width:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Margins.Left:= StrToInt(
+   Axis.Marks{%H-}.Margins.Left:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Margins.Top:= StrToInt(
+   Axis.Marks{%H-}.Margins.Top:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Margins.Right:= StrToInt(
+   Axis.Marks{%H-}.Margins.Right:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
-   Axis.Marks.Margins.Bottom:= StrToInt(
+   Axis.Marks{%H-}.Margins.Bottom:= StrToInt(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    // Grid
    inc(m);
