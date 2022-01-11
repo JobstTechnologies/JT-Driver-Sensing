@@ -78,7 +78,7 @@ type
     function PrepareFixedParams: String;
   public
     function SaveCSV : Boolean;
-    function CalculateP(Chi2: double) : double;
+    function CalculateP(Chi2: extended) : double;
 
   end;
 
@@ -350,7 +350,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function HarmonicBaseFunc(x: double; Param: Integer): double;
+function HarmonicBaseFunc(x: extended; Param: Integer): extended;
 begin
   Result := sin(x * (2*Param - 1));
 end;
@@ -611,7 +611,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-function ChiF(t: double) : double;
+function ChiF(t: extended) : extended;
 // Note: this function must not be part of any class
 // otherwise it cannot be used for numeric integration
 begin
@@ -620,11 +620,11 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TFitForm.CalculateP(Chi2: double) : double;
+function TFitForm.CalculateP(Chi2: extended) : double;
 var
-  err: double = 0.0;
+  err: extended = 0.0;
   term: integer = 0;
-  integral: double = 0.0;
+  integral: extended = 0.0;
 begin
   try
     int1fr(@ChiF, Chi2*DOF, Infinity, 1e-3, integral, err, term);
