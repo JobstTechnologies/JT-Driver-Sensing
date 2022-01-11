@@ -1,6 +1,6 @@
 Changes
 
-from version 0.995 to 0.9951
+from version 0.995 to 0.995.1
 
 compilation:
 - Win32 builds are now available
