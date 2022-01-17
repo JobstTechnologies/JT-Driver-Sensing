@@ -1363,6 +1363,8 @@ begin
  command:= command + 'I00000000M999G9I00000000lR';
 
  MainForm.CommandM.Text:= command;
+ // we set values for 8 pumps
+ PumpNumFile:= 8;
  // parse the command
  ParseSuccess:= ParseCommand(command);
  if ParseSuccess then

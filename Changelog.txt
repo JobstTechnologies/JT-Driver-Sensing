@@ -1,5 +1,11 @@
 Changes
 
+from version 0.995.1 to 0.996
+
+bugfix:
+- fix the Free Pumps functionality
+
+
 from version 0.995 to 0.995.1
 
 compilation:
