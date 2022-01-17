@@ -1335,7 +1335,7 @@ procedure TPumpControl.PCRunFreeBBClick(Sender: TObject);
 // run 30 seconds in each direction 10 times
 // this is like loading a *.PDAction file, therefore use the file load routines
 var
- j : integer;
+ i, j : integer;
  command : string;
  ParseSuccess : Boolean;
 begin
@@ -1374,8 +1374,25 @@ begin
  MainForm.RunSettingsGB.Enabled:= False;
  MainForm.LiveModeCB.Enabled:= False;
  for j:= 1 to StepNum do
-  (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
+ begin
+  // the user must be able to see if the pumps 5 - 8 are set
+  // therefore we cannot just disable the StepXTS component but its
+  // child components except of SXPC
+  (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
+   as TCheckBox).Enabled:= False;
+  (MainForm.FindComponent('ActionTime' + IntToStr(j) + 'GB')
+   as TGroupBox).Enabled:= False;
+  (MainForm.FindComponent('DutyCycle' + IntToStr(j) + 'GB')
+   as TGroupBox).Enabled:= False;
+  (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
    as TTabSheet).Enabled:= False;
+  (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
+   as TTabSheet).Enabled:= False;
+  if j = 1 then
+   for i:= 1 to PumpNum do
+   (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
+    as TGroupBox).ShowHint:= False;
+ end;
  MainForm.RepeatOutputLE.Visible:= False;
  // do not show unused steps
  for j:= 2 to StepNum do
