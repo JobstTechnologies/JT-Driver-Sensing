@@ -869,6 +869,8 @@ begin
  PumpControl.StepNum:= 7; // number of steps
  PumpControl.PumpNum:= 8; // number of pumps
  PumpControl.PumpNumFile:= 4; // number of pumps defined in a loaded action file
+ PumpControl.ValveNum:= 0; // number of valves
+ PumpControl.ValveNumFile:= 0; // number of valves defined in a loaded action file
 
  // explicitly set there because the IDE always
  // stores initial values with trailing LineEnding
@@ -2737,7 +2739,8 @@ var
  j, k : integer;
 begin
  result:= False;
- PumpControl.PumpNumFile:= 4; // every action file defines at least 4 pumps
+ PumpControl.PumpNumFile:= 0;
+ PumpControl.ValveNumFile:= 0;
  try
   StringList:= TStringList.Create;
   k:= StringList.Count;
@@ -2746,9 +2749,20 @@ begin
 
   CommandM.Text:= StringList[0];
 
-  // we know now the number of defined pumps in the file
-  if StringList.Count > 5 then
-   PumpControl.PumpNumFile:= StringList.Count - 1;
+  // get the number of pumps
+  for j:= 1 to StringList.Count - 1 do
+  begin
+   // if a line begins with 'Pump' we know it defines a pump
+   if LeftStr(StringList[j], 4) = 'Pump' then
+    inc(PumpControl.PumpNumFile);
+   if LeftStr(StringList[j], 5) = 'Valve' then
+    inc(PumpControl.ValveNumFile);
+  end;
+  // when we have at least one Valve, we must increase the valve counter
+  // because then we have to add the character 'V' to the commands and this
+  // increases the commanind parsing step by one
+  if PumpControl.ValveNumFile > 0 then
+   inc(PumpControl.ValveNumFile);
 
   if StringList.Count = 1 then // no pump names defined (in old files)
   begin

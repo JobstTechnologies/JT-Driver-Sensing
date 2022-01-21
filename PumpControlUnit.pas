@@ -48,6 +48,8 @@ type
      StepNum : integer; // number of steps
      PumpNum : integer; // number of pumps
      PumpNumFile : integer; // number of pumps defined in a loaded action file
+     ValveNum : integer; // number of valves
+     ValveNumFile : integer; // number of valves defined in a loaded action file
 
   end;
 
@@ -117,14 +119,14 @@ var
  address : string;
  SOrder : array of char;
  LastParsed : char = 'X';
- StepCounter, MCounter, ICounter, i, j, k, G1, p,
+ StepCounter, MCounter, ICounter, VCounter, i, j, k, G1, p,
    posSfirst, posSlast : integer;
  MousePointer : TPoint;
  StepTime, M1, M2, DutyStepTime : Double;
  Have2M : Boolean;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
- StepCounter:= 0; MCounter:= 0; ICounter:= 0;
+ StepCounter:= 0; MCounter:= 0; ICounter:= 0; VCounter:= 0;
  M1:= 0; M2:= 0; G1:= 0;
  result:= false; Have2M:= false; StepTime:= 0;
  SOrder:= nil;
@@ -266,14 +268,15 @@ begin
    if (LastParsed = 'M') and (StepTime >= 1) then
    begin
     // check if there is a next 'M' with 1s
-    if (command[i+PumpNumFile+1] = 'M') then
+    if (command[i + PumpNumFile + ValveNumFile + 1] = 'M') then
     begin
      // determine the length
      j:= i + PumpNumFile + 1;
      repeat
       inc(j)
      until IsDigit(command[j]) = false;
-     StepTime:= StrToFloat(Copy(command, i+PumpNumFile+2, j-i-(PumpNumFile+2))) / 1000;
+     StepTime:= StrToFloat(Copy(command, i + PumpNumFile + ValveNumFile + 2,
+                           j - i - (PumpNumFile + ValveNumFile + 2))) / 1000;
      if (StepTime >= 1) then
      begin
       inc(StepCounter);
@@ -283,7 +286,8 @@ begin
     end;
    end;
    if (StepCounter = 0)
-    or ((LastParsed = 'G') and (command[i+PumpNumFile+2] <> 'R')) then // not if last 'I'
+    or ((LastParsed = 'G')
+     and (command[i + PumpNumFile + ValveNumFile + 2] <> 'R')) then // not if last 'I'
    begin
     inc(StepCounter);
     ICounter:= 0;
@@ -316,6 +320,38 @@ begin
     end;
    end;
   end; // end parse 'I'
+
+  // parse step 'V'
+  if command[i] = 'V' then
+  begin
+   // syntax is Vxxxx, with x = [0,1] and there might only be one x
+   // if all valves are off, 'V' can be omitted and might not appear
+   // 'V' can occur twice in one step, thus use StepCounter but only
+   // parse the first occurence
+   inc(VCounter);
+   LastParsed:= 'V';
+   // only output if it is the first occurence in a step
+   if VCounter = 1 then
+   begin
+    // set the valves
+    if command[i+1] = '1' then
+    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 1
+    else
+    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 0;
+    for p:= 2 to ValveNumFile do
+    begin
+     if (command[i+p] = '0') or (command[i+p] = '1') then
+      if command[i+p] = '1' then
+       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 1
+      else
+       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 0;
+    end;
+   end;
+  end; // end parse 'V'
 
   // parse step 'M'
   if command[i] = 'M' then
@@ -435,6 +471,7 @@ var
    voltageCalc, countPump, countPumpNumber, posS: integer;
  timeCalc, timeOut, timeStep : Double;
  HaveS : Boolean = False;
+ hasValveOn : Boolean = False;
 begin
  timeFactor:= 1; timeCalc:= 0; voltageCalc:= 0;
  command:= ''; commandSplit:= ''; voltage:= '';
@@ -698,6 +735,23 @@ begin
      if SOrder[k-1] <> '0' then
       command:= command +
        IntToStr((MainForm.FindComponent('Pump' + SOrder[k-1] + 'DirectionRG' + jStr)
+        as TRadioGroup).ItemIndex);
+    end;
+   end;
+   // valves
+   // if all valves are off, omit V
+   hasValveOn:= false;
+   for k:= 1 to ValveNum do
+    if (MainForm.FindComponent('Valves' + IntToStr(k) + 'RG' + jStr)
+        as TRadioGroup).ItemIndex = 0 then
+     hasValveOn:= true;
+   if hasValveOn then
+   begin
+    command:= command + 'V';
+    for k:= 1 to ValveNum do
+    begin
+     command:= command +
+      IntToStr((MainForm.FindComponent('Valves' + IntToStr(k) + 'RG' + jStr)
         as TRadioGroup).ItemIndex);
     end;
    end;
