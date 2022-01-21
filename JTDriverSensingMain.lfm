@@ -2800,6 +2800,259 @@ object MainForm: TMainForm
                 end
               end
             end
+            object S2Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG2: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG2: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG2: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG2: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG2: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG2: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG2: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG2: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
+              end
+            end
           end
         end
         object Step3TS: TTabSheet
@@ -3485,6 +3738,259 @@ object MainForm: TMainForm
                   Width = 39
                   Caption = 'Voltage'
                 end
+              end
+            end
+            object S3Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG3: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG3: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG3: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG3: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG3: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG3: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG3: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG3: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
               end
             end
           end
@@ -4176,6 +4682,259 @@ object MainForm: TMainForm
                 end
               end
             end
+            object S4Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG4: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG4: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG4: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG4: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG4: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG4: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG4: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG4: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
+              end
+            end
           end
         end
         object Step5TS: TTabSheet
@@ -4863,6 +5622,259 @@ object MainForm: TMainForm
                 end
               end
             end
+            object S5Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG5: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG5: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG5: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG5: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG5: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG5: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG5: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG5: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
+              end
+            end
           end
         end
         object Step6TS: TTabSheet
@@ -5532,6 +6544,259 @@ object MainForm: TMainForm
                 end
               end
             end
+            object S6Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG6: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG6: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG6: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG6: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG6: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG6: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG6: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG6: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
+              end
+            end
           end
         end
         object Step7TS: TTabSheet
@@ -6194,6 +7459,259 @@ object MainForm: TMainForm
                   Width = 39
                   Caption = 'Voltage'
                 end
+              end
+            end
+            object S7Valves: TTabSheet
+              Caption = 'Valves'
+              ClientHeight = 394
+              ClientWidth = 328
+              object Valve1RG7: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 1'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+              object Valve2RG7: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 8
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 2'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 1
+              end
+              object Valve3RG7: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 3'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+              end
+              object Valve4RG7: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 64
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 4'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 3
+              end
+              object Valve5RG7: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 5'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+              end
+              object Valve6RG7: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 128
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 6'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 5
+              end
+              object Valve7RG7: TRadioGroup
+                Left = 8
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 7'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 6
+              end
+              object Valve8RG7: TRadioGroup
+                Left = 168
+                Height = 52
+                Hint = 'Double-click to change the valve name'
+                Top = 192
+                Width = 148
+                AutoFill = True
+                Caption = 'Valve 8'
+                ChildSizing.LeftRightSpacing = 6
+                ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+                ChildSizing.EnlargeVertical = crsHomogenousChildResize
+                ChildSizing.ShrinkHorizontal = crsScaleChilds
+                ChildSizing.ShrinkVertical = crsScaleChilds
+                ChildSizing.Layout = cclTopToBottomThenLeftToRight
+                ChildSizing.ControlsPerLine = 1
+                ClientHeight = 32
+                ClientWidth = 144
+                ColumnLayout = clVerticalThenHorizontal
+                Columns = 2
+                ItemIndex = 1
+                Items.Strings = (
+                  'On'
+                  'Off'
+                )
+                OnDblClick = ValveRGDblClick
+                OnItemEnter = ValveRGChange
+                ParentBackground = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 7
               end
             end
           end
