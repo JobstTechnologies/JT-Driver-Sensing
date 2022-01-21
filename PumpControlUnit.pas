@@ -29,6 +29,7 @@ type
     procedure PCStepXUseCBChange(Sender: TObject);
     procedure PCRepeatPCChange(Sender: TObject);
     procedure PCPumpGBDblClick(Sender: TObject);
+    procedure PCValveRGDblClick(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
 
@@ -1817,6 +1818,31 @@ begin
   for j:= 1 to StepNum do
    (MainForm.FindComponent('Pump' + IntToStr(Pump) + 'GB' + IntToStr(j))
     as TGroupBox).Caption:= NameSettingF.NameE.Text;
+end;
+
+procedure TPumpControl.PCValveRGDblClick(Sender: TObject);
+var
+ j, Valve : integer;
+ SenderName : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form "ValvexRGy" and we need the x
+ // so get the 6th character of the name
+ Valve:= StrToInt(Copy(SenderName, 6, 1));
+ // show in dialog always the name from the first step
+ NameSettingF.NameE.Text:=
+   (MainForm.FindComponent('Valve' + IntToStr(Valve) + 'RG1')
+    as TRadioGroup).Caption;
+ // open connection dialog
+ NameSettingF.Caption:= 'Valve name selection';
+ NameSettingF.NameL.Caption:= 'Valve name:';
+ NameSettingF.ShowModal;
+ if NameSettingF.ModalResult = mrCancel then
+  exit
+ else
+  for j:= 1 to StepNum do
+   (MainForm.FindComponent('Valve' + IntToStr(Valve) + 'RG' + IntToStr(j))
+    as TRadioGroup).Caption:= NameSettingF.NameE.Text;
 end;
 
 procedure TPumpControl.AnOutPumpXGBDblClick(Sender: TObject);

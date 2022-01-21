@@ -62,6 +62,7 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    S1Valves: TTabSheet;
     ValuesLinearTransform: TLinearAxisTransform;
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
@@ -687,6 +688,14 @@ type
     Unit5RBs: TRadioButton;
     Unit6RBs: TRadioButton;
     Unit7RBs: TRadioButton;
+    Valve1RG1: TRadioGroup;
+    Valve3RG1: TRadioGroup;
+    Valve5RG1: TRadioGroup;
+    Valve7RG1: TRadioGroup;
+    Valve2RG1: TRadioGroup;
+    Valve4RG1: TRadioGroup;
+    Valve6RG1: TRadioGroup;
+    Valve8RG1: TRadioGroup;
     WaitTimeSE1: TSpinEdit;
     procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
@@ -773,9 +782,11 @@ type
     procedure GetFirmwareVersionMIClick(Sender: TObject);
     procedure LiveModeCBChange(Sender: TObject);
     procedure LoadActionMIClick(Sender: TObject);
+    procedure ValveRGChange(Sender: TObject);
     procedure PumpVoltageFSChange(Sender: TObject);
     procedure PumpGBDblClick(Sender: TObject);
     procedure AnOutPumpGBDblClick(Sender: TObject);
+    procedure ValveRGDblClick(Sender: TObject);
     procedure PumpOnOffCBLoopChange(Sender: TObject);
     procedure RepeatPCChange(Sender: TObject);
     procedure RunBBClick(Sender: TObject);
@@ -819,9 +830,9 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.99.6';
+  Version : string = '0.99.7';
   FirmwareVersion : string = 'unknown';
-  RequiredFirmwareVersion : float = 2.0;
+  RequiredFirmwareVersion : float = 3.0;
   serPump: TBlockSerial;
   serSensor: TBlockSerial;
   HaveSerialPump : Boolean = False;
@@ -2226,6 +2237,13 @@ begin
  PumpControl.PCPumpOnOffCBLoopChange(Sender);
 end;
 
+procedure TMainForm.ValveRGChange(Sender: TObject);
+begin
+ // if in live mode send trigger command generation and sending
+ if LiveModeCB.Checked and OverallTimer.Enabled then
+  PumpControl.RunImmediate;
+end;
+
 procedure TMainForm.PumpVoltageFSChange(Sender: TObject);
 begin
  // if in live mode send trigger command generation and sending
@@ -2591,6 +2609,11 @@ end;
 procedure TMainForm.AnOutPumpGBDblClick(Sender: TObject);
 begin
  PumpControl.AnOutPumpXGBDblClick(Sender);
+end;
+
+procedure TMainForm.ValveRGDblClick(Sender: TObject);
+begin
+ PumpControl.PCValveRGDblClick(Sender);
 end;
 
 // opening --------------------------------------------------------------------
