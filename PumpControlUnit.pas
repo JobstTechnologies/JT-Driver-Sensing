@@ -82,6 +82,8 @@ begin
    as TTabSheet).Enabled:= True;
   (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
    as TTabSheet).Enabled:= True;
+  (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+   as TTabSheet).Enabled:= True;
   if j = 1 then
    // enable tooltips for pump name
    for i:= 1 to PumpNum do
@@ -1389,6 +1391,8 @@ begin
    as TTabSheet).Enabled:= False;
   (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
    as TTabSheet).Enabled:= False;
+  (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+   as TTabSheet).Enabled:= False;
   if j = 1 then
    for i:= 1 to PumpNum do
    (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
@@ -1504,6 +1508,8 @@ begin
     (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
      as TTabSheet).Enabled:= False;
     (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
+     as TTabSheet).Enabled:= False;
+    (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
      as TTabSheet).Enabled:= False;
     if j = 1 then
      // disable tooltips for pump name
@@ -1652,6 +1658,8 @@ begin
     as TTabSheet).Enabled:= True;
    (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
     as TTabSheet).Enabled:= True;
+   (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+     as TTabSheet).Enabled:= True;
    if j = 1 then
     // enable tooltips for pump name
     for i:= 1 to PumpNum do
