@@ -62,7 +62,17 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    ValveNumberL: TLabel;
+    ValveNumberSE: TSpinEdit;
+    HasValvesCB: TCheckBox;
+    ValveSettingsGB: TGroupBox;
     S1Valves: TTabSheet;
+    S2Valves: TTabSheet;
+    S3Valves: TTabSheet;
+    S4Valves: TTabSheet;
+    S5Valves: TTabSheet;
+    S6Valves: TTabSheet;
+    S7Valves: TTabSheet;
     ValuesLinearTransform: TLinearAxisTransform;
     ChartLiveView: TChartLiveView;
     ColorDialog: TColorDialog;
@@ -689,13 +699,61 @@ type
     Unit6RBs: TRadioButton;
     Unit7RBs: TRadioButton;
     Valve1RG1: TRadioGroup;
+    Valve1RG2: TRadioGroup;
+    Valve1RG3: TRadioGroup;
+    Valve1RG4: TRadioGroup;
+    Valve1RG5: TRadioGroup;
+    Valve1RG6: TRadioGroup;
+    Valve1RG7: TRadioGroup;
+    Valve2RG2: TRadioGroup;
+    Valve2RG3: TRadioGroup;
+    Valve2RG4: TRadioGroup;
+    Valve2RG5: TRadioGroup;
+    Valve2RG6: TRadioGroup;
+    Valve2RG7: TRadioGroup;
     Valve3RG1: TRadioGroup;
+    Valve3RG2: TRadioGroup;
+    Valve3RG3: TRadioGroup;
+    Valve3RG4: TRadioGroup;
+    Valve3RG5: TRadioGroup;
+    Valve3RG6: TRadioGroup;
+    Valve3RG7: TRadioGroup;
+    Valve4RG2: TRadioGroup;
+    Valve4RG3: TRadioGroup;
+    Valve4RG4: TRadioGroup;
+    Valve4RG5: TRadioGroup;
+    Valve4RG6: TRadioGroup;
+    Valve4RG7: TRadioGroup;
     Valve5RG1: TRadioGroup;
+    Valve5RG2: TRadioGroup;
+    Valve5RG3: TRadioGroup;
+    Valve5RG4: TRadioGroup;
+    Valve5RG5: TRadioGroup;
+    Valve5RG6: TRadioGroup;
+    Valve5RG7: TRadioGroup;
+    Valve6RG2: TRadioGroup;
+    Valve6RG3: TRadioGroup;
+    Valve6RG4: TRadioGroup;
+    Valve6RG5: TRadioGroup;
+    Valve6RG6: TRadioGroup;
+    Valve6RG7: TRadioGroup;
     Valve7RG1: TRadioGroup;
     Valve2RG1: TRadioGroup;
     Valve4RG1: TRadioGroup;
     Valve6RG1: TRadioGroup;
+    Valve7RG2: TRadioGroup;
+    Valve7RG3: TRadioGroup;
+    Valve7RG4: TRadioGroup;
+    Valve7RG5: TRadioGroup;
+    Valve7RG6: TRadioGroup;
+    Valve7RG7: TRadioGroup;
     Valve8RG1: TRadioGroup;
+    Valve8RG2: TRadioGroup;
+    Valve8RG3: TRadioGroup;
+    Valve8RG4: TRadioGroup;
+    Valve8RG5: TRadioGroup;
+    Valve8RG6: TRadioGroup;
+    Valve8RG7: TRadioGroup;
     WaitTimeSE1: TSpinEdit;
     procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
@@ -739,6 +797,7 @@ type
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure HasValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
     procedure LineDragToolDrag(ASender: TDataPointDragTool;
@@ -782,6 +841,7 @@ type
     procedure GetFirmwareVersionMIClick(Sender: TObject);
     procedure LiveModeCBChange(Sender: TObject);
     procedure LoadActionMIClick(Sender: TObject);
+    procedure ValveNumberSEChange(Sender: TObject);
     procedure ValveRGChange(Sender: TObject);
     procedure PumpVoltageFSChange(Sender: TObject);
     procedure PumpGBDblClick(Sender: TObject);
@@ -869,8 +929,9 @@ begin
  PumpControl.StepNum:= 7; // number of steps
  PumpControl.PumpNum:= 8; // number of pumps
  PumpControl.PumpNumFile:= 4; // number of pumps defined in a loaded action file
- PumpControl.ValveNum:= 0; // number of valves
- PumpControl.ValveNumFile:= 0; // number of valves defined in a loaded action file
+ PumpControl.ValveNum:= 8; // number of valves
+ PumpControl.PumpPrefix:= 'Pump: '; // line prefix for action files
+ PumpControl.ValvePrefix:= 'Valve: '; // line prefix for action files
 
  // explicitly set there because the IDE always
  // stores initial values with trailing LineEnding
@@ -1262,6 +1323,11 @@ begin
  // There is an issue that on smaller high-DPI screens the bottom distance of
  // MainForm to Main PC is too large. Therefore reset the desired ratio on start.
  MainPC.Height:= round(MainForm.Height * 0.9595);
+end;
+
+procedure TMainForm.HasValvesCBChange(Sender: TObject);
+begin
+ PumpControl.PCHasValvesCBChange(Sender);
 end;
 
 procedure TMainForm.FirmwareUpdate(forced: Boolean);
@@ -2696,6 +2762,7 @@ begin
   // disable all setting possibilities
   RunSettingsGB.Enabled:= False;
   LiveModeCB.Enabled:= False;
+  ValveSettingsGB.Enabled:= False;
   for j:= 1 to PumpControl.StepNum do
   begin
    // the user must be able to see if the pumps 5 - 8 are set
@@ -2710,6 +2777,8 @@ begin
    (FindComponent('S' + IntToStr(j) + 'P14')
     as TTabSheet).Enabled:= False;
    (FindComponent('S' + IntToStr(j) + 'P58')
+    as TTabSheet).Enabled:= False;
+   (FindComponent('S' + IntToStr(j) + 'Valves')
     as TTabSheet).Enabled:= False;
    if j = 1 then
     for i:= 1 to PumpControl.PumpNum do
@@ -2732,15 +2801,20 @@ begin
  end; // else if not FileSuccess
 end;
 
+procedure TMainForm.ValveNumberSEChange(Sender: TObject);
+begin
+ PumpControl.PCValveNumberSEChange(Sender);
+end;
+
 function TMainForm.OpenActionFile(InputName: string): Boolean;
 // read file content
 var
  StringList : TStringList;
- j, k : integer;
+ j, k, ValveNumFile : integer;
 begin
  result:= False;
  PumpControl.PumpNumFile:= 0;
- PumpControl.ValveNumFile:= 0;
+ ValveNumFile:= 0;
  try
   StringList:= TStringList.Create;
   k:= StringList.Count;
@@ -2749,20 +2823,16 @@ begin
 
   CommandM.Text:= StringList[0];
 
-  // get the number of pumps
+  // get the number of pumps and valves
   for j:= 1 to StringList.Count - 1 do
   begin
    // if a line begins with 'Pump' we know it defines a pump
    if LeftStr(StringList[j], 4) = 'Pump' then
     inc(PumpControl.PumpNumFile);
    if LeftStr(StringList[j], 5) = 'Valve' then
-    inc(PumpControl.ValveNumFile);
+    inc(ValveNumFile);
   end;
-  // when we have at least one Valve, we must increase the valve counter
-  // because then we have to add the character 'V' to the commands and this
-  // increases the commanind parsing step by one
-  if PumpControl.ValveNumFile > 0 then
-   inc(PumpControl.ValveNumFile);
+  ValveNumberSE.Value:= ValveNumFile;
 
   if StringList.Count = 1 then // no pump names defined (in old files)
   begin
@@ -2772,25 +2842,43 @@ begin
   end
   else
   begin
-   // read the pump names
+   // read the pump and valve names
    for k:= 1 to PumpControl.PumpNumFile do
     (FindComponent('Pump' + IntToStr(k) + 'GB1')
-     as TGroupBox).Caption:= StringList[k];
+     as TGroupBox).Caption:= Copy(StringList[k], Length(PumpControl.PumpPrefix), Length(StringList[k])); // omit the prefix
    if PumpControl.PumpNumFile < PumpControl.PumpNum then // reset names of undefined pumps
    begin
     for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNum do
      (FindComponent('Pump' + IntToStr(k) + 'GB1')
       as TGroupBox).Caption:= 'Pump ' + IntToStr(k);
    end;
+   if PumpControl.ValveNum > 0 then
+   begin
+    for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNumFile + PumpControl.ValveNum do
+     (FindComponent('Valve' + IntToStr(k - PumpControl.PumpNumFile) + 'RG1')
+      as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix), Length(StringList[k])); // omit the prefix
+   end;
+   if PumpControl.ValveNum < 8 then // reset names of undefined pumps, we only support 8 valves
+   begin
+    for k:= PumpControl.ValveNum + 1 to 8 do
+     (FindComponent('Valve' + IntToStr(k) + 'RG1')
+      as TRadioGroup).Caption:= 'Valve ' + IntToStr(k);
+   end;
   end;
 
-  // set the pump name for all other steps
+  // set the pump and valve names for all other steps
   for j:= 2 to PumpControl.StepNum do
    for k:= 1 to PumpControl.PumpNum do
    begin
     (FindComponent('Pump' + IntToStr(k) + 'GB' + IntToStr(j))
      as TGroupBox).Caption:= (FindComponent('Pump' + IntToStr(k) + 'GB1')
      as TGroupBox).Caption;
+   end;
+   for k:= 1 to 8 do // we must to this for all supported valves
+   begin
+    (FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+     as TRadioGroup).Caption:= (FindComponent('Valve' + IntToStr(k) + 'RG1')
+     as TRadioGroup).Caption;
    end;
   result:= True;
  finally
@@ -2846,7 +2934,7 @@ procedure TMainForm.SaveActionMIClick(Sender: TObject);
 var
  OutName, command : string;
  SaveFileStream : TFileStream;
- CommandResult : Boolean;
+ CommandResult: Boolean;
  k : integer;
 begin
  // generate command according to current settings
@@ -2874,12 +2962,28 @@ begin
    // write the pump names
    for k:= 1 to PumpControl.PumpNum do
    begin
+    SaveFileStream.Write(PumpControl.PumpPrefix[1], Length(PumpControl.PumpPrefix)); // prefix
     if (FindComponent('Pump' + IntToStr(k) + 'GB1')
       as TGroupBox).Caption <> '' then // one cannot output an empty name via FileStream.Write
      SaveFileStream.Write((FindComponent('Pump' + IntToStr(k) + 'GB1')
       as TGroupBox).Caption[1],
       Length((FindComponent('Pump' + IntToStr(k) + 'GB1') as TGroupBox).Caption));
     SaveFileStream.Write(LineEnding, 2);
+   end;
+   // write the valve names
+   // only do this if there are valves
+   if PumpControl.ValveNum > 0 then
+   begin
+    for k:= 1 to PumpControl.ValveNum do
+    begin
+     SaveFileStream.Write(PumpControl.ValvePrefix[1], Length(PumpControl.ValvePrefix)); // prefix
+     if (FindComponent('Valve' + IntToStr(k) + 'RG1')
+       as TRadioGroup).Caption <> '' then // one cannot output an empty name via FileStream.Write
+      SaveFileStream.Write((FindComponent('Valve' + IntToStr(k) + 'RG1')
+       as TRadioGroup).Caption[1],
+       Length((FindComponent('Valve' + IntToStr(k) + 'RG1') as TRadioGroup).Caption));
+     SaveFileStream.Write(LineEnding, 2);
+    end;
    end;
   finally
    SaveFileStream.Free;

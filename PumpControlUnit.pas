@@ -30,6 +30,8 @@ type
     procedure PCRepeatPCChange(Sender: TObject);
     procedure PCPumpGBDblClick(Sender: TObject);
     procedure PCValveRGDblClick(Sender: TObject);
+    procedure PCHasValvesCBChange(Sender: TObject);
+    procedure PCValveNumberSEChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
 
@@ -49,8 +51,8 @@ type
      PumpNum : integer; // number of pumps
      PumpNumFile : integer; // number of pumps defined in a loaded action file
      ValveNum : integer; // number of valves
-     ValveNumFile : integer; // number of valves defined in a loaded action file
-
+     PumpPrefix : string; // line prefix for action files
+     ValvePrefix : string; // line prefix for action files
   end;
 
 var
@@ -71,6 +73,7 @@ begin
  // enable all setting possibilities
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+ MainForm.ValveSettingsGB.Enabled:= True;
  // check all possible steps
  for j:= 1 to StepNum do
  begin
@@ -119,14 +122,14 @@ var
  address : string;
  SOrder : array of char;
  LastParsed : char = 'X';
- StepCounter, MCounter, ICounter, VCounter, i, j, k, G1, p,
+ StepCounter, MCounter, ICounter, i, j, k, G1, p,
    posSfirst, posSlast : integer;
  MousePointer : TPoint;
  StepTime, M1, M2, DutyStepTime : Double;
  Have2M : Boolean;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
- StepCounter:= 0; MCounter:= 0; ICounter:= 0; VCounter:= 0;
+ StepCounter:= 0; MCounter:= 0; ICounter:= 0;
  M1:= 0; M2:= 0; G1:= 0;
  result:= false; Have2M:= false; StepTime:= 0;
  SOrder:= nil;
@@ -254,6 +257,34 @@ begin
    end;
   end; // end parse 'D'
 
+  // parse step 'V'
+  if command[i] = 'V' then
+  begin
+   // syntax is Vxxxx, with x = [0,1] and there might only be one x
+   // if all valves are off, 'V' can be omitted and might not appear
+   LastParsed:= 'V';
+   // set the valves
+   if command[i+1] = '1' then
+    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 1
+   else
+    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+     as TRadioGroup).ItemIndex:= 0;
+   if ValveNum > 1 then
+   begin
+    for p:= 2 to ValveNum do
+    begin
+     if (command[i+p] = '0') or (command[i+p] = '1') then
+      if command[i+p] = '1' then
+       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+        as TRadioGroup).ItemIndex:= 1
+      else
+       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+        as TRadioGroup).ItemIndex:= 0;
+     end;
+   end;
+  end; // end parse 'V'
+
   // parse step 'I'
   if command[i] = 'I' then
   begin
@@ -268,15 +299,15 @@ begin
    if (LastParsed = 'M') and (StepTime >= 1) then
    begin
     // check if there is a next 'M' with 1s
-    if (command[i + PumpNumFile + ValveNumFile + 1] = 'M') then
+    if (command[i + PumpNumFile + 1] = 'M') then
     begin
      // determine the length
      j:= i + PumpNumFile + 1;
      repeat
       inc(j)
      until IsDigit(command[j]) = false;
-     StepTime:= StrToFloat(Copy(command, i + PumpNumFile + ValveNumFile + 2,
-                           j - i - (PumpNumFile + ValveNumFile + 2))) / 1000;
+     StepTime:= StrToFloat(Copy(command, i + PumpNumFile + 2,
+                           j - i - (PumpNumFile + 2))) / 1000;
      if (StepTime >= 1) then
      begin
       inc(StepCounter);
@@ -287,7 +318,7 @@ begin
    end;
    if (StepCounter = 0)
     or ((LastParsed = 'G')
-     and (command[i + PumpNumFile + ValveNumFile + 2] <> 'R')) then // not if last 'I'
+     and (command[i + PumpNumFile + 2] <> 'R')) then // not if last 'I'
    begin
     inc(StepCounter);
     ICounter:= 0;
@@ -320,38 +351,6 @@ begin
     end;
    end;
   end; // end parse 'I'
-
-  // parse step 'V'
-  if command[i] = 'V' then
-  begin
-   // syntax is Vxxxx, with x = [0,1] and there might only be one x
-   // if all valves are off, 'V' can be omitted and might not appear
-   // 'V' can occur twice in one step, thus use StepCounter but only
-   // parse the first occurence
-   inc(VCounter);
-   LastParsed:= 'V';
-   // only output if it is the first occurence in a step
-   if VCounter = 1 then
-   begin
-    // set the valves
-    if command[i+1] = '1' then
-    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 1
-    else
-    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 0;
-    for p:= 2 to ValveNumFile do
-    begin
-     if (command[i+p] = '0') or (command[i+p] = '1') then
-      if command[i+p] = '1' then
-       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 1
-      else
-       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 0;
-    end;
-   end;
-  end; // end parse 'V'
 
   // parse step 'M'
   if command[i] = 'M' then
@@ -471,7 +470,6 @@ var
    voltageCalc, countPump, countPumpNumber, posS: integer;
  timeCalc, timeOut, timeStep : Double;
  HaveS : Boolean = False;
- hasValveOn : Boolean = False;
 begin
  timeFactor:= 1; timeCalc:= 0; voltageCalc:= 0;
  command:= ''; commandSplit:= ''; voltage:= '';
@@ -739,19 +737,14 @@ begin
     end;
    end;
    // valves
-   // if all valves are off, omit V
-   hasValveOn:= false;
-   for k:= 1 to ValveNum do
-    if (MainForm.FindComponent('Valves' + IntToStr(k) + 'RG' + jStr)
-        as TRadioGroup).ItemIndex = 0 then
-     hasValveOn:= true;
-   if hasValveOn then
+   // if there are no valves omit V
+   if ValveNum > 0 then
    begin
     command:= command + 'V';
     for k:= 1 to ValveNum do
     begin
      command:= command +
-      IntToStr((MainForm.FindComponent('Valves' + IntToStr(k) + 'RG' + jStr)
+      IntToStr((MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + jStr)
         as TRadioGroup).ItemIndex);
     end;
    end;
@@ -1015,10 +1008,16 @@ begin
   timeCalc:= timeCalc * (MainForm.RepeatSE.Value + 1);
  end;
 
-  // explicitly turn off all pumps, turn off LED and execute flag
+  // explicitly turn off all valves, pumps, turn off LED and execute flag
   // the explicite turn off is important because the Arduino command
   // execution loop needs several 100 ms. But when an explicit stop is sent,
   // the loop will end immediately
+  if ValveNum > 0 then
+  begin
+   command:= command + 'V';
+   for k:= 1 to ValveNum do
+    command:= command + '0';
+  end;
   command:= command + 'I';
   for k:= 1 to PumpNum do
    command:= command + '0';
@@ -1829,6 +1828,8 @@ begin
     as TTabSheet).Enabled:= True;
    (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
     as TTabSheet).Enabled:= True;
+   (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+     as TTabSheet).Enabled:= True;
    if j = 1 then
     // enable tooltips for pump name
     for i:= 1 to PumpNum do
@@ -1905,6 +1906,48 @@ begin
   for j:= 1 to StepNum do
    (MainForm.FindComponent('Valve' + IntToStr(Valve) + 'RG' + IntToStr(j))
     as TRadioGroup).Caption:= NameSettingF.NameE.Text;
+end;
+
+procedure TPumpControl.PCHasValvesCBChange(Sender: TObject);
+var
+ j : integer;
+begin
+ // en/disable all valves
+ for j:= 1 to StepNum do
+  (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+   as TTabSheet).Enabled:= (not MainForm.HasValvesCB.Checked);
+ MainForm.ValveNumberSE.Enabled:= (not MainForm.HasValvesCB.Checked);
+ if MainForm.HasValvesCB.Checked then
+  MainForm.ValveNumberSE.Value:= 0
+ else
+  MainForm.ValveNumberSE.Value:= 1;
+end;
+
+procedure TPumpControl.PCValveNumberSEChange(Sender: TObject);
+var
+ j, k : integer;
+ begin
+ ValveNum:= MainForm.ValveNumberSE.Value;
+ if ValveNum = 0 then // also set checkbox that there are no valves
+ begin
+  MainForm.HasValvesCB.Checked:= true;
+  exit;
+ end
+ else
+  MainForm.HasValvesCB.Checked:= false;
+ for j:= 1 to StepNum do
+ begin
+  k:= 1; // just to silence the compiler
+  for k:= 1 to ValveNum do
+   (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+    as TRadioGroup).enabled:= true;
+  if k < 8 then
+  begin
+   for k:= ValveNum + 1 to 8 do // currently we only support 8 valves
+    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+     as TRadioGroup).enabled:= false;
+  end;
+ end;
 end;
 
 procedure TPumpControl.AnOutPumpXGBDblClick(Sender: TObject);

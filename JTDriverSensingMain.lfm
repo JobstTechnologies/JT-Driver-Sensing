@@ -1912,10 +1912,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -1943,10 +1943,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -1974,10 +1974,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2005,10 +2005,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2036,10 +2036,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2067,10 +2067,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2098,10 +2098,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2129,10 +2129,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2823,10 +2823,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2854,10 +2854,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2885,10 +2885,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2916,10 +2916,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2947,10 +2947,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -2978,10 +2978,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3009,10 +3009,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3040,10 +3040,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3763,10 +3763,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3794,10 +3794,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3825,10 +3825,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3856,10 +3856,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3887,10 +3887,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3918,10 +3918,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3949,10 +3949,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -3980,10 +3980,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4705,10 +4705,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4736,10 +4736,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4767,10 +4767,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4798,10 +4798,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4829,10 +4829,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4860,10 +4860,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4891,10 +4891,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -4922,10 +4922,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5645,10 +5645,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5676,10 +5676,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5707,10 +5707,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5738,10 +5738,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5769,10 +5769,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5800,10 +5800,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5831,10 +5831,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -5862,10 +5862,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6567,10 +6567,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6598,10 +6598,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6629,10 +6629,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6660,10 +6660,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6691,10 +6691,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6722,10 +6722,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6753,10 +6753,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -6784,10 +6784,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7484,10 +7484,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7515,10 +7515,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7546,10 +7546,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7577,10 +7577,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7608,10 +7608,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7639,10 +7639,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7670,10 +7670,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7701,10 +7701,10 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
-                ItemIndex = 1
+                ItemIndex = 0
                 Items.Strings = (
-                  'On'
                   'Off'
+                  'On'
                 )
                 OnDblClick = ValveRGDblClick
                 OnItemEnter = ValveRGChange
@@ -7967,6 +7967,43 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
+      end
+      object ValveSettingsGB: TGroupBox
+        Left = 552
+        Height = 88
+        Top = 264
+        Width = 148
+        Caption = 'Valve Settings'
+        ClientHeight = 68
+        ClientWidth = 144
+        ParentColor = False
+        TabOrder = 6
+        object HasValvesCB: TCheckBox
+          Left = 7
+          Height = 19
+          Top = 40
+          Width = 123
+          Caption = 'Setup has no valves'
+          OnChange = HasValvesCBChange
+          TabOrder = 1
+        end
+        object ValveNumberL: TLabel
+          Left = 8
+          Height = 15
+          Top = 12
+          Width = 86
+          Caption = 'Available valves:'
+        end
+        object ValveNumberSE: TSpinEdit
+          Left = 98
+          Height = 23
+          Top = 8
+          Width = 38
+          MaxValue = 8
+          OnChange = ValveNumberSEChange
+          TabOrder = 0
+          Value = 8
+        end
       end
     end
     object TestSettingsTS: TTabSheet
