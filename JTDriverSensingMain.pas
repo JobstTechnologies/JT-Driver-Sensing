@@ -2850,18 +2850,20 @@ begin
 
   // set the pump and valve names for all other steps
   for j:= 2 to PumpControl.StepNum do
+  begin
    for k:= 1 to PumpControl.PumpNum do
    begin
     (FindComponent('Pump' + IntToStr(k) + 'GB' + IntToStr(j))
      as TGroupBox).Caption:= (FindComponent('Pump' + IntToStr(k) + 'GB1')
      as TGroupBox).Caption;
    end;
-   for k:= 1 to 8 do // we must to this for all supported valves
+   for k:= 1 to 8 do // we must to this for all supported valves to reset also the unused ones
    begin
     (FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
      as TRadioGroup).Caption:= (FindComponent('Valve' + IntToStr(k) + 'RG1')
      as TRadioGroup).Caption;
    end;
+  end;
   result:= True;
  finally
   StringList.Free;

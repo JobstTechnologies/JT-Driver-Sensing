@@ -257,7 +257,7 @@ begin
   end; // end parse 'D'
 
   // parse step 'V'
-  if command[i] = 'V' then
+  {if command[i] = 'V' then
   begin
    // syntax is Vxxxx, with x = [0,1] and there might only be one x
    // if all valves are off, 'V' can be omitted and might not appear
@@ -283,7 +283,7 @@ begin
      end;
    end;
   end; // end parse 'V'
-
+   }
   // parse step 'I'
   if command[i] = 'I' then
   begin
