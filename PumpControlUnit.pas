@@ -257,33 +257,54 @@ begin
   end; // end parse 'D'
 
   // parse step 'V'
-  {if command[i] = 'V' then
+  if command[i] = 'V' then
   begin
    // syntax is Vxxxx, with x = [0,1] and there might only be one x
    // if all valves are off, 'V' can be omitted and might not appear
-   LastParsed:= 'V';
-   // set the valves
-   if command[i+1] = '1' then
-    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 1
-   else
-    (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
-     as TRadioGroup).ItemIndex:= 0;
-   if ValveNum > 1 then
+
+   // when no pump is run, 'V' is the start of a step
+   if (StepCounter = 0)
+    or ((LastParsed = 'G') and
+        (command[i+ValveNum+1+PumpNumFile+2] <> 'R')) then // not if last 'V'
    begin
-    for p:= 2 to ValveNum do
-    begin
-     if (command[i+p] = '0') or (command[i+p] = '1') then
-      if command[i+p] = '1' then
-       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
-        as TRadioGroup).ItemIndex:= 1
-      else
-       (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
-        as TRadioGroup).ItemIndex:= 0;
-     end;
+    inc(StepCounter);
+    ICounter:= 0;
+    MCounter:= 0;
    end;
+   // if there is no pump 'V' always starts a new step
+   if LastParsed = 'M' then
+   begin
+    inc(StepCounter);
+    ICounter:= 0;
+    MCounter:= 0;
+   end;
+
+   // set the valves but not if it the very last 'V'
+   if command[i+ValveNum+1+PumpNumFile+2] <> 'R' then
+   begin
+    if command[i+1] = '1' then
+     (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+      as TRadioGroup).ItemIndex:= 1
+    else
+     (MainForm.FindComponent('Valve1RG' + IntToStr(StepCounter))
+      as TRadioGroup).ItemIndex:= 0;
+    if ValveNum > 1 then
+    begin
+     for p:= 2 to ValveNum do
+     begin
+      if (command[i+p] = '0') or (command[i+p] = '1') then
+       if command[i+p] = '1' then
+        (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+         as TRadioGroup).ItemIndex:= 1
+       else
+        (MainForm.FindComponent('Valve' + IntToStr(p) + 'RG' + IntToStr(StepCounter))
+         as TRadioGroup).ItemIndex:= 0;
+      end;
+    end;
+   end;
+   LastParsed:= 'V';
   end; // end parse 'V'
-   }
+
   // parse step 'I'
   if command[i] = 'I' then
   begin
