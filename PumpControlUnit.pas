@@ -1544,6 +1544,13 @@ begin
  command:= '';
  // address
  command:= '/0';
+ // disable all valves
+ if ValveNum > 0 then
+ begin
+  command:= command + 'V';
+  for k:= 1 to ValveNum do
+   command:= command + '0';
+ end;
  // disable all pumps
  command:= command + 'I';
  for k:= 1 to PumpNum do
