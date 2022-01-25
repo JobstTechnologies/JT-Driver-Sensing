@@ -1917,8 +1917,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -1948,8 +1948,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -1979,8 +1979,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2010,8 +2010,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2041,8 +2041,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2072,8 +2072,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2103,8 +2103,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2134,8 +2134,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2828,8 +2828,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2859,8 +2859,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2890,8 +2890,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2921,8 +2921,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2952,8 +2952,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -2983,8 +2983,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3014,8 +3014,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3045,8 +3045,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3768,8 +3768,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3799,8 +3799,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3830,8 +3830,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3861,8 +3861,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3892,8 +3892,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3923,8 +3923,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3954,8 +3954,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -3985,8 +3985,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4710,8 +4710,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4741,8 +4741,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4772,8 +4772,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4803,8 +4803,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4834,8 +4834,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4865,8 +4865,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4896,8 +4896,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -4927,8 +4927,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5650,8 +5650,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5681,8 +5681,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5712,8 +5712,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5743,8 +5743,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5774,8 +5774,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5805,8 +5805,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5836,8 +5836,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -5867,8 +5867,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6572,8 +6572,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6603,8 +6603,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6634,8 +6634,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6665,8 +6665,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6696,8 +6696,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6727,8 +6727,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6758,8 +6758,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -6789,8 +6789,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7489,8 +7489,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7520,8 +7520,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7551,8 +7551,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7582,8 +7582,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7613,8 +7613,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7644,8 +7644,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7675,8 +7675,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
@@ -7706,8 +7706,8 @@ object MainForm: TMainForm
                   'Off'
                   'On'
                 )
+                OnClick = ValveRGChange
                 OnDblClick = ValveRGDblClick
-                OnItemEnter = ValveRGChange
                 ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
