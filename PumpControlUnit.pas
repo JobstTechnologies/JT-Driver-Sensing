@@ -19,7 +19,6 @@ type
     procedure PCStepTimerXFinished(Sender: TObject);
     procedure PCStepTimerLastFinished(Sender: TObject);
     procedure PCGenerateCommandBBClick(Sender: TObject);
-    procedure PCRunFreeBBClick(Sender: TObject);
     procedure PCRunBBClick(Sender: TObject);
     procedure PCStopBBClick(Sender: TObject);
     procedure PCLiveModeCBChange(Sender: TObject);
@@ -299,15 +298,14 @@ begin
    if (LastParsed = 'M') and (StepTime >= 1) then
    begin
     // check if there is a next 'M' with 1s
-    if (command[i + PumpNumFile + 1] = 'M') then
+    if (command[i+PumpNumFile+1] = 'M') then
     begin
      // determine the length
      j:= i + PumpNumFile + 1;
      repeat
       inc(j)
      until IsDigit(command[j]) = false;
-     StepTime:= StrToFloat(Copy(command, i + PumpNumFile + 2,
-                           j - i - (PumpNumFile + 2))) / 1000;
+     StepTime:= StrToFloat(Copy(command, i+PumpNumFile+2, j-i-(PumpNumFile+2))) / 1000;
      if (StepTime >= 1) then
      begin
       inc(StepCounter);
@@ -317,8 +315,7 @@ begin
     end;
    end;
    if (StepCounter = 0)
-    or ((LastParsed = 'G')
-     and (command[i + PumpNumFile + 2] <> 'R')) then // not if last 'I'
+    or ((LastParsed = 'G') and (command[i+PumpNumFile+2] <> 'R')) then // not if last 'I'
    begin
     inc(StepCounter);
     ICounter:= 0;
@@ -1101,7 +1098,6 @@ begin
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.RunBB.Enabled:= False;
-   MainForm.RunFreeBB.Enabled:= False;
    if serPump.LastError = 9997 then
    begin
     MainForm.StopBB.Enabled:= False;
@@ -1116,7 +1112,6 @@ begin
  else // no serial connection
  begin
   MainForm.RunBB.Enabled:= False;
-  MainForm.RunFreeBB.Enabled:= False;
   exit;
  end;
 
@@ -1136,7 +1131,6 @@ begin
   // assure that step 2 is not used
   MainForm.Step2UseCB.Checked:= false;
   MainForm.RunSettingsGB.Enabled:= false;
-  MainForm.RunFreeBB.Enabled:= false;
   MainForm.Step1TS.Caption:= 'Live';
   // set that run until stop pressed
   MainForm.RunEndlessCB.Checked:= true;
@@ -1146,7 +1140,6 @@ begin
  else
  begin
   MainForm.RunSettingsGB.Enabled:= true;
-  MainForm.RunFreeBB.Enabled:= true;
   // rename step 1 back and show step 2
   MainForm.Step1TS.Caption:= 'Step 1';
   MainForm.Step2TS.TabVisible:= true;
@@ -1386,88 +1379,6 @@ begin
  MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
 end;
 
-procedure TPumpControl.PCRunFreeBBClick(Sender: TObject);
-// starts free running cycle:
-// run 30 seconds in each direction 10 times
-// this is like loading a *.PDAction file, therefore use the file load routines
-var
- i, j : integer;
- command : string;
- ParseSuccess : Boolean;
-begin
- MainForm.LoadedActionFileM.Text:= 'Free Pumps';
- MainForm.LoadedActionFileM.Color:= clInfoBK;
- MainForm.LoadedActionFileM.Hint:= 'Free Pumps';
- // start the pumps in blocks of 3 pumps at once
- // input the action as command
- // '/0LgS199929993999D000I11100000M10
- //      S199929993999499959996999D000000I11111100M10
- //      S19992999399949995999699979998999D00000000I11111111M30000
- //      I00000000M999
- //      S199929993999D111I11100000M10
- //      S199929993999499959996999D111111I11111100M10
- //      S19992999399949995999699979998999D11111111I11111111M30000
- //      I00000000M999G9I00000000lR
- command:= '/0Lg';
- command:= command + 'S199929993999D000I11100000M10';
- command:= command + 'S199929993999499959996999D000000I11111100M10';
- command:= command + 'S19992999399949995999699979998999D00000000I11111111M30000';
- command:= command + 'I00000000M999';
- command:= command + 'S199929993999D111I11100000M10';
- command:= command + 'S199929993999499959996999D111111I11111100M10';
- command:= command + 'S19992999399949995999699979998999D11111111I11111111M30000';
- command:= command + 'I00000000M999G9I00000000lR';
-
- MainForm.CommandM.Text:= command;
- // we set values for 8 pumps
- PumpNumFile:= 8;
- // parse the command
- ParseSuccess:= ParseCommand(command);
- if ParseSuccess then
-  // call command generation just to get the action time calculated
-  GenerateCommand(command);
- // disable all setting possibilities
- MainForm.RunSettingsGB.Enabled:= False;
- MainForm.LiveModeCB.Enabled:= False;
- for j:= 1 to StepNum do
- begin
-  // the user must be able to see if the pumps 5 - 8 are set
-  // therefore we cannot just disable the StepXTS component but its
-  // child components except of SXPC
-  (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
-   as TCheckBox).Enabled:= False;
-  (MainForm.FindComponent('ActionTime' + IntToStr(j) + 'GB')
-   as TGroupBox).Enabled:= False;
-  (MainForm.FindComponent('DutyCycle' + IntToStr(j) + 'GB')
-   as TGroupBox).Enabled:= False;
-  (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
-   as TTabSheet).Enabled:= False;
-  (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
-   as TTabSheet).Enabled:= False;
-  (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
-   as TTabSheet).Enabled:= False;
-  if j = 1 then
-   for i:= 1 to PumpNum do
-   (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
-    as TGroupBox).ShowHint:= False;
- end;
- MainForm.RepeatOutputLE.Visible:= False;
- // do not show unused steps
- for j:= 2 to StepNum do
- begin
-  if (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
-      as TCheckBox).Checked = False then
-   (MainForm.FindComponent('Step' + IntToStr(j) + 'TS')
-    as TTabSheet).TabVisible:= False;
- end;
- // disable saving, will be re-enabled by GererateCommand
- MainForm.SaveActionMI.Enabled:= False;
- // show step 1
- MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
- // run
- MainForm.RunBBClick(Sender);
-end;
-
 procedure TPumpControl.PCRunBBClick(Sender: TObject);
 // execute generated command
 var
@@ -1519,7 +1430,6 @@ begin
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
     MainForm.PumpDriverMI.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
-    MainForm.RunFreeBB.Enabled:= False;
     if serPump.LastError = 9997 then
     begin
      MainForm.StopBB.Enabled:= False;
@@ -1534,12 +1444,10 @@ begin
   else // no serial connection
   begin
    MainForm.RunBB.Enabled:= False;
-   MainForm.RunFreeBB.Enabled:= False;
    exit;
   end;
   MainForm.RunBB.Caption:= 'Pumps running';
   MainForm.RunBB.Enabled:= False;
-  MainForm.RunFreeBB.Enabled:= False;
   MainForm.GenerateCommandBB.Enabled:= False;
   // disable all setting possibilities
   MainForm.RunSettingsGB.Enabled:= False;
@@ -1681,7 +1589,6 @@ begin
  // therefore block the enabing to start a new action for a second
  MainForm.StopTimer.Enabled:= True;
  MainForm.RunBB.Enabled:= False;
- MainForm.RunFreeBB.Enabled:= False;
  MainForm.GenerateCommandBB.Enabled:= True;
  // stop all timers and reset captions
  for j:= 1 to StepNum do
@@ -1797,7 +1704,6 @@ begin
  MainForm.SaveActionMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
  MainForm.RunBB.Enabled:= True;
- MainForm.RunFreeBB.Enabled:= True;
  MainForm.GenerateCommandBB.Enabled:= True;
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;

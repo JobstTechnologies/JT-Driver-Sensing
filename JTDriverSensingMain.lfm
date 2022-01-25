@@ -7874,11 +7874,11 @@ object MainForm: TMainForm
       end
       object ActionsGB: TGroupBox
         Left = 552
-        Height = 234
+        Height = 186
         Top = 24
         Width = 148
         Caption = 'Actions'
-        ClientHeight = 214
+        ClientHeight = 166
         ClientWidth = 144
         ParentColor = False
         TabOrder = 3
@@ -7909,29 +7909,16 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object GenerateCommandBB: TBitBtn
-          Left = 8
+          Left = 7
           Height = 39
           Hint = 'This button has 3 features:'#13#10'1. It generates the serial command that will be sent to the pump driver'#13#10'by clicking ''Run Pumps'' using the current settings'#13#10'2. It calculates the Total Time'#13#10'3. It enables editing the settings for a loaded action file'
-          Top = 168
+          Top = 116
           Width = 128
           Caption = 'Generate Command'
           OnClick = GenerateCommandBBClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
-        end
-        object RunFreeBB: TBitBtn
-          Left = 20
-          Height = 39
-          Hint = 'Starts the method to free pumps after they have been unused'#13#10'for a longer time resulting in a closed pump hose.'#13#10'When the pump hose is closed you will in most cases hear a'#13#10'sound on every pump rotation. As soon as this sound disappears,'#13#10'the hose should be open and you can click ''Stop Pumps''.'#13#10#13#10'If a ''Free Pumps'' run does not open the pump hose'#13#10'the pump is broken and cannot be repaired.'
-          Top = 116
-          Width = 104
-          Caption = 'Free Pumps'
-          Enabled = False
-          OnClick = RunFreeBBClick
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 3
         end
         object Panel1: TPanel
           Left = 8
@@ -7941,7 +7928,7 @@ object MainForm: TMainForm
           BevelColor = clBtnShadow
           BevelInner = bvRaised
           BevelOuter = bvNone
-          TabOrder = 4
+          TabOrder = 3
         end
       end
       object CommandM: TMemo
@@ -7971,7 +7958,7 @@ object MainForm: TMainForm
       object ValveSettingsGB: TGroupBox
         Left = 552
         Height = 88
-        Top = 264
+        Top = 216
         Width = 148
         Caption = 'Valve Settings'
         ClientHeight = 68
@@ -9597,7 +9584,9 @@ object MainForm: TMainForm
       FAE10000FAF30000FCFF0000FCFF0000FEFF0000FFFF0000FFFF0000FFFF0000
     }
     Text = 'Firmware update is in progress'
+    TextFont.Quality = fqCleartype
     Title = 'Firmware update'
+    TitleFont.Quality = fqCleartype
     TitleFont.Style = [fsBold]
     Visible = False
     Left = 936

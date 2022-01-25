@@ -655,7 +655,6 @@ type
     RepeatSE: TSpinEdit;
     RunBB: TBitBtn;
     RunEndlessCB: TCheckBox;
-    RunFreeBB: TBitBtn;
     Step1TS: TTabSheet;
     Step1UseCB: TCheckBox;
     Step2TS: TTabSheet;
@@ -851,7 +850,6 @@ type
     procedure RepeatPCChange(Sender: TObject);
     procedure RunBBClick(Sender: TObject);
     procedure RunEndlessCBChange(Sender: TObject);
-    procedure RunFreeBBClick(Sender: TObject);
     procedure SaveActionMIClick(Sender: TObject);
     procedure ShowTempCBChange(Sender: TObject);
     procedure SIXBiosensorsMIClick(Sender: TObject);
@@ -1105,7 +1103,6 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  RunFreeBB.Enabled:= false;
   if HaveSerialPump then
   begin
    // stop pumps
@@ -1130,7 +1127,6 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  RunFreeBB.Enabled:= false;
   IndicatorPumpP.Caption:= 'Connection failiure';
   IndicatorPumpP.Color:= clRed;
   IndicatorPumpPPaint;
@@ -1193,7 +1189,6 @@ begin
    // disable all buttons
    RunBB.Enabled:= false;
    StopBB.Enabled:= false;
-   RunFreeBB.Enabled:= false;
    IndicatorPumpP.Caption:= 'Connection failiure';
    IndicatorPumpP.Color:= clRed;
    IndicatorPumpPPaint;
@@ -1229,7 +1224,6 @@ begin
     // disable all buttons
     RunBB.Enabled:= false;
     StopBB.Enabled:= false;
-    RunFreeBB.Enabled:= false;
     if serPump.LastError = 9997 then
      exit; // we cannot close socket or free when the connection timed out
     serPump.CloseSocket;
@@ -1296,7 +1290,6 @@ begin
    // enable all buttons
    RunBB.Enabled:= true;
    StopBB.Enabled:= true;
-   RunFreeBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
    if ConnComPortSensM.Color = clDefault then
    begin
@@ -1372,7 +1365,6 @@ begin
  // disable all buttons
  RunBB.Enabled:= false;
  StopBB.Enabled:= false;
- RunFreeBB.Enabled:= false;
  ConnComPortPumpLE.Color:= clHighlight;
  ConnComPortPumpLE.Text:= 'Not connected';
  IndicatorPumpP.Caption:= '';
@@ -1702,7 +1694,6 @@ begin
    // enable all buttons
    RunBB.Enabled:= true;
    StopBB.Enabled:= true;
-   RunFreeBB.Enabled:= true;
    IndicatorPumpP.Color:= clDefault;
    IndicatorPumpPPaint;
   end;
@@ -2646,16 +2637,7 @@ procedure TMainForm.StopTimerFinished;
 begin
  RunBB.Caption:= 'Run Pumps';
  RunBB.Enabled:= True;
- RunFreeBB.Enabled:= True;
  StopTimer.Enabled:= False;
-end;
-
-procedure TMainForm.RunFreeBBClick(Sender: TObject);
-// starts free running cycle:
-// run 30 seconds in each direction 10 times
-// this is like loading a *.PDAction file, therefore use the file load routines
-begin
- PumpControl.PCRunFreeBBClick(Sender);
 end;
 
 procedure TMainForm.RunEndlessCBChange(Sender: TObject);
