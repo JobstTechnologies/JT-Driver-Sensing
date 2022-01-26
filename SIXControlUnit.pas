@@ -2163,7 +2163,6 @@ try
 
  // first store valve setup
  List.Add('ValveNumberSE.Value ' + IntToStr(MainForm.ValveNumberSE.Value));
- //List.Add('HasValvesCB.Checked ' + MainForm.HasValvesCB.Checked);
 
  Chart:= MainForm.SIXCH;
  List.Add('Chart SIXCH');
@@ -2397,10 +2396,15 @@ begin
   List:= TStringList.Create;
   List.LoadFromFile(iniFile);
   m:= 0;
- // first readout the number of valves
-  MainForm.ValveNumberSE.Value:= StrToInt(
-   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-  inc(m);
+  // first readout the number of valves
+  // this line might not be there for older appearance files
+  if TryStrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), i) then
+  begin
+   MainForm.ValveNumberSE.Value:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+  end;
   // now read the chart properties
   Chart:= (MainForm.FindComponent(
            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))

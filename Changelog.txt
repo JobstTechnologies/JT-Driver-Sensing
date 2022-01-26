@@ -9,10 +9,6 @@ improvement:
 bugfix:
 - the pumps 5-8 in step 1 were by default disabled
 
-important release note:
-- When upgrading to version 0.997, you can get at the first start an error message.
-  This can be ignored and won't show up for further steps.
-
 
 from version 0.995.1 to 0.996
 

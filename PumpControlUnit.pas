@@ -29,7 +29,7 @@ type
     procedure PCRepeatPCChange(Sender: TObject);
     procedure PCPumpGBDblClick(Sender: TObject);
     procedure PCValveRGDblClick(Sender: TObject);
-    procedure PCHasValvesCBChange(Sender: TObject);
+    procedure PCHasNoValvesCBChange(Sender: TObject);
     procedure PCValveNumberSEChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
@@ -1842,16 +1842,16 @@ begin
     as TRadioGroup).Caption:= NameSettingF.NameE.Text;
 end;
 
-procedure TPumpControl.PCHasValvesCBChange(Sender: TObject);
+procedure TPumpControl.PCHasNoValvesCBChange(Sender: TObject);
 var
  j : integer;
 begin
  // en/disable all valves
  for j:= 1 to StepNum do
   (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
-   as TTabSheet).Enabled:= (not MainForm.HasValvesCB.Checked);
- MainForm.ValveNumberSE.Enabled:= (not MainForm.HasValvesCB.Checked);
- if MainForm.HasValvesCB.Checked then
+   as TTabSheet).Enabled:= (not MainForm.HasNoValvesCB.Checked);
+ MainForm.ValveNumberSE.Enabled:= (not MainForm.HasNoValvesCB.Checked);
+ if MainForm.HasNoValvesCB.Checked then
   MainForm.ValveNumberSE.Value:= 0
  else
   MainForm.ValveNumberSE.Value:= 1;
@@ -1864,11 +1864,11 @@ var
  ValveNum:= MainForm.ValveNumberSE.Value;
  if ValveNum = 0 then // also set checkbox that there are no valves
  begin
-  MainForm.HasValvesCB.Checked:= true;
+  MainForm.HasNoValvesCB.Checked:= true;
   exit;
  end
  else
-  MainForm.HasValvesCB.Checked:= false;
+  MainForm.HasNoValvesCB.Checked:= false;
  for j:= 1 to StepNum do
  begin
   k:= 1; // just to silence the compiler

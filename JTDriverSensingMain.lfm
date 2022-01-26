@@ -7961,13 +7961,13 @@ object MainForm: TMainForm
         ClientWidth = 144
         ParentColor = False
         TabOrder = 6
-        object HasValvesCB: TCheckBox
+        object HasNoValvesCB: TCheckBox
           Left = 7
           Height = 19
           Top = 40
           Width = 123
           Caption = 'Setup has no valves'
-          OnChange = HasValvesCBChange
+          OnChange = HasNoValvesCBChange
           TabOrder = 1
         end
         object ValveNumberL: TLabel

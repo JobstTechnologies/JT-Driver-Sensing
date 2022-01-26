@@ -64,7 +64,7 @@ type
     ChartAxisTransformTime: TChartAxisTransformations;
     ValveNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
-    HasValvesCB: TCheckBox;
+    HasNoValvesCB: TCheckBox;
     ValveSetupGB: TGroupBox;
     S1Valves: TTabSheet;
     S2Valves: TTabSheet;
@@ -796,7 +796,7 @@ type
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure HasValvesCBChange(Sender: TObject);
+    procedure HasNoValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
     procedure LineDragToolDrag(ASender: TDataPointDragTool;
@@ -974,7 +974,10 @@ begin
  // we write into the same folder than the program .exe
  iniFile:= ExtractFilePath(Application.ExeName) + AppearanceFile;
  if FileExists(iniFile) then
-  SIXControl.SCLoadAppearance(iniFile);
+  SIXControl.SCLoadAppearance(iniFile)
+ else
+  // assume there are no valves
+  HasNoValvesCB.Checked:= true;
 
 end;
 
@@ -1318,9 +1321,9 @@ begin
  MainPC.Height:= round(MainForm.Height * 0.9595);
 end;
 
-procedure TMainForm.HasValvesCBChange(Sender: TObject);
+procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
 begin
- PumpControl.PCHasValvesCBChange(Sender);
+ PumpControl.PCHasNoValvesCBChange(Sender);
 end;
 
 procedure TMainForm.FirmwareUpdate(forced: Boolean);
