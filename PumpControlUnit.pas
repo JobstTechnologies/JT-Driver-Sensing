@@ -72,7 +72,7 @@ begin
  // enable all setting possibilities
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
- MainForm.ValveSettingsGB.Enabled:= True;
+ MainForm.ValveSetupGB.Enabled:= True;
  // check all possible steps
  for j:= 1 to StepNum do
  begin

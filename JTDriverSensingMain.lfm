@@ -1638,7 +1638,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
-                Enabled = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB1: TCheckBox
@@ -1701,7 +1700,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
-                Enabled = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB1: TCheckBox
@@ -1766,7 +1764,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
-                Enabled = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB1: TCheckBox
@@ -1831,7 +1828,6 @@ object MainForm: TMainForm
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
-                Enabled = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB1: TCheckBox
@@ -7955,12 +7951,12 @@ object MainForm: TMainForm
         ShowHint = True
         TabOrder = 5
       end
-      object ValveSettingsGB: TGroupBox
+      object ValveSetupGB: TGroupBox
         Left = 552
         Height = 88
         Top = 216
         Width = 148
-        Caption = 'Valve Settings'
+        Caption = 'Valve Setup'
         ClientHeight = 68
         ClientWidth = 144
         ParentColor = False
@@ -7977,17 +7973,23 @@ object MainForm: TMainForm
         object ValveNumberL: TLabel
           Left = 8
           Height = 15
+          Hint = 'Number of valves in the setup'
           Top = 12
           Width = 86
           Caption = 'Available valves:'
+          ParentShowHint = False
+          ShowHint = True
         end
         object ValveNumberSE: TSpinEdit
           Left = 98
           Height = 23
+          Hint = 'Number of valves in the setup'
           Top = 8
           Width = 38
           MaxValue = 8
           OnChange = ValveNumberSEChange
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 0
           Value = 8
         end

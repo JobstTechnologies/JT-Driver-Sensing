@@ -65,7 +65,7 @@ type
     ValveNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
     HasValvesCB: TCheckBox;
-    ValveSettingsGB: TGroupBox;
+    ValveSetupGB: TGroupBox;
     S1Valves: TTabSheet;
     S2Valves: TTabSheet;
     S3Valves: TTabSheet;
@@ -2744,7 +2744,7 @@ begin
   // disable all setting possibilities
   RunSettingsGB.Enabled:= False;
   LiveModeCB.Enabled:= False;
-  ValveSettingsGB.Enabled:= False;
+  ValveSetupGB.Enabled:= False;
   for j:= 1 to PumpControl.StepNum do
   begin
    // the user must be able to see if the pumps 5 - 8 are set
