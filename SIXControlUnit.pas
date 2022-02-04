@@ -113,7 +113,7 @@ var
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
- dataArray : TDataArray;
+ dataArray, wasteArray : TDataArray;
  HiLowArray : array[0..1] of byte;
  IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
@@ -267,6 +267,10 @@ begin
   k:= 0;
   dataArray:= default(TDataArray); // clear array
   k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
+  // Fixme: LineBuffer should not be used at all
+  // empty internal LineBuffer of serSensor
+  while serSensor.WaitingDataEx > 24 do
+   serSensor.RecvBufferEx(@wasteArray[0], 25, 100);
  end;
 
  // in case the read failed or not 25 bytes received
@@ -1254,11 +1258,11 @@ begin
  // if we have a raw signal, then the unit is nA
  if (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex > 2 then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [nA]';
  if (MainForm.LoadedDefFileM.Text <> 'None')
   and ((MainForm.FindComponent(SenderName) as TComboBox).ItemIndex < 3) then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
 end;
 
 procedure TSIXControl.SCChannelXGBDblClick(Sender: TObject);
@@ -1356,7 +1360,7 @@ begin
    (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [nA]';
    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [nA]';
    (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [pA/s]';
    (MainForm.FindComponent('LabelSlope' + IntToStr(i))
@@ -1398,7 +1402,7 @@ begin
    (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [mM]';
    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
    (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [uM/s]';
    (MainForm.FindComponent('LabelSlope' + IntToStr(i))

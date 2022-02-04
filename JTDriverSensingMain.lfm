@@ -50,7 +50,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -115,7 +115,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -363,7 +363,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -439,7 +439,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -502,7 +502,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -565,7 +565,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -703,7 +703,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -768,7 +768,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           EditLabel.Height = 15
           EditLabel.Width = 108
-          EditLabel.Caption = 'Current Signal [mM]'
+          EditLabel.Caption = 'Actual Signal [mM]'
           Enabled = False
           TabOrder = 0
         end
@@ -2819,6 +2819,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -2850,6 +2851,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -2881,6 +2883,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -2912,6 +2915,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -2943,6 +2947,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -2974,6 +2979,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3005,6 +3011,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3036,6 +3043,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3759,6 +3767,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3790,6 +3799,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3821,6 +3831,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3852,6 +3863,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3883,6 +3895,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3914,6 +3927,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3945,6 +3959,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -3976,6 +3991,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4701,6 +4717,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4732,6 +4749,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4763,6 +4781,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4794,6 +4813,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4825,6 +4845,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4856,6 +4877,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4887,6 +4909,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -4918,6 +4941,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5641,6 +5665,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5703,6 +5728,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5734,6 +5760,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5765,6 +5792,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5796,6 +5824,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5827,6 +5856,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -5858,6 +5888,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6563,6 +6594,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6594,6 +6626,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6625,6 +6658,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6656,6 +6690,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6687,6 +6722,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6718,6 +6754,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6749,6 +6786,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -6780,6 +6818,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7480,6 +7519,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7511,6 +7551,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7542,6 +7583,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7604,6 +7646,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7635,6 +7678,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7666,6 +7710,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7697,6 +7742,7 @@ object MainForm: TMainForm
                 ClientWidth = 144
                 ColumnLayout = clVerticalThenHorizontal
                 Columns = 2
+                Enabled = False
                 ItemIndex = 0
                 Items.Strings = (
                   'Off'
@@ -7929,7 +7975,7 @@ object MainForm: TMainForm
       end
       object CommandM: TMemo
         Left = 8
-        Height = 56
+        Height = 112
         Hint = 'The command that will be sent by clicking ''Run Pumps'''
         Top = 528
         Width = 529

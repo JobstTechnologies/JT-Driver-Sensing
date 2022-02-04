@@ -2028,14 +2028,14 @@ begin
     as TCheckBox).Checked:= false;
    // change caption
    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).EditLabel.Caption:= 'Current Signal [nA]';
+   as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [nA]';
   end
   else
   begin
    SIXControl.isBlank[i]:= false;
    // change caption because it might have been a blank in previous def file
    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).EditLabel.Caption:= 'Current Signal [mM]';
+   as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
   end;
  end;
 
