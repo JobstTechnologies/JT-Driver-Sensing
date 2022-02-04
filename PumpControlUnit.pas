@@ -1294,6 +1294,9 @@ begin
   for j:= 1 to PumpNum do
    (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step))
     as TGroupBox).Enabled:= True;
+  for j:= 1 to ValveNum do
+   (MainForm.FindComponent('Valve' + IntToStr(j) + 'RG' + IntToStr(Step))
+    as TRadioGroup).Enabled:= True;
   // in case it was disabled on unchecking step 2
   if (Step = 2) and (not MainForm.ActionTime1GB.Enabled) then
    MainForm.ActionTime1GB.Enabled:= True;
@@ -1310,6 +1313,9 @@ begin
   for j:= 1 to PumpNum do
    (MainForm.FindComponent('Pump' + IntToStr(j) + 'GB' + IntToStr(Step))
     as TGroupBox).Enabled:= False;
+  for j:= 1 to ValveNum do
+   (MainForm.FindComponent('Valve' + IntToStr(j) + 'RG' + IntToStr(Step))
+    as TRadioGroup).Enabled:= False;
   // if there is only one step and endless repeat disable time settings
   if (Step = 2) and (MainForm.RunEndlessCB.Checked) then
    MainForm.ActionTime1GB.Enabled:= False;
@@ -1872,9 +1878,11 @@ var
  for j:= 1 to StepNum do
  begin
   k:= 1; // just to silence the compiler
+  // enable the specified number of valves if the step is used
   for k:= 1 to ValveNum do
    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
-    as TRadioGroup).enabled:= true;
+    as TRadioGroup).enabled:= (MainForm.FindComponent('Step'
+                                + IntToStr(j) + 'UseCB') as TCheckBox).checked;
   if k < 8 then
   begin
    for k:= ValveNum + 1 to 8 do // currently we only support 8 valves
