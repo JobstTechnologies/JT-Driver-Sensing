@@ -1,5 +1,12 @@
 Changes
 
+from version 0.997 to 0.997.1
+
+bugfixes:
+- fix buffer overflow for long SIX measurements
+- fix enabling state of valve controls
+
+
 from version 0.996 to 0.997
 
 improvement:
