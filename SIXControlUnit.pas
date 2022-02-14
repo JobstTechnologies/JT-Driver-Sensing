@@ -45,6 +45,7 @@ type
     procedure SCAnOutOfXLEChange(Sender: TObject);
     procedure SCAnOutOnOffTBChange(Sender: TObject);
     procedure SCCalibrateTBChange(Sender: TObject; aborted: Boolean = false);
+    procedure SCPerformAutoCalib(CalibSubstance: Substance);
     procedure SCChangeBackColorMIClick(Sender: TObject);
     procedure SCChangeSensFileMIClick(Sender: TObject);
     procedure SCSaveAppearance(iniFile : string);
@@ -960,7 +961,7 @@ function TSIXControl.Nonlinear(X: double): double;
 // the measured analog output voltage to measured voltage dependency
 begin
  // note that the offset can be neglected since the linearization is independent
- result:= -0.1678*power(X, 2) + 1.7397*X;
+ result:= -0.1678 * power(X, 2) + 1.7397 * X;
 end;
 
 function TSIXControl.Linear(X: double): double;
@@ -2137,7 +2138,7 @@ begin
   MainForm.BottomLine.Position:= -Infinity;
   MainForm.LeftLine.Position:= -Infinity;
   MainForm.RightLine.Position:= Infinity;
-  //reset calibChannel
+  // reset calibChannel
   calibChannelA:= 0;
   // The user might have zoomed in, then calibrated and is wondering why nothing
   // happens afterwards. Therefore jump out of the wasZoomDragged mode.
@@ -2149,6 +2150,186 @@ begin
    MainForm.MainPC.Pages[i].enabled:= true;
 
  end; // end if not checked
+
+end;
+
+procedure TSIXControl.SCPerformAutoCalib(CalibSubstance: Substance);
+var
+ OutName, DummyString, HeaderLine, CLBName : string;
+ StringList : TStringList;
+ StringArray : TStringArray;
+ i : integer;
+begin
+
+ // first check of the substance should be calibrated
+ // if the value is zero, we don't calibrate
+ if CalibSubstance = Substance.Glucose then
+  CLBName:= 'Glucose'
+ else if CalibSubstance = Substance.Lactate then
+  CLBName:= 'Lactate';
+ if (MainForm.FindComponent(CLBName + 'CalibValueFSE')
+     as TFloatSpinEdit).Value = 0.0 then
+  exit;
+
+ // check what substances arre to be calibrated
+ CalibrationF.CalculateMeanStep(CalibSubstance);
+
+ if calibChannelA = 0 then // something went wrong
+  exit;
+
+ // open a file save dialog to save the changed .def file
+ // use the folder of the InNameDef as default directory
+ MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
+ // propose as filename the current date
+ MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
+                                + FormatDateTime('dd-mm-yyyy-hh-nn', now)
+                                + '.def';
+ OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
+ if (OutName <> '') then
+ begin
+  // copy the loaded .def file into a StringList
+  StringList:= TStringList.Create;
+  try
+   StringList.LoadFromFile(InNameDef);
+   // the first line needs to be changed
+   // we get the calibrated channel and the factor for the gain
+   StringArray:= StringList[0].Split(',');
+   if calibChannelB = 0 then // we can change the single channel
+   begin
+    // the new gain is the current one times the factor
+    if MainForm.RawCurrentCB.Checked then
+     // then we must take the temperature correction into account
+     calibFactorA:= calibFactorA * GainsRaw[calibChannelA]
+                   * exp(TemperGains[calibChannelA] / 100
+                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+    else
+     // the existing gain includes the temperature correction
+     calibFactorA:= calibFactorA * Gains[calibChannelA];
+    StringArray[calibChannelA-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+   end
+   else // for channel operations
+   begin
+    if calibChannelA = 2 then
+    begin
+     if MainForm.RawCurrentCB.Checked then
+     begin
+      // then we must take the temperature correction into account
+      calibFactorA:= calibFactorA * GainsRaw[2]
+                    * exp(TemperGains[2] / 100
+                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+      calibFactorB:= calibFactorB * GainsRaw[5]
+                    * exp(TemperGains[5] / 100
+                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+     end
+     else
+     begin
+      // the existing gain includes the temperature correction
+      calibFactorA:= calibFactorA * Gains[2];
+      calibFactorB:= calibFactorB * Gains[5];
+     end;
+     StringArray[2-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+     StringArray[5-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+    end
+    else if calibChannelA = 3 then
+    begin
+     if MainForm.RawCurrentCB.Checked then
+     begin
+      // then we must take the temperature correction into account
+      calibFactorA:= calibFactorA * GainsRaw[3]
+                    * exp(TemperGains[3] / 100
+                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+      calibFactorB:= calibFactorB * GainsRaw[6]
+                    * exp(TemperGains[6] / 100
+                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+     end
+     else
+     begin
+      // the existing gain includes the temperature correction
+      calibFactorA:= calibFactorA * Gains[3];
+      calibFactorB:= calibFactorB * Gains[6];
+     end;
+     StringArray[3-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+     StringArray[6-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+    end
+    else if calibChannelA = 1 then
+    begin
+     if MainForm.RawCurrentCB.Checked then
+     begin
+      // then we must take the temperature correction into account
+      calibFactorA:= calibFactorA * GainsRaw[1]
+                    * exp(TemperGains[1] / 100
+                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+      calibFactorB:= calibFactorB * GainsRaw[4]
+                    * exp(TemperGains[4] / 100
+                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+     end
+     else
+     begin
+      // the existing gain includes the temperature correction
+      calibFactorA:= calibFactorA * Gains[1];
+      calibFactorB:= calibFactorB * Gains[4];
+     end;
+     StringArray[1-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+     StringArray[4-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+    end;
+   end;
+   // transform the array to a string and save it as new first line
+   StringList[0]:= string.join(',', StringArray);
+   // save the whole file
+   StringList.SaveToFile(OutName);
+  finally
+   StringList.free;
+  end;
+  // immediately use the new .def file
+  InNameDef:= OutName;
+  for i:= 1 to NumChannels do
+   Gains[i]:= StrToFloat(StringArray[i-1]);
+  // display file name without suffix
+  DummyString:= ExtractFileName(InNameDef);
+  SetLength(DummyString, Length(DummyString) - 4);
+  MainForm.LoadedDefFileM.Text:= DummyString;
+  // display full path as tooltip
+  MainForm.LoadedDefFileM.hint:= InNameDef;
+  // write a new header line to the output file
+  if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
+  begin
+   HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
+    '.def"' + LineEnding;
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   // the blank channels have the unit nA
+   for i:= 1 to 6 do
+   begin
+   if (Pos('Blank', HeaderStrings[i]) <> 0)
+    or (Pos('blank', HeaderStrings[i]) <> 0) then
+     isBlank[i]:= true
+   else
+    isBlank[i]:= false;
+   end;
+   // output all non-blank channels
+   for i:= 1 to NumChannels do
+    if not isBlank[i] then
+   HeaderLine:= HeaderLine + HeaderStrings[i] + ' [mM]' + #9;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
+   // for the raw values
+   for i:= 1 to NumChannels do
+    HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
+   HeaderLine:= HeaderLine + LineEnding;
+   // write line
+   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+  end
+  else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
+  begin
+   HeaderLine:= 'Calibration was performed' + LineEnding;
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   for i:= 1 to NumChannels do
+    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+  end;
+ end; //end if OutName <> ''
+
+ // reset calibChannel
+ calibChannelA:= 0;
 
 end;
 

@@ -37,11 +37,11 @@ type
 
  public
   procedure CalculateMean;
-
+  procedure CalculateMeanStep(CalibSubstance: Substance);
  end;
 
 var
-  CalibrationF: TCalibrationF;
+  CalibrationF : TCalibrationF;
   calibChannelA : integer = 0;
   calibChannelB : integer = 0;
   calibFactorA : double = 0.0;
@@ -114,7 +114,7 @@ var
  selectedSeriesA : TLineSeries;
  i, k, n, calibChannel : integer;
  x, y, yMean, x1, x2, y1, y2, calibValue, molWeight,
- yMeanA, yMeanB, yMeanMean  : double;
+ yMeanA, yMeanB, yMeanMean : double;
  selSeriesName : string;
 begin
 
@@ -389,6 +389,140 @@ begin
    calibFactorB:= calibValue / yMeanB;
   end;
 
+ end;
+
+end;
+
+procedure TCalibrationF.CalculateMeanStep(CalibSubstance: Substance);
+var
+ selectedSeries : TChartSeries;
+ selectedSeriesA : TLineSeries;
+ i, k, calibChannel : integer;
+ n : integer = 5; // we hardcode to take the last 5 measurements
+ yMean, calibValue, molWeight, yMeanA, yMeanB, yMeanMean : double;
+ selSeriesName, CLBName : string;
+begin
+ // initialization
+ molWeight:= 0.0;
+ CLBName:= '';
+ selSeriesName:= '';
+ selectedSeries:= (MainForm.FindComponent(CLBName + 'CalibCLB')
+                   as TChartListbox).Series[0] as TChartSeries;
+
+ // get the calibration substance
+ if CalibSubstance = Substance.Glucose then
+ begin
+  CLBName:= 'Glucose';
+  molWeight:= 90.07 //in g/mol
+ end
+ else if CalibSubstance = Substance.Lactate then
+ begin
+  CLBName:= 'Lactate';
+  molWeight:= 180.156;
+ end;
+
+ // check units
+ calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
+               as TFloatSpinEdit).Value; // mmol/l
+ if (MainForm.FindComponent(CLBName + 'CalibUnitCB')
+                            as TComboBox).ItemIndex = 1 then // g/l
+  calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
+                as TFloatSpinEdit).Value / molWeight / 1000
+ else if (MainForm.FindComponent(CLBName + 'CalibUnitCB')
+                            as TComboBox).ItemIndex = 2 then // mg/dl
+  calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
+                as TFloatSpinEdit).Value / molWeight / 1000 / 100;
+
+ // get the delected calibration channel
+ for i:= 0 to (MainForm.FindComponent(CLBName + 'CalibCLB')
+               as TChartListbox).SeriesCount-1 do
+ begin
+  if not (MainForm.FindComponent(CLBName + 'CalibCLB')
+          as TChartListbox).Selected[i] then
+   continue;
+
+  selectedSeries:= (MainForm.FindComponent(CLBName + 'CalibCLB')
+                    as TChartListbox).Series[i] as TChartSeries;
+  selSeriesName:= selectedSeries.Name;
+ end;
+
+ // selSeriesName is in the form 'SIXChxValues' and we need the x
+ // so get the 6th character of the name
+ calibChannel:= StrToInt(Copy(selSeriesName, 6, 1));
+
+ // initialize
+ yMean:= 0.0;
+ yMeanA:= 0.0;
+ yMeanB:= 0.0;
+ // silence compiler
+ selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
+
+ // if normal channel
+ if calibChannel < 7 then
+ begin
+  // calculate the mean out of the last n measurement values
+  for k:= selectedSeries.Count-(n-1) to selectedSeries.Count-1 do
+   yMean:= yMean + selectedSeries.YValue[k];
+
+  yMeanMean:= yMean / n;
+  calibChannelA:= calibChannel;
+  calibChannelB:= 0;
+ end
+ // if an operation channel
+ else
+ begin
+  if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+      as TComboBox).Text = 'mean(#2, #5)' then
+  begin
+   selectedSeriesA:= MainForm.SIXCH.Series[2] as TLineSeries;
+   calibChannelA:= 2;
+   calibChannelB:= 5;
+  end
+  else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+           as TComboBox).Text = 'mean(#3, #6)' then
+  begin
+   selectedSeriesA:= MainForm.SIXCH.Series[4] as TLineSeries;
+   calibChannelA:= 3;
+   calibChannelB:= 6;
+  end
+  else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
+           as TComboBox).Text = 'mean(#1, #4)' then
+  begin
+   selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
+   calibChannelA:= 1;
+   calibChannelB:= 4;
+  end;
+
+  // calculate now the mean of the two channels
+  // we purposely use the mean channel because the user set the range
+  // according to this and not a single channel
+  for k:= 0 to selectedSeries.Count-1 do
+   yMean:= yMean + selectedSeries.YValue[k];
+
+  yMeanMean:= yMean / n;
+
+  // now get the mean of the first channel
+  yMean:= 0.0;
+  for k:= 0 to selectedSeriesA.Count-1 do
+   yMean:= yMean + selectedSeriesA.YValue[k];
+
+  yMeanA:= yMean / n;
+
+  // we can now calculate the mean of the second channel
+  yMeanB:= 2 * yMeanMean - YMeanA;
+
+ end; //end if an operation channel
+
+ // output the factor(s) with which the current gain must be multiplied
+ if calibChannel < 7 then
+ begin
+  calibFactorA:= calibValue / yMeanMean;
+  calibFactorB:= 0.0;
+ end
+ else
+ begin
+  calibFactorA:= calibValue / yMeanA;
+  calibFactorB:= calibValue / yMeanB;
  end;
 
 end;

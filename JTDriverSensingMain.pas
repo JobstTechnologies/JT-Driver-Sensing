@@ -10,8 +10,8 @@ uses
   SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend,
   // the custom forms
-  SerialUSBSelection, AboutForm, TAChartAxis, TATransformations, TAChartUtils,
-  TAChartLiveView;
+  SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
+  TATransformations, TAChartUtils, TAChartLiveView;
 
 type
 
@@ -30,6 +30,8 @@ type
     Appearance8BB: TBitBtn;
     Appearance5BB: TBitBtn;
     Appearance4BB: TBitBtn;
+    GlucoseAvailableChannelsGB: TGroupBox;
+    CalibStepCB: TComboBox;
     Channel1TestGB: TGroupBox;
     ChannelTest1LE: TLabeledEdit;
     Channel1TestOnOffCB: TCheckBox;
@@ -62,6 +64,21 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    LactateAvailableChannelsGB1: TGroupBox;
+    GlucoseCalibGB: TGroupBox;
+    CalibrationGB: TGroupBox;
+    LactateCalibGB: TGroupBox;
+    LactateCalibUnitCB: TComboBox;
+    LactateCalibValueFSE: TFloatSpinEdit;
+    CalibAfterL: TLabel;
+    GlucoseTS: TTabSheet;
+    LactateTS: TTabSheet;
+    CalibSubstancesPC: TPageControl;
+    GlucoseCalibCLB: TChartListbox;
+    GlucoseCalibUnitCB: TComboBox;
+    GlucoseCalibValueFSE: TFloatSpinEdit;
+    LactateCalibCLB: TChartListbox;
+    UseCalibCB: TCheckBox;
     ValveNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
     HasNoValvesCB: TCheckBox;
@@ -840,6 +857,7 @@ type
     procedure GetFirmwareVersionMIClick(Sender: TObject);
     procedure LiveModeCBChange(Sender: TObject);
     procedure LoadActionMIClick(Sender: TObject);
+    procedure UseCalibCBChange(Sender: TObject);
     procedure ValveNumberSEChange(Sender: TObject);
     procedure ValveRGChange(Sender: TObject);
     procedure PumpVoltageFSChange(Sender: TObject);
@@ -886,9 +904,13 @@ type
 
   end;
 
+type
+ {$scopedEnums on}
+ Substance = (Glucose, Lactate);
+
 var
   MainForm : TMainForm;
-  Version : string = '0.99.7.1';
+  Version : string = '0.99.8';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 3.0;
   serPump: TBlockSerial;
@@ -2784,6 +2806,11 @@ begin
  // show step 1
  RepeatPC.ActivePage:= Step1TS;
  end; // else if not FileSuccess
+end;
+
+procedure TMainForm.UseCalibCBChange(Sender: TObject);
+begin
+ PumpControl.PCUseCalibCBChange(Sender);
 end;
 
 procedure TMainForm.ValveNumberSEChange(Sender: TObject);

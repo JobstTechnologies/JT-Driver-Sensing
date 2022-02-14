@@ -30,6 +30,7 @@ type
     procedure PCPumpGBDblClick(Sender: TObject);
     procedure PCValveRGDblClick(Sender: TObject);
     procedure PCHasNoValvesCBChange(Sender: TObject);
+    procedure PCUseCalibCBChange(Sender: TObject);
     procedure PCValveNumberSEChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
@@ -58,6 +59,9 @@ var
   PumpControl: TPumpControl;
 
 implementation
+
+uses
+  SIXControlUnit;
 
 procedure TPumpControl.PCGenerateCommandBBClick(Sender: TObject);
 
@@ -1347,6 +1351,14 @@ begin
  MainForm.StepTimer1.Enabled:= False;
  // remove possible asterisk from step caption
  MainForm.Step1TS.Caption:= 'Step 1';
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = 0) then
+ begin
+  SIXControl.SCPerformAutoCalib(Substance.Glucose);
+  SIXControl.SCPerformAutoCalib(Substance.Lactate);
+ end;
+
  // if there is a step 2, start its timer and show its tab
  if MainForm.Step2UseCB.checked then
  begin
@@ -1372,6 +1384,14 @@ begin
  // remove asterisk from current step caption
  (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
   as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex > 0) then
+ begin
+  SIXControl.SCPerformAutoCalib(Substance.Glucose);
+  SIXControl.SCPerformAutoCalib(Substance.Lactate);
+ end;
+
  // if there is a step+1, start its timer and show its tab
  if (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'UseCB')
      as TCheckBox).checked then
@@ -1863,10 +1883,17 @@ begin
   MainForm.ValveNumberSE.Value:= 1;
 end;
 
+procedure TPumpControl.PCUseCalibCBChange(Sender: TObject);
+begin
+ MainForm.CalibSubstancesPC.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
+end;
+
 procedure TPumpControl.PCValveNumberSEChange(Sender: TObject);
 var
  j, k : integer;
- begin
+begin
  ValveNum:= MainForm.ValveNumberSE.Value;
  if ValveNum = 0 then // also set checkbox that there are no valves
  begin
