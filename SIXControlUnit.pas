@@ -2171,9 +2171,8 @@ begin
      as TFloatSpinEdit).Value = 0.0 then
   exit;
 
- // check what substances arre to be calibrated
+ // calculate the calibration factors calibChannelA and calibChannelB
  CalibrationF.CalculateMeanStep(CalibSubstance);
-
  if calibChannelA = 0 then // something went wrong
   exit;
 

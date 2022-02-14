@@ -1347,6 +1347,8 @@ begin
 end;
 
 procedure TPumpControl.PCStepTimer1Finished(Sender: TObject);
+var
+ Subst: Substance;
 begin
  MainForm.StepTimer1.Enabled:= False;
  // remove possible asterisk from step caption
@@ -1355,8 +1357,8 @@ begin
  // perform a calibration if necessary
  if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = 0) then
  begin
-  SIXControl.SCPerformAutoCalib(Substance.Glucose);
-  SIXControl.SCPerformAutoCalib(Substance.Lactate);
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
  end;
 
  // if there is a step 2, start its timer and show its tab
@@ -1374,6 +1376,7 @@ procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
  Step : integer;
  SenderName : string;
+ Subst: Substance;
 begin
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form "StepTimerX" and we need the X
@@ -1388,8 +1391,8 @@ begin
  // perform a calibration if necessary
  if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex > 0) then
  begin
-  SIXControl.SCPerformAutoCalib(Substance.Glucose);
-  SIXControl.SCPerformAutoCalib(Substance.Lactate);
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
  end;
 
  // if there is a step+1, start its timer and show its tab
