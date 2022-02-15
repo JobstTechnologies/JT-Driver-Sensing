@@ -11,7 +11,7 @@ uses
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend,
   // the custom forms
   SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
-  TATransformations, TAChartUtils, TAChartLiveView;
+  TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
 
 type
 
@@ -813,6 +813,8 @@ type
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure CalibCLBAddSeries(ASender: TChartListbox;
+      ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
     procedure HasNoValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
@@ -932,7 +934,7 @@ implementation
 {$R *.lfm}
 
 uses
-  PumpControlUnit, SIXControlUnit;
+  PumpControlUnit, SIXControlUnit, Calibration;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
@@ -1341,6 +1343,12 @@ begin
  // There is an issue that on smaller high-DPI screens the bottom distance of
  // MainForm to Main PC is too large. Therefore reset the desired ratio on start.
  MainPC.Height:= round(MainForm.Height * 0.9595);
+end;
+
+procedure TMainForm.CalibCLBAddSeries(ASender: TChartListbox;
+  ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
+begin
+ CalibrationF.SIXCHCLBAddSeries(ASender, ASeries, AItems, ASkip);
 end;
 
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);

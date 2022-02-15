@@ -1891,11 +1891,12 @@ var
  extent : TDoubleRect;
  height, width : double;
  center : TDoublePoint;
- OutName, DummyString, HeaderLine : string;
+ OutName, DummyString, HeaderLine, EvaluateString : string;
  StringList : TStringList;
  StringArray : TStringArray;
  i : integer;
  Event : TNotifyEvent;
+ FormatSetting: TFormatSettings;
 begin
  // show/hide the lines and en/disable the rectangle tool
  MainForm.TopLine.Active:= MainForm.CalibrateTB.Checked;
@@ -1979,8 +1980,30 @@ begin
    // open a file save dialog to save the changed .def file
    // use the folder of the InNameDef as default directory
    MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
+
    // propose as filename the current date
-   MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
+   // first setup the format
+   FormatSetting:= DefaultFormatSettings;
+   FormatSetting.DateSeparator:= '-';
+   FormatSetting.TimeSeparator:= '-';
+   // if the filename had already a date, remove it and add the current time
+   DummyString:= MainForm.LoadedDefFileM.Text;
+   if Length(DummyString) > 16 then
+   begin
+    // the date and time part must be separated by a space
+    DummyString[Length(DummyString) - 5]:= ' ';
+    // now get the last 16 chars of the file name containing the DateTime
+    EvaluateString:= RightStr(DummyString, 16);
+    try
+     StrToDateTime(EvaluateString, FormatSetting);
+     // if there was a date, cut it off plus the 3 characters ' - '
+     SetLength(DummyString, Length(DummyString) - 19);
+    except
+     on Exception : EConvertError do
+      ; // do nothing
+    end;
+   end;
+   MainForm.SaveDialog.FileName:= DummyString + ' - '
                                   + FormatDateTime('dd-mm-yyyy-hh-nn', now)
                                   + '.def';
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
@@ -2155,10 +2178,11 @@ end;
 
 procedure TSIXControl.SCPerformAutoCalib(CalibSubstance: Substance);
 var
- OutName, DummyString, HeaderLine, CLBName : string;
+ OutName, DummyString, HeaderLine, CLBName, EvaluateString : string;
  StringList : TStringList;
  StringArray : TStringArray;
  i : integer;
+ FormatSetting: TFormatSettings;
 begin
 
  // first check of the substance should be calibrated
@@ -2180,152 +2204,170 @@ begin
  // use the folder of the InNameDef as default directory
  MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
  // propose as filename the current date
- MainForm.SaveDialog.FileName:= MainForm.LoadedDefFileM.Text + ' - '
-                                + FormatDateTime('dd-mm-yyyy-hh-nn', now)
-                                + '.def';
- OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
- if (OutName <> '') then
+ // first setup the format
+ FormatSetting:= DefaultFormatSettings;
+ FormatSetting.DateSeparator:= '-';
+ FormatSetting.TimeSeparator:= '-';
+ // if the filename had already a date, remove it and add the current time
+ DummyString:= MainForm.LoadedDefFileM.Text;
+ if Length(DummyString) > 16 then
  begin
-  // copy the loaded .def file into a StringList
-  StringList:= TStringList.Create;
+  // the date and time part must be separated by a space
+  DummyString[Length(DummyString) - 5]:= ' ';
+  // now get the last 16 chars of the file name containing the DateTime
+  EvaluateString:= RightStr(DummyString, 16);
   try
-   StringList.LoadFromFile(InNameDef);
-   // the first line needs to be changed
-   // we get the calibrated channel and the factor for the gain
-   StringArray:= StringList[0].Split(',');
-   if calibChannelB = 0 then // we can change the single channel
+   StrToDateTime(EvaluateString, FormatSetting);
+   // if there was a date, cut it off plus the 3 characters ' - '
+   SetLength(DummyString, Length(DummyString) - 19);
+  except
+   on Exception : EConvertError do
+    ; // do nothing
+  end;
+ end;
+
+ OutName:= DummyString + ' - '
+           + FormatDateTime('dd-mm-yyyy-hh-nn', now) + '.def';
+ // copy the .def file into a StringList
+ StringList:= TStringList.Create;
+ try
+  StringList.LoadFromFile(InNameDef);
+  // the first line needs to be changed
+  // we get the calibrated channel and the factor for the gain
+  StringArray:= StringList[0].Split(',');
+  if calibChannelB = 0 then // we can change the single channel
+  begin
+   // the new gain is the current one times the factor
+   if MainForm.RawCurrentCB.Checked then
+    // then we must take the temperature correction into account
+    calibFactorA:= calibFactorA * GainsRaw[calibChannelA]
+                  * exp(TemperGains[calibChannelA] / 100
+                  * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+   else
+    // the existing gain includes the temperature correction
+    calibFactorA:= calibFactorA * Gains[calibChannelA];
+   StringArray[calibChannelA-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+  end
+  else // for channel operations
+  begin
+   if calibChannelA = 2 then
    begin
-    // the new gain is the current one times the factor
     if MainForm.RawCurrentCB.Checked then
+    begin
      // then we must take the temperature correction into account
-     calibFactorA:= calibFactorA * GainsRaw[calibChannelA]
-                   * exp(TemperGains[calibChannelA] / 100
-                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
-    else
-     // the existing gain includes the temperature correction
-     calibFactorA:= calibFactorA * Gains[calibChannelA];
-    StringArray[calibChannelA-1]:= FloatToStr(RoundTo(calibFactorA, -4));
-   end
-   else // for channel operations
-   begin
-    if calibChannelA = 2 then
-    begin
-     if MainForm.RawCurrentCB.Checked then
-     begin
-      // then we must take the temperature correction into account
-      calibFactorA:= calibFactorA * GainsRaw[2]
-                    * exp(TemperGains[2] / 100
+     calibFactorA:= calibFactorA * GainsRaw[2]
+                   * exp(TemperGains[2] / 100
+                  * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+     calibFactorB:= calibFactorB * GainsRaw[5]
+                   * exp(TemperGains[5] / 100
                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-      calibFactorB:= calibFactorB * GainsRaw[5]
-                    * exp(TemperGains[5] / 100
-                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-     end
-     else
-     begin
-      // the existing gain includes the temperature correction
-      calibFactorA:= calibFactorA * Gains[2];
-      calibFactorB:= calibFactorB * Gains[5];
-     end;
-     StringArray[2-1]:= FloatToStr(RoundTo(calibFactorA, -4));
-     StringArray[5-1]:= FloatToStr(RoundTo(calibFactorB, -4));
     end
-    else if calibChannelA = 3 then
+    else
     begin
-     if MainForm.RawCurrentCB.Checked then
-     begin
-      // then we must take the temperature correction into account
+     // the existing gain includes the temperature correction
+     calibFactorA:= calibFactorA * Gains[2];
+     calibFactorB:= calibFactorB * Gains[5];
+    end;
+    StringArray[2-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+    StringArray[5-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+   end
+   else if calibChannelA = 3 then
+   begin
+    if MainForm.RawCurrentCB.Checked then
+    begin
+     // then we must take the temperature correction into account
       calibFactorA:= calibFactorA * GainsRaw[3]
                     * exp(TemperGains[3] / 100
                     * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
       calibFactorB:= calibFactorB * GainsRaw[6]
                     * exp(TemperGains[6] / 100
                     * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-     end
-     else
-     begin
-      // the existing gain includes the temperature correction
-      calibFactorA:= calibFactorA * Gains[3];
-      calibFactorB:= calibFactorB * Gains[6];
-     end;
-     StringArray[3-1]:= FloatToStr(RoundTo(calibFactorA, -4));
-     StringArray[6-1]:= FloatToStr(RoundTo(calibFactorB, -4));
     end
-    else if calibChannelA = 1 then
+    else
     begin
-     if MainForm.RawCurrentCB.Checked then
-     begin
-      // then we must take the temperature correction into account
-      calibFactorA:= calibFactorA * GainsRaw[1]
-                    * exp(TemperGains[1] / 100
-                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-      calibFactorB:= calibFactorB * GainsRaw[4]
-                    * exp(TemperGains[4] / 100
-                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-     end
-     else
-     begin
-      // the existing gain includes the temperature correction
-      calibFactorA:= calibFactorA * Gains[1];
-      calibFactorB:= calibFactorB * Gains[4];
-     end;
-     StringArray[1-1]:= FloatToStr(RoundTo(calibFactorA, -4));
-     StringArray[4-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+     // the existing gain includes the temperature correction
+     calibFactorA:= calibFactorA * Gains[3];
+     calibFactorB:= calibFactorB * Gains[6];
     end;
-   end;
-   // transform the array to a string and save it as new first line
-   StringList[0]:= string.join(',', StringArray);
-   // save the whole file
-   StringList.SaveToFile(OutName);
-  finally
-   StringList.free;
-  end;
-  // immediately use the new .def file
-  InNameDef:= OutName;
-  for i:= 1 to NumChannels do
-   Gains[i]:= StrToFloat(StringArray[i-1]);
-  // display file name without suffix
-  DummyString:= ExtractFileName(InNameDef);
-  SetLength(DummyString, Length(DummyString) - 4);
-  MainForm.LoadedDefFileM.Text:= DummyString;
-  // display full path as tooltip
-  MainForm.LoadedDefFileM.hint:= InNameDef;
-  // write a new header line to the output file
-  if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
-  begin
-   HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
-    '.def"' + LineEnding;
-   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-   // the blank channels have the unit nA
-   for i:= 1 to 6 do
+    StringArray[3-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+    StringArray[6-1]:= FloatToStr(RoundTo(calibFactorB, -4));
+   end
+   else if calibChannelA = 1 then
    begin
-   if (Pos('Blank', HeaderStrings[i]) <> 0)
-    or (Pos('blank', HeaderStrings[i]) <> 0) then
-     isBlank[i]:= true
-   else
-    isBlank[i]:= false;
+    if MainForm.RawCurrentCB.Checked then
+    begin
+     // then we must take the temperature correction into account
+     calibFactorA:= calibFactorA * GainsRaw[1]
+                   * exp(TemperGains[1] / 100
+                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+     calibFactorB:= calibFactorB * GainsRaw[4]
+                   * exp(TemperGains[4] / 100
+                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+    end
+    else
+    begin
+     // the existing gain includes the temperature correction
+     calibFactorA:= calibFactorA * Gains[1];
+     calibFactorB:= calibFactorB * Gains[4];
+    end;
+    StringArray[1-1]:= FloatToStr(RoundTo(calibFactorA, -4));
+    StringArray[4-1]:= FloatToStr(RoundTo(calibFactorB, -4));
    end;
-   // output all non-blank channels
-   for i:= 1 to NumChannels do
-    if not isBlank[i] then
-   HeaderLine:= HeaderLine + HeaderStrings[i] + ' [mM]' + #9;
-   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
-   // for the raw values
-   for i:= 1 to NumChannels do
-    HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
-   HeaderLine:= HeaderLine + LineEnding;
-   // write line
-   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
-  end
-  else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
-  begin
-   HeaderLine:= 'Calibration was performed' + LineEnding;
-   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-   for i:= 1 to NumChannels do
-    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-   HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
-   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
   end;
- end; //end if OutName <> ''
+  // transform the array to a string and save it as new first line
+  StringList[0]:= string.join(',', StringArray);
+  // save the whole file
+  StringList.SaveToFile(OutName);
+ finally
+  StringList.free;
+ end;
+ // immediately use the new .def file
+ InNameDef:= OutName;
+ for i:= 1 to NumChannels do
+  Gains[i]:= StrToFloat(StringArray[i-1]);
+ // display file name without suffix
+ DummyString:= ExtractFileName(InNameDef);
+ SetLength(DummyString, Length(DummyString) - 4);
+ MainForm.LoadedDefFileM.Text:= DummyString;
+ // display full path as tooltip
+ MainForm.LoadedDefFileM.hint:= InNameDef;
+ // write a new header line to the output file
+ if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
+ begin
+  HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
+   '.def"' + LineEnding;
+  HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+  // the blank channels have the unit nA
+  for i:= 1 to 6 do
+  begin
+  if (Pos('Blank', HeaderStrings[i]) <> 0)
+   or (Pos('blank', HeaderStrings[i]) <> 0) then
+    isBlank[i]:= true
+  else
+   isBlank[i]:= false;
+  end;
+  // output all non-blank channels
+  for i:= 1 to NumChannels do
+   if not isBlank[i] then
+  HeaderLine:= HeaderLine + HeaderStrings[i] + ' [mM]' + #9;
+  HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
+  // for the raw values
+  for i:= 1 to NumChannels do
+   HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
+  HeaderLine:= HeaderLine + LineEnding;
+  // write line
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end
+ else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
+ begin
+  HeaderLine:= 'Calibration was performed' + LineEnding;
+  HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+  for i:= 1 to NumChannels do
+   HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+  HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+ end;
+
 
  // reset calibChannel
  calibChannelA:= 0;

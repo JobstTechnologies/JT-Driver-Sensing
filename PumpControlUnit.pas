@@ -1888,7 +1888,8 @@ end;
 
 procedure TPumpControl.PCUseCalibCBChange(Sender: TObject);
 begin
- MainForm.CalibSubstancesPC.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.GlucoseTS.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
 end;

@@ -8087,13 +8087,13 @@ object MainForm: TMainForm
           Top = 48
           Width = 216
           ActivePage = GlucoseTS
-          Enabled = False
           TabIndex = 0
           TabOrder = 1
           object GlucoseTS: TTabSheet
             Caption = 'Glucose'
             ClientHeight = 394
             ClientWidth = 208
+            Enabled = False
             object GlucoseAvailableChannelsGB: TGroupBox
               Left = 0
               Height = 328
@@ -8111,6 +8111,7 @@ object MainForm: TMainForm
                 Width = 184
                 Chart = SIXCH
                 Options = [cloShowIcons]
+                OnAddSeries = CalibCLBAddSeries
                 ExtendedSelect = False
                 ItemHeight = 20
                 ParentShowHint = False
@@ -8161,6 +8162,7 @@ object MainForm: TMainForm
             Caption = 'Lactate'
             ClientHeight = 394
             ClientWidth = 208
+            Enabled = False
             object LactateCalibGB: TGroupBox
               Left = 0
               Height = 54
@@ -8216,6 +8218,7 @@ object MainForm: TMainForm
                 Width = 184
                 Chart = SIXCH
                 Options = [cloShowIcons]
+                OnAddSeries = CalibCLBAddSeries
                 ExtendedSelect = False
                 ItemHeight = 20
                 ParentShowHint = False
@@ -8234,7 +8237,6 @@ object MainForm: TMainForm
           OnChange = UseCalibCBChange
           ParentShowHint = False
           TabOrder = 2
-          Visible = False
         end
       end
     end
