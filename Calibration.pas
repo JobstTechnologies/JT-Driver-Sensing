@@ -406,8 +406,13 @@ begin
  molWeight:= 0.0;
  CLBName:= '';
  selSeriesName:= '';
- selectedSeries:= (MainForm.FindComponent(CLBName + 'CalibCLB')
-                   as TChartListbox).Series[0] as TChartSeries;
+ if MainForm.GlucoseCalibCLB.SeriesCount > 0 then
+  selectedSeries:= MainForm.GlucoseCalibCLB.Series[0] as TChartSeries
+ else // there is not at least one series
+ begin
+  calibChannelA:= 0;
+  exit;
+ end;
 
  // get the calibration substance
  if CalibSubstance = Substance.Glucose then
@@ -433,7 +438,7 @@ begin
   calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
                 as TFloatSpinEdit).Value / molWeight / 1000 / 100;
 
- // get the delected calibration channel
+ // get the selected calibration channel
  for i:= 0 to (MainForm.FindComponent(CLBName + 'CalibCLB')
                as TChartListbox).SeriesCount-1 do
  begin
@@ -445,6 +450,11 @@ begin
                     as TChartListbox).Series[i] as TChartSeries;
   selSeriesName:= selectedSeries.Name;
  end;
+
+ // it might be that there are not yet enough measurement values
+ // to calibrate
+ if selectedSeries.Count < n + 1 then
+  exit;
 
  // selSeriesName is in the form 'SIXChxValues' and we need the x
  // so get the 6th character of the name
@@ -496,14 +506,15 @@ begin
   // calculate now the mean of the two channels
   // we purposely use the mean channel because the user set the range
   // according to this and not a single channel
-  for k:= 0 to selectedSeries.Count-1 do
+  // calculate the mean out of the last n measurement values
+  for k:= selectedSeries.Count-(n-1) to selectedSeries.Count-1 do
    yMean:= yMean + selectedSeries.YValue[k];
 
   yMeanMean:= yMean / n;
 
   // now get the mean of the first channel
   yMean:= 0.0;
-  for k:= 0 to selectedSeriesA.Count-1 do
+  for k:= selectedSeriesA.Count-(n-1) to selectedSeriesA.Count-1 do
    yMean:= yMean + selectedSeriesA.YValue[k];
 
   yMeanA:= yMean / n;

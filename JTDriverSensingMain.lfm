@@ -8043,11 +8043,15 @@ object MainForm: TMainForm
       object CalibrationGB: TGroupBox
         Left = 720
         Height = 496
+        Hint = 'Calibration is only possible when a'#13#10'sensor definition file is loaded'
         Top = 24
         Width = 232
         Caption = 'Calibration'
         ClientHeight = 476
         ClientWidth = 228
+        Enabled = False
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 7
         object CalibAfterL: TLabel
           Left = 120
@@ -8112,6 +8116,7 @@ object MainForm: TMainForm
                 Chart = SIXCH
                 Options = [cloShowIcons]
                 OnAddSeries = CalibCLBAddSeries
+                OnItemClick = CalibCLBItemClick
                 ExtendedSelect = False
                 ItemHeight = 20
                 ParentShowHint = False
@@ -8136,6 +8141,7 @@ object MainForm: TMainForm
                 Width = 64
                 Alignment = taRightJustify
                 MaxValue = 9999
+                OnChange = CalibValueFSEChange
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -8180,6 +8186,7 @@ object MainForm: TMainForm
                 Width = 64
                 Alignment = taRightJustify
                 MaxValue = 9999
+                OnChange = CalibValueFSEChange
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -8219,6 +8226,7 @@ object MainForm: TMainForm
                 Chart = SIXCH
                 Options = [cloShowIcons]
                 OnAddSeries = CalibCLBAddSeries
+                OnItemClick = CalibCLBItemClick
                 ExtendedSelect = False
                 ItemHeight = 20
                 ParentShowHint = False

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, ExtCtrls, Spin, Buttons, LCLType,
-  SynaSer, Crt, Character, System.UITypes, Types,
+  SynaSer, Crt, Character, System.UITypes, Types, TAChartListbox,
   // custom forms
   JTDriverSensingMain, NameSetting, SerialUSBSelection;
 
@@ -34,6 +34,7 @@ type
     procedure PCValveNumberSEChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
+    procedure PCCalibValueFSEChange(Sender: TObject);
 
   private
 
@@ -1389,7 +1390,7 @@ begin
   as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
 
  // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex > 0) then
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = Step - 1) then
  begin
   for Subst in Substance do
    SIXControl.SCPerformAutoCalib(Subst);
@@ -1963,6 +1964,31 @@ begin
    if not MainForm.Step2UseCB.Checked then
     MainForm.ActionTime1GB.Enabled:= True;
   end;
+end;
+
+procedure TPumpControl.PCCalibValueFSEChange(Sender: TObject);
+var
+ i : integer;
+ found : Boolean = false;
+ SenderName, SubstanceUIName : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form "GlucoseCalibValueFSE" and we need the first part
+ SubstanceUIName:= Copy(SenderName, 0, Length(SenderName) - 8);
+ // check that there is at least one selected series to calibrate
+ // when the value is not zero
+ if (MainForm.FindComponent(SenderName) as TFloatSpinEdit).Value > 0.0 then
+ begin
+  for i:= 0 to (MainForm.FindComponent(SubstanceUIName + 'CLB')
+               as TChartListbox).SeriesCount-1 do
+  begin
+   if (MainForm.FindComponent(SubstanceUIName + 'CLB')
+       as TChartListbox).Selected[i] then
+    found:= true;
+  end;
+ end;
+ // don't allow to run the pumps
+ MainForm.RunBB.Enabled:= found;
 end;
 
 end.

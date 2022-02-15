@@ -815,6 +815,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure CalibCLBAddSeries(ASender: TChartListbox;
       ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
+    procedure CalibValueFSEChange(Sender: TObject);
+    procedure CalibCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
     procedure HasNoValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
@@ -1349,6 +1351,18 @@ procedure TMainForm.CalibCLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
 begin
  CalibrationF.SIXCHCLBAddSeries(ASender, ASeries, AItems, ASkip);
+end;
+
+procedure TMainForm.CalibValueFSEChange(Sender: TObject);
+begin
+ PumpControl.PCCalibValueFSEChange(Sender);
+end;
+
+procedure TMainForm.CalibCLBItemClick(ASender: TObject; AIndex: Integer);
+begin
+ // we can allow to run the pumps since at least one series is selected
+ // for calibration
+ RunBB.Enabled:= true;
 end;
 
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
@@ -1926,6 +1940,11 @@ begin
    StartTestBB.enabled:= false;
    NoSubtractBlankCB.enabled:= false;
    UnloadDefBB.visible:= false;
+   CalibrateTB.Enabled:= false;
+   CalibrationGB.Enabled:= false;
+   CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+                        + 'sensor definition file is loaded';
+   UseCalibCB.Checked:= false;
    // the values are then in nA
    RawCurrentCB.Checked:= true;
    RawCurrentCB.Enabled:= false;
@@ -1961,6 +1980,10 @@ begin
   NoSubtractBlankCB.enabled:= false;
   UnloadDefBB.visible:= false;
   CalibrateTB.Enabled:= false;
+  CalibrationGB.Enabled:= false;
+  CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+                       + 'sensor definition file is loaded';
+  UseCalibCB.Checked:= false;
   // the values are then in nA
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
@@ -2010,6 +2033,8 @@ begin
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
  CalibrateTB.Enabled:= true;
+ CalibrationGB.Enabled:= true;
+ CalibrationGB.Hint:= '';
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
@@ -2142,6 +2167,10 @@ begin
  StartTestBB.enabled:= false;
  UnloadDefBB.visible:= false;
  CalibrateTB.Enabled:= false;
+ CalibrationGB.Enabled:= false;
+ CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+                      + 'sensor definition file is loaded';
+ UseCalibCB.Checked:= false;
  // the values are then in nA
  RawCurrentCB.Checked:= true;
  RawCurrentCB.Enabled:= false;

@@ -1990,8 +1990,6 @@ begin
    DummyString:= MainForm.LoadedDefFileM.Text;
    if Length(DummyString) > 16 then
    begin
-    // the date and time part must be separated by a space
-    DummyString[Length(DummyString) - 5]:= ' ';
     // now get the last 16 chars of the file name containing the DateTime
     EvaluateString:= RightStr(DummyString, 16);
     try
@@ -2003,8 +2001,11 @@ begin
       ; // do nothing
     end;
    end;
+
+   // Note: to be later able to read the output datetime,
+   // the date and time part must be separated by a space
    MainForm.SaveDialog.FileName:= DummyString + ' - '
-                                  + FormatDateTime('dd-mm-yyyy-hh-nn', now)
+                                  + FormatDateTime('dd-mm-yyyy hh-nn', now)
                                   + '.def';
    OutName:= MainForm.SaveHandling(InNameDef, '.def'); // opens file dialog
    if (OutName <> '') then
@@ -2200,9 +2201,6 @@ begin
  if calibChannelA = 0 then // something went wrong
   exit;
 
- // open a file save dialog to save the changed .def file
- // use the folder of the InNameDef as default directory
- MainForm.SaveDialog.InitialDir:= ExtractFilePath(InNameDef);
  // propose as filename the current date
  // first setup the format
  FormatSetting:= DefaultFormatSettings;
@@ -2212,8 +2210,6 @@ begin
  DummyString:= MainForm.LoadedDefFileM.Text;
  if Length(DummyString) > 16 then
  begin
-  // the date and time part must be separated by a space
-  DummyString[Length(DummyString) - 5]:= ' ';
   // now get the last 16 chars of the file name containing the DateTime
   EvaluateString:= RightStr(DummyString, 16);
   try
@@ -2226,8 +2222,10 @@ begin
   end;
  end;
 
+ // Note: to be later able to read the output datetime,
+ // the date and time part must be separated by a space
  OutName:= DummyString + ' - '
-           + FormatDateTime('dd-mm-yyyy-hh-nn', now) + '.def';
+           + FormatDateTime('dd-mm-yyyy hh-nn', now) + '.def';
  // copy the .def file into a StringList
  StringList:= TStringList.Create;
  try
