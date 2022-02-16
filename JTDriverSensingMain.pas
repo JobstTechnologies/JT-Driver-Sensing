@@ -1350,7 +1350,7 @@ end;
 procedure TMainForm.CLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
 begin
- CalibrationF.CaCalibAddSeries(ASender, ASeries, AItems, ASkip);
+ CalibrationF.CalibCLBAddSeries(ASender, ASeries, AItems, ASkip);
 end;
 
 procedure TMainForm.CalibValueFSEChange(Sender: TObject);

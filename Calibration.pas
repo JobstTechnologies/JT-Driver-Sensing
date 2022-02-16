@@ -30,7 +30,7 @@ type
   procedure FormShow(Sender: TObject);
   procedure SIXCHCLBAddSeries(ASender{%H-}: TChartListbox;
    ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
-  procedure CaCalibAddSeries(ASender{%H-}: TChartListbox;
+  procedure CalibCLBAddSeries(ASender{%H-}: TChartListbox;
   ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
   procedure SIXCHCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
   procedure SubstanceGBClick(Sender: TObject);
@@ -88,7 +88,7 @@ begin
   ASkip:= true;
 end;
 
-procedure TCalibrationF.CaCalibAddSeries(ASender: TChartListbox;
+procedure TCalibrationF.CalibCLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
 var
  SenderEnd : string;
