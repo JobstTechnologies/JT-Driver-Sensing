@@ -813,7 +813,7 @@ type
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure CalibCLBAddSeries(ASender: TChartListbox;
+    procedure CLBAddSeries(ASender: TChartListbox;
       ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
     procedure CalibValueFSEChange(Sender: TObject);
     procedure CalibCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
@@ -1347,10 +1347,10 @@ begin
  MainPC.Height:= round(MainForm.Height * 0.9595);
 end;
 
-procedure TMainForm.CalibCLBAddSeries(ASender: TChartListbox;
+procedure TMainForm.CLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
 begin
- CalibrationF.SIXCHCLBAddSeries(ASender, ASeries, AItems, ASkip);
+ CalibrationF.CaCalibAddSeries(ASender, ASeries, AItems, ASkip);
 end;
 
 procedure TMainForm.CalibValueFSEChange(Sender: TObject);
@@ -1942,7 +1942,7 @@ begin
    UnloadDefBB.visible:= false;
    CalibrateTB.Enabled:= false;
    CalibrationGB.Enabled:= false;
-   CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+   CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                         + 'sensor definition file is loaded';
    UseCalibCB.Checked:= false;
    // the values are then in nA
@@ -1981,7 +1981,7 @@ begin
   UnloadDefBB.visible:= false;
   CalibrateTB.Enabled:= false;
   CalibrationGB.Enabled:= false;
-  CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+  CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                        + 'sensor definition file is loaded';
   UseCalibCB.Checked:= false;
   // the values are then in nA
@@ -2168,7 +2168,7 @@ begin
  UnloadDefBB.visible:= false;
  CalibrateTB.Enabled:= false;
  CalibrationGB.Enabled:= false;
- CalibrationGB.Hint:= 'Calibration is only possible when a' + LineEnding
+ CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                       + 'sensor definition file is loaded';
  UseCalibCB.Checked:= false;
  // the values are then in nA

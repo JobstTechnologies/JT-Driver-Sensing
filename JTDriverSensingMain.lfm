@@ -8043,7 +8043,7 @@ object MainForm: TMainForm
       object CalibrationGB: TGroupBox
         Left = 720
         Height = 496
-        Hint = 'Calibration is only possible when a'#13#10'sensor definition file is loaded'
+        Hint = 'Calibration is only possible if a'#13#10'sensor definition file is loaded'
         Top = 24
         Width = 232
         Caption = 'Calibration'
@@ -8115,7 +8115,7 @@ object MainForm: TMainForm
                 Width = 184
                 Chart = SIXCH
                 Options = [cloShowIcons]
-                OnAddSeries = CalibCLBAddSeries
+                OnAddSeries = CLBAddSeries
                 OnItemClick = CalibCLBItemClick
                 ExtendedSelect = False
                 ItemHeight = 20
@@ -8225,7 +8225,7 @@ object MainForm: TMainForm
                 Width = 184
                 Chart = SIXCH
                 Options = [cloShowIcons]
-                OnAddSeries = CalibCLBAddSeries
+                OnAddSeries = CLBAddSeries
                 OnItemClick = CalibCLBItemClick
                 ExtendedSelect = False
                 ItemHeight = 20

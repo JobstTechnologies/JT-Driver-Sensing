@@ -30,6 +30,8 @@ type
   procedure FormShow(Sender: TObject);
   procedure SIXCHCLBAddSeries(ASender{%H-}: TChartListbox;
    ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
+  procedure CaCalibAddSeries(ASender{%H-}: TChartListbox;
+  ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
   procedure SIXCHCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
   procedure SubstanceGBClick(Sender: TObject);
   procedure ValueFSEChange(Sender: TObject);
@@ -50,6 +52,8 @@ var
 implementation
 
 {$R *.lfm}
+uses
+  SIXControlUnit;
 
 procedure TCalibrationF.SIXCHCLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
@@ -62,9 +66,43 @@ begin
   ASkip:= true;
   exit;
  end;
+ // don't show the result series
+ // ASeries.Name is in the form 'SIXCh6xxx' so check if xxx = 'Results'
+ SenderEnd:= RightStr(ASeries.Name, 7);
+ if SenderEnd = 'Results' then
+ begin
+  ASkip:= true;
+  exit;
+ end;
  // don't add the selection line series
  if (ASeries = MainForm.LeftLine) or (ASeries = MainForm.RightLine)
     or (ASeries = MainForm.TopLine) or (ASeries = MainForm.BottomLine) then
+ begin
+  ASkip:= true;
+  exit;
+ end;
+ // don't show the temperature series
+ // ASeries.Name is then 'SIXTempValues'
+ SenderEnd:= Copy(ASeries.Name, 4, 4);
+ if SenderEnd = 'Temp' then
+  ASkip:= true;
+end;
+
+procedure TCalibrationF.CaCalibAddSeries(ASender: TChartListbox;
+  ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
+var
+ SenderEnd : string;
+ maxChannels : integer;
+begin
+ // skip all series that are not defined by the .def file
+ // we have 2 series per channel and then 2 additional operational channels
+ // however, for the case there are less than 4 channels,
+ // we must omit the operational channels
+ if SIXControl.NumChannels < 4 then
+  maxChannels:= 2 * SIXControl.NumChannels
+ else
+  maxChannels:= (2 * (SIXControl.NumChannels + 2));
+ if ASeries.Index > maxChannels - 1 then
  begin
   ASkip:= true;
   exit;
@@ -77,11 +115,12 @@ begin
   ASkip:= true;
   exit;
  end;
- // don't show the temperature series
- // ASeries.Name is then 'SIXTempValues'
- SenderEnd:= Copy(ASeries.Name, 4, 4);
- if SenderEnd = 'Temp' then
+ // don't show the blank series
+ if (Pos('Blank', ASeries.Title) > 0) or (Pos('blank', ASeries.Title) > 0) then
+ begin
   ASkip:= true;
+  exit;
+ end;
 end;
 
 procedure TCalibrationF.FormShow(Sender: TObject);
