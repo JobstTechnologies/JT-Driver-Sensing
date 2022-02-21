@@ -30,15 +30,18 @@ type
   procedure FormShow(Sender: TObject);
   procedure SIXCHCLBAddSeries(ASender{%H-}: TChartListbox;
    ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
-  procedure CalibCLBAddSeries(ASender{%H-}: TChartListbox;
+  procedure CalibCLBAddSeries(ASender: TChartListbox;
   ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
   procedure SIXCHCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
   procedure SubstanceGBClick(Sender: TObject);
+  function CheckCalibChannel(channelNum: integer): Boolean;
   procedure ValueFSEChange(Sender: TObject);
  private
 
  public
   procedure CalculateMean;
+  // separate procedure for the calibration after a pumping step
+  // because then the calibration dialog is not available
   procedure CalculateMeanStep(CalibSubstance: Substance);
  end;
 
@@ -77,6 +80,12 @@ begin
  // don't add the selection line series
  if (ASeries = MainForm.LeftLine) or (ASeries = MainForm.RightLine)
     or (ASeries = MainForm.TopLine) or (ASeries = MainForm.BottomLine) then
+ begin
+  ASkip:= true;
+  exit;
+ end;
+ // don't show the blank series
+ if (Pos('Blank', ASeries.Title) > 0) or (Pos('blank', ASeries.Title) > 0) then
  begin
   ASkip:= true;
   exit;
@@ -121,6 +130,23 @@ begin
   ASkip:= true;
   exit;
  end;
+ // don't show channels that don't apply for the substance
+ if (Pos('Glucose', ASender.Name) > 0) then
+ begin
+  if not ((Pos('Gluc', ASeries.Title) > 0) or (Pos('gluc', ASeries.Title) > 0)) then
+  begin
+   ASkip:= true;
+   exit;
+  end;
+ end
+ else if (Pos('Lactate', ASender.Name) > 0) then
+ begin
+  if not ((Pos('Lac', ASeries.Title) > 0) or (Pos('lac', ASeries.Title) > 0)) then
+  begin
+   ASkip:= true;
+   exit;
+  end;
+ end;
 end;
 
 procedure TCalibrationF.FormShow(Sender: TObject);
@@ -147,6 +173,32 @@ begin
  CalculateMean;
 end;
 
+function TCalibrationF.CheckCalibChannel(channelNum : integer) : Boolean;
+begin
+ if ( (pos('Gluc', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
+       as TGroupBox).Caption) = 0)
+     and
+      (pos('gluc', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
+       as TGroupBox).Caption) = 0)
+     and (GlucoseRB.Checked) )
+    or
+     ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
+       as TGroupBox).Caption) = 0)
+     and
+      (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
+       as TGroupBox).Caption) = 0)
+     and (LactateRB.Checked) ) then
+ begin
+  MeanValueLE.Text:= 'wrong substance';
+  CalibOKBB.Enabled:= false;
+  CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
+                    + 'perform the calibration';
+  result:= false;
+ end
+ else
+  result:= true;
+end;
+
 procedure TCalibrationF.CalculateMean;
 var
  selectedSeries, selectedSeriesMean : TChartSeries;
@@ -165,6 +217,28 @@ begin
   CalibOKBB.Hint:= 'Select a substance to' + LineEnding
                    + 'perform the calibration';
   exit;
+ end;
+
+ // FIXME: Implement to hide series that don't apply for
+ // the selected substance. So fill this skeleton:
+ for i:= 0 to SIXCHCLB.SeriesCount-1 do
+ begin
+  if GlucoseRB.Checked then
+  begin
+   if (pos('Gluc', SIXCHCLB.Series[i].Title) > 0)
+      or (pos('gluc', SIXCHCLB.Series[i].Title) > 0) then
+     //show
+   else
+    ; //hide
+  end
+  else if LactateRB.Checked then
+  begin
+   if (pos('Lac', SIXCHCLB.Series[i].Title) > 0)
+      or (pos('lac', SIXCHCLB.Series[i].Title) > 0) then
+     //show
+   else
+    ; //hide
+  end;
  end;
 
  x1:= Min(MainForm.LeftLine.Position, MainForm.RightLine.Position);
@@ -256,26 +330,8 @@ begin
    if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#2, #5)' then
    begin
-    if ( (pos('Glu' , (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and
-      (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (GlucoseRB.Checked) )
-     or
-      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-         as TGroupBox).Caption) = 0)
-      and
-       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(2) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (LactateRB.Checked) ) then
-    begin
-     MeanValueLE.Text:= 'wrong substance';
-     CalibOKBB.Enabled:= false;
-     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                      + 'perform the calibration';
-     exit;
-    end
+    if not CheckCalibChannel(2) then
+     exit
     else
     begin
      selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
@@ -287,26 +343,8 @@ begin
    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#3, #6)' then
    begin
-    if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and
-       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (GlucoseRB.Checked) )
-     or
-      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and
-       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(3) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (LactateRB.Checked) ) then
-    begin
-     MeanValueLE.Text:= 'wrong substance';
-     CalibOKBB.Enabled:= false;
-     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                      + 'perform the calibration';
-     exit;
-    end
+    if not CheckCalibChannel(3) then
+     exit
     else
     begin
      selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
@@ -318,26 +356,8 @@ begin
    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#1, #4)' then
    begin
-    if ( (pos('Glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and
-       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (GlucoseRB.Checked) )
-     or
-      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and
-       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(1) + 'GB')
-        as TGroupBox).Caption) = 0)
-      and (LactateRB.Checked) ) then
-    begin
-     MeanValueLE.Text:= 'wrong substance';
-     CalibOKBB.Enabled:= false;
-     CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                      + 'perform the calibration';
-     exit;
-    end
+    if not CheckCalibChannel(1) then
+     exit
     else
     begin
      selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
@@ -428,10 +448,12 @@ begin
    calibFactorB:= calibValue / yMeanB;
   end;
 
- end;
+ end; // end for i:= 0 to SIXCHCLB.SeriesCount-1
 
 end;
 
+// separate procedure for the calibration after a pumping step
+// because then the calibration dialog is not available
 procedure TCalibrationF.CalculateMeanStep(CalibSubstance: Substance);
 var
  selectedSeries : TChartSeries;
