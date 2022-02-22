@@ -8208,7 +8208,7 @@ object MainForm: TMainForm
                 Text = 'mmol/l'
               end
             end
-            object LactateAvailableChannelsGB1: TGroupBox
+            object LactateAvailableChannelsGB: TGroupBox
               Left = 0
               Height = 328
               Top = 64

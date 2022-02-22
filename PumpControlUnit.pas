@@ -65,10 +65,9 @@ uses
   SIXControlUnit;
 
 procedure TPumpControl.PCGenerateCommandBBClick(Sender: TObject);
-
 // call function to collect data and generate command
 var
- command : string;
+ command, Substance : string;
  i, j : integer;
 begin
  GenerateCommand(command);
@@ -118,6 +117,20 @@ begin
  MainForm.LoadedActionFileM.Text:= 'None';
  MainForm.LoadedActionFileM.Color:= clDefault;
  MainForm.LoadedActionFileM.Hint:= 'No action file loaded';
+ // enable the calibration settings
+ MainForm.CalibStepCB.Enabled:= True;
+ MainForm.UseCalibCB.Enabled:= True;
+ for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
+ begin
+  // the user must be able to see the settings for all substances
+  // therefore we cannot just disable the CalibSubstancesPC component but its
+  // child components except of XTS
+  Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
+  (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
+   as TGroupBox).Enabled:= True;
+  (MainForm.FindComponent(Substance + 'CalibGB')
+   as TGroupBox).Enabled:= True;
+ end;
  // enable saving
  MainForm.SaveActionMI.Enabled:= True;
 end;

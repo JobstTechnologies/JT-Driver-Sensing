@@ -64,7 +64,7 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
-    LactateAvailableChannelsGB1: TGroupBox;
+    LactateAvailableChannelsGB: TGroupBox;
     GlucoseCalibGB: TGroupBox;
     CalibrationGB: TGroupBox;
     LactateCalibGB: TGroupBox;
@@ -1317,7 +1317,9 @@ begin
     exit;
    end;
    // enable all buttons
-   RunBB.Enabled:= true;
+   // don't allow to run, if calibration is used but no .def file is used
+   if UseCalibCB.Checked and (LoadedDefFileM.Text <> 'None') then
+    RunBB.Enabled:= true;
    StopBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
    if ConnComPortSensM.Color = clDefault then
@@ -2035,6 +2037,14 @@ begin
  CalibrateTB.Enabled:= true;
  CalibrationGB.Enabled:= true;
  CalibrationGB.Hint:= '';
+ if not RunBB.Enabled then
+ begin
+  RunBB.Enabled:= True;
+  RunBB.Hint:= 'Starts the pump action according to the current settings.'
+   + LineEnding
+   + 'To enable the button you must first connect to the pump driver'
+   + LineEnding + 'using the menu ''Connection''';
+ end;
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
@@ -2753,7 +2763,7 @@ var
  FileSuccess : Boolean = false;
  ParseSuccess : Boolean = false;
  MousePointer : TPoint;
- command, DummyString : string;
+ command, DummyString, Substance : string;
  i, j : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
@@ -2775,8 +2785,7 @@ begin
  else
  begin
   // an action file is never live mode
-  if LiveModeCB.Checked then
-   LiveModeCB.Checked:= False;
+  LiveModeCB.Checked:= False;
   // make all steps visible because they might be invisible due to a prior loading
   for j:= 2 to PumpControl.StepNum do
    (FindComponent('Step' + IntToStr(j) + 'TS')
@@ -2830,6 +2839,19 @@ begin
      as TGroupBox).ShowHint:= False;
   end;
   RepeatOutputLE.Visible:= False;
+  CalibStepCB.Enabled:= False;
+  UseCalibCB.Enabled:= False;
+  for j:= 1 to CalibSubstancesPC.PageCount do
+  begin
+   // the user must be able to see the settings for all substances
+   // therefore we cannot just disable the CalibSubstancesPC component but its
+   // child components except of XTS
+   Substance:= CalibSubstancesPC.Pages[j-1].Caption;
+   (FindComponent(Substance + 'AvailableChannelsGB')
+    as TGroupBox).Enabled:= False;
+   (FindComponent(Substance + 'CalibGB')
+    as TGroupBox).Enabled:= False;
+  end;
   // do not show unused steps
   for j:= 2 to PumpControl.StepNum do
   begin
@@ -2859,7 +2881,7 @@ function TMainForm.OpenActionFile(InputName: string): Boolean;
 // read file content
 var
  StringList : TStringList;
- j, k, ValveNumFile : integer;
+ j, k, ValveNumFile, startIndex, stopIndex : integer;
 begin
  result:= False;
  PumpControl.PumpNumFile:= 0;
@@ -2912,6 +2934,44 @@ begin
     for k:= PumpControl.ValveNum + 1 to 8 do
      (FindComponent('Valve' + IntToStr(k) + 'RG1')
       as TRadioGroup).Caption:= 'Valve ' + IntToStr(k);
+   end;
+  end;
+
+  // read the calibration settings
+  UseCalibCB.Checked:= false; // will later be re-eabled if possible
+  for j:= PumpControl.PumpNumFile + 1 to StringList.Count - 1 do
+  begin
+   if LeftStr(StringList[j], Length('Calibration')) = 'Calibration' then
+   begin
+    CalibStepCB.Text:= Copy(StringList[j], Length('Calibration') + 3, Length(StringList[j]));
+    // we know now that there are calibration settings
+    UseCalibCB.Checked:= true;
+    // when no .def fileis loaded, we must disable the RunBB button
+    if LoadedDefFileM.Text = 'None' then
+    begin
+     RunBB.Enabled:= False;
+     RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
+    end;
+   end
+   else if LeftStr(StringList[j], Length('Glucose')) = 'Glucose' then
+   begin
+    // the value is between the two spaces in the line
+    startIndex:= Pos(' ', StringList[j]);
+    stopIndex:= Pos(' ', StringList[j], startIndex + 1);
+    GlucoseCalibValueFSE.Value:= StrToFloat(Copy(StringList[j],
+                                  startIndex + 1, stopIndex - (startIndex + 1)));
+    GlucoseCalibUnitCB.Text:= Copy(StringList[j],
+                               stopIndex + 1, Length(StringList[j]) - stopIndex);
+   end
+   else if LeftStr(StringList[j], Length('Lactate')) = 'Lactate' then
+   begin
+    // the value is between the two spaces in the line
+    startIndex:= Pos(' ', StringList[j]);
+    stopIndex:= Pos(' ', StringList[j], startIndex + 1);
+    LactateCalibValueFSE.Value:= StrToFloat(Copy(StringList[j],
+                                  startIndex + 1, stopIndex - (startIndex + 1)));
+    LactateCalibUnitCB.Text:= Copy(StringList[j],
+                               stopIndex + 1, Length(StringList[j]) - stopIndex);
    end;
   end;
 
@@ -3056,8 +3116,8 @@ begin
     SaveFileStream.Write(FloatToStr(LactateCalibValueFSE.Value)[1],
                          Length(FloatToStr(LactateCalibValueFSE.Value)));
     SaveFileStream.Write(string(' ')[1] , 1);
-    SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
-                         Length(GlucoseCalibUnitCB.Text));
+    SaveFileStream.Write(LactateCalibUnitCB.Text[1],
+                         Length(LactateCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
    end;
   finally
