@@ -19,12 +19,10 @@ type
   CalibOKBB: TBitBtn;
   CalibCancelBB: TBitBtn;
   ConcentrationGB: TGroupBox;
-  GlucoseRB: TRadioButton;
-  LactateRB: TRadioButton;
-  SubstanceGB: TGroupBox;
   MeanValueLE: TLabeledEdit;
   AvailableChannelsGB: TGroupBox;
   SIXCHCLB: TChartListbox;
+  SubstanceGB: TRadioGroup;
   UnitCB: TComboBox;
   ValueFSE: TFloatSpinEdit;
   procedure FormShow(Sender: TObject);
@@ -95,6 +93,21 @@ begin
  SenderEnd:= Copy(ASeries.Name, 4, 4);
  if SenderEnd = 'Temp' then
   ASkip:= true;
+ // don't show series that don't fit to the substance
+ case SubstanceGB.ItemIndex of
+  0:
+   begin
+    if not( (pos('Gluc', ASeries.Title) > 0) or (pos('gluc', ASeries.Title) > 0) ) then
+     ASkip:= true;
+     exit;
+   end;
+  1:
+   begin
+    if not( (pos('Lac', ASeries.Title) > 0) or (pos('lac', ASeries.Title) > 0) ) then
+     ASkip:= true;
+     exit;
+   end;
+ end;
 end;
 
 procedure TCalibrationF.CalibCLBAddSeries(ASender: TChartListbox;
@@ -164,6 +177,8 @@ end;
 
 procedure TCalibrationF.SubstanceGBClick(Sender: TObject);
 begin
+ // repoulate series list to be able to exclude series of the wrong substance
+ SIXCHCLB.Populate;
  CalculateMean;
 end;
 
@@ -180,14 +195,14 @@ begin
      and
       (pos('gluc', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
        as TGroupBox).Caption) = 0)
-     and (GlucoseRB.Checked) )
+     and (SubstanceGB.ItemIndex = 0) )
     or
      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
        as TGroupBox).Caption) = 0)
      and
       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
        as TGroupBox).Caption) = 0)
-     and (LactateRB.Checked) ) then
+     and (SubstanceGB.ItemIndex = 1) ) then
  begin
   MeanValueLE.Text:= 'wrong substance';
   CalibOKBB.Enabled:= false;
@@ -209,21 +224,11 @@ var
  selSeriesName : string;
 begin
 
- // catch the case that no substance was selected
- if (not GlucoseRB.Checked) and (not LactateRB.Checked) then
- begin
-  MeanValueLE.Text:= 'no substance selected';
-  CalibOKBB.Enabled:= false;
-  CalibOKBB.Hint:= 'Select a substance to' + LineEnding
-                   + 'perform the calibration';
-  exit;
- end;
-
  // FIXME: Implement to hide series that don't apply for
  // the selected substance. So fill this skeleton:
  for i:= 0 to SIXCHCLB.SeriesCount-1 do
  begin
-  if GlucoseRB.Checked then
+  if SubstanceGB.ItemIndex = 0 then
   begin
    if (pos('Gluc', SIXCHCLB.Series[i].Title) > 0)
       or (pos('gluc', SIXCHCLB.Series[i].Title) > 0) then
@@ -231,7 +236,7 @@ begin
    else
     ; //hide
   end
-  else if LactateRB.Checked then
+  else if SubstanceGB.ItemIndex = 1 then
   begin
    if (pos('Lac', SIXCHCLB.Series[i].Title) > 0)
       or (pos('lac', SIXCHCLB.Series[i].Title) > 0) then
@@ -280,14 +285,14 @@ begin
      and
       (pos('glu', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
         as TGroupBox).Caption) = 0)
-     and (GlucoseRB.Checked) )
+     and (SubstanceGB.ItemIndex = 0) )
     or
      ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
         as TGroupBox).Caption) = 0)
      and
       (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'GB')
        as TGroupBox).Caption) = 0)
-     and (LactateRB.Checked) ) then
+     and (SubstanceGB.ItemIndex = 1) ) then
    begin
     MeanValueLE.Text:= 'wrong substance';
     CalibOKBB.Enabled:= false;
@@ -427,7 +432,7 @@ begin
 
   // check units
   calibValue:= ValueFSE.Value; // mmol/l
-  if LactateRB.Checked then
+  if SubstanceGB.ItemIndex = 1 then
    molWeight:= 90.07 //in g/mol
   else
    molWeight:= 180.156;
@@ -479,12 +484,12 @@ begin
  if CalibSubstance = Substance.Glucose then
  begin
   CLBName:= 'Glucose';
-  molWeight:= 90.07 //in g/mol
+  molWeight:= 180.156 //in g/mol
  end
  else if CalibSubstance = Substance.Lactate then
  begin
   CLBName:= 'Lactate';
-  molWeight:= 180.156;
+  molWeight:= 90.07;
  end;
 
  // check units
