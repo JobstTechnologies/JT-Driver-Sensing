@@ -2255,7 +2255,7 @@ begin
      // then we must take the temperature correction into account
      calibFactorA:= calibFactorA * GainsRaw[2]
                    * exp(TemperGains[2] / 100
-                  * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
+                   * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
      calibFactorB:= calibFactorB * GainsRaw[5]
                    * exp(TemperGains[5] / 100
                    * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
@@ -2274,10 +2274,10 @@ begin
     if MainForm.RawCurrentCB.Checked then
     begin
      // then we must take the temperature correction into account
-      calibFactorA:= calibFactorA * GainsRaw[3]
+     calibFactorA:= calibFactorA * GainsRaw[3]
                     * exp(TemperGains[3] / 100
                     * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
-      calibFactorB:= calibFactorB * GainsRaw[6]
+     calibFactorB:= calibFactorB * GainsRaw[6]
                     * exp(TemperGains[6] / 100
                     * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]));
     end
@@ -2366,8 +2366,7 @@ begin
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 
-
- // reset calibChannel
+  // reset calibChannel
  calibChannelA:= 0;
 
 end;

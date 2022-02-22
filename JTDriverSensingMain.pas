@@ -3036,6 +3036,30 @@ begin
      SaveFileStream.Write(LineEnding, 2);
     end;
    end;
+   // write the calibration settings
+   // only do this if calibration is used
+   if UseCalibCB.Checked then
+   begin
+    // first the step
+    SaveFileStream.Write('Calibration: ', Length('Calibration: '));
+    SaveFileStream.Write(CalibStepCB.Text[1], Length(CalibStepCB.Text));
+    SaveFileStream.Write(LineEnding, 2);
+    // now the substances
+    SaveFileStream.Write('Glucose: ', Length('Glucose: '));
+    SaveFileStream.Write(FloatToStr(GlucoseCalibValueFSE.Value)[1],
+                         Length(FloatToStr(GlucoseCalibValueFSE.Value)));
+    SaveFileStream.Write(string(' ')[1] , 1);
+    SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
+                         Length(GlucoseCalibUnitCB.Text));
+    SaveFileStream.Write(LineEnding, 2);
+    SaveFileStream.Write('Lactate: ', Length('Lactate: '));
+    SaveFileStream.Write(FloatToStr(LactateCalibValueFSE.Value)[1],
+                         Length(FloatToStr(LactateCalibValueFSE.Value)));
+    SaveFileStream.Write(string(' ')[1] , 1);
+    SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
+                         Length(GlucoseCalibUnitCB.Text));
+    SaveFileStream.Write(LineEnding, 2);
+   end;
   finally
    SaveFileStream.Free;
   end; //end finally

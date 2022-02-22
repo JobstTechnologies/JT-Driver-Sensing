@@ -78,6 +78,8 @@ begin
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
  MainForm.ValveSetupGB.Enabled:= True;
+ MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
+
  // check all possible steps
  for j:= 1 to StepNum do
  begin
@@ -1157,6 +1159,7 @@ begin
   // assure that step 2 is not used
   MainForm.Step2UseCB.Checked:= false;
   MainForm.RunSettingsGB.Enabled:= false;
+  MainForm.CalibrationGB.Enabled:= false;
   MainForm.Step1TS.Caption:= 'Live';
   // set that run until stop pressed
   MainForm.RunEndlessCB.Checked:= true;
@@ -1166,6 +1169,7 @@ begin
  else
  begin
   MainForm.RunSettingsGB.Enabled:= true;
+  MainForm.CalibrationGB.Enabled:= true;
   // rename step 1 back and show step 2
   MainForm.Step1TS.Caption:= 'Step 1';
   MainForm.Step2TS.TabVisible:= true;
@@ -1503,6 +1507,8 @@ begin
   // disable all setting possibilities
   MainForm.RunSettingsGB.Enabled:= False;
   MainForm.LiveModeCB.Enabled:= False;
+  MainForm.ValveSetupGB.Enabled:= False;
+  MainForm.CalibrationGB.Enabled:= False;
   // not the pump settings when in live mode
   if not MainForm.LiveModeCB.Checked then
   begin
@@ -1662,6 +1668,8 @@ begin
  begin
   MainForm.LiveModeCB.Enabled:= True;
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+  MainForm.ValveSetupGB.Enabled:= True;
+  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
   for j:= 1 to StepNum do
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
@@ -1780,6 +1788,8 @@ begin
  begin
   MainForm.LiveModeCB.Enabled:= True;
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+  MainForm.ValveSetupGB.Enabled:= True;
+  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
   for j:= 1 to StepNum do
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
@@ -1966,6 +1976,7 @@ begin
   end;
 end;
 
+// procedure to assure there are valid calibration settings
 procedure TPumpControl.PCCalibValueFSEChange(Sender: TObject);
 var
  i : integer;
@@ -1986,8 +1997,10 @@ begin
        as TChartListbox).Selected[i] then
     found:= true;
   end;
- end;
- // don't allow to run the pumps
+ end
+ else
+  // if value is zero, we don't recalibrate, thus can always allow to run
+  found:= true;
  MainForm.RunBB.Enabled:= found;
 end;
 
