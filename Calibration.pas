@@ -32,7 +32,6 @@ type
   ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
   procedure SIXCHCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
   procedure SubstanceGBClick(Sender: TObject);
-  function CheckCalibChannel(channelNum: integer): Boolean;
   procedure ValueFSEChange(Sender: TObject);
  private
 
@@ -176,9 +175,20 @@ begin
 end;
 
 procedure TCalibrationF.SubstanceGBClick(Sender: TObject);
+var
+ i : integer;
+ isSelected : Boolean = false;
 begin
  // repoulate series list to be able to exclude series of the wrong substance
  SIXCHCLB.Populate;
+ // check if a seris is selected
+ for i:= 0 to SIXCHCLB.SeriesCount - 1 do
+ begin
+  if SIXCHCLB.Selected[i] then
+   isSelected:= true;
+ end;
+ // if no series is selected, disable the OK button
+ CalibOKBB.Enabled:= isSelected;
  CalculateMean;
 end;
 
@@ -186,32 +196,6 @@ procedure TCalibrationF.ValueFSEChange(Sender: TObject);
 begin
  // recalculate mean with the new calibration value
  CalculateMean;
-end;
-
-function TCalibrationF.CheckCalibChannel(channelNum : integer) : Boolean;
-begin
- if ( (pos('Gluc', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
-       as TGroupBox).Caption) = 0)
-     and
-      (pos('gluc', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
-       as TGroupBox).Caption) = 0)
-     and (SubstanceGB.ItemIndex = 0) )
-    or
-     ( (pos('Lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
-       as TGroupBox).Caption) = 0)
-     and
-      (pos('lac', (MainForm.FindComponent('Channel' + IntToStr(channelNum) + 'GB')
-       as TGroupBox).Caption) = 0)
-     and (SubstanceGB.ItemIndex = 1) ) then
- begin
-  MeanValueLE.Text:= 'wrong substance';
-  CalibOKBB.Enabled:= false;
-  CalibOKBB.Hint:= 'Select a correct channel to' + LineEnding
-                    + 'perform the calibration';
-  result:= false;
- end
- else
-  result:= true;
 end;
 
 procedure TCalibrationF.CalculateMean;
@@ -335,41 +319,26 @@ begin
    if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#2, #5)' then
    begin
-    if not CheckCalibChannel(2) then
-     exit
-    else
-    begin
-     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
-     selectedSeriesA:= MainForm.SIXCH.Series[2] as TLineSeries;
-     calibChannelA:= 2;
-     calibChannelB:= 5;
-    end;
+    selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+    selectedSeriesA:= MainForm.SIXCH.Series[2] as TLineSeries;
+    calibChannelA:= 2;
+    calibChannelB:= 5;
    end
    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#3, #6)' then
    begin
-    if not CheckCalibChannel(3) then
-     exit
-    else
-    begin
-     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
-     selectedSeriesA:= MainForm.SIXCH.Series[4] as TLineSeries;
-     calibChannelA:= 3;
-     calibChannelB:= 6;
-    end;
+    selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+    selectedSeriesA:= MainForm.SIXCH.Series[4] as TLineSeries;
+    calibChannelA:= 3;
+    calibChannelB:= 6;
    end
    else if (MainForm.FindComponent('Channel' + IntToStr(calibChannel) + 'CB')
        as TComboBox).Text = 'mean(#1, #4)' then
    begin
-    if not CheckCalibChannel(1) then
-     exit
-    else
-    begin
-     selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
-     selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
-     calibChannelA:= 1;
-     calibChannelB:= 4;
-    end;
+    selectedSeriesMean:= SIXCHCLB.Series[i] as TChartSeries;
+    selectedSeriesA:= MainForm.SIXCH.Series[0] as TLineSeries;
+    calibChannelA:= 1;
+    calibChannelB:= 4;
    end; // end if 'mean(#1, #4)'
 
    // calculate now the mean of the two channels
