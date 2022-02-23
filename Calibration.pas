@@ -406,9 +406,9 @@ begin
   else
    molWeight:= 180.156;
   if UnitCB.ItemIndex = 1 then // g/l
-   calibValue:= ValueFSE.Value / molWeight / 1000
+   calibValue:= calibValue / molWeight / 1000
   else if UnitCB.ItemIndex = 2 then // mg/dl
-   calibValue:= ValueFSE.Value / molWeight / 1000 / 100;
+   calibValue:= calibValue / molWeight / 1000 / 100;
 
   // output the factor(s) with which the current gain must be multiplied
   if calibChannel < 7 then
@@ -467,12 +467,10 @@ begin
                as TFloatSpinEdit).Value; // mmol/l
  if (MainForm.FindComponent(CLBName + 'CalibUnitCB')
                             as TComboBox).ItemIndex = 1 then // g/l
-  calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
-                as TFloatSpinEdit).Value / molWeight / 1000
+  calibValue:= calibValue / molWeight / 1000
  else if (MainForm.FindComponent(CLBName + 'CalibUnitCB')
                             as TComboBox).ItemIndex = 2 then // mg/dl
-  calibValue:= (MainForm.FindComponent(CLBName + 'CalibValueFSE')
-                as TFloatSpinEdit).Value / molWeight / 1000 / 100;
+  calibValue:= calibValue / molWeight / 1000 / 100;
 
  // get the selected calibration channel
  for i:= 0 to (MainForm.FindComponent(CLBName + 'CalibCLB')
