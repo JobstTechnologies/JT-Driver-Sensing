@@ -8042,12 +8042,12 @@ object MainForm: TMainForm
       end
       object CalibrationGB: TGroupBox
         Left = 716
-        Height = 496
+        Height = 370
         Hint = 'Calibration is only possible if a'#13#10'sensor definition file is loaded'
         Top = 24
         Width = 236
         Caption = 'Calibration'
-        ClientHeight = 476
+        ClientHeight = 350
         ClientWidth = 232
         Enabled = False
         ParentShowHint = False
@@ -8087,7 +8087,7 @@ object MainForm: TMainForm
         end
         object CalibSubstancesPC: TPageControl
           Left = 8
-          Height = 422
+          Height = 292
           Top = 48
           Width = 220
           ActivePage = GlucoseTS
@@ -8095,35 +8095,8 @@ object MainForm: TMainForm
           TabOrder = 1
           object GlucoseTS: TTabSheet
             Caption = 'Glucose'
-            ClientHeight = 394
+            ClientHeight = 264
             ClientWidth = 212
-            Enabled = False
-            object GlucoseAvailableChannelsGB: TGroupBox
-              Left = 4
-              Height = 328
-              Top = 64
-              Width = 202
-              Caption = 'Available Channels'
-              ClientHeight = 308
-              ClientWidth = 198
-              TabOrder = 0
-              object GlucoseCalibCLB: TChartListbox
-                Left = 8
-                Height = 304
-                Hint = 'Select the SIX channel that will contain'#13#10'the signal of the calibration solution'
-                Top = 0
-                Width = 184
-                Chart = SIXCH
-                Options = [cloShowIcons]
-                OnAddSeries = CLBAddSeries
-                OnItemClick = CalibCLBItemClick
-                ExtendedSelect = False
-                ItemHeight = 20
-                ParentShowHint = False
-                ShowHint = True
-                TabOrder = 0
-              end
-            end
             object GlucoseCalibGB: TGroupBox
               Left = 4
               Height = 54
@@ -8132,7 +8105,7 @@ object MainForm: TMainForm
               Caption = 'Calibration Concentration'
               ClientHeight = 34
               ClientWidth = 156
-              TabOrder = 1
+              TabOrder = 0
               object GlucoseCalibValueFSE: TFloatSpinEdit
                 Left = 8
                 Height = 23
@@ -8163,14 +8136,37 @@ object MainForm: TMainForm
                 Text = 'mmol/l'
               end
             end
+            object GlucoseCalibCLB: TChartListbox
+              Left = 8
+              Height = 168
+              Hint = 'Select the SIX channel that will contain'#13#10'the signal of the calibration solution'
+              Top = 88
+              Width = 192
+              Chart = SIXCH
+              Options = [cloShowIcons]
+              OnAddSeries = CLBAddSeries
+              OnItemClick = CalibCLBItemClick
+              ExtendedSelect = False
+              ItemHeight = 20
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 1
+            end
+            object GlucoseAvailChanL: TLabel
+              Left = 16
+              Height = 15
+              Top = 66
+              Width = 98
+              Caption = 'Available channels'
+            end
           end
           object LactateTS: TTabSheet
             Caption = 'Lactate'
-            ClientHeight = 394
+            ClientHeight = 264
             ClientWidth = 212
             Enabled = False
             object LactateCalibGB: TGroupBox
-              Left = 0
+              Left = 4
               Height = 54
               Top = 4
               Width = 160
@@ -8208,31 +8204,28 @@ object MainForm: TMainForm
                 Text = 'mmol/l'
               end
             end
-            object LactateAvailableChannelsGB: TGroupBox
-              Left = 0
-              Height = 328
-              Top = 64
-              Width = 202
-              Caption = 'Available Channels'
-              ClientHeight = 308
-              ClientWidth = 198
+            object LactateCalibCLB: TChartListbox
+              Left = 8
+              Height = 168
+              Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
+              Top = 88
+              Width = 192
+              Chart = SIXCH
+              Options = [cloShowIcons]
+              OnAddSeries = CLBAddSeries
+              OnItemClick = CalibCLBItemClick
+              ExtendedSelect = False
+              ItemHeight = 20
+              ParentShowHint = False
+              ShowHint = True
               TabOrder = 1
-              object LactateCalibCLB: TChartListbox
-                Left = 8
-                Height = 304
-                Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
-                Top = 0
-                Width = 184
-                Chart = SIXCH
-                Options = [cloShowIcons]
-                OnAddSeries = CLBAddSeries
-                OnItemClick = CalibCLBItemClick
-                ExtendedSelect = False
-                ItemHeight = 20
-                ParentShowHint = False
-                ShowHint = True
-                TabOrder = 0
-              end
+            end
+            object LactateAvailChanL: TLabel
+              Left = 16
+              Height = 15
+              Top = 66
+              Width = 98
+              Caption = 'Available channels'
             end
           end
         end

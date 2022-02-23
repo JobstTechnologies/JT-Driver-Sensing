@@ -422,6 +422,7 @@ begin
    calibFactorB:= calibValue / yMeanB;
   end;
 
+  break;
  end; // end for i:= 0 to SIXCHCLB.SeriesCount-1
 
 end;
@@ -484,6 +485,7 @@ begin
   selectedSeries:= (MainForm.FindComponent(CLBName + 'CalibCLB')
                     as TChartListbox).Series[i] as TChartSeries;
   selSeriesName:= selectedSeries.Name;
+  break;
  end;
 
  // it might be that there are not yet enough measurement values

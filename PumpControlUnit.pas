@@ -126,10 +126,12 @@ begin
   // therefore we cannot just disable the CalibSubstancesPC component but its
   // child components except of XTS
   Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
-  (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
-   as TGroupBox).Enabled:= True;
+  (MainForm.FindComponent(Substance + 'AvailChanL')
+   as TLabel).Enabled:= True;
   (MainForm.FindComponent(Substance + 'CalibGB')
    as TGroupBox).Enabled:= True;
+  (FindComponent(Substance + 'CalibCLB')
+    as TChartListbox).Enabled:= True;
  end;
  // enable saving
  MainForm.SaveActionMI.Enabled:= True;
@@ -1555,10 +1557,12 @@ begin
     // therefore we cannot just disable the CalibSubstancesPC component but its
     // child components except of XTS
     Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
-    (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
-     as TGroupBox).Enabled:= False;
+    (MainForm.FindComponent(Substance + 'AvailChanL')
+     as TLabel).Enabled:= False;
     (MainForm.FindComponent(Substance + 'CalibGB')
      as TGroupBox).Enabled:= False;
+    (FindComponent(Substance + 'CalibCLB')
+    as TChartListbox).Enabled:= False;
    end;
   end;
   MainForm.RepeatOutputLE.Visible:= False;
@@ -1724,10 +1728,12 @@ begin
    // therefore we cannot just disable the CalibSubstancesPC component but its
    // child components except of XTS
    Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
-   (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
-    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent(Substance + 'AvailChanL')
+    as TLabel).Enabled:= True;
    (MainForm.FindComponent(Substance + 'CalibGB')
     as TGroupBox).Enabled:= True;
+   (FindComponent(Substance + 'CalibCLB')
+    as TChartListbox).Enabled:= True;
   end;
   // view tab after last used step
   for j:= 2 to StepNum-1 do
@@ -1855,10 +1861,12 @@ begin
    // therefore we cannot just disable the CalibSubstancesPC component but its
    // child components except of XTS
    Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
-   (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
-    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent(Substance + 'AvailChanL')
+    as TLabel).Enabled:= True;
    (MainForm.FindComponent(Substance + 'CalibGB')
     as TGroupBox).Enabled:= True;
+   (FindComponent(Substance + 'CalibCLB')
+    as TChartListbox).Enabled:= True;
   end;
   // view tab after last used step
   for j:= 2 to StepNum-1 do

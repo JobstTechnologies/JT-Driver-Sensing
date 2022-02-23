@@ -30,7 +30,6 @@ type
     Appearance8BB: TBitBtn;
     Appearance5BB: TBitBtn;
     Appearance4BB: TBitBtn;
-    GlucoseAvailableChannelsGB: TGroupBox;
     CalibStepCB: TComboBox;
     Channel1TestGB: TGroupBox;
     ChannelTest1LE: TLabeledEdit;
@@ -64,7 +63,8 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
-    LactateAvailableChannelsGB: TGroupBox;
+    GlucoseAvailChanL: TLabel;
+    LactateAvailChanL: TLabel;
     GlucoseCalibGB: TGroupBox;
     CalibrationGB: TGroupBox;
     LactateCalibGB: TGroupBox;
@@ -2848,10 +2848,12 @@ begin
    // therefore we cannot just disable the CalibSubstancesPC component but its
    // child components except of XTS
    Substance:= CalibSubstancesPC.Pages[j-1].Caption;
-   (FindComponent(Substance + 'AvailableChannelsGB')
-    as TGroupBox).Enabled:= False;
+   (FindComponent(Substance + 'AvailChanL')
+    as TLabel).Enabled:= False;
    (FindComponent(Substance + 'CalibGB')
     as TGroupBox).Enabled:= False;
+   (FindComponent(Substance + 'CalibCLB')
+    as TChartListbox).Enabled:= False;
   end;
   // do not show unused steps
   for j:= 2 to PumpControl.StepNum do
@@ -2966,7 +2968,9 @@ begin
       + LineEnding + 'If the correct channel is not selected after you load the sensor'
       + LineEnding + 'defintion file, you must reload the action file!',
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
-    end;
+    end
+    else
+     RunBB.Enabled:= True; // might have been disabled before
    end
    // now the concentration values
    else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
@@ -3147,13 +3151,6 @@ begin
     SaveFileStream.Write(CalibStepCB.Text[1], Length(CalibStepCB.Text));
     SaveFileStream.Write(LineEnding, 2);
     // now the substances
-    SaveFileStream.Write('Glucose: ', Length('Glucose: '));
-    SaveFileStream.Write(FloatToStr(GlucoseCalibValueFSE.Value)[1],
-                         Length(FloatToStr(GlucoseCalibValueFSE.Value)));
-    SaveFileStream.Write(string(' ')[1] , 1);
-    SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
-                         Length(GlucoseCalibUnitCB.Text));
-    SaveFileStream.Write(LineEnding, 2);
     // get the selected calibration channel
     for k:= 0 to GlucoseCalibCLB.SeriesCount-1 do
     begin
@@ -3165,12 +3162,14 @@ begin
      SaveFileStream.Write(LineEnding, 2);
      break;
     end;
-    SaveFileStream.Write('Lactate: ', Length('Lactate: '));
-    SaveFileStream.Write(FloatToStr(LactateCalibValueFSE.Value)[1],
-                         Length(FloatToStr(LactateCalibValueFSE.Value)));
+    // it is important that the value is stored after the channel
+    // since on reading the file it is first checked if there is a vaid channel
+    SaveFileStream.Write('Glucose: ', Length('Glucose: '));
+    SaveFileStream.Write(FloatToStr(GlucoseCalibValueFSE.Value)[1],
+                         Length(FloatToStr(GlucoseCalibValueFSE.Value)));
     SaveFileStream.Write(string(' ')[1] , 1);
-    SaveFileStream.Write(LactateCalibUnitCB.Text[1],
-                         Length(LactateCalibUnitCB.Text));
+    SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
+                         Length(GlucoseCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
     for k:= 0 to LactateCalibCLB.SeriesCount-1 do
     begin
@@ -3182,6 +3181,13 @@ begin
      SaveFileStream.Write(LineEnding, 2);
      break;
     end;
+    SaveFileStream.Write('Lactate: ', Length('Lactate: '));
+    SaveFileStream.Write(FloatToStr(LactateCalibValueFSE.Value)[1],
+                         Length(FloatToStr(LactateCalibValueFSE.Value)));
+    SaveFileStream.Write(string(' ')[1] , 1);
+    SaveFileStream.Write(LactateCalibUnitCB.Text[1],
+                         Length(LactateCalibUnitCB.Text));
+    SaveFileStream.Write(LineEnding, 2);
    end;
   finally
    SaveFileStream.Free;
