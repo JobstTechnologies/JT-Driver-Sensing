@@ -1318,7 +1318,7 @@ begin
    end;
    // enable all buttons
    // don't allow to run, if calibration is used but no .def file is used
-   if UseCalibCB.Checked and (LoadedDefFileM.Text <> 'None') then
+   if not (UseCalibCB.Checked and (LoadedDefFileM.Text <> 'None')) then
     RunBB.Enabled:= true;
    StopBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
@@ -2882,10 +2882,15 @@ function TMainForm.OpenActionFile(InputName: string): Boolean;
 var
  StringList : TStringList;
  j, k, ValveNumFile, startIndex, stopIndex : integer;
+ FormPointer : TPoint;
+ SeriesName : string;
 begin
+ // initialize
+ FormPointer:= MainForm.ControlOrigin;
  result:= False;
  PumpControl.PumpNumFile:= 0;
  ValveNumFile:= 0;
+
  try
   StringList:= TStringList.Create;
   k:= StringList.Count;
@@ -2916,7 +2921,8 @@ begin
    // read the pump and valve names
    for k:= 1 to PumpControl.PumpNumFile do
     (FindComponent('Pump' + IntToStr(k) + 'GB1')
-     as TGroupBox).Caption:= Copy(StringList[k], Length(PumpControl.PumpPrefix), Length(StringList[k])); // omit the prefix
+     as TGroupBox).Caption:= Copy(StringList[k], Length(PumpControl.PumpPrefix),
+                                  Length(StringList[k])); // omit the prefix
    if PumpControl.PumpNumFile < PumpControl.PumpNum then // reset names of undefined pumps
    begin
     for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNum do
@@ -2927,9 +2933,11 @@ begin
    begin
     for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNumFile + PumpControl.ValveNum do
      (FindComponent('Valve' + IntToStr(k - PumpControl.PumpNumFile) + 'RG1')
-      as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix), Length(StringList[k])); // omit the prefix
+      as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix),
+                                     Length(StringList[k])); // omit the prefix
    end;
-   if PumpControl.ValveNum < 8 then // reset names of undefined pumps, we only support 8 valves
+   // reset names of undefined pumps
+   if PumpControl.ValveNum < 8 then // we only support 8 valves
    begin
     for k:= PumpControl.ValveNum + 1 to 8 do
      (FindComponent('Valve' + IntToStr(k) + 'RG1')
@@ -2946,14 +2954,21 @@ begin
     CalibStepCB.Text:= Copy(StringList[j], Length('Calibration') + 3, Length(StringList[j]));
     // we know now that there are calibration settings
     UseCalibCB.Checked:= true;
-    // when no .def fileis loaded, we must disable the RunBB button
+    // when no .def file is loaded, we must disable the RunBB button
     if LoadedDefFileM.Text = 'None' then
     begin
      RunBB.Enabled:= False;
      RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
+     MessageDlgPos('Calibration is used but no sensor definition file is loaded yet.'
+      + LineEnding + 'Thus the validity of the calibration channels cannot be checked.'
+      + LineEnding
+      + LineEnding + 'If the correct channel is not selected after you load the sensor'
+      + LineEnding + 'defintion file, you must reload the action file!',
+      mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end;
    end
-   else if LeftStr(StringList[j], Length('Glucose')) = 'Glucose' then
+   // now the concentration values
+   else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
    begin
     // the value is between the two spaces in the line
     startIndex:= Pos(' ', StringList[j]);
@@ -2963,7 +2978,7 @@ begin
     GlucoseCalibUnitCB.Text:= Copy(StringList[j],
                                stopIndex + 1, Length(StringList[j]) - stopIndex);
    end
-   else if LeftStr(StringList[j], Length('Lactate')) = 'Lactate' then
+   else if LeftStr(StringList[j], Length('Lactate:')) = 'Lactate:' then
    begin
     // the value is between the two spaces in the line
     startIndex:= Pos(' ', StringList[j]);
@@ -2972,6 +2987,31 @@ begin
                                   startIndex + 1, stopIndex - (startIndex + 1)));
     LactateCalibUnitCB.Text:= Copy(StringList[j],
                                stopIndex + 1, Length(StringList[j]) - stopIndex);
+   end
+   // now the calibration channels
+   else if LeftStr(StringList[j], Length('Glucose ')) = 'Glucose ' then
+   begin
+    SeriesName:= Copy(StringList[j], Length('Glucose channel') + 3, Length(StringList[j]));
+    // check in the ChartListbox if this series is listed and if so, select it
+    for k:= 0 to GlucoseCalibCLB.SeriesCount-1 do
+    begin
+     if not (GlucoseCalibCLB.Series[k].Name = SeriesName) then
+      continue;
+     GlucoseCalibCLB.Selected[k]:= True;
+     break;
+    end;
+   end
+   else if LeftStr(StringList[j], Length('Lactate ')) = 'Lactate ' then
+   begin
+    SeriesName:= Copy(StringList[j], Length('Lactate channel') + 3, Length(StringList[j]));
+    // check in the ChartListbox if this series is listed and if so, select it
+    for k:= 0 to LactateCalibCLB.SeriesCount-1 do
+    begin
+     if not (LactateCalibCLB.Series[k].Name = SeriesName) then
+      continue;
+     LactateCalibCLB.Selected[k]:= True;
+     break;
+    end;
    end;
   end;
 
@@ -3047,6 +3087,7 @@ var
  SaveFileStream : TFileStream;
  CommandResult: Boolean;
  k : integer;
+ selectedSeries : TChartSeries;
 begin
  // generate command according to current settings
  CommandResult:= PumpControl.GenerateCommand(command);
@@ -3112,6 +3153,17 @@ begin
     SaveFileStream.Write(GlucoseCalibUnitCB.Text[1],
                          Length(GlucoseCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
+    // get the selected calibration channel
+    for k:= 0 to GlucoseCalibCLB.SeriesCount-1 do
+    begin
+     if not GlucoseCalibCLB.Selected[k] then
+      continue;
+     selectedSeries:= GlucoseCalibCLB.Series[k] as TChartSeries;
+     SaveFileStream.Write('Glucose Channel: ', Length('Glucose Channel: '));
+     SaveFileStream.Write(selectedSeries.Name[1], Length(selectedSeries.Name));
+     SaveFileStream.Write(LineEnding, 2);
+     break;
+    end;
     SaveFileStream.Write('Lactate: ', Length('Lactate: '));
     SaveFileStream.Write(FloatToStr(LactateCalibValueFSE.Value)[1],
                          Length(FloatToStr(LactateCalibValueFSE.Value)));
@@ -3119,6 +3171,16 @@ begin
     SaveFileStream.Write(LactateCalibUnitCB.Text[1],
                          Length(LactateCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
+    for k:= 0 to LactateCalibCLB.SeriesCount-1 do
+    begin
+     if not LactateCalibCLB.Selected[k] then
+      continue;
+     selectedSeries:= LactateCalibCLB.Series[k] as TChartSeries;
+     SaveFileStream.Write('Lactate Channel: ', Length('Lactate Channel: '));
+     SaveFileStream.Write(selectedSeries.Name[1], Length(selectedSeries.Name));
+     SaveFileStream.Write(LineEnding, 2);
+     break;
+    end;
    end;
   finally
    SaveFileStream.Free;

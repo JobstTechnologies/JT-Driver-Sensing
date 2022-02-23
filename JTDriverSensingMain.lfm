@@ -184,7 +184,7 @@ object MainForm: TMainForm
           Alignment = taCenter
           DecimalPlaces = 1
           MaxValue = 99
-          MinValue = 2
+          MinValue = 3
           OnChange = EvalTimeFSEChange
           ParentShowHint = False
           ShowHint = True
@@ -8041,14 +8041,14 @@ object MainForm: TMainForm
         end
       end
       object CalibrationGB: TGroupBox
-        Left = 720
+        Left = 716
         Height = 496
         Hint = 'Calibration is only possible if a'#13#10'sensor definition file is loaded'
         Top = 24
-        Width = 232
+        Width = 236
         Caption = 'Calibration'
         ClientHeight = 476
-        ClientWidth = 228
+        ClientWidth = 232
         Enabled = False
         ParentShowHint = False
         ShowHint = True
@@ -8089,17 +8089,17 @@ object MainForm: TMainForm
           Left = 8
           Height = 422
           Top = 48
-          Width = 216
+          Width = 220
           ActivePage = GlucoseTS
           TabIndex = 0
           TabOrder = 1
           object GlucoseTS: TTabSheet
             Caption = 'Glucose'
             ClientHeight = 394
-            ClientWidth = 208
+            ClientWidth = 212
             Enabled = False
             object GlucoseAvailableChannelsGB: TGroupBox
-              Left = 0
+              Left = 4
               Height = 328
               Top = 64
               Width = 202
@@ -8125,7 +8125,7 @@ object MainForm: TMainForm
               end
             end
             object GlucoseCalibGB: TGroupBox
-              Left = 0
+              Left = 4
               Height = 54
               Top = 4
               Width = 160
@@ -8167,7 +8167,7 @@ object MainForm: TMainForm
           object LactateTS: TTabSheet
             Caption = 'Lactate'
             ClientHeight = 394
-            ClientWidth = 208
+            ClientWidth = 212
             Enabled = False
             object LactateCalibGB: TGroupBox
               Left = 0

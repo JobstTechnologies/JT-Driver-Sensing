@@ -1450,7 +1450,7 @@ end;
 procedure TPumpControl.PCRunBBClick(Sender: TObject);
 // execute generated command
 var
-  command, StartTime : string;
+  command, StartTime, Substance : string;
   i, j : integer;
   CommandResult : Boolean = False;
 begin
@@ -1521,7 +1521,6 @@ begin
   MainForm.RunSettingsGB.Enabled:= False;
   MainForm.LiveModeCB.Enabled:= False;
   MainForm.ValveSetupGB.Enabled:= False;
-  MainForm.CalibrationGB.Enabled:= False;
   // not the pump settings when in live mode
   if not MainForm.LiveModeCB.Checked then
   begin
@@ -1547,6 +1546,19 @@ begin
      for i:= 1 to PumpNum do
       (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
        as TGroupBox).ShowHint:= False;
+   end;
+   MainForm.CalibStepCB.Enabled:= False;
+   MainForm.UseCalibCB.Enabled:= False;
+   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
+   begin
+    // the user must be able to see the settings for all substances
+    // therefore we cannot just disable the CalibSubstancesPC component but its
+    // child components except of XTS
+    Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
+    (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
+     as TGroupBox).Enabled:= False;
+    (MainForm.FindComponent(Substance + 'CalibGB')
+     as TGroupBox).Enabled:= False;
    end;
   end;
   MainForm.RepeatOutputLE.Visible:= False;
@@ -1601,7 +1613,7 @@ end;
 procedure TPumpControl.PCStopBBClick(Sender: TObject);
 // stop all pumps
 var
- command, stopTime : string;
+ command, stopTime, Substance : string;
  i, j, k : integer;
 begin
  // re-enable the connection menu in every case
@@ -1682,7 +1694,6 @@ begin
   MainForm.LiveModeCB.Enabled:= True;
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
   MainForm.ValveSetupGB.Enabled:= True;
-  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
   for j:= 1 to StepNum do
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
@@ -1704,6 +1715,19 @@ begin
     for i:= 1 to PumpNum do
      (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
       as TGroupBox).ShowHint:= True;
+  end;
+  MainForm.CalibStepCB.Enabled:= True;
+  MainForm.UseCalibCB.Enabled:= True;
+  for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
+  begin
+   // the user must be able to see the settings for all substances
+   // therefore we cannot just disable the CalibSubstancesPC component but its
+   // child components except of XTS
+   Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
+   (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
+    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent(Substance + 'CalibGB')
+    as TGroupBox).Enabled:= True;
   end;
   // view tab after last used step
   for j:= 2 to StepNum-1 do
@@ -1758,7 +1782,7 @@ end;
 procedure TPumpControl.PCOverallTimerFinished;
 // Actions after time interval ends
 var
-  finishTime : string;
+  finishTime, Substance : string;
   i, j : integer;
 begin
  // if one day has passed but the pumps must run longer
@@ -1822,6 +1846,19 @@ begin
     for i:= 1 to PumpNum do
     (MainForm.FindComponent('Pump' + IntToStr(i) + 'GB' + IntToStr(j))
      as TGroupBox).ShowHint:= True;
+  end;
+  MainForm.CalibStepCB.Enabled:= True;
+  MainForm.UseCalibCB.Enabled:= True;
+  for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
+  begin
+   // the user must be able to see the settings for all substances
+   // therefore we cannot just disable the CalibSubstancesPC component but its
+   // child components except of XTS
+   Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
+   (MainForm.FindComponent(Substance + 'AvailableChannelsGB')
+    as TGroupBox).Enabled:= True;
+   (MainForm.FindComponent(Substance + 'CalibGB')
+    as TGroupBox).Enabled:= True;
   end;
   // view tab after last used step
   for j:= 2 to StepNum-1 do
