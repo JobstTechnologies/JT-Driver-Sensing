@@ -130,7 +130,7 @@ begin
    as TLabel).Enabled:= True;
   (MainForm.FindComponent(Substance + 'CalibGB')
    as TGroupBox).Enabled:= True;
-  (FindComponent(Substance + 'CalibCLB')
+  (MainForm.FindComponent(Substance + 'CalibCLB')
     as TChartListbox).Enabled:= True;
  end;
  // enable saving
@@ -1561,7 +1561,7 @@ begin
      as TLabel).Enabled:= False;
     (MainForm.FindComponent(Substance + 'CalibGB')
      as TGroupBox).Enabled:= False;
-    (FindComponent(Substance + 'CalibCLB')
+    (MainForm.FindComponent(Substance + 'CalibCLB')
     as TChartListbox).Enabled:= False;
    end;
   end;
@@ -1732,7 +1732,7 @@ begin
     as TLabel).Enabled:= True;
    (MainForm.FindComponent(Substance + 'CalibGB')
     as TGroupBox).Enabled:= True;
-   (FindComponent(Substance + 'CalibCLB')
+   (MainForm.FindComponent(Substance + 'CalibCLB')
     as TChartListbox).Enabled:= True;
   end;
   // view tab after last used step
@@ -1865,7 +1865,7 @@ begin
     as TLabel).Enabled:= True;
    (MainForm.FindComponent(Substance + 'CalibGB')
     as TGroupBox).Enabled:= True;
-   (FindComponent(Substance + 'CalibCLB')
+   (MainForm.FindComponent(Substance + 'CalibCLB')
     as TChartListbox).Enabled:= True;
   end;
   // view tab after last used step
