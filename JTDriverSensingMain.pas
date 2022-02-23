@@ -1318,7 +1318,7 @@ begin
    end;
    // enable all buttons
    // don't allow to run, if calibration is used but no .def file is used
-   if not (UseCalibCB.Checked and (LoadedDefFileM.Text <> 'None')) then
+   if not (UseCalibCB.Checked and (LoadedDefFileM.Text = 'None')) then
     RunBB.Enabled:= true;
    StopBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
@@ -1364,7 +1364,8 @@ procedure TMainForm.CalibCLBItemClick(ASender: TObject; AIndex: Integer);
 begin
  // we can allow to run the pumps since at least one series is selected
  // for calibration
- RunBB.Enabled:= true;
+ if HaveSerialPump then
+  RunBB.Enabled:= true;
 end;
 
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
