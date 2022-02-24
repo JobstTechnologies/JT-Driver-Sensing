@@ -2924,7 +2924,7 @@ begin
    // read the pump and valve names
    for k:= 1 to PumpControl.PumpNumFile do
     (FindComponent('Pump' + IntToStr(k) + 'GB1')
-     as TGroupBox).Caption:= Copy(StringList[k], Length(PumpControl.PumpPrefix),
+     as TGroupBox).Caption:= Copy(StringList[k], Length(PumpControl.PumpPrefix) + 1,
                                   Length(StringList[k])); // omit the prefix
    if PumpControl.PumpNumFile < PumpControl.PumpNum then // reset names of undefined pumps
    begin
@@ -2936,7 +2936,7 @@ begin
    begin
     for k:= PumpControl.PumpNumFile + 1 to PumpControl.PumpNumFile + PumpControl.ValveNum do
      (FindComponent('Valve' + IntToStr(k - PumpControl.PumpNumFile) + 'RG1')
-      as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix),
+      as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix) + 1,
                                      Length(StringList[k])); // omit the prefix
    end;
    // reset names of undefined pumps
