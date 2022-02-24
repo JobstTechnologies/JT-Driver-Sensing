@@ -1466,6 +1466,15 @@ begin
     mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
    exit;
   end;
+  // if there is a calibration, we must create the subfolder
+  // to store the new sensor definition files
+  if MainForm.UseCalibCB.Checked then
+  begin
+  if not (RightStr(ExtractFilePath(InNameDef), 16) = 'DefinitionFiles\')
+   and
+   (not DirectoryExists(ExtractFilePath(InNameDef) + 'DefinitionFiles\')) then
+   CreateDir(ExtractFilePath(InNameDef) + 'DefinitionFiles\');
+  end;
   // generate command
   CommandResult:= GenerateCommand(command);
   // if GenerateCommand returns e.g. a too long time do nothing

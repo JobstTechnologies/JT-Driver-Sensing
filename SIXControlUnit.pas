@@ -2224,8 +2224,12 @@ begin
 
  // Note: to be later able to read the output datetime,
  // the date and time part must be separated by a space
- OutName:= DummyString + ' - '
-           + FormatDateTime('dd-mm-yyyy hh-nn', now) + '.def';
+ if RightStr(ExtractFilePath(InNameDef), 16) = 'DefinitionFiles\' then
+  OutName:= ExtractFilePath(InNameDef) + DummyString
+            + ' - ' + FormatDateTime('dd-mm-yyyy hh-nn', now) + '.def'
+ else
+  OutName:= ExtractFilePath(InNameDef) + 'DefinitionFiles\' + DummyString
+            + ' - ' + FormatDateTime('dd-mm-yyyy hh-nn', now) + '.def';
  // copy the .def file into a StringList
  StringList:= TStringList.Create;
  try
