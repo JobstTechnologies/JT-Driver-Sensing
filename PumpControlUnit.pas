@@ -1455,7 +1455,17 @@ var
   command, StartTime, Substance : string;
   i, j : integer;
   CommandResult : Boolean = False;
+  MousePointer : TPoint;
 begin
+  // if there should be a calibration but no sensor is connected, stop
+  if MainForm.UseCalibCB.Checked and (not haveSerialSensor) then
+  begin
+   MousePointer:= Mouse.CursorPos; // store mouse position
+   MessageDlgPos('The run sequence contains a calibration'
+    + LineEnding + 'but no sensor is connected.',
+    mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
+   exit;
+  end;
   // generate command
   CommandResult:= GenerateCommand(command);
   // if GenerateCommand returns e.g. a too long time do nothing
@@ -1812,7 +1822,7 @@ begin
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
- MainForm.RunBB.Enabled:= True;
+ MainForm.RunBB.Enabled:= HaveSerialPump;
  MainForm.GenerateCommandBB.Enabled:= True;
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;
@@ -2059,7 +2069,7 @@ begin
  else
   // if value is zero, we don't recalibrate, thus can always allow to run
   found:= true;
- MainForm.RunBB.Enabled:= found;
+ MainForm.RunBB.Enabled:= (found and haveSerialPump);
 end;
 
 end.

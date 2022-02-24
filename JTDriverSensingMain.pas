@@ -1364,8 +1364,7 @@ procedure TMainForm.CalibCLBItemClick(ASender: TObject; AIndex: Integer);
 begin
  // we can allow to run the pumps since at least one series is selected
  // for calibration
- if HaveSerialPump then
-  RunBB.Enabled:= true;
+ RunBB.Enabled:= HaveSerialPump;
 end;
 
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
@@ -2040,7 +2039,7 @@ begin
  CalibrationGB.Hint:= '';
  if not RunBB.Enabled then
  begin
-  RunBB.Enabled:= True;
+  RunBB.Enabled:= haveSerialPump;
   RunBB.Hint:= 'Starts the pump action according to the current settings.'
    + LineEnding
    + 'To enable the button you must first connect to the pump driver'
@@ -2709,7 +2708,7 @@ procedure TMainForm.StopTimerFinished;
 // enable to execute new commands
 begin
  RunBB.Caption:= 'Run Pumps';
- RunBB.Enabled:= True;
+ RunBB.Enabled:= HaveSerialPump;
  StopTimer.Enabled:= False;
 end;
 
@@ -2970,7 +2969,7 @@ begin
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end
     else
-     RunBB.Enabled:= True; // might have been disabled before
+     RunBB.Enabled:= haveSerialPump; // might have been disabled before
    end
    // now the concentration values
    else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
