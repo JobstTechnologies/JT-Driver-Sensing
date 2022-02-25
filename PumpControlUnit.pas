@@ -1698,7 +1698,7 @@ begin
  MainForm.OverallTimer.Enabled:= False;
  MainForm.RepeatTimer.Enabled:= False;
  // we must prevent that too long commands overflow the Arduino command buffer
- // therefore block the enabing to start a new action for a second
+ // therefore block the enabling to start a new action for a second
  MainForm.StopTimer.Enabled:= True;
  MainForm.RunBB.Enabled:= False;
  MainForm.GenerateCommandBB.Enabled:= True;
@@ -1805,7 +1805,7 @@ begin
 end;
 
 procedure TPumpControl.PCOverallTimerFinished;
-// Actions after time interval ends
+// actions after time interval ends
 var
   finishTime, Substance : string;
   i, j : integer;
