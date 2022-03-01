@@ -25,6 +25,7 @@ type
   SubstanceGB: TRadioGroup;
   UnitCB: TComboBox;
   ValueFSE: TFloatSpinEdit;
+  procedure CalibCancelBBClick(Sender: TObject);
   procedure FormShow(Sender: TObject);
   procedure SIXCHCLBAddSeries(ASender{%H-}: TChartListbox;
    ASeries: TCustomChartSeries; AItems{%H-}: TChartLegendItems; var ASkip: Boolean);
@@ -168,6 +169,11 @@ begin
  CalculateMean;
 end;
 
+procedure TCalibrationF.CalibCancelBBClick(Sender: TObject);
+begin
+ MainForm.AbortCalibrationMI.Visible:= false;
+end;
+
 procedure TCalibrationF.SIXCHCLBItemClick(ASender: TObject; AIndex: Integer);
 begin
  MeanValueLE.Text:= '';
@@ -207,28 +213,6 @@ var
  yMeanA, yMeanB, yMeanMean : double;
  selSeriesName : string;
 begin
-
- // FIXME: Implement to hide series that don't apply for
- // the selected substance. So fill this skeleton:
- for i:= 0 to SIXCHCLB.SeriesCount-1 do
- begin
-  if SubstanceGB.ItemIndex = 0 then
-  begin
-   if (pos('Gluc', SIXCHCLB.Series[i].Title) > 0)
-      or (pos('gluc', SIXCHCLB.Series[i].Title) > 0) then
-     //show
-   else
-    ; //hide
-  end
-  else if SubstanceGB.ItemIndex = 1 then
-  begin
-   if (pos('Lac', SIXCHCLB.Series[i].Title) > 0)
-      or (pos('lac', SIXCHCLB.Series[i].Title) > 0) then
-     //show
-   else
-    ; //hide
-  end;
- end;
 
  x1:= Min(MainForm.LeftLine.Position, MainForm.RightLine.Position);
  x2:= Max(MainForm.LeftLine.Position, MainForm.RightLine.Position);

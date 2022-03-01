@@ -32,6 +32,7 @@ object CalibrationF: TCalibrationF
     DefaultCaption = True
     Kind = bkCancel
     ModalResult = 2
+    OnClick = CalibCancelBBClick
     TabOrder = 1
   end
   object ConcentrationGB: TGroupBox
