@@ -526,14 +526,14 @@ begin
   // we purposely use the mean channel because the user set the range
   // according to this and not a single channel
   // calculate the mean out of the last n measurement values
-  for k:= selectedSeries.Count-(n-1) to selectedSeries.Count-1 do
+  for k:= selectedSeries.Count-1-n to selectedSeries.Count-1 do
    yMean:= yMean + selectedSeries.YValue[k];
 
   yMeanMean:= yMean / n;
 
   // now get the mean of the first channel
   yMean:= 0.0;
-  for k:= selectedSeriesA.Count-(n-1) to selectedSeriesA.Count-1 do
+  for k:= selectedSeriesA.Count-1-n to selectedSeriesA.Count-1 do
    yMean:= yMean + selectedSeriesA.YValue[k];
 
   yMeanA:= yMean / n;
