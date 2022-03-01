@@ -114,7 +114,7 @@ var
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
- dataArray, wasteArray : TDataArray;
+ dataArray : TDataArray;
  HiLowArray : array[0..1] of byte;
  IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
@@ -196,8 +196,8 @@ begin
    // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
    // this will for example occur if USB cable was removed
    begin
-    // often the SIX only stops telling it has not enough data
-    // to try to read data
+    // often the SIX tells it has not enough data despite it has
+    // therefore try to read data
     try
      k:= 0;
      dataArray:= default(TDataArray); // clear array
@@ -267,11 +267,13 @@ begin
  begin
   k:= 0;
   dataArray:= default(TDataArray); // clear array
-  k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
-  // Fixme: LineBuffer should not be used at all
-  // empty internal LineBuffer of serSensor
+  // the are 3 different serial buffers:
+  // - the 25 bytes of the SIX
+  // - the buffer of the OS
+  // - the LineBuffer of the synaser library
+  // we take data from the LineBuffer and we want the latest/last data
   while serSensor.WaitingDataEx > 24 do
-   serSensor.RecvBufferEx(@wasteArray[0], 25, 100);
+   k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
  end;
 
  // in case the read failed or not 25 bytes received
