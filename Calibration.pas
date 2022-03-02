@@ -171,6 +171,7 @@ end;
 
 procedure TCalibrationF.CalibCancelBBClick(Sender: TObject);
 begin
+ SIXControl.SCCalibrateTBChange(Sender, true);
  MainForm.AbortCalibrationMI.Visible:= false;
 end;
 
