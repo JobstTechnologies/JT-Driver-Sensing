@@ -111,10 +111,12 @@ type intArray = array[1..4] of byte;
      TDataArray = array[0..24] of byte;
 var
  OutLine : string;
+ dataString : AnsiString;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, k, StopPos, ItemIndex: integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
+ tempArray : packed array of byte;
  HiLowArray : array[0..1] of byte;
  IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
@@ -124,7 +126,6 @@ var
  checksum : integer;
  tempInt16: Int16;
  PintegerArray: PintArray;
- wasRead : Boolean = false;
  SingleByte : byte;
 begin
  // tell the OS the application is alive
@@ -184,54 +185,6 @@ begin
     exit;
    end;
   end;
-
-  // check if there are 25 bytes available to be read
-  // if not wait another 100 ms until the timer finished the next time
-  while serSensor.WaitingDataEx < 25 do
-  begin
-   delay(100);
-   lastInterval:= lastInterval + 0.00166; // 100 ms of the delay in min
-   inc(DelayReadCounter);
-   if DelayReadCounter > 52 then
-   // we reached 3 times the 1.7 s SIX output cycle, so there is something wrong
-   // this will for example occur if USB cable was removed
-   begin
-    // often the SIX tells it has not enough data despite it has
-    // therefore try to read data
-    try
-     k:= 0;
-     dataArray:= default(TDataArray); // clear array
-     k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
-     wasRead:= true;
-    finally
-     if k <> 25 then
-     begin
-      MainForm.ReadTimer.Enabled:= false;
-      MessageDlgPos('Error: ' + MainForm.ConnComPortSensM.Lines[0]
-       + ' did not deliver data within 5.1 s.' + LineEnding
-       + 'Check the USB cable for a loose contact.',
-       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-      MainForm.ConnComPortSensM.Color:= clRed;
-      MainForm.IndicatorSensorP.Caption:= 'SIX error';
-      MainForm.IndicatorSensorP.Color:= clRed;
-      MainForm.StartTestBB.Enabled:= false;
-      MainForm.StopTestBB.Enabled:= false;
-      MainForm.CloseLazSerialConn(MousePointer);
-      HaveSerialSensor:= False;
-      MainForm.AnOutOnOffTB.Checked:= false;
-      MainForm.AnOutOnOffTB.Enabled:= false;
-      MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                          + 'to the pump connectors.' + LineEnding
-                          + 'Connect to a SIX and a pump driver'  + LineEnding
-                          + 'to enable the button.';
-      exit;
-     end;
-     DelayReadCounter:= 0;
-    end;
-   end;
-   if wasRead then
-    break;
-  end;
  finally
   if serSensor.LastError <> 0 then // can occur if USB cable was removed
   begin
@@ -262,22 +215,22 @@ begin
   end;
  end;
 
- // read the data
- if not wasRead then
- begin
-  k:= 0;
-  dataArray:= default(TDataArray); // clear array
-  // the are 3 different serial buffers:
-  // - the 25 bytes of the SIX
-  // - the buffer of the OS
-  // - the LineBuffer of the synaser library
-  // we take data from the LineBuffer and we want the latest/last data
-  while serSensor.WaitingDataEx > 24 do
-   k:= serSensor.RecvBufferEx(@dataArray[0], 25, 100);
- end;
+ // the are 3 different serial buffers:
+ // - the 25 bytes of the SIX
+ // - the buffer of the OS
+ // - the LineBuffer of the synaser library
+ // since the serial USB connection plug delivers from time to time wrong info
+ // about available date 8says there are no date, despite there are), we cannot
+ // rely on the LineBuffer but must reast everything that is in the OS buffer
+ dataString:= '';
+ dataString:= serSensor.RecvPacket(100);
+ // convert string to a byte array
+ SetLength(tempArray{%H-}, Length(dataString));
+ Move(dataString[1], tempArray[0], Length(dataString));
+ k:= Length(tempArray);
 
  // in case the read failed or not 25 bytes received
- if (serSensor.LastError <> 0) or (k <> 25) then
+ if (serSensor.LastError <> 0) or (k < 25) then
  begin
   inc(ErrorCount);
   // we wait then another timer run
@@ -314,15 +267,12 @@ begin
  // since a value byte can also have the value $16, we search backwards
  // and check that the byte 20 positions earlier has the value $4 (begin of
  // a data block)
- for i:= 24 downto 20 do
+ for i:= Length(tempArray) - 1 downto Length(tempArray) - 5 do
  begin
-  if dataArray[i] = $16 then
+  if (tempArray[i] = $16) and (tempArray[i - 20] = $4) then
   begin
-   if dataArray[i - 20] = $4 then
-   begin
-    StopPos:= i;
-    break;
-   end;
+   StopPos:= i;
+   break;
   end;
  end;
  if StopPos = -1 then
@@ -361,6 +311,11 @@ begin
 
  // reset counter since we got no error
  ErrorCount:= 0;
+
+ // copy the relevant 25 bytes to the dataArray
+ dataArray:= default(TDataArray); // initialize or clear array
+ Move(tempArray[StopPos - 24], dataArray[0], 25);
+ StopPos:= 24;
 
  // we have all relevant data before the stop bit
  // first calculate the checksum
