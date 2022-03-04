@@ -220,7 +220,7 @@ begin
  // - the buffer of the OS
  // - the LineBuffer of the synaser library
  // since the serial USB connection plug delivers from time to time wrong info
- // about available date 8says there are no date, despite there are), we cannot
+ // about available date (says there are no data, despite there are), we cannot
  // rely on the LineBuffer but must reast everything that is in the OS buffer
  dataString:= '';
  dataString:= serSensor.RecvPacket(100);
