@@ -226,7 +226,7 @@ begin
  dataString:= serSensor.RecvPacket(100);
 
  // in case the read failed or not 25 bytes received
- if (serSensor.LastError <> 0) or (Length(tempArray) < 25) then
+ if (serSensor.LastError <> 0) or (Length(dataString) < 25) then
  begin
   inc(ErrorCount);
   // we wait then another timer run
@@ -245,7 +245,7 @@ begin
      + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
    else
     MessageDlgPos(
-     'Error: Could not read 25 bytes. Got only ' + IntToStr(Length(tempArray)) + ' bytes.',
+     'Error: Could not read 25 bytes. Got only ' + IntToStr(Length(dataString)) + ' bytes.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
