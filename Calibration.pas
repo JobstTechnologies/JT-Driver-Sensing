@@ -491,7 +491,7 @@ begin
  if calibChannel < 7 then
  begin
   // calculate the mean out of the last n measurement values
-  for k:= selectedSeries.Count-(n-1) to selectedSeries.Count-1 do
+  for k:= selectedSeries.Count-n to selectedSeries.Count-1 do
    yMean:= yMean + selectedSeries.YValue[k];
 
   yMeanMean:= yMean / n;
