@@ -224,13 +224,9 @@ begin
  // rely on the LineBuffer but must reast everything that is in the OS buffer
  dataString:= '';
  dataString:= serSensor.RecvPacket(100);
- // convert string to a byte array
- SetLength(tempArray{%H-}, Length(dataString));
- Move(dataString[1], tempArray[0], Length(dataString));
- k:= Length(tempArray);
 
  // in case the read failed or not 25 bytes received
- if (serSensor.LastError <> 0) or (k < 25) then
+ if (serSensor.LastError <> 0) or (Length(tempArray) < 25) then
  begin
   inc(ErrorCount);
   // we wait then another timer run
@@ -248,7 +244,8 @@ begin
     MessageDlgPos(MainForm.ConnComPortSensM.Lines[0] + ' error on reading signal data: '
      + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
    else
-    MessageDlgPos('Error: Could not read 25 bytes. Got only ' + IntToStr(k) + ' bytes.',
+    MessageDlgPos(
+     'Error: Could not read 25 bytes. Got only ' + IntToStr(Length(tempArray)) + ' bytes.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
@@ -261,6 +258,10 @@ begin
    exit;
   end;
  end;
+
+ // convert string to a byte array
+ SetLength(tempArray{%H-}, Length(dataString));
+ Move(dataString[1], tempArray[0], Length(dataString));
 
  // now search the byte array for the stop bit
  StopPos:= -1;
