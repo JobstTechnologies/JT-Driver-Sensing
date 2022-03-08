@@ -1182,6 +1182,8 @@ begin
   end;
   exit;
  end;
+ // open new connection if not already available
+ if not (HaveSerialPump and (COMPort = ConnComPortPumpLE.Text)) then
  try
   if HaveSerialPump then
   begin
