@@ -1780,6 +1780,8 @@ begin
 end;
 
 procedure TPumpControl.PCRepeatTimerFinished;
+var
+ Subst: Substance;
 // Actions after repeat time interval ends
 begin
  // if one day has passed but the pumps must run longer
@@ -1793,6 +1795,15 @@ begin
   MainForm.RepeatTimer.Enabled:= True;
   exit;
  end;
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and
+ (MainForm.CalibStepCB.ItemIndex = MainForm.RepeatPC.ActivePage.TabIndex) then
+ begin
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
+ end;
+
  if StrToInt(MainForm.RepeatSE.Text) > StrToInt(MainForm.RepeatOutputLE.Text) then
  begin
   inc(CurrentRepeat);
