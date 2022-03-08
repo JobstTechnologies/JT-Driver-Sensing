@@ -1101,7 +1101,13 @@ begin
   if SerialUSBPortCB.Items.Count = 1 then
    SerialUSBPortCB.ItemIndex:= 0
   else
-   SerialUSBPortCB.ItemIndex:= -1;
+  begin
+   // if there is already a connection, display it port
+   if HaveSerialPump then
+     SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
+   else
+    SerialUSBPortCB.ItemIndex:= -1;
+  end;
   // update the text since this will be displayed
   // as proposal when the connection dialog is shwon
   if SerialUSBPortCB.ItemIndex > -1 then
@@ -3260,7 +3266,13 @@ begin
    if SerialUSBPortCB.Items.Count = 1 then
     SerialUSBPortCB.ItemIndex:= 0
    else
-    SerialUSBPortCB.ItemIndex:= -1;
+   begin
+    // if there is already a connection, display it port
+    if HaveSerialSensor then
+      SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
+    else
+     SerialUSBPortCB.ItemIndex:= -1;
+   end;
    // update the text since this will be displayed
    // as proposal when the connection dialog is shwon
    if SerialUSBPortCB.ItemIndex > -1 then
