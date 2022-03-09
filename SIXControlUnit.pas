@@ -150,7 +150,7 @@ begin
   // disable all buttons
   MainForm.StartTestBB.Enabled:= false;
   MainForm.StopTestBB.Enabled:= false;
-  MainForm.CloseLazSerialConn(MousePointer);
+  MainForm.CloseLazSerialConn;
   HaveSerialSensor:= False;
   exit;
  end;
@@ -180,7 +180,7 @@ begin
     MainForm.IndicatorSensorP.Color:= clRed;
     MainForm.StartTestBB.Enabled:= false;
     MainForm.StopTestBB.Enabled:= false;
-    MainForm.CloseLazSerialConn(MousePointer);
+    MainForm.CloseLazSerialConn;
     HaveSerialSensor:= False;
     exit;
    end;
@@ -203,7 +203,7 @@ begin
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn(MousePointer);
+   MainForm.CloseLazSerialConn;
    HaveSerialSensor:= False;
    MainForm.AnOutOnOffTB.Checked:= false;
    MainForm.AnOutOnOffTB.Enabled:= false;
@@ -258,7 +258,7 @@ begin
    // disable all buttons
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn(MousePointer);
+   MainForm.CloseLazSerialConn;
    HaveSerialSensor:= False;
    exit;
   end;
@@ -309,7 +309,7 @@ begin
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn(MousePointer);
+   MainForm.CloseLazSerialConn;
    HaveSerialSensor:= False;
    exit;
   end;

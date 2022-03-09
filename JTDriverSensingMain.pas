@@ -903,7 +903,7 @@ type
     function OpenActionFile(InputName: string): Boolean;
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
-    procedure CloseLazSerialConn(MousePointer: TPoint);
+    procedure CloseLazSerialConn{(MousePointer: TPoint)};
     procedure FirmwareUpdate(forced: Boolean);
 
   end;
@@ -3297,7 +3297,7 @@ begin
    StopTestBB.Enabled:= false;
    if HaveSerialSensor then
    begin
-    CloseLazSerialConn(MousePointer);
+    CloseLazSerialConn;
     HaveSerialSensor:= False;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
@@ -3324,7 +3324,7 @@ begin
    IndicatorSensorP.Color:= clRed;
    if HaveSerialSensor then
    begin
-    CloseLazSerialConn(MousePointer);
+    CloseLazSerialConn;
     HaveSerialSensor:= False;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
@@ -3342,7 +3342,7 @@ begin
   try
    if HaveSerialSensor then
    begin
-    CloseLazSerialConn(MousePointer);
+    CloseLazSerialConn;
     HaveSerialSensor:= False;
    end;
    ConnComPortSensM.Text:= 'Not connected';
@@ -3374,7 +3374,7 @@ begin
     ConnComPortSensM.Color:= clRed;
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
-    CloseLazSerialConn(MousePointer);
+    CloseLazSerialConn;
     HaveSerialSensor:= False;
     exit;
    end;
@@ -3404,7 +3404,7 @@ begin
     IndicatorSensorP.Color:= clRed;
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
-    CloseLazSerialConn(MousePointer);
+    CloseLazSerialConn;
     HaveSerialSensor:= False;
     exit;
    end;
@@ -3422,7 +3422,7 @@ begin
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
-   CloseLazSerialConn(MousePointer);
+   CloseLazSerialConn;
    HaveSerialSensor:= False;
    exit;
   end;
@@ -3459,7 +3459,7 @@ begin
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
-   CloseLazSerialConn(MousePointer);
+   CloseLazSerialConn;
    HaveSerialSensor:= False;
    exit;
  end;
@@ -3657,7 +3657,7 @@ begin
    as TComboBox).Enabled:= true;
 end;
 
-procedure TMainForm.CloseLazSerialConn(MousePointer: TPoint);
+procedure TMainForm.CloseLazSerialConn{(MousePointer: TPoint)};
 begin
  // stop timer
  ReadTimer.Enabled:= false;
