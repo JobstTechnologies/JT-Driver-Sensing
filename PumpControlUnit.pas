@@ -39,8 +39,9 @@ type
   private
 
   public
-    function GenerateCommand(out command: string): Boolean;
-    function ParseCommand(command: string): Boolean;
+    function GenerateCommand(out command: string;
+      withSensor : Boolean = false) : Boolean;
+    function ParseCommand(command: string) : Boolean;
     procedure RunImmediate;
 
     class var
@@ -54,6 +55,7 @@ type
      ValveNum : integer; // number of valves
      PumpPrefix : string; // line prefix for action files
      ValvePrefix : string; // line prefix for action files
+     commandWithSIX : string; // stores the command sent on every repeat
   end;
 
 var
@@ -503,13 +505,14 @@ begin
 
 end;
 
-function TPumpControl.GenerateCommand(out command: string): Boolean;
+function TPumpControl.GenerateCommand(out command: string;
+  withSensor : Boolean): Boolean;
 // collect data an generate command to be sent
 var
  voltage, jStr, commandSplit, commandSave, commandOriginal : string;
  SOrder : array of char;
  timeFactor, DutyRepeats, XTime, OnTime, OffTime, i, j, k, j2, k2,
-   voltageCalc, countPump, countPumpNumber, posS: integer;
+  voltageCalc, countPump, countPumpNumber, posS : integer;
  timeCalc, timeOut, timeStep : Double;
  HaveS : Boolean = False;
 begin
@@ -530,9 +533,13 @@ begin
  // turn on LED
  command:= command + 'L';
 
- if (StrToInt(MainForm.RepeatSE.Text) > 0) or (MainForm.RunEndlessCB.Checked) then
-  // begin loop flag
-  command:= command + 'g';
+ // when the SIX is active, we cannot run the Arduino timer parallel to the CPU
+ // timer for a long time. Therefore we must send the pump command again after
+ // every repeat. Therefore omit the outer loop.
+ if not withSensor then
+  if (StrToInt(MainForm.RepeatSE.Text) > 0) or (MainForm.RunEndlessCB.Checked) then
+   // begin loop flag
+   command:= command + 'g';
 
  // step through all tabs
  for j:= 1 to StepNum do
@@ -1038,16 +1045,19 @@ begin
  end; // end for j:=1 to StepNum
 
  // end loop flag
- if MainForm.RunEndlessCB.Checked then
- begin
-  command:= command + 'G';
-  timeCalc:= MAXINT; // set maximal possible int for infinite repeats
- end;
- // if repeated run
- if (StrToInt(MainForm.RepeatSE.Text) > 0) and (not MainForm.RunEndlessCB.Checked) then
- begin
-  command:= command + 'G' + IntToStr(MainForm.RepeatSE.Value);
-  timeCalc:= timeCalc * (MainForm.RepeatSE.Value + 1);
+ if not withSensor then
+  begin
+  if MainForm.RunEndlessCB.Checked then
+  begin
+   command:= command + 'G';
+   timeCalc:= MAXINT; // set maximal possible int for infinite repeats
+  end;
+  // if repeated run
+  if (StrToInt(MainForm.RepeatSE.Text) > 0) and (not MainForm.RunEndlessCB.Checked) then
+  begin
+   command:= command + 'G' + IntToStr(MainForm.RepeatSE.Value);
+   timeCalc:= timeCalc * (MainForm.RepeatSE.Value + 1);
+  end;
  end;
 
   // explicitly turn off all valves, pumps, turn off LED and execute flag
@@ -1479,7 +1489,10 @@ begin
    CreateDir(ExtractFilePath(InNameDef) + 'DefinitionFiles\');
   end;
   // generate command
-  CommandResult:= GenerateCommand(command);
+  if haveSerialSensor then
+   CommandResult:= GenerateCommand(command, true)
+  else
+   CommandResult:= GenerateCommand(command);
   // if GenerateCommand returns e.g. a too long time do nothing
   if not CommandResult then
    exit;
@@ -1489,7 +1502,7 @@ begin
   MainForm.CommandM.Text:= command;
   // The TinyZero has an input buffer of 512 characters, if it is full, the
   // COM connection will break (no communication posible).
-  // There is a special case (in my opinion a bug) that if the input string has
+  // There is a special case (a bug) that if the input string has
   // modulo 64 characters, the TinyZero will not accept it directly. First with
   // the next command it will be executed (e.g. when pressing the Stop button).
   // The solution is to vary in this case the string termination since the
@@ -1498,6 +1511,9 @@ begin
    command:= command + #10
   else
    command:= command + LineEnding;
+
+  // save command to be resend on every repeat if running with SIX
+  commandWithSIX:= command;
 
   // if we have an open serial connection, execute
   if HaveSerialPump then
@@ -1801,6 +1817,38 @@ begin
  begin
   inc(CurrentRepeat);
   GlobalRepeatTime:= RepeatTime;
+  // send command to pump driver
+  // send the command
+  if HaveSerialPump then
+  begin
+   serPump.SendString(commandWithSIX);
+   if serPump.LastError <> 0 then
+   begin
+    with Application do
+     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
+                MB_ICONERROR + MB_OK);
+    MainForm.ConnComPortPumpLE.Color:= clRed;
+    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
+    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+    MainForm.PumpDriverMI.Enabled:= True;
+    MainForm.RunBB.Enabled:= False;
+    if serPump.LastError = 9997 then
+    begin
+     MainForm.StopBB.Enabled:= False;
+     exit; // we cannot close socket or free if the connection timed out
+    end;
+    serPump.CloseSocket;
+    serPump.Free;
+    HaveSerialPump:= False;
+    exit;
+   end;
+  end
+  else // no serial connection
+  begin
+   MainForm.RunBB.Enabled:= False;
+   exit;
+  end;
+  // restart timer
   MainForm.RepeatTimer.Enabled:= True;
   // only increase shown repeat if not already stopped
   if MainForm.IndicatorPumpP.Caption <> 'Manually stopped' then
