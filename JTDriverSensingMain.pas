@@ -2708,7 +2708,7 @@ end;
 
 procedure TMainForm.StopBBClick(Sender: TObject);
 begin
-// stop all pumps
+ // stop all pumps
  PumpControl.PCStopBBClick(Sender);
 end;
 
@@ -3667,15 +3667,15 @@ begin
   SensorFileStream.Free;
   HaveSensorFileStream:= false;
  end;
- if serSensor.LastError = 9997 then
- begin
+ //if serSensor.LastError = 9997 then
+ //begin
   // we cannot close socket or free when the connection timed out
-  MessageDlgPos('Error: ' + ConnComPortSensM.Lines[0] + ' cannot be closed.',
-  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  ConnComPortSensM.Text:= 'Not acessible';
-  ConnComPortSensM.Color:= clRed;
-  exit;
- end;
+  //MessageDlgPos('Error: ' + ConnComPortSensM.Lines[0] + ' cannot be closed.',
+  //mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  //ConnComPortSensM.Text:= 'Not acessible';
+  //ConnComPortSensM.Color:= clRed;
+  //exit;
+ //end;
  if HaveSerialSensor then
  begin
   // close connection
