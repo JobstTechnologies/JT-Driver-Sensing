@@ -113,7 +113,7 @@ var
  OutLine : string;
  dataString : AnsiString;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
- i, k, StopPos, ItemIndex: integer;
+ i, k, StopPos, ItemIndex : integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
  tempArray : packed array of byte;
@@ -125,7 +125,7 @@ var
  prevChan : array [1..8] of double;
  checksum : integer;
  tempInt16: Int16;
- PintegerArray: PintArray;
+ PintegerArray : PintArray;
  SingleByte : byte;
 begin
  // tell the OS the application is alive

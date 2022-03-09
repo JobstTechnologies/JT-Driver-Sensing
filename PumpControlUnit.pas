@@ -1076,13 +1076,13 @@ begin
    end
    else if timeCalc <= 60e6 then
    begin
-    timeOut:= timeCalc /1000/60;
+    timeOut:= timeCalc / 1000 / 60;
     MainForm.TotalTimeLE.Text:= FloatToStr(RoundTo(timeOut, -2));
     MainForm.TotalTimeLE.EditLabel.Caption:= 'Total Time in min';
    end
    else if timeCalc > 60e6 then
    begin
-    timeOut:= timeCalc /1000/60/60;
+    timeOut:= timeCalc / 1000 / 60 / 60;
     MainForm.TotalTimeLE.Text:= FloatToStr(RoundTo(timeOut, -2));
     MainForm.TotalTimeLE.EditLabel.Caption:= 'Total Time in h';
    end;
@@ -1372,6 +1372,16 @@ procedure TPumpControl.PCStepTimer1Finished(Sender: TObject);
 var
  Subst: Substance;
 begin
+ // if there is a step 2, start its timer and show its tab
+ if MainForm.Step2UseCB.checked then
+ begin
+  // the interval is calculated in GenerateCommand
+  MainForm.StepTimer2.Enabled:= True;
+  MainForm.RepeatPC.ActivePage:= MainForm.Step2TS;
+  // highlight it as active by adding an asterisk to the step name
+  MainForm.Step2TS.Caption:= 'Step 2 *';
+ end;
+
  MainForm.StepTimer1.Enabled:= False;
  // remove possible asterisk from step caption
  MainForm.Step1TS.Caption:= 'Step 1';
@@ -1381,16 +1391,6 @@ begin
  begin
   for Subst in Substance do
    SIXControl.SCPerformAutoCalib(Subst);
- end;
-
- // if there is a step 2, start its timer and show its tab
- if MainForm.Step2UseCB.checked then
- begin
-  // the interval is calculated in GenerateCommand
-  MainForm.StepTimer2.Enabled:= True;
-  MainForm.RepeatPC.ActivePage:= MainForm.Step2TS;
-  // highlight it as active by adding an asterisk to the step name
-  MainForm.Step2TS.Caption:= 'Step 2 *';
  end;
 end;
 
@@ -1404,18 +1404,6 @@ begin
  // SenderName is in the form "StepTimerX" and we need the X
  // so get the 10th character of the name
  Step:= StrToInt(Copy(SenderName, 10, 1));
- (MainForm.FindComponent('StepTimer' + IntToStr(Step))
-  as TTimer).Enabled:= False;
- // remove asterisk from current step caption
- (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
-  as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
-
- // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = Step - 1) then
- begin
-  for Subst in Substance do
-   SIXControl.SCPerformAutoCalib(Subst);
- end;
 
  // if there is a step+1, start its timer and show its tab
  if (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'UseCB')
@@ -1438,16 +1426,29 @@ begin
   // highlight it as active by adding an asterisk to the step name
   MainForm.Step1TS.Caption:= 'Step 1 *';
  end;
+
+ (MainForm.FindComponent('StepTimer' + IntToStr(Step))
+  as TTimer).Enabled:= False;
+ // remove asterisk from current step caption
+ (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
+  as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = Step - 1) then
+ begin
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
+ end;
 end;
 
 procedure TPumpControl.PCStepTimerLastFinished(Sender: TObject);
 begin
+ // switch to step 1
+ MainForm.StepTimer1.Enabled:= True;
  // remove asterisk from step caption
  MainForm.Step7TS.Caption:= 'Step 7';
  (MainForm.FindComponent('StepTimer' + IntToStr(PumpControl.StepNum))
         as TTimer).Enabled:= False;
- // switch to step 1
- MainForm.StepTimer1.Enabled:= True;
  MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
 end;
 
@@ -1796,14 +1797,6 @@ begin
   exit;
  end;
 
- // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and
- (MainForm.CalibStepCB.ItemIndex = MainForm.RepeatPC.ActivePage.TabIndex) then
- begin
-  for Subst in Substance do
-   SIXControl.SCPerformAutoCalib(Subst);
- end;
-
  if StrToInt(MainForm.RepeatSE.Text) > StrToInt(MainForm.RepeatOutputLE.Text) then
  begin
   inc(CurrentRepeat);
@@ -1815,6 +1808,14 @@ begin
  end
  else
   MainForm.RepeatTimer.Enabled:= False;
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and
+ (MainForm.CalibStepCB.ItemIndex = MainForm.RepeatPC.ActivePage.TabIndex) then
+ begin
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
+ end;
 end;
 
 procedure TPumpControl.PCOverallTimerFinished;
