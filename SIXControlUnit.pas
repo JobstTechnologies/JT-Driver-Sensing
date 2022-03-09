@@ -215,6 +215,11 @@ begin
   end;
  end;
 
+ // will be the case if serSensor.LastError <> 0 since the exit there
+ // only jumps out of the try finally block
+ if not HaveSerialSensor then
+  exit;
+
  // the are 3 different serial buffers:
  // - the 25 bytes of the SIX
  // - the buffer of the OS
