@@ -23,6 +23,7 @@ type
     procedure PCStopBBClick(Sender: TObject);
     procedure PCLiveModeCBChange(Sender: TObject);
     procedure PCPumpOnOffCBLoopChange(Sender: TObject);
+    procedure PCSendRepeatToPump;
     procedure PCRepeatTimerFinished;
     procedure PCOverallTimerFinished;
     procedure PCStepXUseCBChange(Sender: TObject);
@@ -1045,19 +1046,18 @@ begin
  end; // end for j:=1 to StepNum
 
  // end loop flag
- if not withSensor then
-  begin
-  if MainForm.RunEndlessCB.Checked then
-  begin
+ if MainForm.RunEndlessCB.Checked then
+ begin
+  if not withSensor then
    command:= command + 'G';
-   timeCalc:= MAXINT; // set maximal possible int for infinite repeats
-  end;
-  // if repeated run
-  if (StrToInt(MainForm.RepeatSE.Text) > 0) and (not MainForm.RunEndlessCB.Checked) then
-  begin
+  timeCalc:= MAXINT; // set maximal possible int for infinite repeats
+ end;
+ // if repeated run
+ if (StrToInt(MainForm.RepeatSE.Text) > 0) and (not MainForm.RunEndlessCB.Checked) then
+ begin
+  if not withSensor then
    command:= command + 'G' + IntToStr(MainForm.RepeatSE.Value);
-   timeCalc:= timeCalc * (MainForm.RepeatSE.Value + 1);
-  end;
+  timeCalc:= timeCalc * (MainForm.RepeatSE.Value + 1);
  end;
 
   // explicitly turn off all valves, pumps, turn off LED and execute flag
@@ -1432,6 +1432,8 @@ begin
  begin
   // switch to step 1
   MainForm.StepTimer1.Enabled:= True;
+  // send repeat sequence to pump driver
+  PCSendRepeatToPump;
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
   // highlight it as active by adding an asterisk to the step name
   MainForm.Step1TS.Caption:= 'Step 1 *';
@@ -1796,6 +1798,35 @@ begin
  end;
 end;
 
+procedure TPumpControl.PCSendRepeatToPump;
+// send command to pump driver
+begin
+  if HaveSerialPump then
+  begin
+   serPump.SendString(commandWithSIX);
+   if serPump.LastError <> 0 then
+   begin
+    with Application do
+     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
+                MB_ICONERROR + MB_OK);
+    MainForm.ConnComPortPumpLE.Color:= clRed;
+    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
+    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+    MainForm.PumpDriverMI.Enabled:= True;
+    MainForm.RunBB.Enabled:= False;
+    serPump.CloseSocket;
+    serPump.Free;
+    HaveSerialPump:= False;
+    exit;
+   end;
+  end
+  else // no serial connection
+  begin
+   MainForm.RunBB.Enabled:= False;
+   exit;
+  end;
+end;
+
 procedure TPumpControl.PCRepeatTimerFinished;
 var
  Subst: Substance;
@@ -1817,39 +1848,10 @@ begin
  begin
   inc(CurrentRepeat);
   GlobalRepeatTime:= RepeatTime;
-  // send command to pump driver
-  // send the command
-  if HaveSerialPump then
-  begin
-   serPump.SendString(commandWithSIX);
-   if serPump.LastError <> 0 then
-   begin
-    with Application do
-     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
-                MB_ICONERROR + MB_OK);
-    MainForm.ConnComPortPumpLE.Color:= clRed;
-    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
-    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
-    MainForm.PumpDriverMI.Enabled:= True;
-    MainForm.RunBB.Enabled:= False;
-    if serPump.LastError = 9997 then
-    begin
-     MainForm.StopBB.Enabled:= False;
-     exit; // we cannot close socket or free if the connection timed out
-    end;
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
-    exit;
-   end;
-  end
-  else // no serial connection
-  begin
-   MainForm.RunBB.Enabled:= False;
-   exit;
-  end;
   // restart timer
   MainForm.RepeatTimer.Enabled:= True;
+  // send repeat sequence to pump driver
+  PCSendRepeatToPump;
   // only increase shown repeat if not already stopped
   if MainForm.IndicatorPumpP.Caption <> 'Manually stopped' then
    MainForm.RepeatOutputLE.Text:= IntToStr(CurrentRepeat);
