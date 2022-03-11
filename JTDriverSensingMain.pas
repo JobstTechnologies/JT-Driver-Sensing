@@ -1134,6 +1134,11 @@ begin
                       + 'to the pump connectors.' + LineEnding
                       + 'Connect to a SIX and a pump driver'  + LineEnding
                       + 'to enable the button.';
+  if MainForm.RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
+   MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+    + LineEnding
+    + 'To enable the button you must first connect to the pump driver'
+    + LineEnding + 'using the menu ''Connection''';
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
@@ -1326,7 +1331,9 @@ begin
    // enable all buttons
    // don't allow to run, if calibration is used but no .def file is used
    if not (UseCalibCB.Checked and (LoadedDefFileM.Text = 'None')) then
-    RunBB.Enabled:= true;
+    RunBB.Enabled:= true
+   else
+    RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
    StopBB.Enabled:= true;
    // enable analog output when also connected to a pump driver
    if ConnComPortSensM.Color = clDefault then
@@ -2194,6 +2201,9 @@ begin
  // blanks cannot be subtracted anymore
  NoSubtractBlankCB.Checked:= false;
  NoSubtractBlankCB.Enabled:= false;
+ // there might be a calibration
+ if MainForm.UseCalibCB.Checked then
+  RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
 
  // store previous channel number and set to 6 channels
  NumChannelsPrev:= SIXControl.NumChannels;

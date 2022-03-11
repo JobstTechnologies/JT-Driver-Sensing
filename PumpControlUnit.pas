@@ -80,6 +80,8 @@ begin
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
  MainForm.ValveSetupGB.Enabled:= True;
  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
+ if MainForm.LoadedDefFileM.Text = 'None' then
+  MainForm.CalibrationGB.Enabled:= false;
 
  // check all possible steps
  for j:= 1 to StepNum do
@@ -2041,6 +2043,39 @@ begin
  MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
+ // en/disable Run button
+ if not HaveSerialPump then
+ begin
+  MainForm.RunBB.Enabled:= false;
+  if MainForm.RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
+   MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+    + LineEnding
+    + 'To enable the button you must first connect to the pump driver'
+    + LineEnding + 'using the menu ''Connection''';
+ end
+ else
+ begin
+  if MainForm.UseCalibCB.Checked then
+  begin
+   if MainForm.LoadedDefFileM.Text <> 'None' then
+    MainForm.RunBB.Enabled:= true
+    else
+    begin
+     MainForm.RunBB.Enabled:= false;
+     if MainForm.LoadedDefFileM.Text <> 'None' then
+      MainForm.RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
+    end;
+  end
+  else
+  begin
+   MainForm.RunBB.Enabled:= true;
+   MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+   + LineEnding
+   + 'To enable the button you must first connect to the pump driver'
+   + LineEnding + 'using the menu ''Connection''';
+  end;
+ end;
+
 end;
 
 procedure TPumpControl.PCValveNumberSEChange(Sender: TObject);
