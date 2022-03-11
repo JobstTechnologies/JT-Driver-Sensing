@@ -881,7 +881,6 @@ type
     procedure StartFitBClick(Sender: TObject);
     procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
-    procedure StepTimer1Finished(Sender: TObject);
     procedure StepTimerXFinished(Sender: TObject);
     procedure StepTimerLastFinished(Sender: TObject);
     procedure StopBBClick(Sender: TObject);
@@ -2689,11 +2688,6 @@ procedure TMainForm.OverallTimerFinished;
 // Actions after time interval ends
 begin
  PumpControl.PCOverallTimerFinished;
-end;
-
-procedure TMainForm.StepTimer1Finished(Sender: TObject);
-begin
- PumpControl.PCStepTimer1Finished(Sender);
 end;
 
 procedure TMainForm.StepTimerXFinished(Sender: TObject);

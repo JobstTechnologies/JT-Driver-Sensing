@@ -15,7 +15,6 @@ type
 
   TPumpControl = class
     procedure PCDutyCycleXFSEChange(Sender: TObject);
-    procedure PCStepTimer1Finished(Sender: TObject);
     procedure PCStepTimerXFinished(Sender: TObject);
     procedure PCStepTimerLastFinished(Sender: TObject);
     procedure PCGenerateCommandBBClick(Sender: TObject);
@@ -1378,32 +1377,6 @@ begin
       as TTabSheet).TabVisible:= True;
 end;
 
-procedure TPumpControl.PCStepTimer1Finished(Sender: TObject);
-var
- Subst: Substance;
-begin
- // if there is a step 2, start its timer and show its tab
- if MainForm.Step2UseCB.checked then
- begin
-  // the interval is calculated in GenerateCommand
-  MainForm.StepTimer2.Enabled:= True;
-  MainForm.RepeatPC.ActivePage:= MainForm.Step2TS;
-  // highlight it as active by adding an asterisk to the step name
-  MainForm.Step2TS.Caption:= 'Step 2 *';
- end;
-
- MainForm.StepTimer1.Enabled:= False;
- // remove possible asterisk from step caption
- MainForm.Step1TS.Caption:= 'Step 1';
-
- // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = 0) then
- begin
-  for Subst in Substance do
-   SIXControl.SCPerformAutoCalib(Subst);
- end;
-end;
-
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
  Step : integer;
@@ -1432,18 +1405,27 @@ begin
  begin
   // switch to step 1
   MainForm.StepTimer1.Enabled:= True;
-  // send repeat sequence to pump driver
-  PCSendRepeatToPump;
+  // when there are finite number of repeats PCRepeatTimerFinished
+  // already just performed the calibation and sent the pump command
+  if HaveSerialPump and
+   (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
+   // send repeat sequence to pump driver
+   PCSendRepeatToPump;
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
   // highlight it as active by adding an asterisk to the step name
   MainForm.Step1TS.Caption:= 'Step 1 *';
  end;
 
- (MainForm.FindComponent('StepTimer' + IntToStr(Step))
-  as TTimer).Enabled:= False;
- // remove asterisk from current step caption
- (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
-  as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
+ // only when there is only step 1 we must not stop the timer
+ if not ((Step = 1) and (not (MainForm.FindComponent('Step' + IntToStr(Step+1) + 'UseCB')
+     as TCheckBox).checked)) then
+ begin
+  (MainForm.FindComponent('StepTimer' + IntToStr(Step))
+   as TTimer).Enabled:= False;
+  // remove asterisk from current step caption
+  (MainForm.FindComponent('Step' + IntToStr(Step) + 'TS')
+   as TTabSheet).Caption:= 'Step ' + IntToStr(Step);
+ end;
 
  // perform a calibration if necessary
  if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = Step - 1) then
@@ -1454,9 +1436,26 @@ begin
 end;
 
 procedure TPumpControl.PCStepTimerLastFinished(Sender: TObject);
+var
+ Subst: Substance;
 begin
  // switch to step 1
  MainForm.StepTimer1.Enabled:= True;
+ // when there are finite number of repeats PCRepeatTimerFinished
+ // already just performed the calibation and sent the pump command
+
+ // send repeat sequence to pump driver
+ if HaveSerialPump and
+  (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
+  PCSendRepeatToPump;
+
+ // perform a calibration if necessary
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = 6) then
+ begin
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
+ end;
+
  // remove asterisk from step caption
  MainForm.Step7TS.Caption:= 'Step 7';
  (MainForm.FindComponent('StepTimer' + IntToStr(PumpControl.StepNum))
@@ -1828,8 +1827,6 @@ begin
 end;
 
 procedure TPumpControl.PCRepeatTimerFinished;
-var
- Subst: Substance;
 // Actions after repeat time interval ends
 begin
  // if one day has passed but the pumps must run longer
@@ -1850,8 +1847,6 @@ begin
   GlobalRepeatTime:= RepeatTime;
   // restart timer
   MainForm.RepeatTimer.Enabled:= True;
-  // send repeat sequence to pump driver
-  PCSendRepeatToPump;
   // only increase shown repeat if not already stopped
   if MainForm.IndicatorPumpP.Caption <> 'Manually stopped' then
    MainForm.RepeatOutputLE.Text:= IntToStr(CurrentRepeat);
@@ -1859,20 +1854,14 @@ begin
  else
   MainForm.RepeatTimer.Enabled:= False;
 
- // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and
- (MainForm.CalibStepCB.ItemIndex = MainForm.RepeatPC.ActivePage.TabIndex) then
- begin
-  for Subst in Substance do
-   SIXControl.SCPerformAutoCalib(Subst);
- end;
 end;
 
 procedure TPumpControl.PCOverallTimerFinished;
 // actions after time interval ends
 var
-  finishTime, Substance : string;
-  i, j : integer;
+ finishTime, SubstanceName : string;
+ i, j : integer;
+ Subst: Substance;
 begin
  // if one day has passed but the pumps must run longer
  if GlobalTime > 86400000 then
@@ -1884,6 +1873,14 @@ begin
    MainForm.OverallTimer.Interval:= 86400000;
   MainForm.OverallTimer.Enabled:= True;
   exit;
+ end;
+ // if there were no repeats and calibration at the last step,
+ // we must calibrate here
+ i:= MainForm.RepeatPC.ActivePageIndex;
+ if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = i) then
+ begin
+  for Subst in Substance do
+   SIXControl.SCPerformAutoCalib(Subst);
  end;
  // output finish time
  finishTime := FormatDateTime('dd.mm.yyyy, hh:nn:ss', now);
@@ -1943,12 +1940,12 @@ begin
    // the user must be able to see the settings for all substances
    // therefore we cannot just disable the CalibSubstancesPC component but its
    // child components except of XTS
-   Substance:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
-   (MainForm.FindComponent(Substance + 'AvailChanL')
+   SubstanceName:= MainForm.CalibSubstancesPC.Pages[j-1].Caption;
+   (MainForm.FindComponent(SubstanceName + 'AvailChanL')
     as TLabel).Enabled:= True;
-   (MainForm.FindComponent(Substance + 'CalibGB')
+   (MainForm.FindComponent(SubstanceName + 'CalibGB')
     as TGroupBox).Enabled:= True;
-   (MainForm.FindComponent(Substance + 'CalibCLB')
+   (MainForm.FindComponent(SubstanceName + 'CalibCLB')
     as TChartListbox).Enabled:= True;
   end;
   // view tab after last used step

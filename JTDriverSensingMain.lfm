@@ -324,7 +324,7 @@ object MainForm: TMainForm
           Top = 72
           Width = 136
           Alignment = taCenter
-          Color = clMenuHighlight
+          Color = clHighlight
           Lines.Strings = (
             'None'
           )
@@ -9837,13 +9837,13 @@ object MainForm: TMainForm
     TitleFont.Quality = fqCleartype
     TitleFont.Style = [fsBold]
     Visible = False
-    Left = 936
-    Top = 72
+    Left = 1016
+    Top = 24
   end
   object StepTimer1: TTimer
     Enabled = False
     Interval = 100
-    OnTimer = StepTimer1Finished
+    OnTimer = StepTimerXFinished
     Left = 1104
     Top = 88
   end
