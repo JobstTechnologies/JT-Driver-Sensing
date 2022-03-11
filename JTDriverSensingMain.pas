@@ -1246,6 +1246,10 @@ begin
   IndicatorPumpP.Caption:= 'Connection successful';
   IndicatorPumpP.Color:= clDefault;
   IndicatorPumpPPaint;
+  // no matter if the firmware might be the right one, we can allow to save and
+  // load action files
+  LoadActionMI.Enabled:= True;
+  SaveActionMI.Enabled:= True;
   // get Firmware version
   try
    FirmwareVersion:= serPump.RecvPacket(1000);
