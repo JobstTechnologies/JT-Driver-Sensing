@@ -3224,7 +3224,7 @@ var
  Reg : TRegistry;
  i, k : integer;
  MousePointer : TPoint;
- HeaderLine : string;
+ HeaderLine, ReturnName : string;
  dataArray : array[0..24] of byte;
 begin
  // initialize
@@ -3438,8 +3438,14 @@ begin
  end; // end if Connected
 
  // now open the file dialog to select the file to save the SIX data
- InNameSensor:= '';
- InNameSensor:= SaveHandling(InNameSensor, '.csv'); // opens file dialog
+ // if there is already a connection, display it port
+ if not HaveSerialSensor then
+  InNameSensor:= '';
+ ReturnName:= SaveHandling(InNameSensor, '.csv'); // opens file dialog
+ if ReturnName = 'canceled' then // nothing needs to be done
+  exit
+ else
+  InNameSensor:= ReturnName;
  if InNameSensor <> '' then
  begin
   try
@@ -3772,7 +3778,12 @@ begin
   result:= OutNameTemp;
   // store last used name
   SaveDialog.FileName:= ExtractFileName(OutNameTemp);
- end; // end if SaveDialog.Execute
+ end
+ else // the user canceled the dialog
+ begin
+  if FileExists(InName) and (SaveDialog.FileName = InName) then
+   result:= 'canceled';
+ end;
 
 end;
 
