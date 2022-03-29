@@ -78,6 +78,7 @@ type
     GlucoseCalibUnitCB: TComboBox;
     GlucoseCalibValueFSE: TFloatSpinEdit;
     LactateCalibCLB: TChartListbox;
+    NoTempCorrectionCB: TCheckBox;
     UseCalibCB: TCheckBox;
     ValveNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
@@ -837,6 +838,7 @@ type
     procedure LoadedFileSensMChange(Sender: TObject);
     procedure LoadedFileSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
+    procedure NoTempCorrectionCBChange(Sender: TObject);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
@@ -2678,6 +2680,11 @@ begin
  // if there is no connection to the SIX, disable the context menu
  if not HaveSerialSensor then
   Handled:= true;
+end;
+
+procedure TMainForm.NoTempCorrectionCBChange(Sender: TObject);
+begin
+ SIXControl.SCNoTempCorrectionCBChange(Sender);
 end;
 
 procedure TMainForm.ResetChartAppearanceMIClick(Sender: TObject);

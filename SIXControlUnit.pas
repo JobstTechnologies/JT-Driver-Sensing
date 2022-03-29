@@ -48,6 +48,7 @@ type
     procedure SCPerformAutoCalib(CalibSubstance: Substance);
     procedure SCChangeBackColorMIClick(Sender: TObject);
     procedure SCChangeSensFileMIClick(Sender: TObject);
+    procedure SCNoTempCorrectionCBChange(Sender: TObject);
     procedure SCSaveAppearance(iniFile : string);
     procedure SCLoadAppearance(iniFile : string);
 
@@ -87,7 +88,8 @@ var
   Gains : array [1..6] of single; // the channel gains
   GainsRaw : array [1..6] of double; // the default gains
   Subtracts : array [1..6] of integer; // the channel subtracts
-  TemperGains : array [1..8] of single; // the temperature gains
+  TemperGains : array [1..8] of single; // the used temperature gains
+  TemperGainsSaved : array [1..8] of single; // the temperature gains from the definition file
   ErrorCount : integer = 0; // counts how many times we did not reeive a stop bit
   wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
   inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
@@ -101,8 +103,12 @@ uses
   ceTitleFootDlg, ceLegendDlg, ceSeriesDlg, ceAxisDlg;
 
 constructor TSIXControl.create;
+var
+ i : integer;
 begin
  evalTimeChanged:= false;
+ for i:= 1 to 8 do
+  TemperGains[i]:= 0;
 end;
 
 procedure TSIXControl.SCReadTimerTimerFinished(Sender: TObject);
@@ -1828,11 +1834,15 @@ begin
   LineReader.ReadLine(ReadLine);
   StringArray:= ReadLine.Split(',');
   for i:= 0 to 7 do
-   if not TryStrToFloat(StringArray[i], TemperGains[i+1]) then
+   if not TryStrToFloat(StringArray[i], TemperGainsSaved[i+1]) then
    begin
     Result:= false;
     exit;
    end;
+  // if temp correction is used, transfer the gains to the active ones
+  if not MainForm.NoTempCorrectionCB.Checked then
+   for i:= 0 to 7 do
+    TemperGains[i+1]:= TemperGainsSaved[i+1];
 
  finally
   LineReader.Free;
@@ -2335,7 +2345,19 @@ begin
 
   // reset calibChannel
  calibChannelA:= 0;
+end;
 
+procedure TSIXControl.SCNoTempCorrectionCBChange(Sender: TObject);
+var
+ i : integer;
+begin
+ for i:= 1 to 7 do // we keep TemperGains[8] as it is
+ begin
+  if MainForm.NoTempCorrectionCB.Checked then
+   TemperGains[i]:= 0
+  else
+   TemperGains[i]:= TemperGainsSaved[i];
+ end;
 end;
 
 procedure TSIXControl.SCSaveAppearance(iniFile : string);

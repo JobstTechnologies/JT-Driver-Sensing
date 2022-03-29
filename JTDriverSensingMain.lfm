@@ -32,7 +32,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 88
+        Top = 104
         Width = 344
         Caption = 'Channel 1'
         ClientHeight = 70
@@ -97,7 +97,7 @@ object MainForm: TMainForm
         Left = 360
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 88
+        Top = 104
         Width = 344
         Caption = 'Channel 2'
         ClientHeight = 70
@@ -160,11 +160,11 @@ object MainForm: TMainForm
       end
       object GeneralGB: TGroupBox
         Left = 0
-        Height = 80
+        Height = 92
         Top = 8
         Width = 344
         Caption = 'General'
-        ClientHeight = 60
+        ClientHeight = 72
         ClientWidth = 340
         ParentColor = False
         TabOrder = 2
@@ -216,11 +216,11 @@ object MainForm: TMainForm
       end
       object SixStatusGB: TGroupBox
         Left = 720
-        Height = 382
-        Top = 88
+        Height = 378
+        Top = 104
         Width = 156
         Caption = 'Sensor Status Info'
-        ClientHeight = 362
+        ClientHeight = 358
         ClientWidth = 152
         ParentColor = False
         TabOrder = 3
@@ -345,7 +345,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 380
+        Top = 392
         Width = 344
         Caption = 'Channel Operation 1'
         ClientHeight = 70
@@ -421,7 +421,7 @@ object MainForm: TMainForm
         Left = 360
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 184
+        Top = 200
         Width = 344
         Caption = 'Channel 4'
         ClientHeight = 70
@@ -484,7 +484,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 282
+        Top = 296
         Width = 344
         Caption = 'Channel 5'
         ClientHeight = 70
@@ -547,7 +547,7 @@ object MainForm: TMainForm
         Left = 360
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 380
+        Top = 392
         Width = 344
         Caption = 'Channel Operation 2'
         ClientHeight = 70
@@ -621,19 +621,19 @@ object MainForm: TMainForm
       end
       object ExpertGB: TGroupBox
         Left = 360
-        Height = 80
+        Height = 92
         Top = 8
-        Width = 280
+        Width = 344
         Caption = 'Expert Settings'
-        ClientHeight = 60
-        ClientWidth = 276
+        ClientHeight = 72
+        ClientWidth = 340
         ParentColor = False
         TabOrder = 8
         object NoSubtractBlankCB: TCheckBox
           Left = 8
           Height = 19
           Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'
-          Top = 4
+          Top = 0
           Width = 163
           Caption = 'Don''t subtract blank values'
           Enabled = False
@@ -646,7 +646,7 @@ object MainForm: TMainForm
           Left = 8
           Height = 19
           Hint = 'The raw channel current values'#13#10'will be output and displayed'
-          Top = 32
+          Top = 24
           Width = 125
           Caption = 'Display values in nA'
           OnChange = RawCurrentCBChange
@@ -655,10 +655,10 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXTypeRG: TRadioGroup
-          Left = 184
+          Left = 232
           Height = 64
           Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
-          Top = -10
+          Top = 0
           Width = 82
           AutoFill = True
           Caption = 'SIX Type'
@@ -680,12 +680,25 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 2
         end
+        object NoTempCorrectionCB: TCheckBox
+          Left = 8
+          Height = 19
+          Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'
+          Top = 48
+          Width = 206
+          Caption = 'Don''t apply temperature correction'
+          Enabled = False
+          OnChange = NoTempCorrectionCBChange
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+        end
       end
       object Channel3GB: TGroupBox
         Left = 0
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 184
+        Top = 200
         Width = 344
         Caption = 'Channel 3'
         ClientHeight = 70
@@ -750,7 +763,7 @@ object MainForm: TMainForm
         Left = 360
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 282
+        Top = 296
         Width = 344
         Caption = 'Channel 6'
         ClientHeight = 70
@@ -811,11 +824,11 @@ object MainForm: TMainForm
       end
       object PerformTestingGB: TGroupBox
         Left = 720
-        Height = 80
+        Height = 92
         Top = 8
         Width = 156
         Caption = 'Testing'
-        ClientHeight = 60
+        ClientHeight = 72
         ClientWidth = 152
         ParentColor = False
         TabOrder = 11
@@ -823,7 +836,7 @@ object MainForm: TMainForm
           Left = 8
           Height = 19
           Hint = 'Not yet implemented'
-          Top = 3
+          Top = 8
           Width = 92
           Caption = 'Perform Tests'
           Enabled = False
@@ -836,7 +849,7 @@ object MainForm: TMainForm
           Left = 8
           Height = 19
           Hint = 'Outputs the sensor values'#13#10'as voltage to a pump driver'
-          Top = 32
+          Top = 40
           Width = 121
           Caption = 'Use Analog Output'
           Enabled = False
@@ -847,9 +860,9 @@ object MainForm: TMainForm
         end
       end
       object PumpStatusGeneralGB: TGroupBox
-        Left = 888
+        Left = 892
         Height = 194
-        Top = 88
+        Top = 104
         Width = 148
         Caption = 'Pump Driver Status Info'
         ClientHeight = 174

@@ -4,6 +4,8 @@ from version 0.997.1 to 0.998
 
 improvement:
 - it is now possible to automatically recalibrate after a pump steps of choice
+- new option to turn off the temperature correction
+- more stable serial data readout mechanism
 
 
 from version 0.997 to 0.997.1
