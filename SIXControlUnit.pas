@@ -2351,7 +2351,7 @@ procedure TSIXControl.SCNoTempCorrectionCBChange(Sender: TObject);
 var
  i : integer;
 begin
- for i:= 1 to 7 do // we keep TemperGains[8] as it is
+ for i:= 1 to 8 do
  begin
   if MainForm.NoTempCorrectionCB.Checked then
    TemperGains[i]:= 0

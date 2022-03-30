@@ -1961,6 +1961,7 @@ begin
    LoadedDefFileM.Color:= clDefault;
    StartTestBB.enabled:= false;
    NoSubtractBlankCB.enabled:= false;
+   NoTempCorrectionCB.enabled:= false;
    UnloadDefBB.visible:= false;
    CalibrateTB.Enabled:= false;
    CalibrationGB.Enabled:= false;
@@ -2000,6 +2001,7 @@ begin
   LoadedDefFileM.Color:= clDefault;
   StartTestBB.enabled:= false;
   NoSubtractBlankCB.enabled:= false;
+  NoTempCorrectionCB.enabled:= false;
   UnloadDefBB.visible:= false;
   CalibrateTB.Enabled:= false;
   CalibrationGB.Enabled:= false;
@@ -2051,6 +2053,7 @@ begin
   StartTestBB.enabled:= true;
  SIXBiosensorsMI.enabled:= true;
  NoSubtractBlankCB.enabled:= true;
+ NoTempCorrectionCB.enabled:= true;
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
  RawCurrentCB.Enabled:= true;
