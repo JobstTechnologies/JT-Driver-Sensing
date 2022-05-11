@@ -1893,12 +1893,14 @@ begin
  // all series except of SIXTempValues are connected to the left axis
  if SeriesName <> 'SIXTempValues' then
   AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [ATool.NearestGraphPoint.X,
+          [MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+            ATool.NearestGraphPoint.X),
            MainForm.SIXCH.AxisList[0].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.Y)])
  else
   AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [ATool.NearestGraphPoint.X,
+          [MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+            ATool.NearestGraphPoint.X),
            MainForm.SIXCH.AxisList[2].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.Y)])
 end;
