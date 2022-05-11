@@ -1226,7 +1226,7 @@ object MainForm: TMainForm
         MinValue = 0.1
         OnChange = ScrollIntervalFSEChange
         TabOrder = 2
-        Value = 5
+        Value = 10
       end
     end
     object PumpControlTS: TTabSheet
