@@ -8055,12 +8055,12 @@ object MainForm: TMainForm
       end
       object CalibrationGB: TGroupBox
         Left = 716
-        Height = 370
+        Height = 405
         Hint = 'Calibration is only possible if a'#13#10'sensor definition file is loaded'
         Top = 24
         Width = 236
         Caption = 'Calibration'
-        ClientHeight = 350
+        ClientHeight = 385
         ClientWidth = 232
         Enabled = False
         ParentShowHint = False
@@ -8101,7 +8101,7 @@ object MainForm: TMainForm
         object CalibSubstancesPC: TPageControl
           Left = 8
           Height = 292
-          Top = 48
+          Top = 83
           Width = 220
           ActivePage = GlucoseTS
           TabIndex = 0
@@ -8251,6 +8251,26 @@ object MainForm: TMainForm
           OnChange = UseCalibCBChange
           ParentShowHint = False
           TabOrder = 2
+        end
+        object UsedCalibValueSE: TSpinEdit
+          Left = 157
+          Height = 23
+          Hint = 'Number of last measurements that'#13#10'will be used to calculate the mean'#13#10'value that is used for the calibration'
+          Top = 51
+          Width = 45
+          Alignment = taRightJustify
+          MinValue = 5
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+          Value = 5
+        end
+        object Label72: TLabel
+          Left = 32
+          Height = 15
+          Top = 52
+          Width = 116
+          Caption = 'Used values for mean:'
         end
       end
     end
@@ -9724,8 +9744,8 @@ object MainForm: TMainForm
     end
   end
   object MainMenu: TMainMenu
-    Left = 1016
-    Top = 72
+    Left = 1000
+    Top = 184
     object ConnectionMI: TMenuItem
       Caption = 'Connection'
       ShortCut = 16463
@@ -9850,8 +9870,8 @@ object MainForm: TMainForm
     TitleFont.Quality = fqCleartype
     TitleFont.Style = [fsBold]
     Visible = False
-    Left = 1016
-    Top = 24
+    Left = 1000
+    Top = 136
   end
   object StepTimer1: TTimer
     Enabled = False
@@ -9914,7 +9934,7 @@ object MainForm: TMainForm
   end
   object ChartToolset: TChartToolset
     Left = 1000
-    Top = 256
+    Top = 280
     object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
       DrawingMode = tdmNormal

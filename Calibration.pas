@@ -419,11 +419,12 @@ var
  selectedSeries : TChartSeries;
  selectedSeriesA : TLineSeries;
  i, k, calibChannel : integer;
- n : integer = 5; // we hardcode to take the last 5 measurements
+ n : integer;
  yMean, calibValue, molWeight, yMeanA, yMeanB, yMeanMean : double;
  selSeriesName, CLBName : string;
 begin
  // initialization
+ n:= MainForm.UsedCalibValueSE.Value;
  molWeight:= 0.0;
  CLBName:= '';
  selSeriesName:= '';

@@ -64,6 +64,8 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
+    UsedCalibValueSE: TSpinEdit;
+    Label72: TLabel;
     LactateAvailChanL: TLabel;
     GlucoseCalibGB: TGroupBox;
     CalibrationGB: TGroupBox;
@@ -915,7 +917,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.99.8';
+  Version : string = '0.99.9';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 3.0;
   serPump: TBlockSerial;
