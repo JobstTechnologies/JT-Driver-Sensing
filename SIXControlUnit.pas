@@ -1971,7 +1971,9 @@ begin
      SetLength(DummyString, Length(DummyString) - 19);
     except
      on Exception : EConvertError do
-      ; // do nothing
+      // FIXME: on Hebrew Windows StrToDateTime() failes, thus ignore the
+      // exception -> can only be fixed/evaluated on a Hebrew Windows
+      SetLength(DummyString, Length(DummyString) - 19);
     end;
    end;
 
@@ -2151,6 +2153,10 @@ begin
 end;
 
 procedure TSIXControl.SCPerformAutoCalib(CalibSubstance: Substance);
+{the calibration is done the following way:
+ - after the specified step the last specified number of available measurements
+   are taken to calculate its mean value
+ - this value is taken as the measured value for the calibration substance}
 var
  OutName, DummyString, HeaderLine, CLBName, EvaluateString : string;
  StringList : TStringList;
@@ -2191,7 +2197,9 @@ begin
    SetLength(DummyString, Length(DummyString) - 19);
   except
    on Exception : EConvertError do
-    ; // do nothing
+    // FIXME: on Hebrew Windows StrToDateTime() failes, thus ignore the
+    // exception -> can only be fixed/evaluated on a Hebrew Windows
+    SetLength(DummyString, Length(DummyString) - 19);
   end;
  end;
 
