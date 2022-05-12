@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
-  StdCtrls, ExtCtrls, Spin, Buttons, LCLType, Registry, Process, LazFileUtils,
-  SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
+  StdCtrls, Streamex, ExtCtrls, Spin, Buttons, LCLType, Registry, Process,
+  LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend,
   // the custom forms
   SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
@@ -64,6 +64,7 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
+    LoadSensorDataMI: TMenuItem;
     UsedCalibValueSE: TSpinEdit;
     Label72: TLabel;
     LactateAvailChanL: TLabel;
@@ -840,6 +841,7 @@ type
     procedure LoadedFileSensMChange(Sender: TObject);
     procedure LoadedFileSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
+    procedure LoadSensorDataMIClick(Sender: TObject);
     procedure NoTempCorrectionCBChange(Sender: TObject);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
@@ -906,6 +908,7 @@ type
     function OpenActionFile(InputName: string): Boolean;
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
+    function ReadSensorData(Input: string): Boolean;
     procedure CloseLazSerialConn{(MousePointer: TPoint)};
     procedure FirmwareUpdate(forced: Boolean);
 
@@ -1105,7 +1108,7 @@ begin
    SerialUSBPortCB.ItemIndex:= 0
   else
   begin
-   // if there is already a connection, display it port
+   // if there is already a connection, display its port
    if HaveSerialPump then
      SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
    else
@@ -2689,6 +2692,216 @@ begin
   Handled:= true;
 end;
 
+procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
+begin
+ ReadSensorData((Sender as TComponent).Name);
+end;
+
+function TMainForm.ReadSensorData(Input: string) : Boolean;
+// reads data out of sensor file
+var
+ OpenFileStream : TFileStream;
+ LineReader : TStreamReader;
+ StringArray : TStringArray;
+ ReadLine, ReturnName : string;
+ MousePointer : TPoint;
+ i, timeCounter : integer;
+ TempRow : integer = -1;
+ ChanRawDbl : array [1..8] of double;
+ temperature, time : double;
+begin
+ // initialize
+ MousePointer:= Mouse.CursorPos;
+ for i:= 1 to 8 do
+  ChanRawDbl[i]:= 0.0;
+ // the data file can have different portions, some just raw values, some with
+ // .def file loaded. Therefore read first the raw values and if there is a .def
+ // file transform them
+ RawCurrentCB.Checked:= true;
+
+ if Input = 'LoadSensorDataMI' then
+ begin
+  if DropfileNamePump <> '' then // a file was dropped into the main window
+   ReturnName:= OpenHandling(DropfileNamePump, '.csv')
+  else
+  begin
+   ReturnName:= OpenHandling('', '.csv');
+   if ReturnName = '' then
+    exit // user aborted the loading
+   else
+    InNameSensor:= ReturnName;
+  end;
+ end;
+
+try
+ OpenFileStream:= TFileStream.Create(InNameSensor, fmOpenRead);
+ LineReader:= TStreamReader.Create(OpenFileStream);
+
+ // read the first header line
+ LineReader.ReadLine(ReadLine);
+
+ // now read the row description line
+ // NOTE: the line ends with a tab, thus Length(StringArray) is larger than
+ // the actual number of columns
+ timeCounter:= 0;
+ Repeat
+  inc(timeCounter);
+  if LineReader.Eof then
+  begin
+   MessageDlgPos('File is too short to read data from it.',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end
+  else
+   LineReader.ReadLine(ReadLine);
+  StringArray:= ReadLine.Split(#9);
+  if StringArray[0] = 'Counter' then // we have a header line
+  begin
+   for i:= 1 to Length(StringArray) - 2 do
+   begin
+    if StringArray[i] = 'Temp [deg C]' then
+     TempRow:= i;
+   end;
+   if TempRow = -1 then
+   begin
+    MessageDlgPos('File contains no temperature data.',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    exit;
+   end;
+  end;
+ until (StringArray[0] = 'Counter') or (timeCounter = 2);
+
+ if (timeCounter = 2) and (StringArray[0] <> 'Counter') then
+ begin
+  MessageDlgPos('File has no header line defining the value units.',
+   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  exit;
+ end;
+
+ // we know the file is valid thus we can empty the data chart and
+ // read in the data
+
+ // delete existing live chart data
+ // but purposely not the measurement data
+ for i:= 1 to 8 do
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Clear;
+ SIXTempValues.Clear;
+ // disable chart scrolling
+ ScrollViewCB.Enabled:= false;
+
+ // now set the number of channels
+ if TempRow = Length(StringArray) - 2 then
+  SIXControl.NumChannels:= TempRow - 2
+ else
+  SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
+
+ // parse the file to the end
+ timeCounter:= 0;
+ while not LineReader.Eof do
+ begin
+  inc(timeCounter);
+  LineReader.ReadLine(ReadLine);
+  StringArray:= ReadLine.Split(#9);
+  // if the first row is no integer it is an intermediate header line
+  // and we can either skip or must re-evaluate the temperature column
+  if not TryStrToInt(StringArray[0], i) then
+  begin
+   if StringArray[0] = 'Counter' then // re-evaluate
+   begin
+    TempRow:= -1;
+    for i:= 1 to Length(StringArray) - 2 do
+    begin
+     if StringArray[i] = 'Temp [deg C]' then
+      TempRow:= i;
+    end;
+    if TempRow = -1 then
+    begin
+     MessageDlgPos('File contains no temperature data.',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+   end;
+   dec(timeCounter);
+   continue;
+  end;
+  // first read the temperature
+  if not TryStrToFloat(StringArray[TempRow], temperature) then
+  begin
+   MessageDlgPos('Temperature in line ' + IntToStr(timeCounter) + ', row '
+    + IntToStr(TempRow+1) + ' cannot be converted to a number',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+  // now the time
+  if not TryStrToFloat(StringArray[1], time) then
+  begin
+   MessageDlgPos('Time in line ' + IntToStr(timeCounter) + ', row '
+    + IntToStr(2) + ' cannot be converted to a number',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+  // if TempRow is the last one, we have only raw values
+  if TempRow = Length(StringArray) - 2 then
+  begin
+   for i:= 1 to SIXControl.NumChannels do
+    if not TryStrToFloat(StringArray[i+1], ChanRawDbl[i]) then
+    begin
+     MessageDlgPos('Number in line ' + IntToStr(timeCounter) + ', row '
+      + IntToStr(i+2) + ' cannot be converted to a number',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+  end
+  else // raw data is behind the temperature
+  begin
+   for i:= 1 to SIXControl.NumChannels do
+    if not TryStrToFloat(StringArray[TempRow+i], ChanRawDbl[i]) then
+    begin
+     MessageDlgPos('Number in line ' + IntToStr(timeCounter) + ', row '
+      + IntToStr(TempRow+i+1) + ' cannot be converted to a number',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+  end;
+
+  // draw SIX data
+  for i:= 1 to SIXControl.NumChannels do
+  begin
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(time, ChanRawDbl[i]);
+  end;
+  for i:= 7 to 8 do
+  begin
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).AddXY(time, ChanRawDbl[i]);
+  end;
+  SIXTempValues.AddXY(time, temperature);
+ end;
+
+ Result:= true;
+
+finally
+ LineReader.Free;
+ OpenFileStream.Free;
+end;
+
+ // if there is a .def, transform the values
+ if LoadedDefFileM.Text <> 'None' then
+ begin
+  RawCurrentCB.Checked:= false;
+  RawCurrentCB.Enabled:= true;
+ end
+ else
+  // was already Checked at the beginning of the procedure
+  RawCurrentCB.Enabled:= false;
+
+ // at last display the file name as chart title
+ SIXCH.Title.Text[0]:= ExtractFileName(InNameSensor);
+ LoadedFileSensM.Text:= ExtractFileName(InNameSensor);
+
+end;
+
 procedure TMainForm.NoTempCorrectionCBChange(Sender: TObject);
 begin
  SIXControl.SCNoTempCorrectionCBChange(Sender);
@@ -3086,6 +3299,11 @@ begin
  begin
   OpenDialog.Filter:= 'Definition file (*.def)|*.def';
   OpenDialog.Title:= 'Open sensor definition file';
+ end
+ else if FileExt = '.csv' then
+ begin
+  OpenDialog.Filter:= 'Sensor data file (*.csv)|*.csv';
+  OpenDialog.Title:= 'Open sensor data file';
  end;
  // propose a file name
  if (InName <> '') and (OpenDialog.FileName = '') then
@@ -3238,11 +3456,14 @@ var
  Reg : TRegistry;
  i, k : integer;
  MousePointer : TPoint;
- HeaderLine, ReturnName : string;
+ HeaderLine, ReturnName, LastLine : string;
  dataArray : array[0..24] of byte;
+ BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
+ StringArray : TStringArray;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos;
+ LastLine:= '';
 
  // connect to SIX
  if not Connected then
@@ -3289,7 +3510,7 @@ begin
     SerialUSBPortCB.ItemIndex:= 0
    else
    begin
-    // if there is already a connection, display it port
+    // if there is already a connection, display its port
     if HaveSerialSensor then
       SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
     else
@@ -3317,6 +3538,7 @@ begin
    IndicatorSensorP.Color:= clDefault;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
+   LoadSensorDataMI.Enabled:= true;
    if HaveSerialSensor then
    begin
     CloseLazSerialConn;
@@ -3398,6 +3620,7 @@ begin
     StopTestBB.Enabled:= false;
     CloseLazSerialConn;
     HaveSerialSensor:= False;
+    LoadSensorDataMI.Enabled:= true;
     exit;
    end;
   end
@@ -3452,7 +3675,7 @@ begin
  end; // end if Connected
 
  // now open the file dialog to select the file to save the SIX data
- // if there is already a connection, display it port
+ // if there is already a connection, display its port
  if not HaveSerialSensor then
   InNameSensor:= '';
  ReturnName:= SaveHandling(InNameSensor, '.csv'); // opens file dialog
@@ -3465,12 +3688,64 @@ begin
   try
    if FileExists(InNameSensor) then
    begin
+    // try to read the data from the file into the chart
+    if ReadSensorData('none') = false then
+    begin
+     MessageDlgPos('The input file contained no vaild sensor data.',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+    // read second to last line from existing file
+    // the last line might be incomplete, thus the second to last
+    // Note: we purpusely don't use a TStreamReader because the files can be
+    // very big. Instead we put the file into the memory and seek back.
+    SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenRead or fmShareDenyNone);
+    SensorFileStream.Seek(-1*BufferSize, soFromEnd);
+    SetLength(lastLine, BufferSize);
+    SensorFileStream.Read(lastLine[1], BufferSize);
+    SensorFileStream.Free;
+    // we know the file ends with a newline, thus we only need to search the previous one
+    for i:= BufferSize - 20 downto 1 do
+     if lastLine[i] = #10 then
+     begin
+      LastLine:= Copy(lastLine, i + 1, BufferSize - i);
+      break;
+     end;
+    // recreate a fresh new file stream
     SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenWrite or fmShareDenyNone);
-    // the new command might be shorter, therefore delete its content
-    SensorFileStream.Size:= 0;
+    // go to its end
+    SensorFileStream.Seek(0, soFromEnd);
+    HeaderLine:= 'Appended: ';
+    // read the counters
+    StringArray:= LastLine.Split(#9);
+    if not TryStrToInt(StringArray[0], SIXControl.signalCounter) then
+    begin
+     MessageDlgPos('Last line of input file does not start with an integer.',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+    if not TryStrToFloat(StringArray[1], SIXControl.timeCounter) then
+    begin
+     MessageDlgPos('Last line of input file does not contain valid a time.',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
    end
-   else
+   else // new file
+   begin
     SensorFileStream:= TFileStream.Create(InNameSensor, fmCreate or fmShareDenyNone);
+    HeaderLine:= 'Created: ';
+    // start the counters
+    SIXControl.timeCounter:= 0.0;
+    SIXControl.signalCounter:= 0;
+    // delete existing live chart data
+    // but purposely not the measurement data
+    for i:= 1 to 8 do
+     (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).Clear;
+    SIXTempValues.Clear;
+   end;
+   SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
   except
    SensorFileStream.Free;
    LoadedFileSensM.Color:= clRed;
@@ -3489,17 +3764,18 @@ begin
    StopTestBB.Enabled:= false;
    CloseLazSerialConn;
    HaveSerialSensor:= False;
+   LoadSensorDataMI.Enabled:= true;
    exit;
  end;
 
  // write header lines
- HeaderLine:= 'Created: ' + FormatDateTime('dd.mm.yyyy, hh:nn:ss', now) + LineEnding;
+ HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy, hh:nn:ss', now) + LineEnding;
  if LoadedDefFileM.Text = 'None' then
  begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   for i:= 1 to SIXControl.NumChannels do
    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-  HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+  HeaderLine:= HeaderLine + 'Temp [deg C]' + #9 + LineEnding;
  end
  else
  begin
@@ -3542,13 +3818,6 @@ begin
  LoadedFileSensM.Hint:= InNameSensor;
  // set Text after Hint since this change triggers the sync with the other tabs
  LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
-
- // delete existing live chart data
- // but purposely not the measurement data
- for i:= 1 to 8 do
-  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).Clear;
- SIXTempValues.Clear;
 
  // enable chart scrolling
  ScrollViewCB.Enabled:= true;
@@ -3619,14 +3888,14 @@ begin
    GainsRaw[i]:= 0.0763;
  end;
 
+ // disable menu to load existing sensor data
+ LoadSensorDataMI.Enabled:= false;
+ // reset chart title to default
+ SIXCH.Title.Text[0]:= 'SIX Values';
+
  // we can now set the timer interval
  ReadTimer.Interval:= Trunc(EvalTimeFSE.Value * 1000); // in ms
  ReadTimer.Enabled:= true;
-
- // start the counters
- SIXControl.timeCounter:= 0.0;
- SIXControl.signalCounter:= 0;
- SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
 
 end;
 
@@ -3711,7 +3980,7 @@ function TMainForm.SaveHandling(InName: string; FileExt: string): string;
 // handles the save dialog
 var
  YesNo : integer;
- OutNameTemp : string;
+ OutNameTemp, DialogText : string;
  MousePointer : TPoint;
 begin
  // initialize
@@ -3765,8 +4034,13 @@ begin
 
   if FileExists(OutNameTemp) then
   begin
+   if FileExt = '.csv' then
+    DialogText:= 'Do you want to append the sensor data to the existing file'
+   else
+    DialogText:= 'Do you want to overwrite the existing file';
+
    with CreateMessageDialog // MessageDlg with mbNo as default
-       ('Do you want to overwrite the existing file' + LineEnding
+        (DialogText + LineEnding
              + ExtractFileName(OutNameTemp) + ' ?',
              mtWarning, [mbYes]+[mbNo]) do
    try

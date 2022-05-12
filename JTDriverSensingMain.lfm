@@ -9751,15 +9751,22 @@ object MainForm: TMainForm
       ShortCut = 16463
       object PumpDriverMI: TMenuItem
         Caption = 'Pump Driver'
+        ShortCut = 16464
         OnClick = PumpConnectionMIClick
       end
       object SIXBiosensorsMI: TMenuItem
         Caption = 'SIX Biosensors'
+        ShortCut = 16450
         OnClick = SIXBiosensorsMIClick
       end
     end
     object FileMI: TMenuItem
       Caption = 'File'
+      object LoadSensorDataMI: TMenuItem
+        Caption = 'Load Sensor Data'
+        ShortCut = 16452
+        OnClick = LoadSensorDataMIClick
+      end
       object LoadActionMI: TMenuItem
         Caption = 'Load Pump Action'
         ShortCut = 16460
