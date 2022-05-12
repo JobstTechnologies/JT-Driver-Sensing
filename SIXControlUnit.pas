@@ -488,7 +488,7 @@ begin
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
   else
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i])
+    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i]);
  end;
  for i:= 7 to 8 do
  begin
@@ -498,7 +498,7 @@ begin
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
   else
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i])
+    as TLineSeries).AddXY(timeCounter, ChanRawDbl[i]);
  end;
  MainForm.SIXTempValues.AddXY(timeCounter, temperature);
 
@@ -1402,7 +1402,7 @@ begin
       as TLineSeries).YValue[j]:=
        (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
         as TLineSeries).YValue[j]
-        / exp(TemperGains[i] / 100 * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+        / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
         * Gains[i] / GainsRaw[i];
    end;
   end;
