@@ -159,7 +159,7 @@ Arrow.Visible 0
 Arrow.BaseLength 0
 Arrow.Length 10
 Arrow.Width 5
-BackColor clGray
+BackColor clMedGray
 Legend.Alignment laTopLeft
 Legend.ColumnCount 1
 Legend.Inverted 0
@@ -189,7 +189,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -207,7 +207,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clBlack
 Pointer.Brush.Style bsSolid
@@ -225,7 +225,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clYellow
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -243,7 +243,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clYellow
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clYellow
 Pointer.Brush.Style bsSolid
@@ -261,7 +261,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clAqua
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -279,7 +279,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clAqua
 Pointer.Brush.Style bsSolid
@@ -297,7 +297,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor $000080FF
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -315,7 +315,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color $000080FF
 Pointer.Brush.Style bsSolid
@@ -333,7 +333,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clRed
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -351,7 +351,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clRed
 Pointer.Brush.Style bsSolid
@@ -369,7 +369,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clLime
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -387,7 +387,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clLime
 Pointer.Brush.Style bsSolid
@@ -405,7 +405,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clCream
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -423,7 +423,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clCream
 Pointer.Brush.Style bsSolid
@@ -441,7 +441,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clFuchsia
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid
@@ -459,7 +459,7 @@ Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints -1
 Pointer.Brush.Color clFuchsia
 Pointer.Brush.Style bsSolid
@@ -477,7 +477,7 @@ Marks.Visible -1
 ShowLines -1
 SeriesColor clMaroon
 LinePen.Style psSolid
-LinePen.Width 2
+LinePen.Width 1
 ShowPoints 0
 Pointer.Brush.Color clWhite
 Pointer.Brush.Style bsSolid

@@ -967,7 +967,7 @@ object MainForm: TMainForm
             Title.LabelBrush.Style = bsClear
             Transformations = ChartAxisTransformTemp
           end>
-        BackColor = clGray
+        BackColor = clMedGray
         Foot.Brush.Color = clBtnFace
         Legend.Alignment = laTopLeft
         Legend.BackgroundBrush.Color = clSilver
@@ -9944,9 +9944,6 @@ object MainForm: TMainForm
     Top = 280
     object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
-      DrawingMode = tdmNormal
-      CrosshairPen.Color = clWhite
-      CrosshairPen.Mode = pmWhite
     end
     object ChartToolsetDataPointHintTool: TDataPointHintTool
       GrabRadius = 5
