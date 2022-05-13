@@ -923,8 +923,8 @@ var
   Version : string = '0.99.9';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 3.0;
-  serPump: TBlockSerial;
-  serSensor: TBlockSerial;
+  serPump : TBlockSerial;
+  serSensor : TBlockSerial;
   HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
@@ -1497,7 +1497,7 @@ begin
    end;
    serPump:= TBlockSerial.Create;
    HaveSerialPump:= True;
-   serPump.DeadlockTimeout:= 10; //set timeout to 10 s
+   serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(COMPort);
    serPump.config(9600, 8, 'N', SB1, False, False);
    if not forced then
@@ -1594,7 +1594,7 @@ begin
   // this rate is mandatory to set the Arduino into boot mode
   try
    serPump:= TBlockSerial.Create;
-   serPump.DeadlockTimeout:= 10000; //set timeout to 10 s
+   serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(COMPort);
    serPump.config(1200, 8, 'N', SB1, False, False);
   except
@@ -1697,7 +1697,7 @@ begin
   try
    serPump:= TBlockSerial.Create;
    HaveSerialPump:= True;
-   serPump.DeadlockTimeout:= 10; //set timeout to 10 s
+   serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(BootCOM);
    serPump.config(9600, 8, 'N', SB1, False, False);
    // send now a simple command to get the firmware version back
@@ -3614,7 +3614,7 @@ begin
    // open the connection
    try
     serSensor:= TBlockSerial.Create;
-    serSensor.DeadlockTimeout:= 10000; //set timeout to 10 s
+    serSensor.DeadlockTimeout:= 5000; //set timeout to 5 s
     serSensor.Connect(COMPort);
     // the config must be set after the connection
     serSensor.config(9600, 8, 'N', SB1, False, False);
@@ -3968,7 +3968,7 @@ begin
    as TComboBox).Enabled:= true;
 end;
 
-procedure TMainForm.CloseLazSerialConn{(MousePointer: TPoint)};
+procedure TMainForm.CloseLazSerialConn;
 begin
  // stop timer
  ReadTimer.Enabled:= false;
