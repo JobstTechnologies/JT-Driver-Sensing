@@ -2793,7 +2793,13 @@ try
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Clear;
  SIXTempValues.Clear;
+
  // disable chart scrolling
+ // this assures that the line pen is set to default to speed up the display for
+ // large files. To assure this, set the time counter to a dummy value above the
+ // scroll length.
+ TSIXControl.timeCounter:= ScrollIntervalFSE.Value + 1.0;
+ ScrollViewCB.Checked:= false;
  ScrollViewCB.Enabled:= false;
 
  // now set the number of channels
@@ -3703,7 +3709,7 @@ begin
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      exit;
     end;
-    // read second to last line from existing file
+    // read second to last line from existing file to determine the last time
     // the last line might be incomplete, thus the second to last
     // Note: we purpusely don't use a TStreamReader because the files can be
     // very big. Instead we put the file into the memory and seek back.
