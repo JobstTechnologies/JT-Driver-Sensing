@@ -2757,16 +2757,22 @@ try
   StringArray:= ReadLine.Split(#9);
   if StringArray[0] = 'Counter' then // we have a header line
   begin
-   for i:= 1 to Length(StringArray) - 2 do
+   for i:= 2 to Length(StringArray) - 2 do // we can exclude the first columns
    begin
     if StringArray[i] = 'Temp [deg C]' then
      TempRow:= i;
    end;
    if TempRow = -1 then
    begin
-    MessageDlgPos('File contains no temperature data.',
-     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-    exit;
+    // old files have due to a bug no tab at the end of the header line
+    if StringArray[Length(StringArray) - 1] = 'Temp [deg C]' then
+     TempRow:= Length(StringArray) - 1
+    else
+    begin
+     MessageDlgPos('File contains no temperature data.',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
    end;
   end;
  until (StringArray[0] = 'Counter') or (timeCounter = 2);
@@ -2792,6 +2798,8 @@ try
 
  // now set the number of channels
  if TempRow = Length(StringArray) - 2 then
+  SIXControl.NumChannels:= TempRow - 2
+ else if TempRow = Length(StringArray) - 1 then // for old files
   SIXControl.NumChannels:= TempRow - 2
  else
   SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
