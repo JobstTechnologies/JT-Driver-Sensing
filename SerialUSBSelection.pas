@@ -28,6 +28,7 @@ type
 var
   SerialUSBSelectionF: TSerialUSBSelectionF;
   COMPort : string;
+  COMIndex : integer;
 
 implementation
 
@@ -41,6 +42,7 @@ end;
 procedure TSerialUSBSelectionF.OKButtonBClick(Sender: TObject);
 begin
  COMPort:= SerialUSBPortCB.Text;
+ COMIndex:= SerialUSBPortCB.ItemIndex;
  SerialUSBSelectionF.Close;
 end;
 

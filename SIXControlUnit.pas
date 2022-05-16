@@ -9,7 +9,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
   TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
   Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
-  TATypes, TAGeometry, TAChartLiveView, StrUtils,
+  TATypes, TAGeometry, TAChartLiveView, StrUtils, DateUtils, SynaSer,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -94,6 +94,7 @@ var
   wasNoStopByte : Boolean = false; // to catch the case no stop byte was sent
   inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
   LiveViewWasAuto : Boolean = false; // if the left axis was in auto range when LiveView was turned off
+  ConnectionLost : Boolean = false; // if connection is lost
 
 implementation
 
@@ -119,7 +120,7 @@ var
  OutLine : string;
  dataString : AnsiString;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
- i, k, StopPos, ItemIndex : integer;
+ i, k, StopPos, ItemIndex, SIXNumber : integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
  tempArray : packed array of byte;
@@ -133,6 +134,8 @@ var
  tempInt16: Int16;
  PintegerArray : PintArray;
  SingleByte : byte;
+ BeginTime : TDateTime;
+ ScanTime : longword;
 begin
  // tell the OS the application is alive
  Application.ProcessMessages;
@@ -143,11 +146,88 @@ begin
  for i:= 0 to 8 do
   ChanDbl[i]:= 0.0;
 
+ if ConnectionLost then
+ begin
+  // TODO measure time needed for port scan
+  BeginTime:= Now;
+  MainForm.COMPortScan('SIX');
+  // search the COM list if the SIX is listed there
+  i:= Pos(':', MainForm.ConnComPortSensM.Lines[1]);
+  SIXNumber:= StrToInt(Copy(MainForm.ConnComPortSensM.Lines[1], i + 1,
+                       Length(MainForm.ConnComPortSensM.Lines[1]) - i));
+  for i:= 0 to Length(COMListSIX) - 1 do
+  begin
+   if COMListSIX[i] = SIXNumber then
+   begin
+    // open new connection if not already available
+    // open the connection
+   try
+    try
+     serSensor:= TBlockSerial.Create;
+     serSensor.DeadlockTimeout:= 5000; //set timeout to 5 s
+     serSensor.Connect('COM' + IntToStr(i));
+     // the config must be set after the connection
+     serSensor.config(9600, 8, 'N', SB1, False, False);
+    except
+     begin
+      ScanTime:= MilliSecondsBetween(Now, BeginTime);
+      lastInterval:= lastInterval + ScanTime / 60000;
+      timeCounter:= timeCounter + lastInterval;
+      exit;
+     end;
+    end;
+
+    HaveSerialSensor:= true;
+    ConnectionLost:= false;
+    wasNoStopByte:= true; // to force a re-sync
+
+    // since the SIX might be replugged to another USB slot
+    // update the port number
+    MainForm.ConnComPortSensM.Lines[0]:= 'COM' + IntToStr(i);
+
+    MainForm.ConnComPortSensM.Color:= clDefault;
+    MainForm.IndicatorSensorP.Caption:= 'Reconnection successful';
+    MainForm.IndicatorSensorP.Color:= clYellow;
+    MainForm.FirmwareNote.Hide; // hide the note
+    break;
+
+   finally
+    if serSensor.LastError <> 0 then // output the error
+    begin
+     MessageDlgPos(MainForm.ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     MainForm.IndicatorSensorP.Caption:= 'Connection failiure';
+     MainForm.IndicatorSensorP.Color:= clRed;
+     MainForm.ConnComPortSensM.Color:= clRed;
+     MainForm.StartTestBB.Enabled:= false;
+     MainForm.StopTestBB.Enabled:= false;
+     MainForm.CloseLazSerialConn;
+     HaveSerialSensor:= False;
+     MainForm.LoadSensorDataMI.Enabled:= true;
+     exit;
+    end;
+   end;
+
+   end; // if COMListSIX[i] = SIXNumber
+  end; // end for i:= 0 to Length(COMListSIX - 1)
+
+  // we must pause here otherwise we can run into timing issues blocking the
+  // serial connection when it is read from it too quick after the reconnection
+  sleep(3000);
+
+  ScanTime:= MilliSecondsBetween(Now, BeginTime);
+  lastInterval:= lastInterval + ScanTime / 60000;
+  timeCounter:= timeCounter + lastInterval;
+  exit;
+
+ end; // end if ConnectionLost
+
  // first check if we still have a filestream
+ // for example when saved to a USB stick and the stick was removed
  if not HaveSensorFileStream then
  begin
   MainForm.ReadTimer.Enabled:= false;
-  MessageDlgPos('The connection to the data file was lost!' + LineEnding
+  MessageDlgPos('The access to the data file was lost!' + LineEnding
     + 'To restart you must call again the menu Connection -> SIX bisensors',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   MainForm.ConnComPortSensM.Color:= clRed;
@@ -199,25 +279,48 @@ begin
    // USB cable out while the SIX was running.
    if MainForm.ReadTimer.Enabled = false then
     exit;
-   MainForm.ReadTimer.Enabled:= False;
-   MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
-    + ' error on connecting to SIX: ' + serSensor.LastErrorDesc + LineEnding
-    + 'Check the USB cable for a loose contact.', mtError, [mbOK], 0,
-    MousePointer.X, MousePointer.Y);
+   //MainForm.ReadTimer.Enabled:= False;
+   //MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
+   // + ' error on connecting to SIX: ' + serSensor.LastErrorDesc + LineEnding
+   // + 'Check the USB cable for a loose contact.', mtError, [mbOK], 0,
+   // MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortSensM.Color:= clRed;
-   MainForm.IndicatorSensorP.Caption:= 'Check USB cable';
+   MainForm.IndicatorSensorP.Caption:= 'Check USB cable!';
    MainForm.IndicatorSensorP.Color:= clRed;
-   MainForm.StartTestBB.Enabled:= false;
-   MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn;
+   //MainForm.StartTestBB.Enabled:= false;
+   //MainForm.StopTestBB.Enabled:= false;
+   if HaveSerialSensor then
+   begin
+    // close connection
+    serSensor.CloseSocket;
+    serSensor.free;
+   end;
+
    HaveSerialSensor:= False;
-   MainForm.AnOutOnOffTB.Checked:= false;
-   MainForm.AnOutOnOffTB.Enabled:= false;
-   MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                       + 'to the pump connectors.' + LineEnding
-                       + 'Connect to a SIX and a pump driver'  + LineEnding
-                       + 'to enable the button.';
+   ConnectionLost:= true;
+   lastInterval:= lastInterval + MainForm.ReadTimer.Interval / 60000;
+   timeCounter:= timeCounter + lastInterval;
+
+   // since the process will need more than 10 seconds, show a note
+   // at the position where the initial info message was output
+   MainForm.FirmwareNote.vNotifierForm.Height := 160;
+   MainForm.FirmwareNote.vNotifierForm.Width := 500;
+   MainForm.FirmwareNote.Text:= 'The connection to the SIX device was lost!'
+    + LineEnding + LineEnding + 'Please check the USB cable.' + LineEnding
+    + 'If it was acidentally unplugged, just plug it back in and the measurement'
+    + LineEnding + 'will continue automatically.';
+   MainForm.FirmwareNote.Title:= 'Connection to Sensor lost!';
+   MainForm.FirmwareNote.ShowAtPos(MainForm.Left, MainForm.Top);
+
    exit;
+
+   //MainForm.AnOutOnOffTB.Checked:= false;
+   //MainForm.AnOutOnOffTB.Enabled:= false;
+   //MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+   //                    + 'to the pump connectors.' + LineEnding
+   //                    + 'Connect to a SIX and a pump driver'  + LineEnding
+   //                    + 'to enable the button.';
+   //exit;
   end;
  end;
 

@@ -909,8 +909,9 @@ type
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
     function ReadSensorData(Input: string): Boolean;
-    procedure CloseLazSerialConn{(MousePointer: TPoint)};
+    procedure CloseLazSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
+    procedure COMPortScan(PortType: string);
 
   end;
 
@@ -925,6 +926,8 @@ var
   RequiredFirmwareVersion : float = 3.0;
   serPump : TBlockSerial;
   serSensor : TBlockSerial;
+  COMListPumpDriver : array of Boolean;
+  COMListSIX : array of Int32;
   HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
@@ -3472,12 +3475,15 @@ var
  MousePointer : TPoint;
  HeaderLine, ReturnName, LastLine : string;
  dataArray : array[0..24] of byte;
+ COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
+ COMNumber : integer;
  StringArray : TStringArray;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos;
  LastLine:= '';
+ COMArray:= [''];
 
  // connect to SIX
  if not Connected then
@@ -3503,30 +3509,54 @@ begin
      Reg.GetValueNames(SerialUSBPortCB.Items);
      for i:= 0 to SerialUSBPortCB.Items.Count - 1 do
       SerialUSBPortCB.Items[i]:= Reg.ReadString(SerialUSBPortCB.Items[i]);
-     // in case a pump driver is already connected,
-     // remove its COM port from the list
-     for i:= 0 to SerialUSBPortCB.Items.Count-1 do
-      if SerialUSBPortCB.Items[i] = ConnComPortPumpLE.Text then
-      begin
-       SerialUSBPortCB.Items.Delete(i);
-       break;
-      end;
      SerialUSBPortCB.Sorted:= true;
     end;
    end;
   finally
    Reg.Free;
   end;
-  // if there is only one COM port, preselect it
+
+  // scan for SIX devices
+  COMPortScan('SIX');
+
   with SerialUSBSelectionF do
   begin
+   // remove all entries that are no SIX devices
+   i:= 0;
+   While i < SerialUSBPortCB.Items.Count do
+   begin
+    COMNumber:= StrToInt(Copy(SerialUSBPortCB.Items[i], 4, 4));
+    if COMListSIX[COMNumber] < 1 then
+     SerialUSBPortCB.Items.Delete(i)
+    else
+     inc(i);
+   end;
+
+   // if there is already a connection, display its port
+   if HaveSerialSensor then
+    SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1]);
+
+   // output SIX ID
+   SerialUSBPortCB.Sorted:= false;
+   SetLength(COMArray, SerialUSBPortCB.Items.Count);
+   for i:= 0 to SerialUSBPortCB.Items.Count-1 do
+   begin
+    COMNumber:= StrToInt(Copy(SerialUSBPortCB.Items[i], 4, 4));
+    COMArray[i]:= SerialUSBPortCB.Items[i];
+    if COMListSIX[COMNumber] > 0 then
+     SerialUSBPortCB.Items[i]:= 'SIX ID #: ' + IntToStr(COMListSIX[COMNumber]);
+   end;
+   //SerialUSBPortCB.Sorted:= true;
+
+   // if there is only one COM port, preselect it
    if SerialUSBPortCB.Items.Count = 1 then
     SerialUSBPortCB.ItemIndex:= 0
    else
    begin
     // if there is already a connection, display its port
     if HaveSerialSensor then
-      SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
+      SerialUSBPortCB.ItemIndex:=
+       SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1])
     else
      SerialUSBPortCB.ItemIndex:= -1;
    end;
@@ -3536,14 +3566,17 @@ begin
     SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
    if SerialUSBPortCB.Text = '' then
     COMPort:= '';
-  end;
-  // empty COMPort in case this one is already connected to a pump driver
-  // we don't empty in other cases since the user might just clicked wrong,
-  // is already connected and don't want to change this
-  if COMPort = ConnComPortPumpLE.Text then
-   COMPort:= '';
+
   // open connection dialog
-  SerialUSBSelectionF.ShowModal;
+  // first change it s appearance
+  SerialUSBPortL.Caption:= 'Select SIX device';
+  Caption:= 'SIX selection';
+  ShowModal;
+  SerialUSBPortL.Caption:= 'Serial USB Port';
+  Caption:= 'Serial port selection';
+
+  end; // end with SerialUSBSelectionF
+
   if COMPort = 'Ignore' then // user pressed Disconnect
   begin
    ConnComPortSensM.Text:= 'Not connected';
@@ -3595,6 +3628,7 @@ begin
    end;
    exit;
   end;
+  COMPort:= COMArray[COMIndex];
   // open new connection if not already available
   if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
   try
@@ -4085,6 +4119,168 @@ begin
  begin
   if FileExists(InName) and (SaveDialog.FileName = InName) then
    result:= 'canceled';
+ end;
+
+end;
+
+procedure TMainForm.COMPortScan(PortType: string);
+// this routine scanes all open COM ports for a SIX and pump drivers
+type
+ TDataArray = array[0..24] of byte;
+var
+ Reg : TRegistry;
+ RegStrings : TStrings;
+ PortName, HelpString : string;
+ serTest : TBlockSerial;
+ i, j, k, ErrorCount, StopPos, Attempts, Channel : integer;
+ dataString : AnsiString;
+ dataArray : TDataArray;
+ tempArray : packed array of byte;
+ IDArray : array[0..3] of byte;
+ NextPort : Boolean;
+begin
+ // determine all possible COM ports
+ Reg:= TRegistry.Create;
+ RegStrings:= TStringList.Create;
+ try
+  Reg.RootKey:= HKEY_LOCAL_MACHINE;
+  if Reg.OpenKeyReadOnly('HARDWARE\DEVICEMAP\SERIALCOMM') then
+  begin
+   if PortType = 'SIX' then
+   begin
+    SetLength(COMListSIX, 0); // delete array
+    SetLength(COMListSIX, 999); // a PC cannot have more than 999 COM ports
+   end
+   else if PortType = 'PumpDriver' then
+   begin
+    SetLength(COMListPumpDriver, 0);
+    SetLength(COMListPumpDriver, 999);
+   end;
+   Reg.GetValueNames(RegStrings);
+  end;
+
+  // now test all COM ports
+  for i:= 0 to RegStrings.Count - 1 do
+  begin
+   PortName:= Reg.ReadString(RegStrings[i]);
+
+   if PortType = 'SIX' then
+   begin
+    Attempts:= 0;
+    ErrorCount:= 0;
+    // Since every SIX has a unique ID, we can connect the COM port with this
+    // exclude connected pump driver port
+    if PortName = ConnComPortPumpLE.Text then
+     continue;
+
+    // if there is a connection, we can directly take the SIX number
+    if HaveSerialSensor and (PortName = ConnComPortSensM.Lines[0]) then
+    begin
+     Channel:= StrToInt(Copy(PortName, 4, 4));
+     k:= Pos(':', ConnComPortSensM.Lines[1]);
+     HelpString:= Copy(ConnComPortSensM.Lines[1], k + 1, Length(ConnComPortSensM.Lines[1]) - k);
+     COMListSIX[Channel]:= StrToInt(HelpString);
+    end;
+
+    // open the connection
+   try
+    try
+     serTest:= TBlockSerial.Create;
+     serTest.DeadlockTimeout:= 1000; //set timeout to 1 s
+     serTest.Connect(PortName);
+     // the config must be set after the connection
+     serTest.config(9600, 8, 'N', SB1, False, False);
+    except
+     continue;
+    end;
+
+    while ErrorCount = 0 do
+    begin
+     NextPort:= false;
+     StopPos:= -1;
+     // read out some data as test
+     // first wait until we get bytes to read
+     k:= 0;
+     while serTest.WaitingDataEx < 25 do
+     begin
+      delay(100);
+      inc(k);
+      if k > 19 then // we reached 2 seconds, so this is no SIX
+      begin
+       NextPort:= true;
+       inc(ErrorCount);
+       break;
+      end;
+     end;
+
+     if NextPort then
+      continue;
+
+     // read now a packet
+     dataString:= '';
+     dataString:= serTest.RecvPacket(100);
+
+     if (serTest.LastError <> 0) or (Length(dataString) < 25) then
+     begin
+      inc(ErrorCount);
+      continue;
+     end;
+
+     // convert string to a byte array
+     SetLength(tempArray{%H-}, Length(dataString));
+     Move(dataString[1], tempArray[0], Length(dataString));
+     // now search the byte array for the stop bit
+     // since a value byte can also have the value $16, we search backwards
+     // and check that the byte 20 positions earlier has the value $4 (begin of
+     // a data block)
+     for j:= Length(tempArray) - 1 downto Length(tempArray) - 5 do
+     begin
+      if (tempArray[j] = $16) and (tempArray[j - 20] = $4) then
+      begin
+       StopPos:= j;
+       inc(ErrorCount);
+       break;
+      end;
+     end;
+     if (StopPos = -1) and (Attempts > 1) then
+     begin
+      // try again
+      inc(Attempts);
+      continue;
+     end;
+     if (Attempts > 1) then
+      inc(ErrorCount);
+    end; // end while ErrorCount = 0
+
+    if (ErrorCount > 0) and (StopPos = -1) then
+     continue;
+
+    // reset counter since we got no error
+    ErrorCount:= 0;
+
+    // copy the relevant 25 bytes to the dataArray
+    dataArray:= default(TDataArray); // initialize or clear array
+    Move(tempArray[StopPos - 24], dataArray[0], 25);
+    for j:= 0 to 3 do
+     IDArray[3 - j]:= dataArray[19 + j];
+    Channel:= StrToInt(Copy(PortName, 4, 4));
+    COMListSIX[Channel]:= Int32(IDArray);
+
+   finally
+    serTest.Free;
+   end;
+
+   end // if PortType = 'SIX'
+
+   else if PortType = 'PumpDriver' then
+   begin
+    ;
+   end;
+
+  end; // test all COM ports
+ finally
+  Reg.Free;
+  RegStrings.Free;
  end;
 
 end;
