@@ -164,7 +164,7 @@ begin
    try
     try
      serSensor:= TBlockSerial.Create;
-     serSensor.DeadlockTimeout:= 5000; //set timeout to 5 s
+     serSensor.DeadlockTimeout:= 3000; //set timeout to 3 s
      serSensor.Connect('COM' + IntToStr(i));
      // the config must be set after the connection
      serSensor.config(9600, 8, 'N', SB1, False, False);
@@ -213,7 +213,7 @@ begin
 
   // we must pause here otherwise we can run into timing issues blocking the
   // serial connection when it is read from it too quick after the reconnection
-  sleep(3000);
+  sleep(4000);
 
   ScanTime:= MilliSecondsBetween(Now, BeginTime);
   lastInterval:= lastInterval + ScanTime / 60000;
