@@ -17,8 +17,6 @@ type
     SerialUSBPortCB: TComboBox;
     SerialUSBPortL: TLabel;
     procedure FormCreate(Sender: TObject);
-    procedure CancelButtonBClick(Sender: TObject);
-    procedure OKButtonBClick(Sender: TObject);
   private
 
   public
@@ -39,18 +37,6 @@ begin
  ActiveControl:= SerialUSBPortCB;
 end;
 
-procedure TSerialUSBSelectionF.OKButtonBClick(Sender: TObject);
-begin
- COMPort:= SerialUSBPortCB.Text;
- COMIndex:= SerialUSBPortCB.ItemIndex;
- SerialUSBSelectionF.Close;
-end;
-
-procedure TSerialUSBSelectionF.CancelButtonBClick(Sender: TObject);
-begin
- COMPort:= 'Ignore';
- SerialUSBSelectionF.Close;
-end;
 
 end.
 

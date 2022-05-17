@@ -3592,16 +3592,21 @@ begin
     COMPort:= '';
 
   // open connection dialog
-  // first change it s appearance
+  // first change its appearance
   SerialUSBPortL.Caption:= 'Select SIX device';
   Caption:= 'SIX selection';
   ShowModal;
+  // change appearance back
   SerialUSBPortL.Caption:= 'Serial USB Port';
   Caption:= 'Serial port selection';
 
-  end; // end with SerialUSBSelectionF
+  if SerialUSBSelectionF.ModalResult = mrOK then
+  begin
+   COMPort:= SerialUSBPortCB.Text;
+   COMIndex:= SerialUSBPortCB.ItemIndex;
+  end;
 
-  if COMPort = 'Ignore' then // user pressed Disconnect
+  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
   begin
    ConnComPortSensM.Text:= 'Not connected';
    ConnComPortSensM.Color:= clHighlight;
@@ -3629,8 +3634,11 @@ begin
    LoadDefBB.Enabled:= true;
    exit;
   end;
-  if COMPort = '' then // user forgot to set a COM port
+
+  if COMPort = '' then // user set no COM port or chanceled
   begin
+   if ModalResult = mrCancel then
+    exit; // nothing needs to be done
    MessageDlgPos('Error: No COM port selected.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    StartTestBB.Enabled:= false;
@@ -3652,6 +3660,9 @@ begin
    end;
    exit;
   end;
+
+  end; // end with SerialUSBSelectionF
+
   COMPort:= COMArray[COMIndex];
   // open new connection if not already available
   if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
@@ -4165,7 +4176,7 @@ type
 var
  Reg : TRegistry;
  RegStrings : TStrings;
- PortName : string;
+ PortName, connectedPortName : string;
  serTest : TBlockSerial;
  i, j, k, ErrorCount, StopPos, Attempts, Channel : integer;
  dataString : AnsiString;
@@ -4183,6 +4194,17 @@ begin
   begin
    if PortType = 'SIX' then
    begin
+    // if connected, get the port number to exclude it from beeing connected
+    if HaveSerialSensor then
+     for i:= 1 to Length(COMListSIX) -1 do
+     begin
+      if COMListSIX[i] = connectedSIX then
+      begin
+       connectedPortName:= 'COM' + IntToStr(i);
+       break;
+      end;
+     end;
+
     SetLength(COMListSIX, 0); // delete array
     SetLength(COMListSIX, 999); // a PC cannot have more than 999 COM ports
    end
@@ -4210,10 +4232,11 @@ begin
      continue;
 
     // if there is a connection, we can directly take the SIX number
-    if HaveSerialSensor and (PortName = ConnComPortSensM.Lines[0]) then
+    if HaveSerialSensor and (PortName = connectedPortName) then
     begin
-     Channel:= StrToInt(Copy(PortName, 4, 4));
+     Channel:= StrToInt(Copy(connectedPortName, 4, 4));
      COMListSIX[Channel]:= connectedSIX;
+     continue;
     end;
 
     // open the connection

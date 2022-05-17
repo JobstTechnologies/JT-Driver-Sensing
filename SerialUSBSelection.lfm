@@ -37,7 +37,7 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
     Width = 81
     Caption = 'Connect'
     Default = True
-    OnClick = OKButtonBClick
+    ModalResult = 1
     ParentFont = False
     TabOrder = 1
   end
@@ -48,7 +48,7 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
     Top = 58
     Width = 81
     Caption = 'Disconnect'
-    OnClick = CancelButtonBClick
+    ModalResult = 7
     ParentFont = False
     TabOrder = 2
   end
