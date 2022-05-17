@@ -27,6 +27,7 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
     ItemHeight = 15
     ParentFont = False
     ParentShowHint = False
+    ReadOnly = True
     ShowHint = True
     TabOrder = 0
   end

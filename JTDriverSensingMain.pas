@@ -910,6 +910,7 @@ type
     function SaveHandling(InName: string; FileExt: string): string;
     function ReadSensorData(Input: string): Boolean;
     procedure CloseLazSerialConn;
+    procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
     procedure COMPortScan(PortType: string);
 
@@ -934,6 +935,7 @@ var
   HaveSensorFileStream : Boolean = False;
   InNamePump : string = ''; // name of loaded pump action file
   DropfileNamePump : string = ''; // name of dropped pump action file
+  connectedPump : string = ''; // name of connected pump COM port
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor definition file
@@ -1038,22 +1040,12 @@ begin
    // close connection
    if HaveSerialPump and (serPump.LastError <> 9997) then
    // we cannot close socket or free when the connection timed out
-   begin
-    serPump.CloseSocket;
-    serPump.free;
-    HaveSerialPump:= False;
-   end;
+    ClosePumpSerialConn;
   end;
  // close connection to SIX
  if HaveSerialSensor and (serSensor.LastError <> 9997) then
  // we cannot close socket or free when the connection timed out
- begin
-  serSensor.CloseSocket;
-  serSensor.free;
-  HaveSerialSensor:= False;
- end;
- if HaveSensorFileStream then
-  SensorFileStream.Free;
+ CloseLazSerialConn;
 
  // save the current chart appearance settings
  // we write into the same folder than the program .exe
@@ -1066,7 +1058,7 @@ procedure TMainForm.PumpConnectionMIClick(Sender: TObject);
 // opens the connection settings dialog and opens a connections according
 // to the dialog input
 var
- command : string;
+ command, COMPort : string;
  Reg : TRegistry;
  i, k : integer;
  FirmwareNumber : double = 0.0;
@@ -1105,16 +1097,17 @@ begin
  finally
   Reg.Free;
  end;
- // if there is only one COM port, preselect it
+
  with SerialUSBSelectionF do
  begin
+  // if there is only one COM port, preselect it
   if SerialUSBPortCB.Items.Count = 1 then
    SerialUSBPortCB.ItemIndex:= 0
   else
   begin
    // if there is already a connection, display its port
    if HaveSerialPump then
-     SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(COMPort)
+     SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(connectedPump)
    else
     SerialUSBPortCB.ItemIndex:= -1;
   end;
@@ -1124,15 +1117,15 @@ begin
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
   if SerialUSBPortCB.Text = '' then
    COMPort:= '';
- end;
- // empty COMPort in case this one is already connected to a SIX
- // we don't empty in other cases since the user might just clicked wrong,
- // is already connected and don't want to change this
- if COMPort = ConnComPortSensM.Lines[0] then
-  COMPort:= '';
- // open connection dialog
- SerialUSBSelectionF.ShowModal;
- if COMPort = 'Ignore' then // user pressed Disconnect
+
+  // open connection dialog
+  ShowModal;
+  if ModalResult = mrOK then
+   COMPort:= SerialUSBPortCB.Text;
+
+ end; // end with with SerialUSBSelectionF
+
+ if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
  begin
   ConnComPortPumpLE.Color:= clHighlight;
   ConnComPortPumpLE.Text:= 'Not connected';
@@ -1161,17 +1154,18 @@ begin
     command:= command + '0';
    command:= command + 'lR' + LineEnding;
    serPump.SendString(command);
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
+   ClosePumpSerialConn;
    IndicatorPumpP.Caption:= 'Pumps stopped';
    IndicatorPumpP.Color:= clHighlight;
    IndicatorPumpPPaint;
   end;
   exit;
  end;
- if COMPort = '' then // user forgot to set a COM port
+
+ if COMPort = '' then // user set no COM port or chanceled
  begin
+  if SerialUSBSelectionF.ModalResult = mrCancel then
+   exit; // nothing needs to be done
   MessageDlgPos('Error: No COM port selected.',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   // disable all buttons
@@ -1188,9 +1182,7 @@ begin
     command:= command + '0';
    command:= command + 'lR' + LineEnding;
    serPump.SendString(command);
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
+   ClosePumpSerialConn;
    IndicatorPumpP.Caption:= 'Pumps stopped';
    IndicatorPumpP.Color:= clHighlight;
    IndicatorPumpPPaint;
@@ -1207,11 +1199,7 @@ begin
  if not (HaveSerialPump and (COMPort = ConnComPortPumpLE.Text)) then
  try
   if HaveSerialPump then
-  begin
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
-  end;
+   ClosePumpSerialConn;
   ConnComPortPumpLE.Color:= clHighlight;
   ConnComPortPumpLEChange;
   AnOutOnOffTB.Checked:= false;
@@ -1246,14 +1234,13 @@ begin
    IndicatorPumpPPaint;
    if serPump.LastError = 9997 then
     exit; // we cannot close socket or free when the connection timed out
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
+   ClosePumpSerialConn;
    exit;
   end;
   // output connected port
   ConnComPortPumpLE.Color:= clDefault;
   ConnComPortPumpLE.Text:= SerialUSBSelectionF.SerialUSBPortCB.Text;
+  connectedPump:= SerialUSBSelectionF.SerialUSBPortCB.Text;
   IndicatorPumpP.Caption:= 'Connection successful';
   IndicatorPumpP.Color:= clDefault;
   IndicatorPumpPPaint;
@@ -1282,9 +1269,7 @@ begin
     StopBB.Enabled:= false;
     if serPump.LastError = 9997 then
      exit; // we cannot close socket or free when the connection timed out
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    ClosePumpSerialConn;
     exit;
    end;
    // FirmwareVersion has now this format:
@@ -1306,9 +1291,7 @@ begin
     IndicatorPumpPPaint;
     ConnComPortPumpLE.Color:= clRed;
     ConnComPortPumpLEChange;
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    ClosePumpSerialConn;
     exit;
    end;
    // JT Pump Driver requires a certain firmware version
@@ -1406,7 +1389,7 @@ procedure TMainForm.FirmwareUpdate(forced: Boolean);
 var
  COMListStart, COMListBoot : TStringList;
  Reg : TRegistry;
- BootCOM, BossacOut, FirmwareFile, bossacPath, command : string;
+ BootCOM, BossacOut, FirmwareFile, bossacPath, command, COMPort : string;
  i, YesNo : integer;
  MousePointer : TPoint;
  exited : Boolean = false;
@@ -1478,7 +1461,10 @@ begin
 
   // open connection dialog
   SerialUSBSelectionF.ShowModal;
-  if (COMPort = 'Ignore') then // user pressed Disconnect
+  if SerialUSBSelectionF.ModalResult = mrOK then
+   COMPort:= SerialUSBSelectionF.SerialUSBPortCB.Text;
+
+  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
   begin
    MessageDlgPos('No connection, no firmware update possible.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -1494,11 +1480,7 @@ begin
   try
    // for some odd reason not all pump driver output gets received,
    // therefore establish a new connection
-   if HaveSerialPump then
-   begin
-    serPump.CloseSocket;
-    serPump.Free;
-   end;
+   ClosePumpSerialConn;
    serPump:= TBlockSerial.Create;
    HaveSerialPump:= True;
    serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
@@ -1530,9 +1512,7 @@ begin
     end;
     MessageDlgPos('The selected COM port is not one of a pump driver!',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    ClosePumpSerialConn;
     exited:= true;
     exit;
    end;
@@ -1587,12 +1567,7 @@ begin
   end;
 
   // Closing open connections
-  if HaveSerialPump then
-  begin
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
-  end;
+  ClosePumpSerialConn;
 
   // open new connection with 1200 baud,
   // this rate is mandatory to set the Arduino into boot mode
@@ -1719,9 +1694,7 @@ begin
     ConnComPortPumpLEChange;
     if serPump.LastError = 9997 then
      exit; // we cannot close socket or free when the connection timed out
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    ClosePumpSerialConn;
     exit;
    end;
    if Pos('.', FirmwareVersion) > 0 then
@@ -3497,11 +3470,11 @@ var
  Reg : TRegistry;
  i, k : integer;
  MousePointer : TPoint;
- HeaderLine, ReturnName, LastLine : string;
+ HeaderLine, ReturnName, LastLine, COMPort : string;
  dataArray : array[0..24] of byte;
  COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
- COMNumber : integer;
+ COMNumber, COMIndex : integer;
  StringArray : TStringArray;
 begin
  // initialize
@@ -3600,11 +3573,13 @@ begin
   SerialUSBPortL.Caption:= 'Serial USB Port';
   Caption:= 'Serial port selection';
 
-  if SerialUSBSelectionF.ModalResult = mrOK then
+  if ModalResult = mrOK then
   begin
    COMPort:= SerialUSBPortCB.Text;
    COMIndex:= SerialUSBPortCB.ItemIndex;
   end;
+
+  end; // end with SerialUSBSelectionF
 
   if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
   begin
@@ -3637,7 +3612,7 @@ begin
 
   if COMPort = '' then // user set no COM port or chanceled
   begin
-   if ModalResult = mrCancel then
+   if SerialUSBSelectionF.ModalResult = mrCancel then
     exit; // nothing needs to be done
    MessageDlgPos('Error: No COM port selected.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -3660,8 +3635,6 @@ begin
    end;
    exit;
   end;
-
-  end; // end with SerialUSBSelectionF
 
   COMPort:= COMArray[COMIndex];
   // open new connection if not already available
@@ -4068,6 +4041,19 @@ begin
 
  ConnComPortSensM.Text:= 'Not connected';
  ConnComPortSensM.Color:= clHighlight;
+end;
+
+procedure TMainForm.ClosePumpSerialConn;
+begin
+ if HaveSerialPump then
+ begin
+  // close connection
+  serPump.CloseSocket;
+  serPump.Free;
+  HaveSerialPump:= False;
+  connectedPump:= '';
+ end;
+
 end;
 
 function TMainForm.SaveHandling(InName: string; FileExt: string): string;

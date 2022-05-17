@@ -9,7 +9,7 @@ uses
   StdCtrls, ExtCtrls, Spin, Buttons, LCLType,
   SynaSer, Crt, Character, System.UITypes, Types, TAChartListbox,
   // custom forms
-  JTDriverSensingMain, NameSetting, SerialUSBSelection;
+  JTDriverSensingMain, NameSetting;
 
 type
 
@@ -1149,7 +1149,7 @@ begin
   if serPump.LastError <> 0 then
   begin
    with Application do
-    MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
+    MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1160,9 +1160,7 @@ begin
     MainForm.StopBB.Enabled:= False;
     exit; // we cannot close socket or free if the connection timed out
    end;
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
+   MainForm.ClosePumpSerialConn;
    exit;
   end;
  end
@@ -1545,7 +1543,7 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
+     MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error',
                 MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
@@ -1557,9 +1555,7 @@ begin
      MainForm.StopBB.Enabled:= False;
      exit; // we cannot close socket or free if the connection timed out
     end;
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    MainForm.ClosePumpSerialConn;
     exit;
    end;
   end
@@ -1705,7 +1701,7 @@ begin
   if serPump.LastError <> 0 then
   begin
    with Application do
-    MessageBox(PChar(COMPort + 'error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
+    MessageBox(PChar(connectedPump + 'error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1715,9 +1711,7 @@ begin
     MainForm.StopBB.Enabled:= False;
     exit; // we cannot close socket or free when the connection timed out
    end;
-   serPump.CloseSocket;
-   serPump.Free;
-   HaveSerialPump:= False;
+   MainForm.ClosePumpSerialConn;
    exit;
   end;
  end;
@@ -1821,16 +1815,14 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(COMPort + ' error: ' + serPump.LastErrorDesc), 'Error',
+     MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error',
                 MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
     MainForm.PumpDriverMI.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
-    serPump.CloseSocket;
-    serPump.Free;
-    HaveSerialPump:= False;
+    MainForm.ClosePumpSerialConn;
     exit;
    end;
   end

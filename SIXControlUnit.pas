@@ -293,7 +293,6 @@ begin
     serSensor.CloseSocket;
     serSensor.free;
    end;
-
    HaveSerialSensor:= False;
    ConnectionLost:= true;
    lastInterval:= lastInterval + MainForm.ReadTimer.Interval / 60000;

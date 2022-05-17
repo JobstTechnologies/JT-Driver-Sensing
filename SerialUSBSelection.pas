@@ -25,8 +25,6 @@ type
 
 var
   SerialUSBSelectionF: TSerialUSBSelectionF;
-  COMPort : string;
-  COMIndex : integer;
 
 implementation
 
