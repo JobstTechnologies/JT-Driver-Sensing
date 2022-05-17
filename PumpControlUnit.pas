@@ -1474,12 +1474,22 @@ var
   CommandResult : Boolean = False;
   MousePointer : TPoint;
 begin
+ MousePointer:= Mouse.CursorPos; // store mouse position
   // if there should be a calibration but no sensor is connected, stop
   if MainForm.UseCalibCB.Checked and (not haveSerialSensor) then
   begin
-   MousePointer:= Mouse.CursorPos; // store mouse position
    MessageDlgPos('The run sequence contains a calibration'
     + LineEnding + 'but no sensor is connected.',
+    mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+  // if there is a calibration but no calibration channel is selected, stop
+  if MainForm.UseCalibCB.Checked and
+   (MainForm.GlucoseCalibCLB.SelCount = 0) and
+   (MainForm.LactateCalibCLB.SelCount = 0) then
+  begin
+   MessageDlgPos('No calibration channel selected in the calibration settings.'
+    + LineEnding + 'Set it manually or reload your action file.',
     mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
    exit;
   end;
