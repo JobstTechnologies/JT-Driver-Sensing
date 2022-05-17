@@ -8253,10 +8253,10 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object UsedCalibValueSE: TSpinEdit
-          Left = 157
+          Left = 154
           Height = 23
           Hint = 'Number of last measurements that'#13#10'will be used to calculate the mean'#13#10'value that is used for the calibration'
-          Top = 50
+          Top = 48
           Width = 45
           Alignment = taRightJustify
           MinValue = 5
@@ -9762,11 +9762,6 @@ object MainForm: TMainForm
     end
     object FileMI: TMenuItem
       Caption = 'File'
-      object LoadSensorDataMI: TMenuItem
-        Caption = 'Load Sensor Data'
-        ShortCut = 16452
-        OnClick = LoadSensorDataMIClick
-      end
       object LoadActionMI: TMenuItem
         Caption = 'Load Pump Action'
         ShortCut = 16460
@@ -9776,6 +9771,11 @@ object MainForm: TMainForm
         Caption = 'Save Pump Action'
         ShortCut = 16467
         OnClick = SaveActionMIClick
+      end
+      object LoadSensorDataMI: TMenuItem
+        Caption = 'Load Sensor Data'
+        ShortCut = 16452
+        OnClick = LoadSensorDataMIClick
       end
     end
     object MiscellaneousMI: TMenuItem
