@@ -1152,7 +1152,8 @@ begin
    command:= '/0I';
    for k:= 1 to PumpControl.PumpNum do
     command:= command + '0';
-   command:= command + 'lR' + LineEnding;
+   // blink 3 times
+   command:= command + 'gLM500lM500G2R' + LineEnding;
    serPump.SendString(command);
    ClosePumpSerialConn;
    IndicatorPumpP.Caption:= 'Pumps stopped';
