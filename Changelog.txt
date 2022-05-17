@@ -11,7 +11,7 @@ improvements:
 - when connection to the SIX is lost, the software tries to reconnect automatically
 
 bugfixes:
-- fix wrong time format in toltips in the data graph
+- fix wrong time format in tooltips in the data graph
 
 
 from version 0.997.1 to 0.998
