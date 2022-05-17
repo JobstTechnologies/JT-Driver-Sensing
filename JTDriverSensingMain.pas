@@ -2198,7 +2198,7 @@ begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   for i:= 1 to SIXControl.NumChannels do
    HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-  HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
+  HeaderLine:= HeaderLine + 'Temp [deg C]' + #9 + LineEnding;
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 
@@ -2761,10 +2761,13 @@ try
   StringArray:= ReadLine.Split(#9);
   if StringArray[0] = 'Counter' then // we have a header line
   begin
-   for i:= 2 to Length(StringArray) - 2 do // we can exclude the first columns
+   for i:= 2 to Length(StringArray) - 1 do // we can exclude the first columns
    begin
     if StringArray[i] = 'Temp [deg C]' then
+    begin
      TempRow:= i;
+     break;
+    end;
    end;
    if TempRow = -1 then
    begin
@@ -2828,10 +2831,13 @@ try
    if StringArray[0] = 'Counter' then // re-evaluate
    begin
     TempRow:= -1;
-    for i:= 1 to Length(StringArray) - 2 do
+    for i:= 1 to Length(StringArray) - 1 do
     begin
      if StringArray[i] = 'Temp [deg C]' then
+     begin
       TempRow:= i;
+      break;
+     end;
     end;
     if TempRow = -1 then
     begin
