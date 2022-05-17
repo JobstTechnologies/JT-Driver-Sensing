@@ -164,7 +164,7 @@ begin
    try
     try
      serSensor:= TBlockSerial.Create;
-     serSensor.DeadlockTimeout:= 3000; //set timeout to 3 s
+     serSensor.DeadlockTimeout:= 1000; //set timeout to 1 s
      serSensor.Connect('COM' + IntToStr(i));
      // the config must be set after the connection
      serSensor.config(9600, 8, 'N', SB1, False, False);
@@ -180,6 +180,7 @@ begin
     HaveSerialSensor:= true;
     ConnectionLost:= false;
     wasNoStopByte:= true; // to force a re-sync
+    NoSound;
 
     // since the SIX might be replugged to another USB slot
     // update the port number
@@ -188,13 +189,15 @@ begin
     MainForm.ConnComPortSensM.Color:= clDefault;
     MainForm.IndicatorSensorP.Caption:= 'Reconnection successful';
     MainForm.IndicatorSensorP.Color:= clYellow;
-    MainForm.FirmwareNote.Hide; // hide the note
+    MainForm.InfoNote.Hide; // hide the note
+    MainForm.InfoNote.Color:= clInfoBk;
     break;
 
    finally
     if serSensor.LastError <> 0 then // output the error
     begin
-     MessageDlgPos(MainForm.ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
+     MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
+      + ' error: ' + serSensor.LastErrorDesc,
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      MainForm.IndicatorSensorP.Caption:= 'Connection failiure';
      MainForm.IndicatorSensorP.Color:= clRed;
@@ -211,9 +214,11 @@ begin
    end; // if COMListSIX[i] = SIXNumber
   end; // end for i:= 0 to Length(COMListSIX - 1)
 
-  // we must pause here otherwise we can run into timing issues blocking the
+  // we must pause here
+  // otherwise we can run into timing issues blocking the
   // serial connection when it is read from it too quick after the reconnection
-  sleep(4000);
+  // experimenting on different PCs shows that 4 seconds is sufficient
+  Sleep(4000);
 
   ScanTime:= MilliSecondsBetween(Now, BeginTime);
   lastInterval:= lastInterval + ScanTime / 60000;
@@ -275,15 +280,10 @@ begin
   if serSensor.LastError <> 0 then // can occur if USB cable was removed
   begin
    // Skip further error messages when there was already an error and thus
-   // the timer is already stopped. This happens when the user pulled the
-   // USB cable out while the SIX was running.
+   // the timer is already stopped.
    if MainForm.ReadTimer.Enabled = false then
     exit;
-   //MainForm.ReadTimer.Enabled:= False;
-   //MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
-   // + ' error on connecting to SIX: ' + serSensor.LastErrorDesc + LineEnding
-   // + 'Check the USB cable for a loose contact.', mtError, [mbOK], 0,
-   // MousePointer.X, MousePointer.Y);
+
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'Check USB cable!';
    MainForm.IndicatorSensorP.Color:= clRed;
@@ -303,24 +303,21 @@ begin
 
    // since the process will need more than 10 seconds, show a note
    // at the position where the initial info message was output
-   MainForm.FirmwareNote.vNotifierForm.Height := 160;
-   MainForm.FirmwareNote.vNotifierForm.Width := 500;
-   MainForm.FirmwareNote.Text:= 'The connection to the SIX device was lost!'
+   MainForm.InfoNote.vNotifierForm.Height := 160;
+   MainForm.InfoNote.vNotifierForm.Width := 500;
+   MainForm.InfoNote.Color:= clRed;
+   MainForm.InfoNote.Text:= 'The connection to the SIX device was lost!'
     + LineEnding + LineEnding + 'Please check the USB cable.' + LineEnding
     + 'If it was acidentally unplugged, just plug it back in and the measurement'
     + LineEnding + 'will continue automatically.';
-   MainForm.FirmwareNote.Title:= 'Connection to Sensor lost!';
-   MainForm.FirmwareNote.ShowAtPos(MainForm.Left, MainForm.Top);
+   MainForm.InfoNote.Title:= 'Connection to Sensor lost!';
+   MainForm.InfoNote.ShowAtPos(MainForm.Left + 100, MainForm.Top + 100);
+
+   // play an annoying sound to inform the user
+   Sound(1000);
 
    exit;
 
-   //MainForm.AnOutOnOffTB.Checked:= false;
-   //MainForm.AnOutOnOffTB.Enabled:= false;
-   //MainForm.AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-   //                    + 'to the pump connectors.' + LineEnding
-   //                    + 'Connect to a SIX and a pump driver'  + LineEnding
-   //                    + 'to enable the button.';
-   //exit;
   end;
  end;
 

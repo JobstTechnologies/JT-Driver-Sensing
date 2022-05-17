@@ -9833,8 +9833,8 @@ object MainForm: TMainForm
     Left = 1000
     Top = 568
   end
-  object FirmwareNote: TPopupNotifier
-    Color = clRed
+  object InfoNote: TPopupNotifier
+    Color = clInfoBk
     Icon.Data = {
       055449636F6E360400000000010002002020100000000000E802000026000000
       1010100000000000280100000E03000028000000200000004000000001000400

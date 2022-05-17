@@ -329,7 +329,7 @@ type
     FirmwareUpdateMI: TMenuItem;
     AboutMI: TMenuItem;
     FirmwareFileDialog: TOpenDialog;
-    FirmwareNote: TPopupNotifier;
+    InfoNote: TPopupNotifier;
     Label1: TLabel;
     Label12: TLabel;
     Label13: TLabel;
@@ -1609,15 +1609,15 @@ begin
   // at the position where the initial info message was output
   if forced then
   begin
-   FirmwareNote.Text:= 'Firmware reset is in progress';
-   FirmwareNote.Title:= 'Firmware reset';
+   InfoNote.Text:= 'Firmware reset is in progress';
+   InfoNote.Title:= 'Firmware reset';
   end
   else
   begin
-   FirmwareNote.Text:= 'Firmware update is in progress';
-   FirmwareNote.Title:= 'Firmware update';
+   InfoNote.Text:= 'Firmware update is in progress';
+   InfoNote.Title:= 'Firmware update';
   end;
-  FirmwareNote.ShowAtPos(MousePointer.X, MousePointer.Y);
+  InfoNote.ShowAtPos(MousePointer.X, MousePointer.Y);
   Application.ProcessMessages; // to show the note before going to delay
   Delay(2000); // some time until the connection is in every case established
   Application.ProcessMessages; // keep the program alive to Windows
@@ -1670,7 +1670,7 @@ begin
   Application.ProcessMessages;
   Delay(5000); // wait 5s because the microcontroller needs time
   Application.ProcessMessages;
-  FirmwareNote.Hide; // hide the note
+  InfoNote.Hide; // hide the note
 
   // the COM port might now be different than at the start
   Reg:= TRegistry.Create;
@@ -4164,11 +4164,12 @@ begin
   begin
    PortName:= Reg.ReadString(RegStrings[i]);
 
+   // Since every SIX has a unique ID, we can connect the COM port with this
    if PortType = 'SIX' then
    begin
     Attempts:= 0;
     ErrorCount:= 0;
-    // Since every SIX has a unique ID, we can connect the COM port with this
+
     // exclude connected pump driver port
     if PortName = ConnComPortPumpLE.Text then
      continue;
