@@ -66,7 +66,7 @@ type
     GlucoseAvailChanL: TLabel;
     LoadSensorDataMI: TMenuItem;
     UsedCalibValueSE: TSpinEdit;
-    Label72: TLabel;
+    UsedCalibValueL: TLabel;
     LactateAvailChanL: TLabel;
     GlucoseCalibGB: TGroupBox;
     CalibrationGB: TGroupBox;
@@ -3101,6 +3101,7 @@ begin
   RepeatOutputLE.Visible:= False;
   CalibStepCB.Enabled:= False;
   UseCalibCB.Enabled:= False;
+  UsedCalibValueSE.Enabled:= False;
   for j:= 1 to CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
@@ -3145,7 +3146,7 @@ var
  StringList : TStringList;
  j, k, ValveNumFile, startIndex, stopIndex : integer;
  FormPointer : TPoint;
- SeriesName : string;
+ SeriesName, HelpString : string;
 begin
  // initialize
  FormPointer:= MainForm.ControlOrigin;
@@ -3213,7 +3214,8 @@ begin
   begin
    if LeftStr(StringList[j], Length('Calibration')) = 'Calibration' then
    begin
-    CalibStepCB.Text:= Copy(StringList[j], Length('Calibration') + 3, Length(StringList[j]));
+    CalibStepCB.Text:= Copy(StringList[j], Length('Calibration') + 3,
+                            Length(StringList[j]));
     // we know now that there are calibration settings
     UseCalibCB.Checked:= true;
     // when no .def file is loaded, we must disable the RunBB button
@@ -3276,6 +3278,11 @@ begin
      LactateCalibCLB.Selected[k]:= True;
      break;
     end;
+   end
+   else if LeftStr(StringList[j], Length('Measurements ')) = 'Measurements ' then
+   begin
+    HelpString:= Copy(StringList[j], Length('Measurements for mean') + 3, Length(StringList[j]));
+    UsedCalibValueSE.Value:= StrToInt(HelpString);
    end;
   end;
 
@@ -3452,6 +3459,16 @@ begin
     SaveFileStream.Write(LactateCalibUnitCB.Text[1],
                          Length(LactateCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
+    // eventually the number of measurement values to calculate the mean
+    // value taken as calibration result
+    // first the step
+    SaveFileStream.Write('Measurements for mean: ',
+                         Length('Measurements for mean: '));
+    IntToStr(UsedCalibValueSE.Value);
+    SaveFileStream.Write(IntToStr(UsedCalibValueSE.Value)[1],
+                         Length(IntToStr(UsedCalibValueSE.Value)));
+    SaveFileStream.Write(LineEnding, 2);
+
    end;
   finally
    SaveFileStream.Free;

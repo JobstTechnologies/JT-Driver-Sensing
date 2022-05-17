@@ -126,6 +126,7 @@ begin
  // enable the calibration settings
  MainForm.CalibStepCB.Enabled:= True;
  MainForm.UseCalibCB.Enabled:= True;
+ MainForm.UsedCalibValueSE.Enabled:= True;
  for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
  begin
   // the user must be able to see the settings for all substances
@@ -1592,6 +1593,7 @@ begin
    end;
    MainForm.CalibStepCB.Enabled:= False;
    MainForm.UseCalibCB.Enabled:= False;
+   MainForm.UsedCalibValueSE.Enabled:= False;
    for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
    begin
     // the user must be able to see the settings for all substances
@@ -1763,6 +1765,7 @@ begin
   end;
   MainForm.CalibStepCB.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
+  MainForm.UsedCalibValueSE.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
@@ -1937,6 +1940,7 @@ begin
   end;
   MainForm.CalibStepCB.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
+  MainForm.UsedCalibValueSE.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
@@ -2043,6 +2047,8 @@ begin
  MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.UsedCalibValueSE.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.UsedCalibValueL.Enabled:= MainForm.UseCalibCB.Checked;
  // en/disable Run button
  if not HaveSerialPump then
  begin

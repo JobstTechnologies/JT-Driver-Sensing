@@ -8256,7 +8256,7 @@ object MainForm: TMainForm
           Left = 157
           Height = 23
           Hint = 'Number of last measurements that'#13#10'will be used to calculate the mean'#13#10'value that is used for the calibration'
-          Top = 51
+          Top = 50
           Width = 45
           Alignment = taRightJustify
           MinValue = 5
@@ -8265,7 +8265,7 @@ object MainForm: TMainForm
           TabOrder = 3
           Value = 5
         end
-        object Label72: TLabel
+        object UsedCalibValueL: TLabel
           Left = 32
           Height = 15
           Top = 52
