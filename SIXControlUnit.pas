@@ -120,12 +120,11 @@ var
  OutLine : string;
  dataString : AnsiString;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
- i, k, StopPos, ItemIndex, SIXNumber : integer;
+ i, StopPos, ItemIndex, SIXNumber : integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
  tempArray : packed array of byte;
  HiLowArray : array[0..1] of byte;
- IDArray : array[0..3] of byte;
  Chan : array [1..6] of Int16;
  ChanDbl : array [0..8] of double; // start from zero purposely for non-existing subtracts
  ChanRawDbl : array [1..8] of double;
@@ -153,8 +152,7 @@ begin
   MainForm.COMPortScan('SIX');
   // search the COM list if the SIX is listed there
   i:= Pos(':', MainForm.ConnComPortSensM.Lines[1]);
-  SIXNumber:= StrToInt(Copy(MainForm.ConnComPortSensM.Lines[1], i + 1,
-                       Length(MainForm.ConnComPortSensM.Lines[1]) - i));
+  SIXNumber:= connectedSIX;
   for i:= 0 to Length(COMListSIX) - 1 do
   begin
    if COMListSIX[i] = SIXNumber then
@@ -477,18 +475,6 @@ begin
  // the temperature value must be divided by 16 to get the value in deg celsius
  temperature:= tempInt16 / 16;
  MainForm.SIXTempLE.Text:= FloatToStr(RoundTo(temperature, -2));
-
- // get the SIX device ID if not yet shown
- if copy(MainForm.ConnComPortSensM.Lines[1], 1, 3) <> 'SIX' then
- begin
-  for i:= 0 to 3 do
-   IDArray[3 - i]:= dataArray[14 + i];
-  k:= Int32(IDArray);
-  // we don't just add a line because this would add a linebreak so that a
-  // third memo line would be shown and the memo size is designed for 2 lines
-  MainForm.ConnComPortSensM.Text:= MainForm.ConnComPortSensM.Lines[0]
-   + LineEnding + 'SIX ID #: ' + (IntToStr(k));
- end;
 
  // get the raw values in nA
  for i:= 1 to NumChannels do

@@ -937,6 +937,7 @@ var
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor definition file
+  connectedSIX : longint = 0; // ID of the connected SIX
   const AppearanceFile : string = 'Appearance-JT-DS.ini'; // filename to store appearance
   const AppearanceDefault : string = 'Appearance-JT-DS.default'; // filename with default appearance
 
@@ -3226,8 +3227,8 @@ begin
      MessageDlgPos('Calibration is used but no sensor definition file is loaded yet.'
       + LineEnding + 'Thus the validity of the calibration channels cannot be checked.'
       + LineEnding
-      + LineEnding + 'If the correct channel is not selected after you load the sensor'
-      + LineEnding + 'defintion file, you must reload the action file!',
+      + LineEnding + 'If the calibration channel is not selected after you load the'
+      + LineEnding + 'sensor defintion file, you must reload the action file!',
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end
     else
@@ -3549,9 +3550,10 @@ begin
      inc(i);
    end;
 
-   // if there is already a connection, display its port
+   // if there is already a connection, select its port
    if HaveSerialSensor then
-    SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1]);
+    SerialUSBPortCB.ItemIndex:=
+     SerialUSBPortCB.Items.IndexOf('SIX ID #: ' + IntToStr(connectedSIX));
 
    // output SIX ID
    SerialUSBPortCB.Sorted:= false;
@@ -3563,7 +3565,6 @@ begin
     if COMListSIX[COMNumber] > 0 then
      SerialUSBPortCB.Items[i]:= 'SIX ID #: ' + IntToStr(COMListSIX[COMNumber]);
    end;
-   //SerialUSBPortCB.Sorted:= true;
 
    // if there is only one COM port, preselect it
    if SerialUSBPortCB.Items.Count = 1 then
@@ -3672,7 +3673,7 @@ begin
    except
     exit;
    end;
-   HaveSerialSensor:= True;
+
   finally
    if serSensor.LastError <> 0 then // output the error
    begin
@@ -3684,19 +3685,29 @@ begin
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
     CloseLazSerialConn;
+    ConnComPortSensM.Text:= 'Not connected';
     HaveSerialSensor:= False;
     LoadSensorDataMI.Enabled:= true;
     exit;
+   end
+   else
+   begin
+    HaveSerialSensor:= True;
+    COMNumber:= StrToInt(Copy(COMPort, 4, 4));
+    connectedSIX:= COMListSIX[COMNumber];
    end;
   end
   else // there is nothing to do because the connection is already open
    exit;
 
-  // output connected port
-  ConnComPortSensM.Text:= COMPort;
   ConnComPortSensM.Color:= clDefault;
   IndicatorSensorP.Caption:= 'Connection successful';
   IndicatorSensorP.Color:= clDefault;
+  // output the connected port and SIX ID
+  // we don't just add a line because this would add a linebreak so that a
+  // third memo line would be shown and the memo size is designed for 2 lines
+  ConnComPortSensM.Text:= COMPort
+   + LineEnding + 'SIX ID #: ' + IntToStr(connectedSIX);
 
   // read out some data as test
   // first wait until we get bytes to read
@@ -3737,7 +3748,7 @@ begin
    exit;
   end;
 
- end; // end if Connected
+ end; // end if not Connected to SIX
 
  // now open the file dialog to select the file to save the SIX data
  // if there is already a connection, display its port
@@ -4035,6 +4046,7 @@ begin
   serSensor.CloseSocket;
   serSensor.free;
   HaveSerialSensor:= False;
+  connectedSIX:= 0;
  end;
 
  ConnComPortSensM.Text:= 'Not connected';
@@ -4147,7 +4159,7 @@ type
 var
  Reg : TRegistry;
  RegStrings : TStrings;
- PortName, HelpString : string;
+ PortName : string;
  serTest : TBlockSerial;
  i, j, k, ErrorCount, StopPos, Attempts, Channel : integer;
  dataString : AnsiString;
@@ -4195,9 +4207,7 @@ begin
     if HaveSerialSensor and (PortName = ConnComPortSensM.Lines[0]) then
     begin
      Channel:= StrToInt(Copy(PortName, 4, 4));
-     k:= Pos(':', ConnComPortSensM.Lines[1]);
-     HelpString:= Copy(ConnComPortSensM.Lines[1], k + 1, Length(ConnComPortSensM.Lines[1]) - k);
-     COMListSIX[Channel]:= StrToInt(HelpString);
+     COMListSIX[Channel]:= connectedSIX;
     end;
 
     // open the connection
