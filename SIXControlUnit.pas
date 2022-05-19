@@ -300,7 +300,7 @@ begin
 
    // since the process will need more than 10 seconds, show a note
    // at the position where the initial info message was output
-   MainForm.InfoNote.vNotifierForm.Height := 160;
+   MainForm.InfoNote.vNotifierForm.Height := 200;
    MainForm.InfoNote.vNotifierForm.Width := 500;
    MainForm.InfoNote.Color:= clRed;
    MainForm.InfoNote.Text:= 'The connection to the SIX device was lost!'
