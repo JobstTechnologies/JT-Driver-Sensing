@@ -4207,10 +4207,16 @@ begin
        break;
       end;
      end;
-   SetLength(COMListSIX, 0); // delete array
-   SetLength(COMListSIX, 999); // a PC cannot have more than 999 COM ports
-   SetLength(COMListPumpDriver, 0);
-   SetLength(COMListPumpDriver, 999);
+   if PortType = 'SIX' then
+   begin
+    SetLength(COMListSIX, 0); // delete array
+    SetLength(COMListSIX, 999); // a PC cannot have more than 999 COM ports
+   end
+   else if PortType = 'PumpDriver' then
+   begin
+    SetLength(COMListPumpDriver, 0);
+    SetLength(COMListPumpDriver, 999);
+   end;
 
    Reg.GetValueNames(RegStrings);
   end;
