@@ -1149,7 +1149,8 @@ begin
   if serPump.LastError <> 0 then
   begin
    with Application do
-    MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
+    MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+                     'Error', MB_ICONERROR+MB_OK);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1543,8 +1544,8 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error',
-                MB_ICONERROR + MB_OK);
+     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+                      'Error', MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1701,7 +1702,8 @@ begin
   if serPump.LastError <> 0 then
   begin
    with Application do
-    MessageBox(PChar(connectedPump + 'error: ' + serPump.LastErrorDesc), 'Error', MB_ICONERROR+MB_OK);
+    MessageBox(PChar(connectedPumpCOM + 'error: ' + serPump.LastErrorDesc),
+                     'Error', MB_ICONERROR+MB_OK);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1815,8 +1817,8 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(connectedPump + ' error: ' + serPump.LastErrorDesc), 'Error',
-                MB_ICONERROR + MB_OK);
+     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+                      'Error', MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
