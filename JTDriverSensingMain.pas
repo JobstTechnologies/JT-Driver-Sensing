@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, Streamex, ExtCtrls, Spin, Buttons, LCLType, Registry, Process,
-  LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
+  Fileinfo, LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend,
   // the custom forms
   SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
@@ -922,7 +922,7 @@ type
 
 var
   MainForm : TMainForm;
-  Version : string = '0.99.9';
+  Version : string = '';
   FirmwareVersion : string = 'unknown';
   RequiredFirmwareVersion : float = 3.0;
   serPump : TBlockSerial;
@@ -953,7 +953,15 @@ uses
 procedure TMainForm.FormCreate(Sender: TObject);
 var
  iniFile : string;
+ FileVerInfo: TFileVersionInfo;
 begin
+ try
+  FileVerInfo:= TFileVersionInfo.Create(nil);
+  FileVerInfo.ReadFileInfo;
+  Version:= FileVerInfo.VersionStrings.Values['ProductVersion'];
+ finally
+  FileVerInfo.Free;
+ end;
  MainForm.Caption:= 'JT Driver Sensing ' + Version;
  DefaultFormatSettings.DecimalSeparator:= '.'; // we use English numbers
  SIXControl.NumChannels:= 6; // if no definition file loaded, output 6 channels
