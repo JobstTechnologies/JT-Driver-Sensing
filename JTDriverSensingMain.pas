@@ -1180,7 +1180,7 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  IndicatorPumpP.Caption:= 'Connection failiure';
+  IndicatorPumpP.Caption:= 'Connection failure';
   IndicatorPumpP.Color:= clRed;
   IndicatorPumpPPaint;
   if HaveSerialPump then
@@ -1238,7 +1238,7 @@ begin
    // disable all buttons
    RunBB.Enabled:= false;
    StopBB.Enabled:= false;
-   IndicatorPumpP.Caption:= 'Connection failiure';
+   IndicatorPumpP.Caption:= 'Connection failure';
    IndicatorPumpP.Color:= clRed;
    IndicatorPumpPPaint;
    if serPump.LastError = 9997 then
@@ -3627,7 +3627,7 @@ begin
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
-   IndicatorSensorP.Caption:= 'Connection failiure';
+   IndicatorSensorP.Caption:= 'Connection failure';
    IndicatorSensorP.Color:= clRed;
    if HaveSerialSensor then
    begin
@@ -3678,7 +3678,7 @@ begin
    begin
     MessageDlgPos(ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-    IndicatorSensorP.Caption:= 'Connection failiure';
+    IndicatorSensorP.Caption:= 'Connection failure';
     IndicatorSensorP.Color:= clRed;
     ConnComPortSensM.Color:= clRed;
     StartTestBB.Enabled:= false;
