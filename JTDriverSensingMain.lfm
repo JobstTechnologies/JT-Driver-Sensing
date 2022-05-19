@@ -1120,7 +1120,6 @@ object MainForm: TMainForm
         object SIXTempValues: TLineSeries
           Active = False
           Title = 'Temperature'
-          AxisIndexX = 1
           AxisIndexY = 2
           LinePen.Color = clMaroon
           LinePen.Width = 2
