@@ -13,6 +13,7 @@ improvements:
 bugfixes:
 - fix wrong time format in tooltips in the data graph
 - fix wrong units on time axis for the temperature
+- Live mode did not react on changed inputs
 
 
 from version 0.997.1 to 0.998

@@ -1122,6 +1122,7 @@ begin
   exit;
  end;
  MainForm.CommandM.Text:= command;
+ commandWithSIX:= command;
  // The TinyZero has an input buffer of 512 characters, if it is full, the
  // COM connection will break (no communication posible).
  // There is a special case (in my opinion a bug) that if the input string has
