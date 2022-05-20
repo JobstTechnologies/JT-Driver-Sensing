@@ -20,8 +20,7 @@ type
     Bevel1: TBevel;
     Bevel2: TBevel;
     cbArrowVisible: TCheckBox;
-    cbAutoMax: TCheckBox;
-    cbAutoMin: TCheckBox;
+    cbAutoMinMax: TCheckBox;
     cbAxisLineVisible: TCheckBox;
     cbFrameVisible: TCheckBox;
     cbGridVisible: TCheckBox;
@@ -45,7 +44,6 @@ type
     lblArrowBaseLength: TLabel;
     lblArrowLength: TLabel;
     lblArrowWidth: TLabel;
-    lblAutomatic: TLabel;
     lblLabelDistance: TLabel;
     lblLabelFormat: TLabel;
     lblTickInnerLength: TLabel;
@@ -72,8 +70,7 @@ type
     TitleMemoPanel: TPanel;
     TitleParamsPanel: TPanel;
     procedure cbArrowVisibleChange(Sender: TObject);
-    procedure cbAutoMaxChange(Sender: TObject);
-    procedure cbAutoMinChange(Sender: TObject);
+    procedure cbAutoMinMaxChange(Sender: TObject);
     procedure cbAxisLineVisibleChange(Sender: TObject);
     procedure cbFrameVisibleChange(Sender: TObject);
     procedure cbGridVisibleChange(Sender: TObject);
@@ -257,29 +254,20 @@ begin
   FAxis.Arrow.Visible := cbArrowVisible.Checked;
 end;
 
-procedure TChartAxisFrame.cbAutoMaxChange(Sender: TObject);
+procedure TChartAxisFrame.cbAutoMinMaxChange(Sender: TObject);
 begin
-  FAxis.Range.UseMax := not cbAutoMax.Checked;
+  FAxis.Range.UseMax := not cbAutoMinMax.Checked;
   seMaximum.Visible := FAxis.Range.UseMax;
+  FAxis.Range.UseMin := not cbAutoMinMax.Checked;
+  seMinimum.Visible := FAxis.Range.UseMin;
   // setting only maximum but no minimum does not work because the values
   // must be scaled according to the axis scaling. Scaling only one value
   // fails and it is tricky to do the scaling right if one value is auto
   // therefore assure that the minimum is set too
-  if cbAutoMax.Checked and (not cbAutoMin.Checked) then
-   cbAutoMin.Checked:= true;
-  if (not cbAutoMax.Checked) and (cbAutoMin.Checked) then
-   cbAutoMin.Checked:= false;
-end;
-
-procedure TChartAxisFrame.cbAutoMinChange(Sender: TObject);
-begin
-  FAxis.Range.UseMin := not cbAutoMin.Checked;
-  seMinimum.Visible := FAxis.Range.UseMin;
-  // assure that the maximum is set too, see procedure cbAutoMaxChange why
-  if cbAutoMin.Checked and (not cbAutoMax.Checked) then
-   cbAutoMax.Checked:= true;
-  if (not cbAutoMin.Checked) and (cbAutoMax.Checked) then
-   cbAutoMax.Checked:= false;
+  //if cbAutoMinMax.Checked then
+  // cbAutoMin.Checked:= true;
+  //if (not cbAutoMinMax.Checked) then
+  // cbAutoMin.Checked:= false;
 end;
 
 procedure TChartAxisFrame.cbAxisLineVisibleChange(Sender: TObject);
@@ -361,7 +349,7 @@ end;
 
 function TChartAxisFrame.GetRealAxisMax: Double;
 begin
-  if cbAutoMax.Checked then
+  if cbAutoMinMax.Checked then
     Result := FAxisMax
   else
     Result := seMaximum.Value;
@@ -369,7 +357,7 @@ end;
 
 function TChartAxisFrame.GetRealAxisMin: Double;
 begin
-  if cbAutoMin.Checked then
+  if cbAutoMinMax.Checked then
     Result := FAxisMin
   else
     Result := seMinimum.Value;
@@ -423,15 +411,15 @@ begin
   seMinimum.MinValue := -MaxDouble;
   seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max, FAxisMax);
   seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min, FAxisMin);
-  cbAutoMax.Checked := not Axis.Range.UseMax;
-  cbAutoMin.Checked := not Axis.Range.UseMin;
+  cbAutoMinMax.Checked := not Axis.Range.UseMax;
+  cbAutoMinMax.Checked := not Axis.Range.UseMin;
   // if scrolling is active the x-axis range cannot be changed
   if Axis = MainForm.SIXCH.AxisList[1] then
   begin
-   cbAutoMax.Enabled := not MainForm.ScrollViewCB.Checked;
-   cbAutoMin.Enabled := not MainForm.ScrollViewCB.Checked;
-   cbAutoMax.ShowHint := MainForm.ScrollViewCB.Checked;
-   cbAutoMin.ShowHint := MainForm.ScrollViewCB.Checked;
+   cbAutoMinMax.Enabled := not MainForm.ScrollViewCB.Checked;
+   cbAutoMinMax.Enabled := not MainForm.ScrollViewCB.Checked;
+   cbAutoMinMax.ShowHint := MainForm.ScrollViewCB.Checked;
+   cbAutoMinMax.ShowHint := MainForm.ScrollViewCB.Checked;
   end;
   // the axis inversion is done by inverting the globar chart coordinates
   // therefore it is not axis-indepndent. To save a lo of code, simply disable
@@ -495,7 +483,7 @@ begin
   // assure that miniumum <= maximum
   seMinimum.MaxValue := seMaximum.Value;
   FAxis.Range.Max := seMaximum.Value;
-  cbAutoMax.Checked := false;
+  cbAutoMinMax.Checked := false;
 end;
 
 procedure TChartAxisFrame.seMinimumChange(Sender: TObject);
@@ -503,7 +491,7 @@ begin
   // assure that miniumum <= maximum
   seMaximum.MinValue := seMinimum.Value;
   FAxis.Range.Min := seMinimum.Value;
-  cbAutoMin.Checked := false;
+  cbAutoMinMax.Checked := false;
 end;
 
 procedure TChartAxisFrame.SetPage(AValue: TChartAxisEditorPage);

@@ -239,20 +239,7 @@ object ChartAxisFrame: TChartAxisFrame
         ClientHeight = 88
         ClientWidth = 264
         TabOrder = 0
-        object lblAutomatic: TLabel
-          AnchorSideLeft.Control = gbAxisRange
-          AnchorSideTop.Control = gbAxisRange
-          Left = 16
-          Height = 15
-          Top = 4
-          Width = 56
-          BorderSpacing.Left = 16
-          BorderSpacing.Top = 4
-          Caption = 'Automatic'
-        end
-        object cbAutoMax: TCheckBox
-          AnchorSideLeft.Control = lblAutomatic
-          AnchorSideTop.Control = lblAutomatic
+        object cbAutoMinMax: TCheckBox
           AnchorSideTop.Side = asrBottom
           Left = 32
           Height = 19
@@ -261,27 +248,13 @@ object ChartAxisFrame: TChartAxisFrame
           Width = 75
           BorderSpacing.Left = 16
           BorderSpacing.Top = 10
-          Caption = 'Maximum'
-          OnChange = cbAutoMaxChange
+          Caption = 'Automatic'
+          OnChange = cbAutoMinMaxChange
           TabOrder = 0
-        end
-        object cbAutoMin: TCheckBox
-          AnchorSideLeft.Control = cbAutoMax
-          AnchorSideTop.Control = cbAutoMax
-          AnchorSideTop.Side = asrBottom
-          Left = 32
-          Height = 19
-          Hint = 'Not available when scrolling is active'
-          Top = 60
-          Width = 73
-          BorderSpacing.Top = 12
-          Caption = 'Minimum'
-          OnChange = cbAutoMinChange
-          TabOrder = 2
         end
         object seMaximum: TFloatSpinEdit
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = cbAutoMax
+          AnchorSideTop.Control = cbAutoMinMax
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = gbAxisRange
           AnchorSideRight.Side = asrBottom
@@ -298,7 +271,6 @@ object ChartAxisFrame: TChartAxisFrame
         end
         object seMinimum: TFloatSpinEdit
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = cbAutoMin
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = gbAxisRange
           AnchorSideRight.Side = asrBottom
@@ -311,7 +283,7 @@ object ChartAxisFrame: TChartAxisFrame
           BorderSpacing.Top = 8
           BorderSpacing.Right = 20
           OnChange = seMinimumChange
-          TabOrder = 3
+          TabOrder = 2
         end
         object cbInverted: TCheckBox
           AnchorSideTop.Control = gbAxisRange
@@ -326,7 +298,7 @@ object ChartAxisFrame: TChartAxisFrame
           BorderSpacing.Right = 24
           Caption = 'Inverted'
           OnChange = cbInvertedChange
-          TabOrder = 4
+          TabOrder = 3
         end
       end
       object gbLabelFont: TGroupBox
