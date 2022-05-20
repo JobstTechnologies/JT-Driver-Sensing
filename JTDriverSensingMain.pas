@@ -927,8 +927,8 @@ var
   RequiredFirmwareVersion : float = 3.0;
   serPump : TBlockSerial;
   serSensor : TBlockSerial;
-  COMListPumpDriver : array of Int32;
-  COMListSIX : array of Int32;
+  COMListPumpDriver : array of Int32; // list with available pump drivers
+  COMListSIX : array of Int32; // list with available SIX (list index is COM port number)
   HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
@@ -1131,8 +1131,6 @@ begin
   // as proposal when the connection dialog is shwon
   if SerialUSBPortCB.ItemIndex > -1 then
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
-  if SerialUSBPortCB.Text = '' then
-   COMPort:= '';
 
   // open connection dialog
   ShowModal;
@@ -4345,9 +4343,32 @@ begin
     if PortName = connectedPortNameSIX then
      continue;
 
-    // if there is a connection, we can directly take the driver number
+    // when there is a connection, we must first test if this is still alive
+    // - if yes, we must directly take the driver number
+    // since we cannot connect to an already connected port
+    // - if not we must close the connection
     if HaveSerialPump and (PortName = connectedPumpCOM) then
     begin
+     // to check the live state send a command
+     try
+      serPump.SendString('/0lR' + LineEnding);
+     finally
+      if serPump.LastError <> 0 then
+      begin
+       ConnComPortPumpLE.Color:= clRed;
+       ConnComPortPumpLE.Text:= 'Try to reconnect';
+       IndicatorPumpP.Caption:= 'Connection failure';
+       IndicatorPumpP.Color:= clRed;
+       IndicatorPumpPPaint;
+       ConnectionMI.Enabled:= True;
+       RunBB.Enabled:= False;
+       StopBB.Enabled:= False;
+       ClosePumpSerialConn;
+       inc(ErrorCount);
+      end;
+     end;
+     if ErrorCount > 0 then
+      continue;
      Channel:= StrToInt(Copy(connectedPumpCOM, 4, 4));
      COMListPumpDriver[Channel]:= connectedPumpDriver;
      continue;
@@ -4380,7 +4401,7 @@ begin
    end;
 
    if ErrorCount > 0 then
-     continue;
+    continue;
 
    // FirmwareVersion has now this format:
    // "JT-PumpDriver-Firmware x.y\n Received command: ..."

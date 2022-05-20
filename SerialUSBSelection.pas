@@ -30,6 +30,8 @@ implementation
 
 {$R *.lfm}
 
+{ TSerialUSBSelectionF }
+
 procedure TSerialUSBSelectionF.FormCreate(Sender: TObject);
 begin
  ActiveControl:= SerialUSBPortCB;
