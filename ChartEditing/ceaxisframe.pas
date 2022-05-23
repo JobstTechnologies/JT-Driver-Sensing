@@ -260,6 +260,12 @@ begin
   seMaximum.Visible := FAxis.Range.UseMax;
   FAxis.Range.UseMin := not cbAutoMinMax.Checked;
   seMinimum.Visible := FAxis.Range.UseMin;
+  // for the x-axis the extent overrides the axis range settings
+  if FAxis = MainForm.SIXCH.AxisList[1] then
+  begin
+   MainForm.SIXCH.Extent.UseXMax := not cbAutoMinMax.Checked;
+   MainForm.SIXCH.Extent.UseXMin := not cbAutoMinMax.Checked;
+  end;
 end;
 
 procedure TChartAxisFrame.cbAxisLineVisibleChange(Sender: TObject);
@@ -401,8 +407,14 @@ begin
   GetChart.GetAllSeriesAxisLimits(Axis, FAxisMin, FAxisMax);
   seMaximum.MaxValue := MaxDouble;
   seMinimum.MinValue := -MaxDouble;
-  seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max, FAxisMax);
-  seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min, FAxisMin);
+  // FAxisMax is the maximal value in the series and can thus be calculated
+  // using the axis transformation
+  // for the X-axis we use the extend, therefore Axis.Range.Max cannot just be
+  // transformed. We calculated this in the routine TMainForm.TimeHourMIClick.
+  seMaximum.Value := IfThen(Axis.Range.UseMax, Axis.Range.Max,
+                 MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(FAxisMax));
+  seMinimum.Value := IfThen(Axis.Range.UseMin, Axis.Range.Min,
+                 MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(FAxisMin));
   cbAutoMinMax.Checked := not Axis.Range.UseMax;
   cbAutoMinMax.Checked := not Axis.Range.UseMin;
   // if scrolling is active the x-axis range cannot be changed
@@ -476,6 +488,9 @@ begin
   seMinimum.MaxValue := seMaximum.Value;
   FAxis.Range.Max := seMaximum.Value;
   cbAutoMinMax.Checked := false;
+  // for the x-axis the extent overrides the axis range settings
+  if FAxis = MainForm.SIXCH.AxisList[1] then
+   MainForm.SIXCH.Extent.XMax := seMaximum.Value * MainForm.ValuesLinearTransform.Scale;
 end;
 
 procedure TChartAxisFrame.seMinimumChange(Sender: TObject);
@@ -484,6 +499,8 @@ begin
   seMaximum.MinValue := seMinimum.Value;
   FAxis.Range.Min := seMinimum.Value;
   cbAutoMinMax.Checked := false;
+  if FAxis = MainForm.SIXCH.AxisList[1] then
+   MainForm.SIXCH.Extent.XMin := seMinimum.Value * MainForm.ValuesLinearTransform.Scale;
 end;
 
 procedure TChartAxisFrame.SetPage(AValue: TChartAxisEditorPage);

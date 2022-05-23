@@ -15,6 +15,7 @@ bugfixes:
 - fix wrong units on time axis for the temperature
 - Live mode did not react on changed inputs
 - enable to reconnect after the pump driver USB cable was accidentally removed
+- fix x-axis range settings
 
 
 from version 0.997.1 to 0.998

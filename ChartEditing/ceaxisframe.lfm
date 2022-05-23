@@ -245,7 +245,7 @@ object ChartAxisFrame: TChartAxisFrame
           Height = 19
           Hint = 'Not available when scrolling is active'
           Top = 29
-          Width = 75
+          Width = 76
           BorderSpacing.Left = 16
           BorderSpacing.Top = 10
           Caption = 'Automatic'
