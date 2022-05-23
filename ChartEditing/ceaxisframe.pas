@@ -260,14 +260,6 @@ begin
   seMaximum.Visible := FAxis.Range.UseMax;
   FAxis.Range.UseMin := not cbAutoMinMax.Checked;
   seMinimum.Visible := FAxis.Range.UseMin;
-  // setting only maximum but no minimum does not work because the values
-  // must be scaled according to the axis scaling. Scaling only one value
-  // fails and it is tricky to do the scaling right if one value is auto
-  // therefore assure that the minimum is set too
-  //if cbAutoMinMax.Checked then
-  // cbAutoMin.Checked:= true;
-  //if (not cbAutoMinMax.Checked) then
-  // cbAutoMin.Checked:= false;
 end;
 
 procedure TChartAxisFrame.cbAxisLineVisibleChange(Sender: TObject);
@@ -422,7 +414,7 @@ begin
    cbAutoMinMax.ShowHint := MainForm.ScrollViewCB.Checked;
   end;
   // the axis inversion is done by inverting the globar chart coordinates
-  // therefore it is not axis-indepndent. To save a lo of code, simply disable
+  // therefore it is not axis-independent. To save a lo of code, simply disable
   // the inversion for the right axis
   if Axis = MainForm.SIXCH.AxisList[2] then
    cbInverted.Visible := false;
