@@ -2434,9 +2434,12 @@ end;
 procedure TMainForm.TimeDayMIClick(Sender: TObject);
 var
  extent: TDoubleRect;
+ previousScale : double;
 begin
  // store current zoom state because changing scale will zoom out
  extent:= SIXCH.LogicalExtent;
+ // save the scale to be able to recalculate the new range min/max
+ previousScale:= ValuesLinearTransform.Scale;
  ValuesLinearTransform.Scale:= 1440; // 24 * 60
  // set back zoom state
  SIXCH.Prepare;
@@ -2445,13 +2448,19 @@ begin
  TimeMinMI.Checked:= false;
  TimeHourMI.Checked:= false;
  TimeDayMI.Checked:= true;
+ SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
+                              / ValuesLinearTransform.Scale;
+ SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
+                              / ValuesLinearTransform.Scale;
 end;
 
 procedure TMainForm.TimeHourMIClick(Sender: TObject);
 var
  extent: TDoubleRect;
+ previousScale : double;
 begin
  extent:= SIXCH.LogicalExtent;
+ previousScale:= ValuesLinearTransform.Scale;
  ValuesLinearTransform.Scale:= 60;
  SIXCH.Prepare;
  SIXCH.LogicalExtent:= extent;
@@ -2459,13 +2468,19 @@ begin
  TimeMinMI.Checked:= false;
  TimeHourMI.Checked:= true;
  TimeDayMI.Checked:= false;
+ SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
+                              / ValuesLinearTransform.Scale;
+ SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
+                              / ValuesLinearTransform.Scale;
 end;
 
 procedure TMainForm.TimeMinMIClick(Sender: TObject);
 var
  extent: TDoubleRect;
+ previousScale : double;
 begin
  extent:= SIXCH.LogicalExtent;
+ previousScale:= ValuesLinearTransform.Scale;
  ValuesLinearTransform.Scale:= 1;
  SIXCH.Prepare;
  SIXCH.LogicalExtent:= extent;
@@ -2473,6 +2488,10 @@ begin
  TimeMinMI.Checked:= true;
  TimeHourMI.Checked:= false;
  TimeDayMI.Checked:= false;
+ SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
+                              / ValuesLinearTransform.Scale;
+ SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
+                              / ValuesLinearTransform.Scale;
 end;
 
 procedure TMainForm.UseAnOutCBChange(Sender: TObject);
