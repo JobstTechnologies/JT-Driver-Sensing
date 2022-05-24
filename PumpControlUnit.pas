@@ -1678,7 +1678,6 @@ begin
  // re-enable menu to load and save action files
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
- command:= '';
  // address
  command:= '/0';
  // disable all valves
@@ -1869,7 +1868,7 @@ end;
 procedure TPumpControl.PCOverallTimerFinished;
 // actions after time interval ends
 var
- finishTime, SubstanceName : string;
+ finishTime, SubstanceName, command : string;
  i, j : integer;
  Subst: Substance;
 begin
@@ -1907,6 +1906,27 @@ begin
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;
  MainForm.RepeatOutputLE.Visible:= False;
+
+ // stop all pumps and valves
+ command:= '/0';
+ // disable all valves
+ if ValveNum > 0 then
+ begin
+  command:= command + 'V';
+  for j:= 1 to ValveNum do
+   command:= command + '0';
+ end;
+ // disable all pumps
+ command:= command + 'I';
+ for j:= 1 to PumpNum do
+  command:= command + '0';
+ // execute flag and turn off LED
+ command:= command + 'lR';
+ // execute
+ command:= command + LineEnding;
+ if HaveSerialPump then
+  serPump.SendString(command);
+
  // stop all timers and reset captions
  for j:= 1 to StepNum do
  begin
