@@ -56,6 +56,7 @@ type
      PumpPrefix : string; // line prefix for action files
      ValvePrefix : string; // line prefix for action files
      commandForRepeat : string; // stores the command sent on every repeat
+     oneDay : longint = 86400000; // time of one day in ms
   end;
 
 var
@@ -1625,10 +1626,10 @@ begin
   begin
    MainForm.RepeatOutputLE.Visible:= True;
    RepeatTime:= trunc(GlobalTime / (StrToFloat(MainForm.RepeatSE.Text) + 1));
-   if RepeatTime < 86400000 then // if less than one day
+   if RepeatTime < oneDay then
     MainForm.RepeatTimer.Interval:= trunc(RepeatTime)
    else // to restart timer every day
-    MainForm.RepeatTimer.Interval:= 86400000;
+    MainForm.RepeatTimer.Interval:= oneDay;
    MainForm.RepeatTimer.Enabled:= True;
    CurrentRepeat:= 0;
    MainForm.RepeatOutputLE.Text:= '0';
@@ -1642,10 +1643,10 @@ begin
   MainForm.StartTimePumpLE.Text:= startTime;
 
   // start OverallTimer to indicate running state
-  if GlobalTime < 86400000 then // if less than one day
+  if GlobalTime < oneDay then
    MainForm.OverallTimer.Interval:= trunc(GlobalTime)
   else // to restart timer every day
-   MainForm.OverallTimer.Interval:= 86400000;
+   MainForm.OverallTimer.Interval:= oneDay;
   MainForm.OverallTimer.Enabled:= True;
   // show first tab and start its timer
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
@@ -1839,13 +1840,13 @@ procedure TPumpControl.PCRepeatTimerFinished;
 // Actions after repeat time interval ends
 begin
  // if one day has passed but the pumps must run longer
- if GlobalRepeatTime > 86400000 then
+ if GlobalRepeatTime > oneDay then
  begin
-  GlobalRepeatTime:= GlobalRepeatTime - 4000;
-  if GlobalRepeatTime < 86400000 then // if less than one day
+  GlobalRepeatTime:= GlobalRepeatTime - oneDay;
+  if GlobalRepeatTime < oneDay then
    MainForm.RepeatTimer.Interval:= trunc(GlobalRepeatTime)
   else // to restart timer every day
-   MainForm.RepeatTimer.Interval:= 86400000;
+   MainForm.RepeatTimer.Interval:= oneDay;
   MainForm.RepeatTimer.Enabled:= True;
   exit;
  end;
@@ -1873,13 +1874,13 @@ var
  Subst: Substance;
 begin
  // if one day has passed but the pumps must run longer
- if GlobalTime > 86400000 then
+ if GlobalTime > oneDay then
  begin
-  GlobalTime:= GlobalTime - 86400000;
-  if GlobalTime < 86400000 then // if less than one day
+  GlobalTime:= GlobalTime - oneDay;
+  if GlobalTime < oneDay then
    MainForm.OverallTimer.Interval:= trunc(GlobalTime)
   else // to restart timer every day
-   MainForm.OverallTimer.Interval:= 86400000;
+   MainForm.OverallTimer.Interval:= oneDay;
   MainForm.OverallTimer.Enabled:= True;
   exit;
  end;

@@ -16,6 +16,8 @@ bugfixes:
 - Live mode did not react on changed inputs
 - enable to reconnect after the pump driver USB cable was accidentally removed
 - fix x-axis range settings
+- fix bug that pumps continued to run after program finished
+- fix wrong timer when a single repeat is longer than a day
 
 
 from version 0.997.1 to 0.998
