@@ -4407,9 +4407,13 @@ begin
 
     // get Firmware version by first sending a command and receiving the reply
     try
-     command:= '/0lR' + LineEnding;
-     serTest.SendString(command);
-     FirmwareVersion:= serTest.RecvPacket(1000);
+     // if another pump driver is currently running, don't send it a command
+     if serTest.LastError = 0 then
+     begin
+      command:= '/0lR' + LineEnding;
+      serTest.SendString(command);
+      FirmwareVersion:= serTest.RecvPacket(1000);
+     end;
     finally
      if serTest.LastError <> 0 then
       inc(ErrorCount);
