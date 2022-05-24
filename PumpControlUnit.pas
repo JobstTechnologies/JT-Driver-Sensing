@@ -56,7 +56,7 @@ type
      PumpPrefix : string; // line prefix for action files
      ValvePrefix : string; // line prefix for action files
      commandForRepeat : string; // stores the command sent on every repeat
-     oneDay : longint = 86400000; // time of one day in ms
+     oneDay : longint; // stores the time of one day in ms
   end;
 
 var

@@ -977,6 +977,7 @@ begin
  PumpControl.ValveNum:= 8; // number of valves
  PumpControl.PumpPrefix:= 'Pump: '; // line prefix for action files
  PumpControl.ValvePrefix:= 'Valve: '; // line prefix for action files
+ PumpControl.oneDay:= 86400000; // time of one day in ms
 
  // explicitly set there because the IDE always
  // stores initial values with trailing LineEnding
