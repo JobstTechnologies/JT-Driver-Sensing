@@ -55,7 +55,7 @@ type
      ValveNum : integer; // number of valves
      PumpPrefix : string; // line prefix for action files
      ValvePrefix : string; // line prefix for action files
-     commandWithSIX : string; // stores the command sent on every repeat
+     commandForRepeat : string; // stores the command sent on every repeat
   end;
 
 var
@@ -1122,7 +1122,7 @@ begin
   exit;
  end;
  MainForm.CommandM.Text:= command;
- commandWithSIX:= command;
+ commandForRepeat:= command;
  // The TinyZero has an input buffer of 512 characters, if it is full, the
  // COM connection will break (no communication posible).
  // There is a special case (in my opinion a bug) that if the input string has
@@ -1409,7 +1409,7 @@ begin
   // switch to step 1
   MainForm.StepTimer1.Enabled:= True;
   // when there are finite number of repeats PCRepeatTimerFinished
-  // already just performed the calibation and sent the pump command
+  // already just performed the calibation
   if HaveSerialPump and
    (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
    // send repeat sequence to pump driver
@@ -1445,7 +1445,7 @@ begin
  // switch to step 1
  MainForm.StepTimer1.Enabled:= True;
  // when there are finite number of repeats PCRepeatTimerFinished
- // already just performed the calibation and sent the pump command
+ // already just performed the calibation
 
  // send repeat sequence to pump driver
  if HaveSerialPump and
@@ -1526,8 +1526,8 @@ begin
   else
    command:= command + LineEnding;
 
-  // save command to be resend on every repeat if running with SIX
-  commandWithSIX:= command;
+  // save command to be resend on every repeat
+  commandForRepeat:= command;
 
   // if we have an open serial connection, execute
   if HaveSerialPump then
@@ -1814,7 +1814,7 @@ procedure TPumpControl.PCSendRepeatToPump;
 begin
   if HaveSerialPump then
   begin
-   serPump.SendString(commandWithSIX);
+   serPump.SendString(commandForRepeat);
    if serPump.LastError <> 0 then
    begin
     with Application do
