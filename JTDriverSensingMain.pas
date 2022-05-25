@@ -3537,6 +3537,14 @@ begin
  MousePointer:= Mouse.CursorPos;
  LastLine:= '';
  COMArray:= [''];
+ // get the default gain for the raw values
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  if SIXTypeRG.ItemIndex = 1 then
+   GainsRaw[i]:= 0.1526
+  else
+   GainsRaw[i]:= 0.0763;
+ end;
 
  // connect to SIX
  if not Connected then
@@ -3620,20 +3628,20 @@ begin
    if SerialUSBPortCB.Text = '' then
     COMPort:= '';
 
-  // open connection dialog
-  // first change its appearance
-  SerialUSBPortL.Caption:= 'Select SIX device';
-  Caption:= 'SIX selection';
-  ShowModal;
-  // change appearance back
-  SerialUSBPortL.Caption:= 'Serial USB Port';
-  Caption:= 'Serial port selection';
+   // open connection dialog
+   // first change its appearance
+   SerialUSBPortL.Caption:= 'Select SIX device';
+   Caption:= 'SIX selection';
+   ShowModal;
+   // change appearance back
+   SerialUSBPortL.Caption:= 'Serial USB Port';
+   Caption:= 'Serial port selection';
 
-  if ModalResult = mrOK then
-  begin
-   COMPort:= SerialUSBPortCB.Text;
-   COMIndex:= SerialUSBPortCB.ItemIndex;
-  end;
+   if ModalResult = mrOK then
+   begin
+    COMPort:= SerialUSBPortCB.Text;
+    COMIndex:= SerialUSBPortCB.ItemIndex;
+   end;
 
   end; // end with SerialUSBSelectionF
 
@@ -4000,15 +4008,6 @@ begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).Active:= false;
  SIXTempValues.Active:= ShowTempCB.Checked;
-
- // get the default gain for the raw values
- for i:= 1 to SIXControl.NumChannels do
- begin
-  if SIXTypeRG.ItemIndex = 1 then
-   GainsRaw[i]:= 0.1526
-  else
-   GainsRaw[i]:= 0.0763;
- end;
 
  // disable menu to load existing sensor data
  LoadSensorDataMI.Enabled:= false;
