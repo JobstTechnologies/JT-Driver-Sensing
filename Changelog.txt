@@ -3,9 +3,10 @@ Changes
 from version 0.998 to 0.999
 
 improvements:
+- new File menu to open sensor data files
 - allow to specify the number of last measurement that will be used to
   calculate the mean value that used for the calibration
-- new File menu to open sensor data files
+- allow to set that not on every cycle a calibration is performed
 - when selecting an existing sensor data file after connecting to the SIX
   the new sensor data will be appended to that file -> measurements can be resumed
 - when connection to the SIX is lost, the software tries to reconnect automatically
