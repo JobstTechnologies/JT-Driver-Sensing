@@ -35,6 +35,7 @@ type
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
     procedure PCCalibValueFSEChange(Sender: TObject);
+    procedure PCRepeatSEChange(Sender: TObject);
 
   private
 
@@ -127,6 +128,7 @@ begin
  // enable the calibration settings
  MainForm.CalibStepCB.Enabled:= True;
  MainForm.UseCalibCB.Enabled:= True;
+ MainForm.CalibEveryXStepsSE.Enabled:= True;
  MainForm.UsedCalibValueSE.Enabled:= True;
  for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
  begin
@@ -1383,7 +1385,7 @@ end;
 
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
- Step : integer;
+ Step, i : integer;
  SenderName : string;
  Subst: Substance;
 begin
@@ -1432,7 +1434,11 @@ begin
  end;
 
  // perform a calibration if necessary
- if MainForm.UseCalibCB.Checked and (MainForm.CalibStepCB.ItemIndex = Step - 1) then
+ i:= MainForm.CalibEveryXStepsSE.Value;
+ i:= StrToInt(MainForm.RepeatOutputLE.Text);
+ if MainForm.UseCalibCB.Checked
+  and (MainForm.CalibStepCB.ItemIndex = Step - 1)
+  and (StrToint(MainForm.RepeatOutputLE.Text) mod MainForm.CalibEveryXStepsSE.Value = 0) then
  begin
   for Subst in Substance do
    SIXControl.SCPerformAutoCalib(Subst);
@@ -1602,6 +1608,7 @@ begin
    end;
    MainForm.CalibStepCB.Enabled:= False;
    MainForm.UseCalibCB.Enabled:= False;
+   MainForm.CalibEveryXStepsSE.Enabled:= False;
    MainForm.UsedCalibValueSE.Enabled:= False;
    for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
    begin
@@ -1772,6 +1779,7 @@ begin
   end;
   MainForm.CalibStepCB.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
+  MainForm.CalibEveryXStepsSE.Enabled:= True;
   MainForm.UsedCalibValueSE.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
@@ -1966,6 +1974,7 @@ begin
   end;
   MainForm.CalibStepCB.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
+  MainForm.CalibEveryXStepsSE.Enabled:= True;
   MainForm.UsedCalibValueSE.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
@@ -2068,6 +2077,8 @@ begin
 end;
 
 procedure TPumpControl.PCUseCalibCBChange(Sender: TObject);
+var
+ AllowCalibEveryXSteps : Boolean = false;
 begin
  MainForm.GlucoseTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
@@ -2075,6 +2086,15 @@ begin
  MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.UsedCalibValueSE.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.UsedCalibValueL.Enabled:= MainForm.UseCalibCB.Checked;
+
+ // calibration every X steps can only be set when there is more than one step
+ if MainForm.UseCalibCB.Checked
+  and (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
+  AllowCalibEveryXSteps:= true;
+ MainForm.CalibEveryXStepsSE.Enabled:= AllowCalibEveryXSteps;
+ MainForm.CalibEveryXStepsL1.Enabled:= AllowCalibEveryXSteps;
+ MainForm.CalibEveryXStepsL2.Enabled:= AllowCalibEveryXSteps;
+
  // en/disable Run button
  if not HaveSerialPump then
  begin
@@ -2172,12 +2192,17 @@ begin
    // disable runtime only, if there is only one step or in live mode
    if (not MainForm.Step2UseCB.Checked) or MainForm.LiveModeCB.Checked then
     MainForm.ActionTime1GB.Enabled:= False;
+   if MainForm.UseCalibCB.Checked then
+    MainForm.CalibEveryXStepsSE.Enabled:= True;
   end
   else
   begin
    MainForm.RepeatSE.Enabled:= True;
    if not MainForm.Step2UseCB.Checked then
     MainForm.ActionTime1GB.Enabled:= True;
+   // when there would not be any repeat, disable to calibrate every x steps
+   if MainForm.RepeatSE.Value = 0 then
+    MainForm.CalibEveryXStepsSE.Enabled:= False;
   end;
 end;
 
@@ -2207,6 +2232,32 @@ begin
   // if value is zero, we don't recalibrate, thus can always allow to run
   found:= true;
  MainForm.RunBB.Enabled:= (found and haveSerialPump);
+end;
+
+procedure TPumpControl.PCRepeatSEChange(Sender: TObject);
+// set possible CalibEveryXStepsSE according to the number of repeats
+begin
+ if not MainForm.UseCalibCB.Checked then
+  exit;
+
+ if MainForm.RunEndlessCB.Checked then
+ begin
+  MainForm.CalibEveryXStepsSE.MaxValue:= 99;
+  MainForm.CalibEveryXStepsSE.Enabled:= True;
+ end
+ else
+ begin
+  if MainForm.RepeatSE.Value = 0 then
+  begin
+   MainForm.CalibEveryXStepsSE.Value:= 1;
+   MainForm.CalibEveryXStepsSE.Enabled:= False;
+  end
+  else
+  begin
+   MainForm.CalibEveryXStepsSE.Enabled:= True;
+   MainForm.CalibEveryXStepsSE.MaxValue:= MainForm.RepeatSE.Value + 1;
+  end;
+ end;
 end;
 
 end.

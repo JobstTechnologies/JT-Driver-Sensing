@@ -30,6 +30,7 @@ type
     Appearance8BB: TBitBtn;
     Appearance5BB: TBitBtn;
     Appearance4BB: TBitBtn;
+    CalibEveryXStepsL2: TLabel;
     CalibStepCB: TComboBox;
     Channel1TestGB: TGroupBox;
     ChannelTest1LE: TLabeledEdit;
@@ -65,6 +66,7 @@ type
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
     LoadSensorDataMI: TMenuItem;
+    CalibEveryXStepsL1: TLabel;
     UsedCalibValueSE: TSpinEdit;
     UsedCalibValueL: TLabel;
     LactateAvailChanL: TLabel;
@@ -83,6 +85,7 @@ type
     LactateCalibCLB: TChartListbox;
     NoTempCorrectionCB: TCheckBox;
     UseCalibCB: TCheckBox;
+    CalibEveryXStepsSE: TSpinEdit;
     ValveNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
     HasNoValvesCB: TCheckBox;
@@ -843,6 +846,7 @@ type
       var Handled: Boolean);
     procedure LoadSensorDataMIClick(Sender: TObject);
     procedure NoTempCorrectionCBChange(Sender: TObject);
+    procedure RepeatSEChange(Sender: TObject);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
     procedure PerformTestsCBChange(Sender: TObject);
@@ -1054,8 +1058,8 @@ begin
   end;
  // close connection to SIX
  if HaveSerialSensor and (serSensor.LastError <> 9997) then
- // we cannot close socket or free when the connection timed out
- CloseLazSerialConn;
+  // we cannot close socket or free when the connection timed out
+  CloseLazSerialConn;
 
  // save the current chart appearance settings
  // we write into the same folder than the program .exe
@@ -2940,6 +2944,11 @@ begin
  SIXControl.SCNoTempCorrectionCBChange(Sender);
 end;
 
+procedure TMainForm.RepeatSEChange(Sender: TObject);
+begin
+ PumpControl.PCRepeatSEChange(Sender);
+end;
+
 procedure TMainForm.ResetChartAppearanceMIClick(Sender: TObject);
 var
  defaultFile : string;
@@ -3117,6 +3126,7 @@ begin
   RepeatOutputLE.Visible:= False;
   CalibStepCB.Enabled:= False;
   UseCalibCB.Enabled:= False;
+  CalibEveryXStepsSE.Enabled:= False;
   UsedCalibValueSE.Enabled:= False;
   for j:= 1 to CalibSubstancesPC.PageCount do
   begin
@@ -3297,8 +3307,15 @@ begin
    end
    else if LeftStr(StringList[j], Length('Measurements ')) = 'Measurements ' then
    begin
-    HelpString:= Copy(StringList[j], Length('Measurements for mean') + 3, Length(StringList[j]));
+    HelpString:= Copy(StringList[j], Length('Measurements for mean') + 3,
+                      Length(StringList[j]));
     UsedCalibValueSE.Value:= StrToInt(HelpString);
+   end
+   else if LeftStr(StringList[j], Length('Repeat ')) = 'Repeat ' then
+   begin
+    HelpString:= Copy(StringList[j], Length('Repeat every repeats') + 3,
+                      Length(StringList[j]));
+    CalibEveryXStepsSE.Value:= StrToInt(HelpString);
    end;
   end;
 
@@ -3475,14 +3492,18 @@ begin
     SaveFileStream.Write(LactateCalibUnitCB.Text[1],
                          Length(LactateCalibUnitCB.Text));
     SaveFileStream.Write(LineEnding, 2);
-    // eventually the number of measurement values to calculate the mean
+    // now the number of measurement values to calculate the mean
     // value taken as calibration result
-    // first the step
     SaveFileStream.Write('Measurements for mean: ',
                          Length('Measurements for mean: '));
-    IntToStr(UsedCalibValueSE.Value);
     SaveFileStream.Write(IntToStr(UsedCalibValueSE.Value)[1],
                          Length(IntToStr(UsedCalibValueSE.Value)));
+    SaveFileStream.Write(LineEnding, 2);
+    // eventually the number of each reapeats
+    SaveFileStream.Write('Repeat every repeats: ',
+                         Length('Repeat every repeats: '));
+    SaveFileStream.Write(IntToStr(CalibEveryXStepsSE.Value)[1],
+                         Length(IntToStr(CalibEveryXStepsSE.Value)));
     SaveFileStream.Write(LineEnding, 2);
 
    end;
