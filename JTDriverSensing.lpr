@@ -17,8 +17,8 @@ uses
 
 begin
   RequireDerivedFormResource:= True;
-  Application.Title:='JT Driver Sensing';
-  Application.Scaled:=True;
+  Application.Title:= 'JT Driver Sensing';
+  Application.Scaled:= True;
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TFitForm, FitForm);
