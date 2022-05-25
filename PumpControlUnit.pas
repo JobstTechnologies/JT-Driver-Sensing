@@ -1367,25 +1367,25 @@ end;
 procedure TPumpControl.PCRepeatPCChange(Sender: TObject);
 // set visibility of repeat tabs
 var
-  i : integer;
+ i : integer;
 begin
-  for i:= 2 to StepNum-1 do
-   if (MainForm.FindComponent('Step' + IntToStr(i) + 'TS')
+ for i:= 2 to StepNum-1 do
+  if (MainForm.FindComponent('Step' + IntToStr(i) + 'TS')
       as TTabSheet).TabVisible = False then
-    (MainForm.FindComponent('Step' + IntToStr(i+1) + 'TS')
-      as TTabSheet).TabVisible:= False;
+   (MainForm.FindComponent('Step' + IntToStr(i+1) + 'TS')
+    as TTabSheet).TabVisible:= False;
   for i:= 2 to StepNum-1 do
    if ((MainForm.FindComponent('Step' + IntToStr(i) + 'UseCB')
-      as TCheckBox).Checked and
+        as TCheckBox).Checked and
       (MainForm.FindComponent('Step' + IntToStr(i) + 'TS')
-      as TTabSheet).TabVisible) then
+       as TTabSheet).TabVisible) then
     (MainForm.FindComponent('Step' + IntToStr(i+1) + 'TS')
-      as TTabSheet).TabVisible:= True;
+     as TTabSheet).TabVisible:= True;
 end;
 
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
- Step, i : integer;
+ Step : integer;
  SenderName : string;
  Subst: Substance;
 begin
@@ -1434,11 +1434,9 @@ begin
  end;
 
  // perform a calibration if necessary
- i:= MainForm.CalibEveryXStepsSE.Value;
- i:= StrToInt(MainForm.RepeatOutputLE.Text);
  if MainForm.UseCalibCB.Checked
   and (MainForm.CalibStepCB.ItemIndex = Step - 1)
-  and (StrToint(MainForm.RepeatOutputLE.Text) mod MainForm.CalibEveryXStepsSE.Value = 0) then
+  and ((CurrentRepeat+1) mod MainForm.CalibEveryXStepsSE.Value = 0) then
  begin
   for Subst in Substance do
    SIXControl.SCPerformAutoCalib(Subst);
@@ -1859,9 +1857,10 @@ begin
   exit;
  end;
 
+ inc(CurrentRepeat);
+
  if StrToInt(MainForm.RepeatSE.Text) > StrToInt(MainForm.RepeatOutputLE.Text) then
  begin
-  inc(CurrentRepeat);
   GlobalRepeatTime:= RepeatTime;
   // restart timer
   MainForm.RepeatTimer.Enabled:= True;
