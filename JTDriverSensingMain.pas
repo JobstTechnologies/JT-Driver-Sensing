@@ -3365,6 +3365,9 @@ begin
  // propose a file name
  if (InName <> '') and (OpenDialog.FileName = '') then
   OpenDialog.FileName:= ExtractFileName(InName);
+ // empty existing dialog file name if the extension does not match
+ if ExtractFileExt(OpenDialog.FileName) <> FileExt then
+  OpenDialog.FileName:= '';
  if OpenDialog.FileName <> '' then
   OpenDialog.FileName:= ExtractFileName(OpenDialog.FileName);
  if OpenDialog.Execute then
