@@ -4,6 +4,7 @@ from version 0.998 to 0.999
 
 improvements:
 - new File menu to open sensor data files
+- sensor data files can be dragged into the sensor data diagram to be opened
 - allow to specify the number of last measurement that will be used to
   calculate the mean value that used for the calibration
 - allow to set that not on every cycle a calibration is performed

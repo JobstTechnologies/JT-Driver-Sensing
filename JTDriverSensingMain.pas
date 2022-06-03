@@ -945,6 +945,7 @@ var
   InNameSensor : string = ''; // name of sensor definition file
   connectedPumpDriver : longint = 0; // ID of the connected pump driver
   connectedSIX : longint = 0; // ID of the connected SIX
+  DropfileNameData : string = ''; // name of dropped sensor data file
   const AppearanceFile : string = 'Appearance-JT-DS.ini'; // filename to store appearance
   const AppearanceDefault : string = 'Appearance-JT-DS.default'; // filename with default appearance
 
@@ -1003,6 +1004,12 @@ begin
   DropfileNamePump:= ParamStr(1);
   LoadActionMIClick(Sender);
   DropfileNamePump:= '';
+ end;
+ if ParamStr(3) <> '' then
+ begin
+  DropfileNameData:= ParamStr(1);
+  LoadSensorDataMIClick(Sender);
+  DropfileNameData:= '';
  end;
 
  // setup the chart
@@ -1952,7 +1959,7 @@ var
  i, j, diff, NumChannelsPrev : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
- if DropfileNameDef = '' then // no file was dropped into the main window
+ if DropfileNameDef = '' then // no file was dropped into the General tab
  begin
   OpenDialog.InitialDir:= '';
   DummyString:= OpenHandling('', '.def'); // opens file dialog
@@ -2728,7 +2735,7 @@ var
  temperature, time : double;
 begin
  // initialize
- MousePointer:= Mouse.CursorPos;
+ MousePointer:= Mouse.CursorPos; // store mouse position
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
  // the data file can have different portions, some just raw values, some with
@@ -2736,10 +2743,11 @@ begin
  // file transform them
  RawCurrentCB.Checked:= true;
 
- if Input = 'LoadSensorDataMI' then
+ // only when file was loaed by the user
+ if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
-  if DropfileNamePump <> '' then // a file was dropped into the main window
-   ReturnName:= OpenHandling(DropfileNamePump, '.csv')
+  if DropfileNameData <> '' then // a file was dropped into the SIX Values tab
+   InNameSensor:= DropfileNameData
   else
   begin
    ReturnName:= OpenHandling('', '.csv');
@@ -3040,6 +3048,12 @@ begin
   DropfileNamePump:= FileNames[0];
   LoadActionMIClick(Sender);
   DropfileNamePump:= '';
+ end
+ else if MainPC.TabIndex = 1 then // sensor data file
+ begin
+  DropfileNameData:= FileNames[0];
+  LoadSensorDataMIClick(Sender);
+  DropfileNameData:= '';
  end;
 end;
 
@@ -3054,7 +3068,7 @@ begin
  MousePointer:= Mouse.CursorPos; // store mouse position
  DummyString:= '';
 
- if DropfileNamePump <> '' then // a file was dropped into the main window
+ if DropfileNamePump <> '' then // a file was dropped into the Pump Control tab
   FileSuccess:= OpenActionFile(DropfileNamePump)
  else
  begin
