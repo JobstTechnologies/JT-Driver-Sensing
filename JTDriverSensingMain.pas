@@ -942,7 +942,7 @@ var
   connectedPumpCOM : string = ''; // name of connected pump COM port
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
-  InNameSensor : string = ''; // name of sensor definition file
+  InNameSensor : string = ''; // name of sensor data file
   connectedPumpDriver : longint = 0; // ID of the connected pump driver
   connectedSIX : longint = 0; // ID of the connected SIX
   DropfileNameData : string = ''; // name of dropped sensor data file
@@ -3839,7 +3839,22 @@ begin
  if ReturnName = 'canceled' then // nothing needs to be done
   exit
  else
-  InNameSensor:= ReturnName;
+ begin
+  // if the same file was selected, nothing needs to be done
+  if InNameSensor = ReturnName then
+   exit
+  else
+  begin
+   // we first have to assure that a previous file is made free
+   if HaveSensorFileStream then
+   begin
+    SensorFileStream.Free;
+    HaveSensorFileStream:= false;
+   end;
+   InNameSensor:= ReturnName;
+  end;
+
+ end;
  if InNameSensor <> '' then
  begin
   try
@@ -4111,6 +4126,7 @@ begin
  begin
   SensorFileStream.Free;
   HaveSensorFileStream:= false;
+  InNameSensor:= '';
  end;
  if HaveSerialSensor then
  begin
@@ -4198,7 +4214,15 @@ begin
   if FileExists(OutNameTemp) then
   begin
    if FileExt = '.csv' then
-    DialogText:= 'Do you want to append the sensor data to the existing file'
+   begin
+    // if file is already in use, nothing has to be done
+    if HaveSensorFileStream and (OutNameTemp = InNameSensor) then
+    begin
+     result:= OutNameTemp;
+     exit;
+    end;
+    DialogText:= 'Do you want to append the sensor data to the existing file';
+   end
    else
     DialogText:= 'Do you want to overwrite the existing file';
 
