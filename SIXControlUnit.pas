@@ -2248,7 +2248,9 @@ var
  StringArray : TStringArray;
  i : integer;
  FormatSetting: TFormatSettings;
+ MousePointer : TPoint;
 begin
+ MousePointer:= Mouse.CursorPos; // store mouse position
 
  // first check of the substance should be calibrated
  // if the value is zero, we don't calibrate
@@ -2263,7 +2265,12 @@ begin
  // calculate the calibration factors calibChannelA and calibChannelB
  CalibrationF.CalculateMeanStep(CalibSubstance);
  if calibChannelA = 0 then // something went wrong
+ begin
+  MessageDlgPos('Calibration could not be performed!' + LineEnding
+    + 'Check the electrical AND fluidic connection to the sensor!',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   exit;
+ end;
 
  // propose as filename the current date
  // first setup the format

@@ -425,6 +425,7 @@ var
 begin
  // initialization
  n:= MainForm.UsedCalibValueSE.Value;
+ yMeanMean:= 0.0;
  molWeight:= 0.0;
  CLBName:= '';
  selSeriesName:= '';
@@ -544,6 +545,14 @@ begin
   yMeanB:= 2 * yMeanMean - YMeanA;
 
  end; //end if an operation channel
+
+ // for dry runs (no sensor connected) the mean values can be zero or negative
+ if ((calibChannel < 7) and (yMeanMean <= 0.0))
+  or (calibChannel > 6) and ((yMeanA <= 0.0) or (yMeanB <= 0.0)) then
+ begin
+  calibChannelA:= 0;
+  exit;
+ end;
 
  // output the factor(s) with which the current gain must be multiplied
  if calibChannel < 7 then
