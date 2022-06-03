@@ -3829,6 +3829,10 @@ begin
    exit;
   end;
 
+  // There might have been a sensor data file loaded before the SIX connection
+  // was established. We need to trigger the loading of a new sensor data file.
+  InNameSensor:= '';
+
  end; // end if not Connected to SIX
 
  // now open the file dialog to select the file to save the SIX data
