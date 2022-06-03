@@ -2026,6 +2026,16 @@ begin
   exit;
  end;
 
+ // for the case a def file was loaded without a connection to the SIX or when
+ // the SIX type was changed, we need to (re-)initialize the raw gains
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  if SIXTypeRG.ItemIndex = 1 then
+   GainsRaw[i]:= 0.1526
+  else
+   GainsRaw[i]:= 0.0763;
+ end;
+
  // display file name without suffix
  DummyString:= ExtractFileName(InNameDef);
  SetLength(DummyString, Length(DummyString) - 4);
