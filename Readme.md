@@ -1,7 +1,7 @@
 # JT Pump Driver
 
 Program output and visualize SIX sensor values: https://www.jobst-technologies.com/products/biosensors/
-and to control a driver for CCP1 micropumps: https://www.jobst-technologies.com/products/microfluidics/
+and to control a driver for CCP micropumps: https://www.jobst-technologies.com/products/microfluidics/
 
 # Usage
 
@@ -11,7 +11,7 @@ To readout and visualize biosensorsensor data:
 - Load a sensor definition file either using the corresponding button
   or by dropping it inot the program window.
   (For the expert option "Display values in nA" this is not necessary.)
-- Click on the menu *Connection → SIX Biosensors* and select the COM port of the SIX device.
+- Click on the menu *Connection → SIX Biosensors* and select the ID or the SIX device.
 - In the appearing file dialog select a file in which the sonsor output should be stored.
 - To change the appearance of the values chart, double-click on the different chart elements
   like the axes, legend etc. To change the sensor channel names, double click on them.
@@ -31,12 +31,22 @@ To (re-)calibrate a biosensor:
   (You must choose a new name since existing file must not be overwritten.)
 - The new definition file be be loaded immediately.
 
-## CPP1 Pumps
+## CPP Pumps
 
 To run pumps:
 - Connect the pump driver to the PC.
 - Click on the menu *Connection → Pump Driver* and select the COM port of the pump driver.
-- Set the properties you like and press *Run Pumps*.
+- Either
+ - set the properties you like
+ - Or load an action file via the menu *File → Load Pump Action* or by dropping a file into
+   the program while the tab *Pump Control* is open.
+- Press *Run Pumps*.
+
+To save a pump action:
+- Only when you have a pump action file loaded:
+ - Click the button *Generate Command* to unlock its settings.
+- Set the parameters in the different steps and then use the menu
+  *File → Save Pump Action*.
 
 To update or upload a new firmware to a pump driver:
 - Connect the pump driver to the PC.
@@ -54,8 +64,6 @@ This project uses the Arduino tool **bossac**: https://github.com/arduino/arduin
 # Compilation
 
 - Install the **Lazarus** IDE: https://www.lazarus-ide.org/.
-  Note: you must use the development version Lazarus 2.2! The easiest
-   way to get this, is to use the tool **fpcupdeluxe**:
-   https://github.com/LongDirtyAnimAlf/fpcupdeluxe/releases/latest/
+  Note: you must use Lazarus 2.2.0 or newer!
 - Open the file *JTDriverSensing.lpi* in Lazarus.
 - Build the Lazarus project or run it.
