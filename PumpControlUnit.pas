@@ -2316,7 +2316,7 @@ begin
  else
   // if value is zero, we don't recalibrate, thus can always allow to run
   found:= true;
- MainForm.RunBB.Enabled:= (found and haveSerialPump);
+ MainForm.RunBB.Enabled:= (found and (haveSerialPump or MainForm.HasNoPumpsCB.Checked));
 end;
 
 procedure TPumpControl.PCRepeatSEChange(Sender: TObject);
