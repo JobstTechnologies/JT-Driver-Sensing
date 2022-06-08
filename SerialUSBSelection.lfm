@@ -9,13 +9,14 @@ object SerialUSBSelectionF: TSerialUSBSelectionF
   OnCreate = FormCreate
   OnShow = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.2.0'
   object SerialUSBPortL: TLabel
     Left = 16
     Height = 15
     Top = 19
     Width = 77
     Caption = 'Serial USB Port'
+    ParentColor = False
     ParentFont = False
   end
   object SerialUSBPortCB: TComboBox

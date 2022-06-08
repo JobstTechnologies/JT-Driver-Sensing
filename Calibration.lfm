@@ -2,13 +2,13 @@ object CalibrationF: TCalibrationF
   Left = 725
   Height = 378
   Top = 390
-  Width = 229
+  Width = 233
   Caption = 'Calibration'
   ClientHeight = 378
-  ClientWidth = 229
+  ClientWidth = 233
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.2.0'
   object CalibOKBB: TBitBtn
     Left = 16
     Height = 33
@@ -107,6 +107,7 @@ object CalibrationF: TCalibrationF
       EditLabel.Height = 15
       EditLabel.Width = 144
       EditLabel.Caption = 'Mean Value'
+      EditLabel.ParentColor = False
       Enabled = False
       ParentShowHint = False
       ShowHint = True
