@@ -2064,10 +2064,10 @@ procedure TPumpControl.PCHasNoValvesCBChange(Sender: TObject);
 var
  j : integer;
 begin
- // en/disable all valves
+ // show/hide the valves tab
  for j:= 1 to StepNum do
   (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
-   as TTabSheet).Enabled:= (not MainForm.HasNoValvesCB.Checked);
+   as TTabSheet).TabVisible:= (not MainForm.HasNoValvesCB.Checked);
  MainForm.ValveNumberSE.Enabled:= (not MainForm.HasNoValvesCB.Checked);
  if MainForm.HasNoValvesCB.Checked then
   MainForm.ValveNumberSE.Value:= 0
