@@ -2759,7 +2759,7 @@ begin
  // file transform them
  RawCurrentCB.Checked:= true;
 
- // only when file was loaed by the user
+ // only when file was loaded by the user
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
   if DropfileNameData <> '' then // a file was dropped into the SIX Values tab

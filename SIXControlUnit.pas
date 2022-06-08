@@ -2473,7 +2473,8 @@ begin
 try
  List:= TStringList.Create;
 
- // first store valve setup
+ // first store pump and valve setup
+ List.Add('PumpNumberSE.Value ' + IntToStr(MainForm.PumpNumberSE.Value));
  List.Add('ValveNumberSE.Value ' + IntToStr(MainForm.ValveNumberSE.Value));
 
  Chart:= MainForm.SIXCH;
@@ -2708,8 +2709,17 @@ begin
   List:= TStringList.Create;
   List.LoadFromFile(iniFile);
   m:= 0;
-  // first readout the number of valves
+  // first readout the number of pumps
   // this line might not be there for older appearance files
+  if TryStrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), i) then
+  begin
+   MainForm.PumpNumberSE.Value:= StrToInt(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+  end;
+  // now readout the number of  valves
+  // also the valve line might not be there for older appearance files
   if TryStrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), i) then
   begin
