@@ -11,6 +11,8 @@ improvements:
 - when selecting an existing sensor data file after connecting to the SIX
   the new sensor data will be appended to that file -> measurements can be resumed
 - when connection to the SIX is lost, the software tries to reconnect automatically
+- it is now possible to perform automated calibrations without connected pumps
+- the number of pumps in the setup can be specified
 
 bugfixes:
 - fix wrong time format in tooltips in the data graph
