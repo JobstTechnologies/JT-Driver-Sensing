@@ -65,6 +65,7 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
+    HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
     CalibEveryXStepsL1: TLabel;
     UsedCalibValueSE: TSpinEdit;
@@ -87,8 +88,10 @@ type
     UseCalibCB: TCheckBox;
     CalibEveryXStepsSE: TSpinEdit;
     ValveNumberL: TLabel;
+    PumpNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
     HasNoValvesCB: TCheckBox;
+    PumpNumberSE: TSpinEdit;
     ValveSetupGB: TGroupBox;
     S1Valves: TTabSheet;
     S2Valves: TTabSheet;
@@ -524,7 +527,7 @@ type
     FinishTimePumpLE: TLabeledEdit;
     S1P14: TTabSheet;
     S1P58: TTabSheet;
-    PumpControlTS: TTabSheet;
+    ActionControlTS: TTabSheet;
     TotalTimeLE: TLabeledEdit;
     Panel1: TPanel;
     RunTime1FSE: TFloatSpinEdit;
@@ -777,6 +780,7 @@ type
     Valve8RG5: TRadioGroup;
     Valve8RG6: TRadioGroup;
     Valve8RG7: TRadioGroup;
+    PumpSetupGB: TGroupBox;
     WaitTimeSE1: TSpinEdit;
     procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
@@ -824,6 +828,7 @@ type
       ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
     procedure CalibValueFSEChange(Sender: TObject);
     procedure CalibCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
+    procedure HasNoPumpsCBChange(Sender: TObject);
     procedure HasNoValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
@@ -846,6 +851,7 @@ type
       var Handled: Boolean);
     procedure LoadSensorDataMIClick(Sender: TObject);
     procedure NoTempCorrectionCBChange(Sender: TObject);
+    procedure PumpNumberSEChange(Sender: TObject);
     procedure RepeatSEChange(Sender: TObject);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
@@ -917,6 +923,7 @@ type
     procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
     procedure COMPortScan(PortType: string);
+    procedure SetSIXFactors;
 
   end;
 
@@ -1404,7 +1411,12 @@ procedure TMainForm.CalibCLBItemClick(ASender: TObject; AIndex: Integer);
 begin
  // we can allow to run the pumps since at least one series is selected
  // for calibration
- RunBB.Enabled:= HaveSerialPump;
+ RunBB.Enabled:= (HaveSerialPump or HasNoPumpsCB.Checked);
+end;
+
+procedure TMainForm.HasNoPumpsCBChange(Sender: TObject);
+begin
+ PumpControl.PCHasNoPumpsCBChange(Sender);
 end;
 
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
@@ -2028,13 +2040,7 @@ begin
 
  // for the case a def file was loaded without a connection to the SIX or when
  // the SIX type was changed, we need to (re-)initialize the raw gains
- for i:= 1 to SIXControl.NumChannels do
- begin
-  if SIXTypeRG.ItemIndex = 1 then
-   GainsRaw[i]:= 0.1526
-  else
-   GainsRaw[i]:= 0.0763;
- end;
+ SetSIXFactors;
 
  // display file name without suffix
  DummyString:= ExtractFileName(InNameDef);
@@ -2084,7 +2090,7 @@ begin
  CalibrationGB.Hint:= '';
  if not RunBB.Enabled then
  begin
-  RunBB.Enabled:= haveSerialPump;
+  RunBB.Enabled:= (haveSerialPump or HasNoPumpsCB.Checked);
   RunBB.Hint:= 'Starts the pump action according to the current settings.'
    + LineEnding
    + 'To enable the button you must first connect to the pump driver'
@@ -2522,7 +2528,7 @@ var
  Channel : string;
 begin
  // first hide pump tab and show output tab
- PumpControlTS.TabVisible:= not UseAnOutCB.Checked;
+ ActionControlTS.TabVisible:= not UseAnOutCB.Checked;
  AnalogOutTS.TabVisible:= UseAnOutCB.Checked;
  for i:= 1 to 4 do
  begin
@@ -3011,7 +3017,7 @@ procedure TMainForm.StopTimerFinished;
 // enable to execute new commands
 begin
  RunBB.Caption:= 'Run Pumps';
- RunBB.Enabled:= HaveSerialPump;
+ RunBB.Enabled:= (HaveSerialPump or HasNoPumpsCB.Checked);
  StopTimer.Enabled:= False;
 end;
 
@@ -3185,6 +3191,11 @@ begin
  PumpControl.PCUseCalibCBChange(Sender);
 end;
 
+procedure TMainForm.PumpNumberSEChange(Sender: TObject);
+begin
+ PumpControl.PCPumpNumberSEChange(Sender);
+end;
+
 procedure TMainForm.ValveNumberSEChange(Sender: TObject);
 begin
  PumpControl.PCValveNumberSEChange(Sender);
@@ -3281,7 +3292,7 @@ begin
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end
     else
-     RunBB.Enabled:= haveSerialPump; // might have been disabled before
+     RunBB.Enabled:= (haveSerialPump or MainForm.HasNoPumpsCB.Checked); // might have been disabled before
    end
    // now the concentration values
    else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
@@ -3546,6 +3557,22 @@ begin
  SIXBiosensorsStart(false);
 end;
 
+procedure TMainForm.SetSIXFactors;
+// sets the SIX conversion factors
+var
+ i : integer;
+begin
+for i:= 1 to SIXControl.NumChannels do
+ begin
+  if SIXTypeRG.ItemIndex = 1 then
+   GainsRaw[i]:= 0.1526
+  else if SIXTypeRG.ItemIndex = 0 then
+   GainsRaw[i]:= 0.0763
+  else if SIXTypeRG.ItemIndex = 2 then
+   GainsRaw[i]:= 0.763;
+ end;
+end;
+
 procedure TMainForm.SIXBiosensorsStart(Connected: Boolean);
 // if Connected is true opens the connection settings dialog and opens a
 // connections according to the dialog input
@@ -3565,13 +3592,7 @@ begin
  LastLine:= '';
  COMArray:= [''];
  // get the default gain for the raw values
- for i:= 1 to SIXControl.NumChannels do
- begin
-  if SIXTypeRG.ItemIndex = 1 then
-   GainsRaw[i]:= 0.1526
-  else
-   GainsRaw[i]:= 0.0763;
- end;
+ SetSIXFactors;
 
  // connect to SIX
  if not Connected then

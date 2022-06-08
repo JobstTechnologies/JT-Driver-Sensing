@@ -40,7 +40,7 @@ To run pumps:
 - Either
   - set the properties you like.
   - load an action file via the menu *File → Load Pump Action* or by dropping a file into
-   the program while the tab *Pump Control* is open.
+   the program while the tab *Action Control* is open.
 - Press *Run Pumps*.
 
 To save a pump action:

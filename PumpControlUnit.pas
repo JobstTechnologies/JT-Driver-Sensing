@@ -29,8 +29,10 @@ type
     procedure PCRepeatPCChange(Sender: TObject);
     procedure PCPumpGBDblClick(Sender: TObject);
     procedure PCValveRGDblClick(Sender: TObject);
+    procedure PCHasNoPumpsCBChange(Sender: TObject);
     procedure PCHasNoValvesCBChange(Sender: TObject);
     procedure PCUseCalibCBChange(Sender: TObject);
+    procedure PCPumpNumberSEChange(Sender: TObject);
     procedure PCValveNumberSEChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
@@ -1568,8 +1570,11 @@ begin
   end
   else // no serial connection
   begin
-   MainForm.RunBB.Enabled:= False;
-   exit;
+   if not MainForm.HasNoPumpsCB.Checked then
+   begin
+    MainForm.RunBB.Enabled:= False;
+    exit;
+   end;
   end;
   MainForm.RunBB.Caption:= 'Pumps running';
   MainForm.RunBB.Enabled:= False;
@@ -1837,7 +1842,8 @@ begin
   end
   else // no serial connection
   begin
-   MainForm.RunBB.Enabled:= False;
+   if not MainForm.HasNoPumpsCB.Checked then
+    MainForm.RunBB.Enabled:= False;
    exit;
   end;
 end;
@@ -1909,7 +1915,10 @@ begin
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
- MainForm.RunBB.Enabled:= HaveSerialPump;
+ if not MainForm.HasNoPumpsCB.Checked then
+  MainForm.RunBB.Enabled:= HaveSerialPump
+ else
+  MainForm.RunBB.Enabled:= true;
  MainForm.GenerateCommandBB.Enabled:= True;
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;
@@ -2060,6 +2069,23 @@ begin
     as TRadioGroup).Caption:= NameSettingF.NameE.Text;
 end;
 
+procedure TPumpControl.PCHasNoPumpsCBChange(Sender: TObject);
+begin
+ MainForm.PumpNumberSE.Enabled:= (not MainForm.HasNoPumpsCB.Checked);
+ if MainForm.HasNoPumpsCB.Checked then
+ begin
+  MainForm.PumpNumberSE.Value:= 0; // this will handle everything else
+  // action can then be run without connection to a pump driver
+  MainForm.RunBB.Enabled:= true;
+ end
+ else
+ begin
+  MainForm.PumpNumberSE.Value:= 1;
+  if not HaveSerialPump then
+   MainForm.RunBB.Enabled:= false;
+ end;
+end;
+
 procedure TPumpControl.PCHasNoValvesCBChange(Sender: TObject);
 var
  j : integer;
@@ -2097,12 +2123,15 @@ begin
  // en/disable Run button
  if not HaveSerialPump then
  begin
-  MainForm.RunBB.Enabled:= false;
-  if MainForm.RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
-   MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
-    + LineEnding
-    + 'To enable the button you must first connect to the pump driver'
-    + LineEnding + 'using the menu ''Connection''';
+  if not MainForm.HasNoPumpsCB.Checked then
+  begin
+   MainForm.RunBB.Enabled:= false;
+   if MainForm.RunBB.Hint = 'Calibration is used but no sensor definition file is loaded' then
+    MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+     + LineEnding
+     + 'To enable the button you must first connect to the pump driver'
+     + LineEnding + 'using the menu ''Connection''';
+  end;
  end
  else
  begin
@@ -2129,6 +2158,58 @@ begin
 
 end;
 
+procedure TPumpControl.PCPumpNumberSEChange(Sender: TObject);
+var
+ j, k, l : integer;
+begin
+ PumpNum:= MainForm.PumpNumberSE.Value;
+ if PumpNum = 0 then // also set checkbox that there are no pumps
+ begin
+  if not MainForm.HasNoPumpsCB.Checked then
+   MainForm.HasNoPumpsCB.Checked:= true;
+ end
+ else
+ begin
+  if MainForm.HasNoPumpsCB.Checked then
+   MainForm.HasNoPumpsCB.Checked:= false;
+ end;
+ for j:= 1 to StepNum do
+ begin
+  k:= 0;
+  if PumpNum > 0 then
+   // enable the specified number of pumps if the step is used
+   for k:= 1 to PumpNum do
+    (MainForm.FindComponent('Pump' + IntToStr(k) + 'GB' + IntToStr(j))
+     as TGroupBox).Enabled:= (MainForm.FindComponent('Step'
+                              + IntToStr(j) + 'UseCB') as TCheckBox).checked;
+  // disable non-existent pumps
+  if k < 8 then
+  begin
+   for l:= PumpNum + 1 to 8 do // currently we only support 8 pumps
+   begin
+    (MainForm.FindComponent('Pump' + IntToStr(l) + 'OnOffCB' + IntToStr(j))
+     as TCheckBox).Checked:= false;
+    (MainForm.FindComponent('Pump' + IntToStr(l) + 'GB' + IntToStr(j))
+     as TGroupBox).Enabled:= false;
+   end;
+  end;
+  // show/hide the pumps 5-8 tab
+  if k < 5 then
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
+    as TTabSheet).TabVisible:= false
+  else
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P58')
+    as TTabSheet).TabVisible:= true;
+  // show/hide the pumps 1-4 tab
+  if k < 1 then
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
+    as TTabSheet).TabVisible:= false
+  else
+   (MainForm.FindComponent('S' + IntToStr(j) + 'P14')
+    as TTabSheet).TabVisible:= true;
+ end;
+end;
+
 procedure TPumpControl.PCValveNumberSEChange(Sender: TObject);
 var
  j, k : integer;
@@ -2147,13 +2228,18 @@ begin
   // enable the specified number of valves if the step is used
   for k:= 1 to ValveNum do
    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
-    as TRadioGroup).enabled:= (MainForm.FindComponent('Step'
+    as TRadioGroup).Enabled:= (MainForm.FindComponent('Step'
                                 + IntToStr(j) + 'UseCB') as TCheckBox).checked;
+  // disable non-existent valves
   if k < 8 then
   begin
    for k:= ValveNum + 1 to 8 do // currently we only support 8 valves
+   begin
     (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
-     as TRadioGroup).enabled:= false;
+     as TRadioGroup).ItemIndex:= 0;
+    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+     as TRadioGroup).Enabled:= false;
+   end;
   end;
  end;
 end;

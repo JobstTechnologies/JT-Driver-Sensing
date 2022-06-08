@@ -1,11 +1,11 @@
 object MainForm: TMainForm
   Left = 324
-  Height = 708
-  Top = 190
+  Height = 707
+  Top = 191
   Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 688
+  ClientHeight = 687
   ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
@@ -17,7 +17,7 @@ object MainForm: TMainForm
   LCLVersion = '2.2.2.0'
   object MainPC: TPageControl
     Left = 4
-    Height = 676
+    Height = 675
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -26,7 +26,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 648
+      ClientHeight = 647
       ClientWidth = 1154
       object Channel1GB: TGroupBox
         Left = 0
@@ -672,10 +672,10 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXTypeRG: TRadioGroup
-          Left = 232
-          Height = 64
+          Left = 233
+          Height = 80
           Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
-          Top = 0
+          Top = -8
           Width = 82
           AutoFill = True
           Caption = 'SIX Type'
@@ -686,12 +686,13 @@ object MainForm: TMainForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 1
-          ClientHeight = 44
+          ClientHeight = 60
           ClientWidth = 78
           ItemIndex = 1
           Items.Strings = (
             '25 nA'
             '50 nA'
+            '250 nA'
           )
           ParentShowHint = False
           ShowHint = True
@@ -946,11 +947,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 648
+      ClientHeight = 647
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 648
+        Height = 647
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1251,9 +1252,9 @@ object MainForm: TMainForm
         Value = 10
       end
     end
-    object PumpControlTS: TTabSheet
-      Caption = 'Pump Control'
-      ClientHeight = 648
+    object ActionControlTS: TTabSheet
+      Caption = 'Action Control'
+      ClientHeight = 647
       ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
@@ -8106,7 +8107,7 @@ object MainForm: TMainForm
       object ValveSetupGB: TGroupBox
         Left = 552
         Height = 88
-        Top = 216
+        Top = 320
         Width = 148
         Caption = 'Valve Setup'
         ClientHeight = 68
@@ -8123,7 +8124,7 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object ValveNumberL: TLabel
-          Left = 8
+          Left = 6
           Height = 15
           Hint = 'Number of valves in the setup'
           Top = 12
@@ -8134,7 +8135,7 @@ object MainForm: TMainForm
           ShowHint = True
         end
         object ValveNumberSE: TSpinEdit
-          Left = 98
+          Left = 100
           Height = 23
           Hint = 'Number of valves in the setup'
           Top = 8
@@ -8404,10 +8405,54 @@ object MainForm: TMainForm
           ParentColor = False
         end
       end
+      object PumpSetupGB: TGroupBox
+        Left = 552
+        Height = 88
+        Top = 224
+        Width = 148
+        Caption = 'Pump Setup'
+        ClientHeight = 68
+        ClientWidth = 144
+        ParentColor = False
+        TabOrder = 8
+        object HasNoPumpsCB: TCheckBox
+          Left = 7
+          Height = 19
+          Top = 40
+          Width = 128
+          Caption = 'Setup has no pumps'
+          OnChange = HasNoPumpsCBChange
+          TabOrder = 1
+        end
+        object PumpNumberL: TLabel
+          Left = 6
+          Height = 15
+          Hint = 'Number of pumps in the setup'
+          Top = 12
+          Width = 91
+          Caption = 'Available pumps:'
+          ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object PumpNumberSE: TSpinEdit
+          Left = 100
+          Height = 23
+          Hint = 'Number of pumps in the setup'
+          Top = 8
+          Width = 38
+          MaxValue = 8
+          OnChange = PumpNumberSEChange
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+          Value = 8
+        end
+      end
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 648
+      ClientHeight = 647
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -9439,12 +9484,12 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 648
+      ClientHeight = 647
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 648
+        Height = 647
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -9536,7 +9581,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 648
+      ClientHeight = 647
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
