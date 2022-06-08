@@ -2947,15 +2947,9 @@ finally
  OpenFileStream.Free;
 end;
 
- // if there is a .def, transform the values
- if LoadedDefFileM.Text <> 'None' then
- begin
-  RawCurrentCB.Checked:= false;
-  RawCurrentCB.Enabled:= true;
- end
- else
-  // was already Checked at the beginning of the procedure
-  RawCurrentCB.Enabled:= false;
+ // we must prevent that the display is changed by loaded .def files
+ // because different portions of the file belong to different .def files
+ RawCurrentCB.Enabled:= false;
 
  // at last display the file name as chart title
  SIXCH.Title.Text[0]:= ExtractFileName(InNameSensor);
@@ -4080,6 +4074,8 @@ begin
  LoadSensorDataMI.Enabled:= false;
  // reset chart title to default
  SIXCH.Title.Text[0]:= 'SIX Values';
+ // allow to display in nA
+ RawCurrentCB.Enabled:= true;
 
  // we can now set the timer interval
  ReadTimer.Interval:= Trunc(EvalTimeFSE.Value * 1000); // in ms
