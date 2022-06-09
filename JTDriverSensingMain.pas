@@ -1965,12 +1965,18 @@ end;
 procedure TMainForm.LoadDefBBClick(Sender: TObject);
 var
  ParseSuccess : Boolean = false;
+ hasLoadedSensorData : Boolean;
  MousePointer : TPoint;
  DummyString : string = '';
  HeaderLine : string = '';
  i, j, diff, NumChannelsPrev : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
+ // RawCurrentCB must not be enabled when there are data loaded but
+ // there is no connection to a SIX
+ hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
+                        and (not haveSerialSensor));
+
  if DropfileNameDef = '' then // no file was dropped into the General tab
  begin
   OpenDialog.InitialDir:= '';
@@ -1993,8 +1999,11 @@ begin
                         + 'sensor definition file is loaded';
    UseCalibCB.Checked:= false;
    // the values are then in nA
-   RawCurrentCB.Checked:= true;
-   RawCurrentCB.Enabled:= false;
+   if not hasLoadedSensorData then
+   begin
+    RawCurrentCB.Checked:= true;
+    RawCurrentCB.Enabled:= false;
+   end;
    exit;
   end
   else if (DummyString = '') and (InNameDef <> '') then
@@ -2033,8 +2042,11 @@ begin
                        + 'sensor definition file is loaded';
   UseCalibCB.Checked:= false;
   // the values are then in nA
-  RawCurrentCB.Checked:= true;
-  RawCurrentCB.Enabled:= false;
+  if not hasLoadedSensorData then
+  begin
+   RawCurrentCB.Checked:= true;
+   RawCurrentCB.Enabled:= false;
+  end;
   exit;
  end;
 
@@ -2054,7 +2066,7 @@ begin
 
  // since the user purposely loaded a definition file we assume he doesn't
  // want to have values in nA
- if RawCurrentCB.Checked then
+ if RawCurrentCB.Checked and (not hasLoadedSensorData) then
   RawCurrentCB.Checked:= false;
 
  // the previous .def file might have had less channels defined
@@ -2084,7 +2096,8 @@ begin
  NoTempCorrectionCB.enabled:= true;
  UseAnOutCB.enabled:= true;
  UnloadDefBB.visible:= true;
- RawCurrentCB.Enabled:= true;
+ if not hasLoadedSensorData then
+  RawCurrentCB.Enabled:= true;
  CalibrateTB.Enabled:= true;
  CalibrationGB.Enabled:= true;
  CalibrationGB.Hint:= '';
@@ -2205,7 +2218,13 @@ procedure TMainForm.UnloadDefBBClick(Sender: TObject);
 var
  i, j, diff, NumChannelsPrev : integer;
  HeaderLine : string;
+ hasLoadedSensorData : Boolean;
 begin
+ // RawCurrentCB must not be enabled when there are data loaded but
+ // there is no connection to a SIX
+ hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
+                        and (not haveSerialSensor));
+
  // write a new header line to the output file if .def file was used
  if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None') then
  begin
@@ -2233,8 +2252,11 @@ begin
                       + 'sensor definition file is loaded';
  UseCalibCB.Checked:= false;
  // the values are then in nA
- RawCurrentCB.Checked:= true;
- RawCurrentCB.Enabled:= false;
+ if (not haveSerialSensor) or (not hasLoadedSensorData) then
+ begin
+  RawCurrentCB.Checked:= true;
+  RawCurrentCB.Enabled:= false;
+ end;
  // blanks cannot be subtracted anymore
  NoSubtractBlankCB.Checked:= false;
  NoSubtractBlankCB.Enabled:= false;
