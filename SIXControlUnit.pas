@@ -1279,6 +1279,7 @@ end;
 procedure TSIXControl.SCChannelXCBChange(Sender: TObject);
 var
  SenderName, Channel : string;
+ j : integer;
 begin
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form 'ChannelxCB' and we need the x
@@ -1318,6 +1319,50 @@ begin
   and ((MainForm.FindComponent(SenderName) as TComboBox).ItemIndex < 3) then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
+
+ // recalculate the channel values
+ if Channel = '7' then
+ begin
+  if MainForm.Channel7CB.Text = 'mean(#1, #4)' then
+  begin
+      for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+      MainForm.SIXCh7Values.YValue[j]:=
+       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel7CB.Text = 'mean(#2, #5)' then
+  begin
+      for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+      MainForm.SIXCh7Values.YValue[j]:=
+       (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel7CB.Text = 'mean(#3, #6)' then
+  begin
+   for j:= 0 to MainForm.SIXCh7Values.LastValueIndex do
+     MainForm.SIXCh7Values.YValue[j]:=
+      (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+  end;
+ end
+ else if Channel = '8' then
+ begin
+  if MainForm.Channel8CB.Text = 'mean(#1, #4)' then
+  begin
+      for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+      MainForm.SIXCh8Values.YValue[j]:=
+       (MainForm.SIXCh1Values.YValue[j] + MainForm.SIXCh4Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel8CB.Text = 'mean(#2, #5)' then
+  begin
+      for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+      MainForm.SIXCh8Values.YValue[j]:=
+       (MainForm.SIXCh2Values.YValue[j] + MainForm.SIXCh5Values.YValue[j]) / 2;
+  end;
+  if MainForm.Channel8CB.Text = 'mean(#3, #6)' then
+  begin
+   for j:= 0 to MainForm.SIXCh8Values.LastValueIndex do
+     MainForm.SIXCh8Values.YValue[j]:=
+      (MainForm.SIXCh3Values.YValue[j] + MainForm.SIXCh6Values.YValue[j]) / 2;
+  end;
+ end;
 end;
 
 procedure TSIXControl.SCChannelXGBDblClick(Sender: TObject);
@@ -2174,7 +2219,7 @@ begin
     // display full path as tooltip
     MainForm.LoadedDefFileM.hint:= InNameDef;
     // write a new header line to the output file
-    if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
+    if HaveSensorFileStream then
     begin
      HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
       '.def"' + LineEnding;
@@ -2198,15 +2243,6 @@ begin
       HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
      HeaderLine:= HeaderLine + LineEnding;
      // write line
-     SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
-    end
-    else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
-    begin
-     HeaderLine:= 'Calibration was performed' + LineEnding;
-     HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-     for i:= 1 to NumChannels do
-      HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-     HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
      SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
     end;
    end; //end if OutName <> ''
@@ -2407,7 +2443,7 @@ begin
  // display full path as tooltip
  MainForm.LoadedDefFileM.hint:= InNameDef;
  // write a new header line to the output file
- if HaveSensorFileStream and (not MainForm.RawCurrentCB.Checked) then
+ if HaveSensorFileStream then
  begin
   HeaderLine:= 'Used definition file: "' + MainForm.LoadedDefFileM.Text +
    '.def"' + LineEnding;
@@ -2431,15 +2467,6 @@ begin
    HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
   HeaderLine:= HeaderLine + LineEnding;
   // write line
-  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
- end
- else if HaveSensorFileStream and MainForm.RawCurrentCB.Checked then
- begin
-  HeaderLine:= 'Calibration was performed' + LineEnding;
-  HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
-  for i:= 1 to NumChannels do
-   HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
-  HeaderLine:= HeaderLine + 'Temp [deg C]' + LineEnding;
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 

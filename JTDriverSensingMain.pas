@@ -2968,6 +2968,7 @@ try
   end;
 
   // draw SIX data
+  // sensor data
   for i:= 1 to SIXControl.NumChannels do
   begin
    if RawCurrentCB.Checked then
@@ -2977,17 +2978,30 @@ try
     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanDbl[i]);
   end;
+
+  // calculation channels
+  // first fill them with zeroes to assure they have the
+  // same size than the data channels
   for i:= 7 to 8 do
   begin
+   ChanRawDbl[i]:= 0.0;
+   ChanDbl[i]:= 0.0;
    if RawCurrentCB.Checked then
     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanRawDbl[i])
    else
     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-     as TLineSeries).AddXY(time, ChanDbl[i])
+     as TLineSeries).AddXY(time, ChanDbl[i]);
   end;
+
+  // temperature
   SIXTempValues.AddXY(time, temperature);
- end;
+
+ end; // end of while not LineReader.Eof do
+
+ // trigger the calculation of channels 7 and 8
+  SIXControl.SCChannelXCBChange(Channel7CB);
+  SIXControl.SCChannelXCBChange(Channel8CB);
 
  Result:= true;
 
