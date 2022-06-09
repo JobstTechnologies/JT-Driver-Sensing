@@ -3200,6 +3200,12 @@ begin
  begin
   // an action file is never live mode
   LiveModeCB.Checked:= False;
+  // reset number of pumps because they might have been changed
+  // number will be reset later depending on the content of the action file
+  if HasNoPumpsCB.Checked then
+   HasNoPumpsCB.Checked:= false; // will set PumpNum to 1
+  PumpControl.PumpNum:= 8;
+  PumpNumberSE.Value:= PumpControl.PumpNum;
   // make all steps visible because they might be invisible due to a prior loading
   for j:= 2 to PumpControl.StepNum do
    (FindComponent('Step' + IntToStr(j) + 'TS')
