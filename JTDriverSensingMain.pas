@@ -2745,7 +2745,7 @@ var
  StringArray : TStringArray;
  ReadLine, ReturnName, testString : string;
  MousePointer : TPoint;
- i, rowCounter : integer;
+ i, rowCounter, blankCounter : integer;
  TempRow : integer = -1;
  ChanDbl : array [1..8] of double;
  ChanRawDbl : array [1..8] of double;
@@ -2827,6 +2827,22 @@ try
      exit;
     end;
    end;
+   // evaluate the blanks
+   // if TempRow is the last one, we have only raw values
+   if (TempRow = Length(StringArray) - 2)
+    or (TempRow = Length(StringArray) - 1) then
+   begin
+    for i:= 1 to 6 do
+    isBlank[i]:= false;
+   end
+   else
+    for i:= TempRow + 1 to TempRow + SIXControl.NumChannels do
+    begin
+     isBlank[i-TempRow]:= false;
+     testString:= Copy(StringArray[i], 2, 4);
+     if testString = 'lank' then // because some files use "Blank" or "blank"
+      isBlank[i-TempRow]:= true;
+    end;
   end;
  until (StringArray[0] = 'Counter') or (rowCounter = 3);
 
@@ -2866,6 +2882,7 @@ try
  // parse the file to the end
  while not LineReader.Eof do
  begin
+  blankCounter:= 0;
   inc(rowCounter);
   LineReader.ReadLine(ReadLine);
   StringArray:= ReadLine.Split(#9);
@@ -2892,7 +2909,8 @@ try
     end;
     // now re-evaluate the blanks
     // if TempRow is the last one, we have only raw values
-    if (TempRow = Length(StringArray) - 2) or (TempRow = Length(StringArray) - 1) then
+    if (TempRow = Length(StringArray) - 2)
+     or (TempRow = Length(StringArray) - 1) then
     begin
      for i:= 1 to 6 do
      isBlank[i]:= false;
@@ -2925,7 +2943,8 @@ try
    exit;
   end;
   // if TempRow is the last one, we have only raw values
-  if TempRow = Length(StringArray) - 2 then
+  if (TempRow = Length(StringArray) - 2)
+   or (TempRow = Length(StringArray) - 1) then
   begin
    for i:= 1 to SIXControl.NumChannels do
    begin
@@ -2955,9 +2974,10 @@ try
     begin
      // blanks get always the raw value
      ChanDbl[i]:= ChanRawDbl[i];
+     inc(blankCounter);
      continue;
     end;
-    if not TryStrToFloat(StringArray[i], ChanDbl[i]) then
+    if not TryStrToFloat(StringArray[i+1-blankCounter], ChanDbl[i]) then
     begin
      MessageDlgPos('Number in line ' + IntToStr(rowCounter) + ', row '
       + IntToStr(i+1) + ' cannot be converted to a number',
