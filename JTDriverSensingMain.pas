@@ -2743,21 +2743,28 @@ var
  OpenFileStream : TFileStream;
  LineReader : TStreamReader;
  StringArray : TStringArray;
- ReadLine, ReturnName : string;
+ ReadLine, ReturnName, testString : string;
  MousePointer : TPoint;
- i, timeCounter : integer;
+ i, rowCounter : integer;
  TempRow : integer = -1;
+ ChanDbl : array [1..8] of double;
  ChanRawDbl : array [1..8] of double;
  temperature, time : double;
+ isBlank : array [1..6] of Boolean;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos; // store mouse position
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
+ for i:= 1 to 6 do
+  isBlank[i]:= false;
+
  // the data file can have different portions, some just raw values, some with
- // .def file loaded. Therefore read first the raw values and if there is a .def
- // file transform them
- RawCurrentCB.Checked:= true;
+ // .def file loaded.
+ // Since there is no optimal solution, the compromise is to read out
+ // either only the raw values when RawCurrentCB is checked
+ // otherwise the mmol values. In this chase portions without mmol values will
+ // be calculated using the default gain factors
 
  // only when file was loaded by the user
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
@@ -2772,6 +2779,8 @@ begin
    else
     InNameSensor:= ReturnName;
   end;
+  // set the default calibration factors
+  SetSIXFactors;
  end;
 
 try
@@ -2784,9 +2793,9 @@ try
  // now read the row description line
  // NOTE: the line ends with a tab, thus Length(StringArray) is larger than
  // the actual number of columns
- timeCounter:= 0;
+ rowCounter:= 1; // because the first line was already read
  Repeat
-  inc(timeCounter);
+  inc(rowCounter);
   if LineReader.Eof then
   begin
    MessageDlgPos('File is too short to read data from it.',
@@ -2819,9 +2828,9 @@ try
     end;
    end;
   end;
- until (StringArray[0] = 'Counter') or (timeCounter = 2);
+ until (StringArray[0] = 'Counter') or (rowCounter = 3);
 
- if (timeCounter = 2) and (StringArray[0] <> 'Counter') then
+ if (rowCounter = 3) and (StringArray[0] <> 'Counter') then
  begin
   MessageDlgPos('File has no header line defining the value units.',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -2855,10 +2864,9 @@ try
   SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
 
  // parse the file to the end
- timeCounter:= 0;
  while not LineReader.Eof do
  begin
-  inc(timeCounter);
+  inc(rowCounter);
   LineReader.ReadLine(ReadLine);
   StringArray:= ReadLine.Split(#9);
   // if the first row is no integer it is an intermediate header line
@@ -2882,14 +2890,28 @@ try
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      exit;
     end;
+    // now re-evaluate the blanks
+    // if TempRow is the last one, we have only raw values
+    if (TempRow = Length(StringArray) - 2) or (TempRow = Length(StringArray) - 1) then
+    begin
+     for i:= 1 to 6 do
+     isBlank[i]:= false;
+    end
+    else
+     for i:= TempRow + 1 to TempRow + SIXControl.NumChannels do
+     begin
+      isBlank[i-TempRow]:= false;
+      testString:= Copy(StringArray[i], 2, 4);
+      if testString = 'lank' then // because some files use "Blank" or "blank"
+       isBlank[i-TempRow]:= true;
+     end;
    end;
-   dec(timeCounter);
    continue;
   end;
   // first read the temperature
   if not TryStrToFloat(StringArray[TempRow], temperature) then
   begin
-   MessageDlgPos('Temperature in line ' + IntToStr(timeCounter) + ', row '
+   MessageDlgPos('Temperature in line ' + IntToStr(rowCounter) + ', row '
     + IntToStr(TempRow+1) + ' cannot be converted to a number',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    exit;
@@ -2897,7 +2919,7 @@ try
   // now the time
   if not TryStrToFloat(StringArray[1], time) then
   begin
-   MessageDlgPos('Time in line ' + IntToStr(timeCounter) + ', row '
+   MessageDlgPos('Time in line ' + IntToStr(rowCounter) + ', row '
     + IntToStr(2) + ' cannot be converted to a number',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    exit;
@@ -2906,36 +2928,63 @@ try
   if TempRow = Length(StringArray) - 2 then
   begin
    for i:= 1 to SIXControl.NumChannels do
+   begin
     if not TryStrToFloat(StringArray[i+1], ChanRawDbl[i]) then
     begin
-     MessageDlgPos('Number in line ' + IntToStr(timeCounter) + ', row '
+     MessageDlgPos('Number in line ' + IntToStr(rowCounter) + ', row '
       + IntToStr(i+2) + ' cannot be converted to a number',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      exit;
     end;
+    // use raw values also for mmol because there is no other way
+    ChanDbl[i]:= ChanRawDbl[i];
+   end;
   end
   else // raw data is behind the temperature
   begin
    for i:= 1 to SIXControl.NumChannels do
+   begin
     if not TryStrToFloat(StringArray[TempRow+i], ChanRawDbl[i]) then
     begin
-     MessageDlgPos('Number in line ' + IntToStr(timeCounter) + ', row '
+     MessageDlgPos('Number in line ' + IntToStr(rowCounter) + ', row '
       + IntToStr(TempRow+i+1) + ' cannot be converted to a number',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      exit;
     end;
+    if isBlank[i] then // there is no mmol row for blanks
+    begin
+     // blanks get always the raw value
+     ChanDbl[i]:= ChanRawDbl[i];
+     continue;
+    end;
+    if not TryStrToFloat(StringArray[i], ChanDbl[i]) then
+    begin
+     MessageDlgPos('Number in line ' + IntToStr(rowCounter) + ', row '
+      + IntToStr(i+1) + ' cannot be converted to a number',
+      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+   end;
   end;
 
   // draw SIX data
   for i:= 1 to SIXControl.NumChannels do
   begin
-   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).AddXY(time, ChanRawDbl[i]);
+   if RawCurrentCB.Checked then
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).AddXY(time, ChanRawDbl[i])
+   else
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).AddXY(time, ChanDbl[i]);
   end;
   for i:= 7 to 8 do
   begin
-   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).AddXY(time, ChanRawDbl[i]);
+   if RawCurrentCB.Checked then
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).AddXY(time, ChanRawDbl[i])
+   else
+    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).AddXY(time, ChanDbl[i])
   end;
   SIXTempValues.AddXY(time, temperature);
  end;
