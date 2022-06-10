@@ -82,6 +82,7 @@ begin
  // enable all setting possibilities
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+ MainForm.PumpSetupGB.Enabled:= True;
  MainForm.ValveSetupGB.Enabled:= True;
  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
  if MainForm.LoadedDefFileM.Text = 'None' then
@@ -1589,6 +1590,7 @@ begin
   // disable all setting possibilities
   MainForm.RunSettingsGB.Enabled:= False;
   MainForm.LiveModeCB.Enabled:= False;
+  MainForm.PumpSetupGB.Enabled:= False;
   MainForm.ValveSetupGB.Enabled:= False;
   // not the pump settings when in live mode
   if not MainForm.LiveModeCB.Checked then
@@ -1768,6 +1770,7 @@ begin
  begin
   MainForm.LiveModeCB.Enabled:= True;
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+  MainForm.PumpSetupGB.Enabled:= True;
   MainForm.ValveSetupGB.Enabled:= True;
   for j:= 1 to StepNum do
   begin
@@ -1973,6 +1976,7 @@ begin
  begin
   MainForm.LiveModeCB.Enabled:= True;
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
+  MainForm.PumpSetupGB.Enabled:= True;
   MainForm.ValveSetupGB.Enabled:= True;
   MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
   for j:= 1 to StepNum do

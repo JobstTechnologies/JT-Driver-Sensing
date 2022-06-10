@@ -988,7 +988,7 @@ begin
  PumpControl.RepeatTime:= 0.0;
  PumpControl.StepNum:= 7; // number of steps
  PumpControl.PumpNum:= 8; // number of pumps
- PumpControl.PumpNumFile:= 4; // number of pumps defined in a loaded action file
+ PumpControl.PumpNumFile:= 8; // number of pumps defined in a loaded action file
  PumpControl.ValveNum:= 8; // number of valves
  PumpControl.PumpPrefix:= 'Pump: '; // line prefix for action files
  PumpControl.ValvePrefix:= 'Valve: '; // line prefix for action files
@@ -3235,11 +3235,10 @@ begin
  begin
   // an action file is never live mode
   LiveModeCB.Checked:= False;
-  // reset number of pumps because they might have been changed
-  // number will be reset later depending on the content of the action file
+  // reset number of pumps
   if HasNoPumpsCB.Checked then
    HasNoPumpsCB.Checked:= false; // will set PumpNum to 1
-  PumpControl.PumpNum:= 8;
+  PumpControl.PumpNum:= PumpControl.PumpNumFile;
   PumpNumberSE.Value:= PumpControl.PumpNum;
   // make all steps visible because they might be invisible due to a prior loading
   for j:= 2 to PumpControl.StepNum do
@@ -3270,6 +3269,7 @@ begin
   // disable all setting possibilities
   RunSettingsGB.Enabled:= False;
   LiveModeCB.Enabled:= False;
+  PumpSetupGB.Enabled:= False;
   ValveSetupGB.Enabled:= False;
   for j:= 1 to PumpControl.StepNum do
   begin
@@ -3609,15 +3609,19 @@ begin
    SaveFileStream.Write(command[1], Length(command));
    SaveFileStream.Write(LineEnding, 2); // line break
    // write the pump names
-   for k:= 1 to PumpControl.PumpNum do
+   // only do this if there are valves
+   if PumpControl.PumpNum > 0 then
    begin
-    SaveFileStream.Write(PumpControl.PumpPrefix[1], Length(PumpControl.PumpPrefix)); // prefix
-    if (FindComponent('Pump' + IntToStr(k) + 'GB1')
-      as TGroupBox).Caption <> '' then // one cannot output an empty name via FileStream.Write
-     SaveFileStream.Write((FindComponent('Pump' + IntToStr(k) + 'GB1')
-      as TGroupBox).Caption[1],
-      Length((FindComponent('Pump' + IntToStr(k) + 'GB1') as TGroupBox).Caption));
-    SaveFileStream.Write(LineEnding, 2);
+    for k:= 1 to PumpControl.PumpNum do
+    begin
+     SaveFileStream.Write(PumpControl.PumpPrefix[1], Length(PumpControl.PumpPrefix)); // prefix
+     if (FindComponent('Pump' + IntToStr(k) + 'GB1')
+       as TGroupBox).Caption <> '' then // one cannot output an empty name via FileStream.Write
+      SaveFileStream.Write((FindComponent('Pump' + IntToStr(k) + 'GB1')
+       as TGroupBox).Caption[1],
+       Length((FindComponent('Pump' + IntToStr(k) + 'GB1') as TGroupBox).Caption));
+     SaveFileStream.Write(LineEnding, 2);
+    end;
    end;
    // write the valve names
    // only do this if there are valves
