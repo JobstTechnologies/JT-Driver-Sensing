@@ -8163,7 +8163,7 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
-        object CalibAfterL: TLabel
+        object CalibStepL: TLabel
           Left = 120
           Height = 15
           Top = 0

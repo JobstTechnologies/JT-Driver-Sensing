@@ -128,10 +128,17 @@ begin
  MainForm.LoadedActionFileM.Color:= clDefault;
  MainForm.LoadedActionFileM.Hint:= 'No action file loaded';
  // enable the calibration settings
- MainForm.CalibStepCB.Enabled:= True;
- MainForm.UseCalibCB.Enabled:= True;
- MainForm.CalibEveryXStepsSE.Enabled:= True;
- MainForm.UsedCalibValueSE.Enabled:= True;
+ if MainForm.UseCalibCB.Checked then
+ begin
+  MainForm.CalibStepCB.Enabled:= True;
+  MainForm.CalibStepL.Enabled:= True;
+  MainForm.UseCalibCB.Enabled:= True;
+  MainForm.CalibEveryXStepsSE.Enabled:= True;
+  MainForm.CalibEveryXStepsL1.Enabled:= True;
+  MainForm.CalibEveryXStepsL2.Enabled:= True;
+  MainForm.UsedCalibValueSE.Enabled:= True;
+  MainForm.UsedCalibValueL.Enabled:= True;
+ end;
  for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
  begin
   // the user must be able to see the settings for all substances
@@ -1610,9 +1617,13 @@ begin
        as TGroupBox).ShowHint:= False;
    end;
    MainForm.CalibStepCB.Enabled:= False;
+   MainForm.CalibStepL.Enabled:= False;
    MainForm.UseCalibCB.Enabled:= False;
    MainForm.CalibEveryXStepsSE.Enabled:= False;
+   MainForm.CalibEveryXStepsL1.Enabled:= False;
+   MainForm.CalibEveryXStepsL2.Enabled:= False;
    MainForm.UsedCalibValueSE.Enabled:= False;
+   MainForm.UsedCalibValueL.Enabled:= False;
    for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
    begin
     // the user must be able to see the settings for all substances
@@ -1781,9 +1792,13 @@ begin
       as TGroupBox).ShowHint:= True;
   end;
   MainForm.CalibStepCB.Enabled:= True;
+  MainForm.CalibStepL.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
   MainForm.CalibEveryXStepsSE.Enabled:= True;
+  MainForm.CalibEveryXStepsL1.Enabled:= True;
+  MainForm.CalibEveryXStepsL2.Enabled:= True;
   MainForm.UsedCalibValueSE.Enabled:= True;
+  MainForm.UsedCalibValueL.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
@@ -1981,9 +1996,13 @@ begin
      as TGroupBox).ShowHint:= True;
   end;
   MainForm.CalibStepCB.Enabled:= True;
+  MainForm.CalibStepL.Enabled:= True;
   MainForm.UseCalibCB.Enabled:= True;
   MainForm.CalibEveryXStepsSE.Enabled:= True;
+  MainForm.CalibEveryXStepsL1.Enabled:= True;
+  MainForm.CalibEveryXStepsL2.Enabled:= True;
   MainForm.UsedCalibValueSE.Enabled:= True;
+  MainForm.UsedCalibValueL.Enabled:= True;
   for j:= 1 to MainForm.CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
@@ -2108,7 +2127,7 @@ begin
  MainForm.GlucoseTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
- MainForm.CalibAfterL.Enabled:= MainForm.UseCalibCB.Checked;
+ MainForm.CalibStepL.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.UsedCalibValueSE.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.UsedCalibValueL.Enabled:= MainForm.UseCalibCB.Checked;
 
@@ -2278,7 +2297,11 @@ begin
    if (not MainForm.Step2UseCB.Checked) or MainForm.LiveModeCB.Checked then
     MainForm.ActionTime1GB.Enabled:= False;
    if MainForm.UseCalibCB.Checked then
+   begin
     MainForm.CalibEveryXStepsSE.Enabled:= True;
+    MainForm.CalibEveryXStepsL1.Enabled:= True;
+    MainForm.CalibEveryXStepsL2.Enabled:= True;
+   end;
   end
   else
   begin
@@ -2287,7 +2310,11 @@ begin
     MainForm.ActionTime1GB.Enabled:= True;
    // when there would not be any repeat, disable to calibrate every x steps
    if MainForm.RepeatSE.Value = 0 then
+   begin
     MainForm.CalibEveryXStepsSE.Enabled:= False;
+    MainForm.CalibEveryXStepsL1.Enabled:= False;
+    MainForm.CalibEveryXStepsL2.Enabled:= False;
+   end;
   end;
 end;
 
@@ -2336,11 +2363,15 @@ begin
   begin
    MainForm.CalibEveryXStepsSE.Value:= 1;
    MainForm.CalibEveryXStepsSE.Enabled:= False;
+   MainForm.CalibEveryXStepsL1.Enabled:= False;
+   MainForm.CalibEveryXStepsL2.Enabled:= False;
   end
   else
   begin
-   MainForm.CalibEveryXStepsSE.Enabled:= True;
    MainForm.CalibEveryXStepsSE.MaxValue:= MainForm.RepeatSE.Value + 1;
+   MainForm.CalibEveryXStepsSE.Enabled:= True;
+   MainForm.CalibEveryXStepsL1.Enabled:= True;
+   MainForm.CalibEveryXStepsL2.Enabled:= True;
   end;
  end;
 end;

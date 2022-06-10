@@ -76,7 +76,7 @@ type
     LactateCalibGB: TGroupBox;
     LactateCalibUnitCB: TComboBox;
     LactateCalibValueFSE: TFloatSpinEdit;
-    CalibAfterL: TLabel;
+    CalibStepL: TLabel;
     GlucoseTS: TTabSheet;
     LactateTS: TTabSheet;
     CalibSubstancesPC: TPageControl;
@@ -3292,9 +3292,13 @@ begin
   end;
   RepeatOutputLE.Visible:= False;
   CalibStepCB.Enabled:= False;
+  CalibStepL.Enabled:= False;
   UseCalibCB.Enabled:= False;
   CalibEveryXStepsSE.Enabled:= False;
+  CalibEveryXStepsL1.Enabled:= False;
+  CalibEveryXStepsL2.Enabled:= False;
   UsedCalibValueSE.Enabled:= False;
+  UsedCalibValueL.Enabled:= False;
   for j:= 1 to CalibSubstancesPC.PageCount do
   begin
    // the user must be able to see the settings for all substances
