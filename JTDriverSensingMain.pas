@@ -2857,6 +2857,12 @@ try
      exit;
     end;
    end;
+   // now we can set the number of channels
+   if (TempRow = Length(StringArray) - 2)
+     or (TempRow = Length(StringArray) - 1) {for old files} then
+    SIXControl.NumChannels:= TempRow - 2
+   else
+    SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
    // evaluate the blanks and channel names
    // if TempRow is the last one, we have only raw values
    if (TempRow = Length(StringArray) - 2)
@@ -2924,14 +2930,6 @@ try
  TSIXControl.timeCounter:= ScrollIntervalFSE.Value + 1.0;
  ScrollViewCB.Checked:= false;
  ScrollViewCB.Enabled:= false;
-
- // now set the number of channels
- if TempRow = Length(StringArray) - 2 then
-  SIXControl.NumChannels:= TempRow - 2
- else if TempRow = Length(StringArray) - 1 then // for old files
-  SIXControl.NumChannels:= TempRow - 2
- else
-  SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
 
  // assure that the axis range is set to automatic to display everything
  SIXCH.AxisList[0].Range.UseMax:= false;
@@ -3097,24 +3095,51 @@ try
  end; // end of while not LineReader.Eof do
 
  // trigger calculation of channels 7 and 8 if possible
- for i:= 7 to 8 do
+ // only possible when there at least 4 channels
+ if SIXControl.NumChannels > 3 then
  begin
-  // handle case that there are items are the item index is -1
-  // (can occur depending on prior loaded .def files)
-  if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-      as TComboBox).ItemIndex = -1)
-    and ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-               as TComboBox).Items.Count > 0) then
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-               as TComboBox).ItemIndex:= 0;
-  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-               as TComboBox).ItemIndex > -1 then
+  for i:= 7 to 8 do
   begin
-   Component:= (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-               as TComboBox);
-   SIXControl.SCChannelXCBChange(Component);
+   // handle case that there are items are the item index is -1
+   // (can occur depending on prior loaded .def files)
+   if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+       as TComboBox).ItemIndex = -1)
+     and ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+                as TComboBox).Items.Count > 0) then
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+                as TComboBox).ItemIndex:= 0;
+   if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+                as TComboBox).ItemIndex > -1 then
+   begin
+    Component:= (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+                as TComboBox);
+    SIXControl.SCChannelXCBChange(Component);
+   end;
+   // re-enable channel groupBoxes because they might have been diables
+   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    as TGroupBox).Enabled:= True;
   end;
+ end
+ else
+ begin
+  // disable channel operations
+  for i:= 7 to 8 do
+   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    as TGroupBox).Enabled:= False;
  end;
+
+ // disable channel operations
+ if SIXControl.NumChannels < 6 then
+ begin
+  for i:=  SIXControl.NumChannels + 1 to 6 do
+   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+    as TGroupBox).Enabled:= False;
+ end;
+
+ // enable available channels
+ for i:= 1 to SIXControl.NumChannels do
+  (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+   as TGroupBox).Enabled:= True;
 
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
