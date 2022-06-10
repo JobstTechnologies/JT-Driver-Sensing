@@ -13,6 +13,7 @@ improvements:
 - when connection to the SIX is lost, the software tries to reconnect automatically
 - it is now possible to perform automated calibrations without connected pumps
 - the number of pumps in the setup can be specified
+- SIX with current range of 250 and 500 nA are supported
 
 bugfixes:
 - fix wrong time format in tooltips in the data graph
