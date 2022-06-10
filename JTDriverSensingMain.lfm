@@ -10309,10 +10309,10 @@ object MainForm: TMainForm
       Caption = 'Change Background Color'
       OnClick = ChangeBackColorMIClick
     end
-    object TimeMinMI: TMenuItem
+    object TimeMinuteMI: TMenuItem
       Caption = 'Time in minutes'
       Checked = True
-      OnClick = TimeMinMIClick
+      OnClick = TimeMinuteMIClick
     end
     object TimeHourMI: TMenuItem
       Caption = 'Time in hours'

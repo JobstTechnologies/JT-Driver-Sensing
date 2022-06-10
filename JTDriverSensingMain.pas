@@ -112,7 +112,7 @@ type
     Label70: TLabel;
     Label71: TLabel;
     ChangeSensFileMI: TMenuItem;
-    TimeMinMI: TMenuItem;
+    TimeMinuteMI: TMenuItem;
     TimeHourMI: TMenuItem;
     TimeDayMI: TMenuItem;
     ResetChartAppearanceMI: TMenuItem;
@@ -910,7 +910,7 @@ type
     procedure AnOutOnOffTBChange(Sender: TObject);
     procedure TimeDayMIClick(Sender: TObject);
     procedure TimeHourMIClick(Sender: TObject);
-    procedure TimeMinMIClick(Sender: TObject);
+    procedure TimeMinuteMIClick(Sender: TObject);
     procedure UnloadDefBBClick(Sender: TObject);
     procedure UseAnOutCBChange(Sender: TObject);
   private
@@ -2497,8 +2497,8 @@ begin
  // set back zoom state
  SIXCH.Prepare;
  SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption := 'Time [day]';
- TimeMinMI.Checked:= false;
+ SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
+ TimeMinuteMI.Checked:= false;
  TimeHourMI.Checked:= false;
  TimeDayMI.Checked:= true;
  SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
@@ -2517,8 +2517,8 @@ begin
  ValuesLinearTransform.Scale:= 60;
  SIXCH.Prepare;
  SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption := 'Time [hour]';
- TimeMinMI.Checked:= false;
+ SIXCH.BottomAxis.Title.Caption:= 'Time [hour]';
+ TimeMinuteMI.Checked:= false;
  TimeHourMI.Checked:= true;
  TimeDayMI.Checked:= false;
  SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
@@ -2527,7 +2527,7 @@ begin
                               / ValuesLinearTransform.Scale;
 end;
 
-procedure TMainForm.TimeMinMIClick(Sender: TObject);
+procedure TMainForm.TimeMinuteMIClick(Sender: TObject);
 var
  extent: TDoubleRect;
  previousScale : double;
@@ -2537,8 +2537,8 @@ begin
  ValuesLinearTransform.Scale:= 1;
  SIXCH.Prepare;
  SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption := 'Time [min]';
- TimeMinMI.Checked:= true;
+ SIXCH.BottomAxis.Title.Caption:= 'Time [min]';
+ TimeMinuteMI.Checked:= true;
  TimeHourMI.Checked:= false;
  TimeDayMI.Checked:= false;
  SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
@@ -2890,6 +2890,11 @@ try
  // we know the file is valid thus we can empty the data chart and
  // read in the data
 
+ // for the parsing set time unit to hours since this fits for most cases
+ // will be reset later if necessary
+ // this must be done before the existing data is deleted
+ TimeHourMIClick(MainForm);
+
  // delete existing live chart data
  // but purposely not the measurement data
  for i:= 1 to 8 do
@@ -2913,9 +2918,22 @@ try
  else
   SIXControl.NumChannels:= Length(StringArray) - TempRow - 2;
 
+ // assure that the axis range is set to automatic to display everything
+ SIXCH.AxisList[0].Range.UseMax:= false;
+ SIXCH.AxisList[0].Range.UseMin:= false;
+ SIXCH.AxisList[1].Range.UseMax:= false;
+ SIXCH.AxisList[1].Range.UseMin:= false;
+ // for the x-axis also te extent must be set
+ SIXCH.Extent.UseXMax:= false;
+ SIXCH.Extent.UseXMin:= false;
+
  // parse the file to the end
  while not LineReader.Eof do
  begin
+  // tell Windows the program is alive because we can have large files
+  if rowCounter mod 86400 = 0 then // data for 3 days when data every 3 seconds
+   Application.ProcessMessages;
+
   blankCounter:= 0;
   inc(rowCounter);
   LineReader.ReadLine(ReadLine);
@@ -3086,6 +3104,13 @@ finally
  LineReader.Free;
  OpenFileStream.Free;
 end;
+
+ // set proper time unit (hour was already set above)
+ SIXCH.Refresh; // necessary to update the plot range Min/Max values
+ if time > 60000 then
+  TimeDayMIClick(MainForm)
+ else if time < 1000 then
+  TimeMinuteMIClick(MainForm);
 
  // we must prevent that the display is changed by loaded .def files
  // because different portions of the file belong to different .def files
