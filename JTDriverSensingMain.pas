@@ -3706,7 +3706,9 @@ for i:= 1 to SIXControl.NumChannels do
   else if SIXTypeRG.ItemIndex = 0 then
    GainsRaw[i]:= 0.0763
   else if SIXTypeRG.ItemIndex = 2 then
-   GainsRaw[i]:= 0.763;
+   GainsRaw[i]:= 0.763
+  else if SIXTypeRG.ItemIndex = 3 then
+   GainsRaw[i]:= 1.526;
  end;
 end;
 

@@ -672,11 +672,11 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXTypeRG: TRadioGroup
-          Left = 233
-          Height = 80
+          Left = 214
+          Height = 75
           Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
           Top = -8
-          Width = 82
+          Width = 126
           AutoFill = True
           Caption = 'SIX Type'
           ChildSizing.LeftRightSpacing = 6
@@ -685,14 +685,16 @@ object MainForm: TMainForm
           ChildSizing.ShrinkHorizontal = crsScaleChilds
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 1
-          ClientHeight = 60
-          ClientWidth = 78
+          ChildSizing.ControlsPerLine = 2
+          ClientHeight = 55
+          ClientWidth = 122
+          Columns = 2
           ItemIndex = 1
           Items.Strings = (
             '25 nA'
             '50 nA'
             '250 nA'
+            '500 nA'
           )
           ParentShowHint = False
           ShowHint = True
