@@ -1544,7 +1544,7 @@ begin
   // save command to be resend on every repeat
   commandForRepeat:= command;
 
-  // if we have an open serial connection, execute
+  // if we have a connection to the pump driver, execute
   if HaveSerialPump then
   begin
    // disable the connection menu that the user cannot close
@@ -1552,9 +1552,6 @@ begin
    MainForm.PumpDriverMI.Enabled:= False;
    MainForm.FirmwareUpdateMI.Enabled:= False;
    MainForm.FirmwareResetMI.Enabled:= False;
-   // disable menu to load and save action files
-   MainForm.LoadActionMI.Enabled:= False;
-   MainForm.SaveActionMI.Enabled:= False;
    // send the command
    serPump.SendString(command);
    if serPump.LastError <> 0 then
@@ -1584,7 +1581,11 @@ begin
     exit;
    end;
   end;
-  MainForm.RunBB.Caption:= 'Pumps running';
+  // disable menu to load and save action files
+  MainForm.LoadActionMI.Enabled:= False;
+  MainForm.SaveActionMI.Enabled:= False;
+
+  MainForm.RunBB.Caption:= 'Action running';
   MainForm.RunBB.Enabled:= False;
   MainForm.GenerateCommandBB.Enabled:= False;
   // disable all setting possibilities
@@ -1641,7 +1642,7 @@ begin
    end;
   end;
   MainForm.RepeatOutputLE.Visible:= False;
-  MainForm.IndicatorPumpP.Caption:= 'Pumps are running';
+  MainForm.IndicatorPumpP.Caption:= 'Action is running';
   MainForm.IndicatorPumpP.Color:= clRed;
   // set timers
   if (StrToInt(MainForm.RepeatSE.Text) > 0)
@@ -1742,7 +1743,7 @@ begin
   end;
  end;
  // output stop time only when there was actually a run
- if MainForm.IndicatorPumpP.Caption = 'Pumps are running' then
+ if MainForm.IndicatorPumpP.Caption = 'Action is running' then
  begin
   stopTime:= FormatDateTime('dd.mm.yyyy, hh:nn:ss', now);
   MainForm.FinishTimePumpLE.Text:= stopTime;
