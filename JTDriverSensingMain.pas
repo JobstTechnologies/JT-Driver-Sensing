@@ -2775,6 +2775,7 @@ var
  temperature, time : double;
  isBlank : array [1..6] of Boolean;
  testArray : array of string = nil;
+ Component : TComponent;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos; // store mouse position
@@ -2820,8 +2821,7 @@ try
  // the actual number of columns
  rowCounter:= 1; // because the first line was already read
  Repeat
-  inc(rowCounter);
-  if LineReader.Eof then
+  if (rowCounter < 4) and LineReader.Eof then
   begin
    MessageDlgPos('File is too short to read data from it.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -2829,6 +2829,8 @@ try
   end
   else
    LineReader.ReadLine(ReadLine);
+  inc(rowCounter);
+
   StringArray:= ReadLine.Split(#9);
   if StringArray[0] = 'Counter' then // we have a header line
   begin
@@ -2889,6 +2891,11 @@ try
 
  // we know the file is valid thus we can empty the data chart and
  // read in the data
+
+ // there might have been a definition file load that doesn't fit to the data
+ // therefore unload it
+ if LoadedDefFileM.Text <> 'None' then
+  UnloadDefBBClick(MainForm);
 
  // for the parsing set time unit to hours since this fits for most cases
  // will be reset later if necessary
@@ -3081,9 +3088,25 @@ try
 
  end; // end of while not LineReader.Eof do
 
- // trigger the calculation of channels 7 and 8
- SIXControl.SCChannelXCBChange(Channel7CB);
- SIXControl.SCChannelXCBChange(Channel8CB);
+ // trigger calculation of channels 7 and 8 if possible
+ for i:= 7 to 8 do
+ begin
+  // handle case that there are items are the item index is -1
+  // (can occur depending on prior loaded .def files)
+  if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).ItemIndex = -1)
+    and ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox).Items.Count > 0) then
+   (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox).ItemIndex:= 0;
+  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox).ItemIndex > -1 then
+  begin
+   Component:= (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox);
+   SIXControl.SCChannelXCBChange(Component);
+  end;
+ end;
 
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do

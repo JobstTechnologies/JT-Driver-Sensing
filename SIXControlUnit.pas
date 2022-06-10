@@ -1807,7 +1807,8 @@ var
  OpenFileStream : TFileStream;
  LineReader : TStreamReader;
  ReadLine : string;
- i, gainFactor : integer;
+ gainFactor : single;
+ i, oldItem : integer;
  StringArray : TStringArray;
  ppp : PChar;
  Component : TComponent = nil;
@@ -1822,8 +1823,12 @@ begin
  // check the SIX type
  if MainForm.SIXTypeRG.ItemIndex = 1 then
   gainFactor:= 1
- else
-  gainFactor:= 2;
+ else if MainForm.SIXTypeRG.ItemIndex = 0 then
+  gainFactor:= 0.5
+ else if MainForm.SIXTypeRG.ItemIndex = 2 then
+  gainFactor:= 5
+ else if MainForm.SIXTypeRG.ItemIndex = 3 then
+  gainFactor:= 10;
 
  // open file stream
  try
@@ -1841,7 +1846,7 @@ begin
     Result:= false;
     exit;
    end;
-   Gains[i+1]:= Gains[i+1] / gainFactor;
+   Gains[i+1]:= Gains[i+1] * gainFactor;
   end;
 
   // next interesting line is line 4
@@ -1885,6 +1890,7 @@ begin
   // update the possible operations
   // first delete, then refill
   if NumChannels < 4 then
+  begin
    for i:= 7 to 8 do
    begin
     // no operations are possible thus disable these channels
@@ -1894,12 +1900,17 @@ begin
      as TCheckBox).Checked:= false;
     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
      as TComboBox).Items.Clear;
-   end
+   end;
+  end
   else
+  begin
    for i:= 7 to 8 do
    begin
+    // at first store item index
+    oldItem:= (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     as TComboBox).ItemIndex;
     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-     as TComboBox).Items.Clear;
+     as TComboBox).Items.Clear; // sets ItemIndex to -1
     if NumChannels >= 5 then
      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
       as TComboBox).Items.Add('mean(#2, #5)');
@@ -1910,43 +1921,19 @@ begin
      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
       as TComboBox).Items.Add('mean(#1, #4)');
     // handle cases when indices do no longer exist
-    if NumChannels = 4 then
-    begin
-     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text = 'mean(#1, #4)' then
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-       as TComboBox).ItemIndex:= 0;
-     if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-          as TComboBox).Text = 'mean(#2, #5)')
-      or ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-           as TComboBox).Text = 'mean(#3, #6)') then
-     begin
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text:= 'mean(#1, #4)';
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-       as TComboBox).ItemIndex:= 0;
-     end;
-    end;
-    if NumChannels = 5 then
-    begin
-     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text = 'mean(#1, #4)' then
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-       as TComboBox).ItemIndex:= 1;
-     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text = 'mean(#2, #5)' then
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-       as TComboBox).ItemIndex:= 0;
-     if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text = 'mean(#3, #6)' then
-     begin
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-        as TComboBox).Text:= 'mean(#2, #5)';
-      (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
-       as TComboBox).ItemIndex:= 0;
-     end;
-    end;
+    if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox).Items.Count > oldItem then
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).ItemIndex:= oldItem
+    else if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+               as TComboBox).Items.Count = 0 then
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).ItemIndex:= -1
+    else
+     (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+      as TComboBox).ItemIndex:= 0;
    end;
+  end;
 
   // read line 5
   LineReader.ReadLine(ReadLine);
