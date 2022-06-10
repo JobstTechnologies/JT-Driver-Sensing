@@ -2767,15 +2767,15 @@ var
  StringArray : TStringArray;
  ReadLine, ReturnName, testString : string;
  MousePointer : TPoint;
- i, rowCounter, blankCounter : integer;
- TempRow : integer = -1;
- ChanDbl : array [1..8] of double;
- ChanRawDbl : array [1..8] of double;
+ i, rowCounter, blankCounter, TempRow : integer;
+ ChanDbl, ChanRawDbl : array [1..8] of double;
  temperature, time : double;
  isBlank : array [1..6] of Boolean;
+ testArray : array of string = nil;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos; // store mouse position
+ TempRow:= -1;
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
  for i:= 1 to 6 do
@@ -2849,7 +2849,7 @@ try
      exit;
     end;
    end;
-   // evaluate the blanks
+   // evaluate the blanks and channel names
    // if TempRow is the last one, we have only raw values
    if (TempRow = Length(StringArray) - 2)
     or (TempRow = Length(StringArray) - 1) then
@@ -2864,6 +2864,15 @@ try
      testString:= Copy(StringArray[i], 2, 4);
      if testString = 'lank' then // because some files use "Blank" or "blank"
       isBlank[i-TempRow]:= true;
+     // channel names could have ine or two spaces
+     // therefore split at space and concatenate
+     testArray:= StringArray[i].Split(' ');
+     if Length(testArray) = 3 then
+      testString:= testArray[0] + ' ' + testArray[1]
+     else
+      testString:= testArray[0];
+     (MainForm.FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
+      as TGroupBox).Caption:= testString;
     end;
   end;
  until (StringArray[0] = 'Counter') or (rowCounter = 3);
@@ -2929,7 +2938,8 @@ try
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      exit;
     end;
-    // now re-evaluate the blanks
+    // now re-evaluate the blanks and channels names
+    // channel names because many files start with only raw data
     // if TempRow is the last one, we have only raw values
     if (TempRow = Length(StringArray) - 2)
      or (TempRow = Length(StringArray) - 1) then
@@ -2944,6 +2954,15 @@ try
       testString:= Copy(StringArray[i], 2, 4);
       if testString = 'lank' then // because some files use "Blank" or "blank"
        isBlank[i-TempRow]:= true;
+      // channel names could have ine or two spaces
+      // therefore split at space and concatenate
+      testArray:= StringArray[i].Split(' ');
+      if Length(testArray) = 3 then
+       testString:= testArray[0] + ' ' + testArray[1]
+      else
+       testString:= testArray[0];
+      (MainForm.FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
+       as TGroupBox).Caption:= testString;
      end;
    end;
    continue;
@@ -3042,8 +3061,21 @@ try
  end; // end of while not LineReader.Eof do
 
  // trigger the calculation of channels 7 and 8
-  SIXControl.SCChannelXCBChange(Channel7CB);
-  SIXControl.SCChannelXCBChange(Channel8CB);
+ SIXControl.SCChannelXCBChange(Channel7CB);
+ SIXControl.SCChannelXCBChange(Channel8CB);
+
+ // update chart legend according to channel names
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Title:=
+    (FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
+  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
+   as TLineSeries).Title:=
+    'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
+     as TGroupBox).Caption;
+ end;
 
  Result:= true;
 
