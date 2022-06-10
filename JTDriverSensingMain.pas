@@ -65,9 +65,11 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
+    UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
     CalibEveryXStepsL1: TLabel;
+    ShowExpertCB: TCheckBox;
     UsedCalibValueSE: TSpinEdit;
     UsedCalibValueL: TLabel;
     LactateAvailChanL: TLabel;
@@ -877,6 +879,7 @@ type
     procedure GetFirmwareVersionMIClick(Sender: TObject);
     procedure LiveModeCBChange(Sender: TObject);
     procedure LoadActionMIClick(Sender: TObject);
+    procedure ShowExpertCBChange(Sender: TObject);
     procedure UseCalibCBChange(Sender: TObject);
     procedure ValveNumberSEChange(Sender: TObject);
     procedure ValveRGChange(Sender: TObject);
@@ -3325,6 +3328,12 @@ begin
  // show step 1
  RepeatPC.ActivePage:= Step1TS;
  end; // else if not FileSuccess
+end;
+
+procedure TMainForm.ShowExpertCBChange(Sender: TObject);
+begin
+ ExpertGB.Visible:= True;
+ ShowExpertCB.Visible:= False;
 end;
 
 procedure TMainForm.UseCalibCBChange(Sender: TObject);

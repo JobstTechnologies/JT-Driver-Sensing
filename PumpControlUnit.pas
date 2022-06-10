@@ -2124,6 +2124,7 @@ procedure TPumpControl.PCUseCalibCBChange(Sender: TObject);
 var
  AllowCalibEveryXSteps : Boolean = false;
 begin
+ MainForm.CalibrationGB.Visible:= MainForm.UseCalibCB.Checked;
  MainForm.GlucoseTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.LactateTS.Enabled:= MainForm.UseCalibCB.Checked;
  MainForm.CalibStepCB.Enabled:= MainForm.UseCalibCB.Checked;
