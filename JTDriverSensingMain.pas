@@ -2795,6 +2795,9 @@ begin
  // only when file was loaded by the user
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
+  // if a measurement is running do nothing
+  if not LoadSensorDataMI.Enabled then
+   exit;
   if DropfileNameData <> '' then // a file was dropped into the SIX Values tab
    InNameSensor:= DropfileNameData
   else
@@ -2892,15 +2895,20 @@ try
  // we know the file is valid thus we can empty the data chart and
  // read in the data
 
+ // actions only when file was loaded by the user:
+ if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
+ begin
  // there might have been a definition file load that doesn't fit to the data
  // therefore unload it
+ // only when file was loaded by the user
  if LoadedDefFileM.Text <> 'None' then
   UnloadDefBBClick(MainForm);
 
- // for the parsing set time unit to hours since this fits for most cases
- // will be reset later if necessary
- // this must be done before the existing data is deleted
- TimeHourMIClick(MainForm);
+  // for the parsing set time unit to hours since this fits for most cases
+  // will be reset later if necessary
+  // this must be done before the existing data is deleted
+  TimeHourMIClick(MainForm);
+ end;
 
  // delete existing live chart data
  // but purposely not the measurement data
@@ -3128,16 +3136,20 @@ finally
  OpenFileStream.Free;
 end;
 
- // set proper time unit (hour was already set above)
- SIXCH.Refresh; // necessary to update the plot range Min/Max values
- if time > 60000 then
-  TimeDayMIClick(MainForm)
- else if time < 1000 then
-  TimeMinuteMIClick(MainForm);
+ // only when file was loaded by the user
+ if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
+ begin
+  // set proper time unit (hour was already set above)
+  SIXCH.Refresh; // necessary to update the plot range Min/Max values
+  if time > 60000 then
+   TimeDayMIClick(MainForm)
+  else if time < 1000 then
+   TimeMinuteMIClick(MainForm);
 
- // we must prevent that the display is changed by loaded .def files
- // because different portions of the file belong to different .def files
- RawCurrentCB.Enabled:= false;
+  // we must prevent that the display is changed by loaded .def files
+  // because different portions of the file belong to different .def files
+  RawCurrentCB.Enabled:= false;
+ end;
 
  // at last display the file name as chart title
  SIXCH.Title.Text[0]:= ExtractFileName(InNameSensor);
