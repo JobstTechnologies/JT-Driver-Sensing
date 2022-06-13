@@ -1443,7 +1443,8 @@ var
  i, j : integer;
  LastIndex : integer = 0;
 begin
- if MainForm.RawCurrentCB.Checked then
+ // if RawCurrentCB is disabled we must not recalculate
+ if MainForm.RawCurrentCB.Enabled and MainForm.RawCurrentCB.Checked then
  begin
   // rename the chart axis
   MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [nA]';
