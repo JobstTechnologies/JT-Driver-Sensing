@@ -10035,6 +10035,12 @@ object MainForm: TMainForm
         ShortCut = 16452
         OnClick = LoadSensorDataMIClick
       end
+      object ChangeSensorDataFileMI: TMenuItem
+        Caption = 'Change Sensor Data File'
+        ShortCut = 16451
+        Visible = False
+        OnClick = ChangeSensFileMIClick
+      end
     end
     object MiscellaneousMI: TMenuItem
       Caption = 'Miscellaneous'

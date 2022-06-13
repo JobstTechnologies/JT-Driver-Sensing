@@ -203,7 +203,6 @@ begin
      MainForm.StartTestBB.Enabled:= false;
      MainForm.StopTestBB.Enabled:= false;
      MainForm.CloseLazSerialConn;
-     HaveSerialSensor:= False;
      MainForm.LoadSensorDataMI.Enabled:= true;
      exit;
     end;
@@ -240,7 +239,6 @@ begin
   MainForm.StartTestBB.Enabled:= false;
   MainForm.StopTestBB.Enabled:= false;
   MainForm.CloseLazSerialConn;
-  HaveSerialSensor:= False;
   exit;
  end;
 
@@ -270,7 +268,6 @@ begin
     MainForm.StartTestBB.Enabled:= false;
     MainForm.StopTestBB.Enabled:= false;
     MainForm.CloseLazSerialConn;
-    HaveSerialSensor:= False;
     exit;
    end;
   end;
@@ -362,7 +359,6 @@ begin
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
    MainForm.CloseLazSerialConn;
-   HaveSerialSensor:= False;
    exit;
   end;
  end;
@@ -413,7 +409,6 @@ begin
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
    MainForm.CloseLazSerialConn;
-   HaveSerialSensor:= False;
    exit;
   end;
  end;

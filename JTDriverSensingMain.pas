@@ -65,6 +65,7 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
+    ChangeSensorDataFileMI: TMenuItem;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
@@ -2752,8 +2753,8 @@ end;
 procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
- // if there is no connection to the SIX, disable the context menu
- if not HaveSerialSensor then
+ // disable if there is no connection to SIX or an action is running
+ if (not HaveSerialSensor) or OverallTimer.Enabled then
   Handled:= true;
 end;
 
@@ -2796,7 +2797,7 @@ begin
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
   // if a measurement is running do nothing
-  if not LoadSensorDataMI.Enabled then
+  if OverallTimer.Enabled then
    exit;
   if DropfileNameData <> '' then // a file was dropped into the SIX Values tab
    InNameSensor:= DropfileNameData
@@ -3946,7 +3947,6 @@ begin
    if HaveSerialSensor then
    begin
     CloseLazSerialConn;
-    HaveSerialSensor:= False;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
     AnOutOnOffTB.Checked:= false;
@@ -3976,7 +3976,6 @@ begin
    if HaveSerialSensor then
    begin
     CloseLazSerialConn;
-    HaveSerialSensor:= False;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
     AnOutOnOffTB.Checked:= false;
@@ -3994,10 +3993,7 @@ begin
   if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
   try
    if HaveSerialSensor then
-   begin
     CloseLazSerialConn;
-    HaveSerialSensor:= False;
-   end;
    ConnComPortSensM.Text:= 'Not connected';
    ConnComPortSensM.Color:= clHighlight;
    AnOutOnOffTB.Checked:= false;
@@ -4029,7 +4025,6 @@ begin
     StopTestBB.Enabled:= false;
     CloseLazSerialConn;
     ConnComPortSensM.Text:= 'Not connected';
-    HaveSerialSensor:= False;
     LoadSensorDataMI.Enabled:= true;
     exit;
    end
@@ -4069,7 +4064,6 @@ begin
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
     CloseLazSerialConn;
-    HaveSerialSensor:= False;
     exit;
    end;
   end;
@@ -4087,7 +4081,6 @@ begin
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
    CloseLazSerialConn;
-   HaveSerialSensor:= False;
    exit;
   end;
 
@@ -4201,7 +4194,6 @@ begin
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
    CloseLazSerialConn;
-   HaveSerialSensor:= False;
    LoadSensorDataMI.Enabled:= true;
    exit;
  end;
