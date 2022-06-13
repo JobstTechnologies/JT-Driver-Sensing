@@ -2753,8 +2753,8 @@ end;
 procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
- // disable if there is no connection to SIX or an action is running
- if (not HaveSerialSensor) or OverallTimer.Enabled then
+ // disable if there is no SIX data file or an action is running
+ if (not HaveSensorFileStream) or OverallTimer.Enabled then
  begin
   ChangeSensorDataFileMI.Enabled:= False; // just a safe guard
   Handled:= true;
@@ -4098,24 +4098,39 @@ begin
  if not HaveSerialSensor then
   InNameSensor:= '';
  ReturnName:= SaveHandling(InNameSensor, '.csv'); // opens file dialog
- if ReturnName = 'canceled' then // nothing needs to be done
+
+ // it is not sensible to keep the sensor connected if its data
+ // is not written to a file, thus close in this case the connection
+ if (not HaveSensorFileStream)
+   and ((ReturnName = 'canceled') or (ReturnName = '')) then
+ begin
+  CloseLazSerialConn;
+  ConnComPortSensM.Text:= 'Not connected';
+  ConnComPortSensM.Color:= clHighlight;
+  IndicatorSensorP.Caption:= 'No Sensor Data File';
+  AnOutOnOffTB.Checked:= false;
+  AnOutOnOffTB.Enabled:= false;
+  AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                     + 'to the pump connectors.' + LineEnding
+                     + 'Connect to a SIX and a pump driver'  + LineEnding
+                     + 'to enable the button.';
+  exit;
+ end;
+
+ // if the same file was selected or a file is already loaded and the
+ // loading of a new one was canceled, nothing needs to be done
+ if (InNameSensor = ReturnName)
+   or HaveSensorFileStream and (ReturnName = 'canceled') then
   exit
  else
  begin
-  // if the same file was selected, nothing needs to be done
-  if InNameSensor = ReturnName then
-   exit
-  else
+  // we first have to assure that a previous file is made free
+  if HaveSensorFileStream then
   begin
-   // we first have to assure that a previous file is made free
-   if HaveSensorFileStream then
-   begin
-    SensorFileStream.Free;
-    HaveSensorFileStream:= false;
-   end;
-   InNameSensor:= ReturnName;
+   SensorFileStream.Free;
+   HaveSensorFileStream:= false;
   end;
-
+  InNameSensor:= ReturnName;
  end;
  if InNameSensor <> '' then
  begin
