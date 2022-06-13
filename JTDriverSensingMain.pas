@@ -3978,12 +3978,6 @@ begin
     CloseLazSerialConn;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
-    AnOutOnOffTB.Checked:= false;
-    AnOutOnOffTB.Enabled:= false;
-    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                       + 'to the pump connectors.' + LineEnding
-                       + 'Connect to a SIX and a pump driver'  + LineEnding
-                       + 'to enable the button.';
    end;
    // SIX type can now be set again
    SIXTypeRG.Enabled:= true;
@@ -4007,12 +4001,6 @@ begin
     CloseLazSerialConn;
     IndicatorSensorP.Caption:= 'SIX stopped';
     IndicatorSensorP.Color:= clHighlight;
-    AnOutOnOffTB.Checked:= false;
-    AnOutOnOffTB.Enabled:= false;
-    AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                       + 'to the pump connectors.' + LineEnding
-                       + 'Connect to a SIX and a pump driver'  + LineEnding
-                       + 'to enable the button.';
    end;
    exit;
   end;
@@ -4021,16 +4009,7 @@ begin
   // open new connection if not already available
   if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
   try
-   if HaveSerialSensor then
-    CloseLazSerialConn;
-   ConnComPortSensM.Text:= 'Not connected';
-   ConnComPortSensM.Color:= clHighlight;
-   AnOutOnOffTB.Checked:= false;
-   AnOutOnOffTB.Enabled:= false;
-   AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                      + 'to the pump connectors.' + LineEnding
-                      + 'Connect to a SIX and a pump driver'  + LineEnding
-                      + 'to enable the button.';
+   CloseLazSerialConn;
    // open the connection
    try
     serSensor:= TBlockSerial.Create;
@@ -4047,14 +4026,12 @@ begin
    begin
     MessageDlgPos(ConnComPortSensM.Lines[0] + ' error: ' + serSensor.LastErrorDesc,
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    CloseLazSerialConn;
     IndicatorSensorP.Caption:= 'Connection failure';
     IndicatorSensorP.Color:= clRed;
     ConnComPortSensM.Color:= clRed;
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
-    CloseLazSerialConn;
-    ConnComPortSensM.Text:= 'Not connected';
-    LoadSensorDataMI.Enabled:= true;
     exit;
    end
    else
@@ -4087,12 +4064,12 @@ begin
    begin
     MessageDlgPos('Error: ' + ConnComPortSensM.Text + ' did not deliver data within 3 s.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    CloseLazSerialConn;
     ConnComPortSensM.Color:= clRed;
     IndicatorSensorP.Caption:= 'Wrong device';
     IndicatorSensorP.Color:= clRed;
     StartTestBB.Enabled:= false;
     StopTestBB.Enabled:= false;
-    CloseLazSerialConn;
     exit;
    end;
   end;
@@ -4104,12 +4081,12 @@ begin
   begin
    MessageDlgPos(COMPort + ' error on reading 25 bytes: '
     + serSensor.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   CloseLazSerialConn;
    ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'Wrong device';
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
-   CloseLazSerialConn;
    exit;
   end;
 
@@ -4131,15 +4108,7 @@ begin
    and ((ReturnName = 'canceled') or (ReturnName = '')) then
  begin
   CloseLazSerialConn;
-  ConnComPortSensM.Text:= 'Not connected';
-  ConnComPortSensM.Color:= clHighlight;
   IndicatorSensorP.Caption:= 'No Sensor Data File';
-  AnOutOnOffTB.Checked:= false;
-  AnOutOnOffTB.Enabled:= false;
-  AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                     + 'to the pump connectors.' + LineEnding
-                     + 'Connect to a SIX and a pump driver'  + LineEnding
-                     + 'to enable the button.';
   exit;
  end;
 
@@ -4169,15 +4138,7 @@ begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      CloseLazSerialConn;
-     ConnComPortSensM.Text:= 'Not connected';
-     ConnComPortSensM.Color:= clHighlight;
      IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
-     AnOutOnOffTB.Checked:= false;
-     AnOutOnOffTB.Enabled:= false;
-     AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                     + 'to the pump connectors.' + LineEnding
-                     + 'Connect to a SIX and a pump driver'  + LineEnding
-                     + 'to enable the button.';
      exit;
     end;
     // read second to last line from existing file to determine the last time
@@ -4205,14 +4166,19 @@ begin
     StringArray:= LastLine.Split(#9);
     if not TryStrToInt(StringArray[0], SIXControl.signalCounter) then
     begin
-     MessageDlgPos('Last line of input file does not start with an integer.',
+     MessageDlgPos('Either last line of input file does not start with an integer'
+      + LineEnding + 'or file contains not at least 3 complete data lines.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+      CloseLazSerialConn;
+      IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
      exit;
     end;
     if not TryStrToFloat(StringArray[1], SIXControl.timeCounter) then
     begin
      MessageDlgPos('Last line of input file does not contain valid a time.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     CloseLazSerialConn;
+     IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
      exit;
     end;
    end
@@ -4242,13 +4208,12 @@ begin
  begin
   MessageDlgPos('Error: A filename must be set to store the sensor data.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   CloseLazSerialConn;
    ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'No file to save';
    IndicatorSensorP.Color:= clRed;
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
-   CloseLazSerialConn;
-   LoadSensorDataMI.Enabled:= true;
    exit;
  end;
 
@@ -4456,6 +4421,13 @@ begin
  ConnComPortSensM.Text:= 'Not connected';
  ConnComPortSensM.Color:= clHighlight;
  ChangeSensorDataFileMI.Enabled:= False;
+ LoadSensorDataMI.Enabled:= true;
+ AnOutOnOffTB.Checked:= false;
+ AnOutOnOffTB.Enabled:= false;
+ AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                     + 'to the pump connectors.' + LineEnding
+                     + 'Connect to a SIX and a pump driver'  + LineEnding
+                     + 'to enable the button.';
 end;
 
 procedure TMainForm.ClosePumpSerialConn;
@@ -4469,7 +4441,6 @@ begin
   connectedPumpCOM:= '';
   connectedPumpDriver:= 0;
  end;
-
 end;
 
 function TMainForm.SaveHandling(InName: string; FileExt: string): string;

@@ -197,12 +197,12 @@ begin
      MessageDlgPos(MainForm.ConnComPortSensM.Lines[0]
       + ' error: ' + serSensor.LastErrorDesc,
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     MainForm.CloseLazSerialConn;
      MainForm.IndicatorSensorP.Caption:= 'Connection failiure';
      MainForm.IndicatorSensorP.Color:= clRed;
      MainForm.ConnComPortSensM.Color:= clRed;
      MainForm.StartTestBB.Enabled:= false;
      MainForm.StopTestBB.Enabled:= false;
-     MainForm.CloseLazSerialConn;
      MainForm.LoadSensorDataMI.Enabled:= true;
      exit;
     end;
@@ -232,13 +232,12 @@ begin
   MessageDlgPos('The access to the data file was lost!' + LineEnding
     + 'To restart you must call again the menu Connection -> SIX bisensors',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  MainForm.CloseLazSerialConn;
   MainForm.ConnComPortSensM.Color:= clRed;
   MainForm.IndicatorSensorP.Caption:= 'Connection lost';
   MainForm.IndicatorSensorP.Color:= clRed;
-  // disable all buttons
   MainForm.StartTestBB.Enabled:= false;
   MainForm.StopTestBB.Enabled:= false;
-  MainForm.CloseLazSerialConn;
   exit;
  end;
 
@@ -262,12 +261,12 @@ begin
     MessageDlgPos('The received last 100 bytes do not contain a stop bit.'
     + LineEnding + 'Try to reconnect to the SIX.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    MainForm.CloseLazSerialConn;
     MainForm.ConnComPortSensM.Color:= clRed;
     MainForm.IndicatorSensorP.Caption:= 'SIX error';
     MainForm.IndicatorSensorP.Color:= clRed;
     MainForm.StartTestBB.Enabled:= false;
     MainForm.StopTestBB.Enabled:= false;
-    MainForm.CloseLazSerialConn;
     exit;
    end;
   end;
@@ -352,13 +351,12 @@ begin
     MessageDlgPos(
      'Error: Could not read 25 bytes. Got only ' + IntToStr(Length(dataString)) + ' bytes.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MainForm.CloseLazSerialConn;
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
-   // disable all buttons
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn;
    exit;
   end;
  end;
@@ -403,12 +401,12 @@ begin
    MessageDlgPos('The received last 300 bytes do not contain a stop bit.'
     + LineEnding + 'Try to reconnect to the SIX.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MainForm.CloseLazSerialConn;
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.StartTestBB.Enabled:= false;
    MainForm.StopTestBB.Enabled:= false;
-   MainForm.CloseLazSerialConn;
    exit;
   end;
  end;
