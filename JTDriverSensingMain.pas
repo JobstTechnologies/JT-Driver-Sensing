@@ -2763,7 +2763,7 @@ end;
 
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
 begin
- // we can have thecase that a file is dropped while we cannot load a file
+ // we can have the case that a file is dropped while we cannot load a file
  if LoadSensorDataMI.enabled then
   ReadSensorData((Sender as TComponent).Name);
 end;
@@ -2778,12 +2778,14 @@ var
  MousePointer : TPoint;
  i, rowCounter, blankCounter, TempRow : integer;
  ChanDbl, ChanRawDbl : array [1..8] of double;
- temperature, time : double;
+ temperature, time, counter, previousCounter : double;
  isBlank : array [1..6] of Boolean;
  testArray : array of string = nil;
  Component : TComponent;
 begin
  // initialize
+ Result:= false;
+ previousCounter:= 0; // a valid file must begin with counter '1'
  MousePointer:= Mouse.CursorPos; // store mouse position
  TempRow:= -1;
  for i:= 1 to 8 do
@@ -2795,7 +2797,7 @@ begin
  // .def file loaded.
  // Since there is no optimal solution, the compromise is to read out
  // either only the raw values when RawCurrentCB is checked
- // otherwise the mmol values. In this chase portions without mmol values will
+ // otherwise the mmol values. In this case portions without mmol values will
  // be calculated using the default gain factors
 
  // only when file was loaded by the user
@@ -3007,6 +3009,28 @@ try
    end;
    continue;
   end;
+  // first read the counter because corrupted files might thave missing
+  // values and then following routines like calculating slopes would fail
+  if not TryStrToFloat(StringArray[0], counter) then
+  begin
+   MessageDlgPos('Counter in line ' + IntToStr(rowCounter) + ', row '
+    + IntToStr(TempRow+1) + ' cannot be converted to a number',
+    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+  // only when data should be appended
+  if (Input = 'none') and (counter > (previousCounter + 1)) then
+  begin
+   if previousCounter = 0 then
+    MessageDlgPos('There is no line with a counter "1"',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y)
+   else
+    MessageDlgPos('Counter in line ' + IntToStr(rowCounter)
+     + ' larger than previous counter + 1',
+     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+  previousCounter:= counter;
   // first read the temperature
   if not TryStrToFloat(StringArray[TempRow], temperature) then
   begin
@@ -4142,8 +4166,18 @@ begin
     // try to read the data from the file into the chart
     if ReadSensorData('none') = false then
     begin
-     MessageDlgPos('The input file contained no vaild sensor data.',
+     MessageDlgPos('The input file cannot be used to append sensor data.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     CloseLazSerialConn;
+     ConnComPortSensM.Text:= 'Not connected';
+     ConnComPortSensM.Color:= clHighlight;
+     IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
+     AnOutOnOffTB.Checked:= false;
+     AnOutOnOffTB.Enabled:= false;
+     AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                     + 'to the pump connectors.' + LineEnding
+                     + 'Connect to a SIX and a pump driver'  + LineEnding
+                     + 'to enable the button.';
      exit;
     end;
     // read second to last line from existing file to determine the last time
