@@ -2763,7 +2763,9 @@ end;
 
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
 begin
- ReadSensorData((Sender as TComponent).Name);
+ // we can have thecase that a file is dropped while we cannot load a file
+ if LoadSensorDataMI.enabled then
+  ReadSensorData((Sender as TComponent).Name);
 end;
 
 function TMainForm.ReadSensorData(Input: string) : Boolean;
