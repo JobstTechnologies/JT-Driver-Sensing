@@ -2755,7 +2755,10 @@ procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
 begin
  // disable if there is no connection to SIX or an action is running
  if (not HaveSerialSensor) or OverallTimer.Enabled then
+ begin
+  ChangeSensorDataFileMI.Enabled:= False; // just a safe guard
   Handled:= true;
+ end;
 end;
 
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
@@ -4242,6 +4245,8 @@ begin
 
  // we have now a valid file stream
  HaveSensorFileStream:= true;
+ // the file can now be changed
+ ChangeSensorDataFileMI.Enabled:= True;
 
  LoadedFileSensM.Color:= clActiveCaption;
  // show the full path as tooltip
@@ -4399,6 +4404,7 @@ begin
 
  ConnComPortSensM.Text:= 'Not connected';
  ConnComPortSensM.Color:= clHighlight;
+ ChangeSensorDataFileMI.Enabled:= False;
 end;
 
 procedure TMainForm.ClosePumpSerialConn;

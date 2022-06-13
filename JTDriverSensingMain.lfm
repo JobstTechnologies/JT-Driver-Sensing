@@ -10037,8 +10037,8 @@ object MainForm: TMainForm
       end
       object ChangeSensorDataFileMI: TMenuItem
         Caption = 'Change Sensor Data File'
+        Enabled = False
         ShortCut = 16451
-        Visible = False
         OnClick = ChangeSensFileMIClick
       end
     end

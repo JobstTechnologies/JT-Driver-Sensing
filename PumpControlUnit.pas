@@ -1672,6 +1672,7 @@ begin
   else // to restart timer every day
    MainForm.OverallTimer.Interval:= oneDay;
   MainForm.OverallTimer.Enabled:= True;
+  MainForm.ChangeSensorDataFileMI.Enabled:= False;
   // show first tab and start its timer
   MainForm.RepeatPC.ActivePage:= MainForm.Step1TS;
   MainForm.StepTimer1.Enabled:= true;
@@ -1757,6 +1758,7 @@ begin
  MainForm.StopTimer.Enabled:= True;
  MainForm.RunBB.Enabled:= False;
  MainForm.GenerateCommandBB.Enabled:= True;
+ MainForm.ChangeSensorDataFileMI.Enabled:= True;
  // stop all timers and reset captions
  for j:= 1 to StepNum do
  begin
@@ -1933,6 +1935,7 @@ begin
  MainForm.FirmwareResetMI.Enabled:= True;
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
+ MainForm.ChangeSensorDataFileMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
  if not MainForm.HasNoPumpsCB.Checked then
   MainForm.RunBB.Enabled:= HaveSerialPump
