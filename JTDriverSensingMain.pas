@@ -1023,6 +1023,10 @@ begin
   DropfileNameData:= '';
  end;
 
+ // initialize chart transformation before we can draw in chart, otherwise there
+ // would be an error when sensor data is load before chart is shown first time
+ SIXCH.Prepare;
+
  // setup the chart
  SIXControl.wasZoomDragged:= false;
  TopLine.Position:= Infinity;
