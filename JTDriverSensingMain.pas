@@ -2744,10 +2744,17 @@ end;
 
 procedure TMainForm.LoadedFileSensMChange(Sender: TObject);
 begin
- // just forward the properties to the counterpart of in the tab Test Settings
+ // forward the properties to the counterpart of in the tab Test Settings
  LoadedFileSensTestM.Text:= LoadedFileSensM.Text;
  LoadedFileSensTestM.Color:= LoadedFileSensM.Color;
  LoadedFileSensTestM.Hint:= LoadedFileSensM.Hint;
+
+ // update the main window title
+ if LoadedFileSensM.Text = 'None' then
+  MainForm.Caption:= 'JT Driver Sensing ' + Version
+ else
+  MainForm.Caption:= 'JT Driver Sensing ' + Version
+   + ' - Sensor data file: ' + LoadedFileSensM.Text + '.csv';
 end;
 
 procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
@@ -3208,7 +3215,9 @@ end;
 
  // at last display the file name as chart title
  SIXCH.Title.Text[0]:= ExtractFileName(InNameSensor);
- LoadedFileSensM.Text:= ExtractFileName(InNameSensor);
+ // update file name field and tooltip
+ LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
+ LoadedFileSensM.Hint:= InNameSensor;
 
 end;
 
