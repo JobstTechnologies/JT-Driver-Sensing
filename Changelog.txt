@@ -16,6 +16,7 @@ improvements:
 - SIX with current range of 250 and 500 nA are supported
 - new entry in File menu to change sensor data file
   (does the same as right-clicking on the field displaying the sensor data file)
+- add chart context menu item to auto scale chart
 
 bugfixes:
 - fix wrong time format in tooltips in the data graph
