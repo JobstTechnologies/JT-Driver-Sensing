@@ -66,6 +66,7 @@ type
     ChartAxisTransformTime: TChartAxisTransformations;
     GlucoseAvailChanL: TLabel;
     ChangeSensorDataFileMI: TMenuItem;
+    AutoscaleMI: TMenuItem;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
@@ -797,6 +798,7 @@ type
     procedure AnOutputOf4CBContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
     procedure AppearanceXBBClick(Sender: TObject);
+    procedure AutoscaleMIClick(Sender: TObject);
     procedure CalibrateTBChange(Sender: TObject);
     procedure ChangeBackColorMIClick(Sender: TObject);
     procedure ChangeSensFileMIClick(Sender: TObject);
@@ -1869,6 +1871,17 @@ end;
 procedure TMainForm.AppearanceXBBClick(Sender: TObject);
 begin
  SIXControl.SCAppearanceXBBClick(Sender);
+end;
+
+procedure TMainForm.AutoscaleMIClick(Sender: TObject);
+begin
+ SIXCH.AxisList[0].Range.UseMax:= False;
+ SIXCH.AxisList[0].Range.UseMin:= False;
+ SIXCH.BottomAxis.Range.UseMax:= false;
+ SIXCH.BottomAxis.Range.UseMin:= false;
+ // for the x-axis also te extent must be set
+ SIXCH.Extent.UseXMax:= false;
+ SIXCH.Extent.UseXMin:= false;
 end;
 
 procedure TMainForm.CalibrateTBChange(Sender: TObject);

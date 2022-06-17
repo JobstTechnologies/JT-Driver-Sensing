@@ -1155,8 +1155,11 @@ begin
      as TLineSeries).LinePen.Width:= 1;
    MainForm.SIXTempValues.LinePen.Width:= 1;
   end;
-  // zoom back to normal
+  // zoom back to normal and enable auto scale
   MainForm.SIXCH.ZoomFull;
+  MainForm.AutoscaleMI.Enabled:= true;
+  MainForm.SIXCH.Extent.UseXMax:= true;
+  MainForm.SIXCH.Extent.UseXMin:= true;
  end
  // if checked
  else
@@ -1171,6 +1174,11 @@ begin
   // for the x-axis also te extent must be set
   MainForm.SIXCH.Extent.UseXMax:= false;
   MainForm.SIXCH.Extent.UseXMin:= false;
+  // disable auto scale context menu item
+  MainForm.AutoscaleMI.Enabled:= false;
+  // Under ome unfreproducible circumstances the scall range is not taken
+  // into account. Therefore assure this by setting it again.
+  MainForm.ChartLiveView.ViewportSize:= MainForm.ScrollIntervalFSE.Value;
 
   // info: we cannot go back to LinePen width 2 here because this would have an
   // immediate effect. Thus first do it after the next scrolling occurs.

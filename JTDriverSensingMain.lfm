@@ -10328,6 +10328,10 @@ object MainForm: TMainForm
       Caption = 'Time in days'
       OnClick = TimeDayMIClick
     end
+    object AutoscaleMI: TMenuItem
+      Caption = 'Auto scale'
+      OnClick = AutoscaleMIClick
+    end
   end
   object ChartLiveView: TChartLiveView
     Chart = SIXCH
