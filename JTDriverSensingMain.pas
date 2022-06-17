@@ -2777,6 +2777,18 @@ begin
  // we can have the case that a file is dropped while we cannot load a file
  if LoadSensorDataMI.enabled then
   ReadSensorData((Sender as TComponent).Name);
+ // if the current tab is not the chart tab, we must explicitly
+ // reset the axis ranges to get all data displayed
+ if MainPC.ActivePage <> SIXValuesTS then
+ begin
+  SIXCH.AxisList[0].Range.UseMax:= false;
+  SIXCH.AxisList[0].Range.UseMin:= false;
+  SIXCH.AxisList[1].Range.UseMax:= false;
+  SIXCH.AxisList[1].Range.UseMin:= false;
+  // for the x-axis also te extent must be set
+  SIXCH.Extent.UseXMax:= false;
+  SIXCH.Extent.UseXMin:= false;
+ end;
 end;
 
 function TMainForm.ReadSensorData(Input: string) : Boolean;
