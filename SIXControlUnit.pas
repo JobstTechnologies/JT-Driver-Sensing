@@ -1168,6 +1168,9 @@ begin
   // therefore assure the range is not used
   MainForm.SIXCH.BottomAxis.Range.UseMax:= false;
   MainForm.SIXCH.BottomAxis.Range.UseMin:= false;
+  // for the x-axis also te extent must be set
+  MainForm.SIXCH.Extent.UseXMax:= false;
+  MainForm.SIXCH.Extent.UseXMin:= false;
 
   // info: we cannot go back to LinePen width 2 here because this would have an
   // immediate effect. Thus first do it after the next scrolling occurs.
