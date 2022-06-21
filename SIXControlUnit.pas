@@ -1364,9 +1364,10 @@ end;
 
 procedure TSIXControl.SCChannelXGBDblClick(Sender: TObject);
 var
- SenderName, Channel : string;
+ SenderName, Channel, HeaderLine : string;
  i : integer;
 begin
+ HeaderLine:= '';
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form 'ChannelxBB' and we need the x
  // so get the 8th character of the name
@@ -1385,13 +1386,16 @@ begin
    as TGroupBox).Caption:= NameSettingF.NameE.Text;
 
  // rename the chart legend accordingly if not channel 7 or 8
- if StrToInt(Channel) < 7 then
+ i:= StrToInt(Channel);
+ if i < 7 then
  begin
+  // update header line channel name
+  HeaderStrings[i]:= (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
   (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
-   (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+   HeaderStrings[i];
   if Started then
    (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
-    'Stable ' + (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
+    'Stable ' + HeaderStrings[i];
  end;
 
  // the channel operations might show the old channel name, thus update them
@@ -1412,6 +1416,38 @@ begin
   // we use the same legend name for Live and Result charts
   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
+ end;
+
+ // write a new header line to the output file
+ if HaveSensorFileStream then
+ begin
+  if MainForm.LoadedDefFileM.Text <> 'None' then
+  begin
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   // output all non-blank channels
+   for i:= 1 to SIXControl.NumChannels do
+    if not SIXControl.isBlank[i] then
+     HeaderLine:= HeaderLine + HeaderStrings[i] + ' [mM]' + #9;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9;
+   // for the raw values
+   for i:= 1 to SIXControl.NumChannels do
+    HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9;
+   HeaderLine:= HeaderLine + LineEnding;
+  end
+  else
+  begin
+   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
+   for i:= 1 to SIXControl.NumChannels do
+   begin
+    if i = StrToInt(Channel) then
+     HeaderLine:= HeaderLine + HeaderStrings[i] + ' [nA]' + #9
+    else
+     HeaderLine:= HeaderLine + 'Ch' + IntToStr(i) + ' [nA]' + #9;
+   end;
+   HeaderLine:= HeaderLine + 'Temp [deg C]' + #9 + LineEnding;
+  end;
+  // write line
+  SensorFileStream.Write(HeaderLine[1], Length(HeaderLine))
  end;
 
  // transfer content to testing tab
