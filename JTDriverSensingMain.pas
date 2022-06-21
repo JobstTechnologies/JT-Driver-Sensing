@@ -1896,7 +1896,8 @@ end;
 
 procedure TMainForm.ChangeSensFileMIClick(Sender: TObject);
 begin
- SIXControl.SCChangeSensFileMIClick(Sender);
+ // restart state aquisition with a new file
+ SIXBiosensorsStart(true);
 end;
 
 procedure TMainForm.ChannelXLEChange(Sender: TObject);
