@@ -676,7 +676,7 @@ object MainForm: TMainForm
           Left = 216
           Height = 80
           Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
-          Top = -8
+          Top = -10
           Width = 126
           AutoFill = True
           Caption = 'SIX Type'
@@ -717,7 +717,7 @@ object MainForm: TMainForm
         object PerformTestingGB: TGroupBox
           Left = 368
           Height = 80
-          Top = -8
+          Top = -10
           Width = 135
           Caption = 'Testing'
           ClientHeight = 60
@@ -10021,12 +10021,12 @@ object MainForm: TMainForm
     object FileMI: TMenuItem
       Caption = 'File'
       object LoadActionMI: TMenuItem
-        Caption = 'Load Pump Action'
+        Caption = 'Load Action File'
         ShortCut = 16460
         OnClick = LoadActionMIClick
       end
       object SaveActionMI: TMenuItem
-        Caption = 'Save Pump Action'
+        Caption = 'Save Action File'
         ShortCut = 16467
         OnClick = SaveActionMIClick
       end
