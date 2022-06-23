@@ -837,6 +837,7 @@ type
     procedure HasNoValvesCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
+    procedure InfoNoteClose(Sender: TObject; var CloseAction{%H-}: TCloseAction);
     procedure LineDragToolDrag(ASender: TDataPointDragTool;
       var AGraphPoint: TDoublePoint);
     procedure LineDragToolDragStart(ASender: TDataPointDragTool;
@@ -2611,6 +2612,16 @@ procedure TMainForm.IndicatorSensorPPaint(Sender: TObject);
 begin
  IndicatorSensorTestP.Color:= IndicatorSensorP.Color;
  IndicatorSensorTestP.Caption:= IndicatorSensorP.Caption;
+end;
+
+procedure TMainForm.InfoNoteClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+ // stop the permanent COM-port scan
+ ConnectionLost:= False;
+ // close connection to SIX and the sensor file stream
+ CloseLazSerialConn;
+ // turn off noise
+ NoSound;
 end;
 
 procedure TMainForm.LineDragToolDrag(ASender: TDataPointDragTool;

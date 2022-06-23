@@ -10140,6 +10140,7 @@ object MainForm: TMainForm
     TitleFont.Quality = fqCleartype
     TitleFont.Style = [fsBold]
     Visible = False
+    OnClose = InfoNoteClose
     Left = 1000
     Top = 136
   end

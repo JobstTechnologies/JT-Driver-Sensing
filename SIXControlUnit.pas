@@ -146,7 +146,6 @@ begin
 
  if ConnectionLost then
  begin
-  // TODO measure time needed for port scan
   BeginTime:= Now;
   MainForm.COMPortScan('SIX');
   // search the COM list if the SIX is listed there
@@ -300,8 +299,10 @@ begin
    MainForm.InfoNote.Color:= clRed;
    MainForm.InfoNote.Text:= 'The connection to the SIX device was lost!'
     + LineEnding + LineEnding + 'Please check the USB cable.' + LineEnding
-    + 'If it was acidentally unplugged, just plug it back in and the measurement'
-    + LineEnding + 'will continue automatically.';
+    + 'If it was acidentally unplugged, just plug it back in and the'
+    + LineEnding + 'measurement will continue automatically.' + LineEnding
+    + LineEnding + 'NOTE: if you close this dialog, an automatic reconnection'
+    + LineEnding + 'will no longer be possible!';
    MainForm.InfoNote.Title:= 'Connection to Sensor lost!';
    MainForm.InfoNote.ShowAtPos(MainForm.Left + 100, MainForm.Top + 100);
 
