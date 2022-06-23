@@ -1182,16 +1182,6 @@ object MainForm: TMainForm
           LineStyle = lsVertical
         end
       end
-      object SaveScreenshotLiveB: TButton
-        Left = 712
-        Height = 24
-        Top = 4
-        Width = 104
-        Anchors = [akTop, akRight]
-        Caption = 'Save Screenshot'
-        OnClick = SaveScreenshotLiveBClick
-        TabOrder = 1
-      end
       object LastShownP: TPanel
         Left = 936
         Height = 24
@@ -1200,17 +1190,17 @@ object MainForm: TMainForm
         Anchors = [akTop, akRight]
         BevelOuter = bvNone
         Caption = 'Last shown minutes in plot:'
-        TabOrder = 3
+        TabOrder = 2
       end
       object CalibrateP: TPanel
         Left = 58
         Height = 24
         Top = 4
-        Width = 104
+        Width = 224
         BevelOuter = bvNone
         ClientHeight = 24
-        ClientWidth = 104
-        TabOrder = 4
+        ClientWidth = 224
+        TabOrder = 3
         object CalibrateTB: TToggleBox
           Left = 0
           Height = 24
@@ -1224,6 +1214,15 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 0
         end
+        object SaveScreenshotLiveB: TButton
+          Left = 110
+          Height = 24
+          Top = 0
+          Width = 104
+          Caption = 'Save Screenshot'
+          OnClick = SaveScreenshotLiveBClick
+          TabOrder = 1
+        end
       end
       object ScrollViewP: TPanel
         Left = 846
@@ -1234,7 +1233,7 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         ClientHeight = 19
         ClientWidth = 94
-        TabOrder = 5
+        TabOrder = 4
         object ScrollViewCB: TCheckBox
           Left = 0
           Height = 19
@@ -1263,7 +1262,7 @@ object MainForm: TMainForm
         MaxValue = 100000
         MinValue = 0.1
         OnChange = ScrollIntervalFSEChange
-        TabOrder = 2
+        TabOrder = 1
         Value = 10
       end
     end
@@ -9538,7 +9537,7 @@ object MainForm: TMainForm
             Title.Caption = 'Time [min]'
             Title.LabelBrush.Style = bsClear
           end>
-        BackColor = clGray
+        BackColor = clMedGray
         Foot.Font.Color = clBlue
         Legend.Alignment = laTopLeft
         Legend.BackgroundBrush.Color = clSilver
