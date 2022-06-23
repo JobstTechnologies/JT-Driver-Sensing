@@ -4198,6 +4198,7 @@ begin
      end;
     // recreate a fresh new file stream
     SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenWrite or fmShareDenyNone);
+    HaveSensorFileStream:= true; // assures stream will be closed in case of error
     // go to its end
     SensorFileStream.Seek(0, soFromEnd);
     HeaderLine:= 'Appended: ';
@@ -4238,6 +4239,7 @@ begin
    SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
   except
    SensorFileStream.Free;
+   CloseLazSerialConn;
    LoadedFileSensM.Color:= clRed;
    LoadedFileSensM.Hint:= 'Sensor file could not be created or written';
    exit;
@@ -4293,6 +4295,7 @@ begin
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  except
   SensorFileStream.Free;
+  CloseLazSerialConn;
   LoadedFileSensM.Color:= clRed;
   LoadedFileSensM.Hint:= 'Writing to sensor file failed';
   exit;
