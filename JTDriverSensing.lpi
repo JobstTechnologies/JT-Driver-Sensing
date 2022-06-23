@@ -22,10 +22,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="9"/>
-      <RevisionNr Value="9"/>
-      <BuildNr Value="9"/>
+      <RevisionNr Value="10"/>
+      <BuildNr Value="1"/>
       <Attributes pvaPreRelease="True"/>
-      <StringTable CompanyName="Jobst Technologies" FileDescription="Program to control CCP1 pumps and to sense SIX biosensors" LegalCopyright="Jobst Technologies GmbH" ProductName="JT DriverSensing" ProductVersion="0.99.9"/>
+      <StringTable CompanyName="Jobst Technologies" FileDescription="Program to control CCP1 pumps and to sense SIX biosensors" LegalCopyright="Jobst Technologies GmbH" ProductName="JT DriverSensing" ProductVersion="0.99.10"/>
     </VersionInfo>
     <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>

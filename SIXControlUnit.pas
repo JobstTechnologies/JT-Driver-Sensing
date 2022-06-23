@@ -1157,8 +1157,8 @@ begin
   // zoom back to normal and enable auto scale
   MainForm.SIXCH.ZoomFull;
   MainForm.AutoscaleMI.Enabled:= true;
-  MainForm.SIXCH.Extent.UseXMax:= true;
-  MainForm.SIXCH.Extent.UseXMin:= true;
+  MainForm.SIXCH.BottomAxis.Range.UseMax:= false;
+  MainForm.SIXCH.BottomAxis.Range.UseMin:= false;
  end
  // if checked
  else
