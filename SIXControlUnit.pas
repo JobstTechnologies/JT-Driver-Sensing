@@ -85,7 +85,7 @@ var
   CSVOutName: string = '';
   Started: Boolean = false; // if Start was pressed or not
   Gains : array [1..6] of single; // the channel gains
-  GainsRaw : array [1..6] of double; // the default gains
+  GainsRaw : array [1..6] of single; // the default gains
   Subtracts : array [1..6] of integer; // the channel subtracts
   TemperGains : array [1..8] of single; // the used temperature gains
   TemperGainsSaved : array [1..8] of single; // the temperature gains from the definition file
@@ -469,6 +469,7 @@ begin
  MainForm.SIXTempLE.Text:= FloatToStr(RoundTo(temperature, -2));
 
  // get the raw values in nA
+ // purposely not with temperature correction
  for i:= 1 to NumChannels do
   ChanRawDbl[i]:= Chan[i] * GainsRaw[i] / 100;
 
@@ -2500,14 +2501,54 @@ end;
 
 procedure TSIXControl.SCNoTempCorrectionCBChange(Sender: TObject);
 var
- i : integer;
+ i, j : integer;
+ calcGains : array [1..6] of single;
 begin
+ // initialize
+ for i:= 1 to 6 do
+  calcGains[i]:= 1.0;
+
+ // recalculate the values in the plot
+ // Note: this will purposely not have any influence on the output .csv file
+
+ // first we need to calculate the value without the temperature correction
+ for i:= 1 to NumChannels do
+ begin
+  if not MainForm.RawCurrentCB.Checked then
+   // values are in mmol
+   calcGains[i]:= Gains[i]
+  else
+   // values are in nA
+   calcGains[i]:= GainsRaw[i];
+
+  for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).LastValueIndex do
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).YValue[j]:=
+     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).YValue[j] * 100 / calcGains[i]
+      * exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
+ end;
+
+ // now update the temperature gains
  for i:= 1 to 8 do
  begin
   if MainForm.NoTempCorrectionCB.Checked then
    TemperGains[i]:= 0
   else
    TemperGains[i]:= TemperGainsSaved[i];
+ end;
+
+ // finally recalculate the values in the plot using the new temperature gains
+ for i:= 1 to NumChannels do
+ begin
+  for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).LastValueIndex do
+   (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).YValue[j]:=
+     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).YValue[j] / 100 * calcGains[i]
+      / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
  end;
 end;
 
