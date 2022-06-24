@@ -10,6 +10,7 @@ object MainForm: TMainForm
   Color = clWindow
   Menu = MainMenu
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
   OnShow = FormShow

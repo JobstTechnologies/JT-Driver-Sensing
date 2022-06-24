@@ -828,6 +828,7 @@ type
     procedure DutyCycleXFSEChange(Sender: TObject);
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure CLBAddSeries(ASender: TChartListbox;
       ASeries: TCustomChartSeries; AItems: TChartLegendItems; var ASkip: Boolean);
@@ -1398,6 +1399,19 @@ end;
 procedure TMainForm.FirmwareResetMIClick(Sender: TObject);
 begin
  FirmwareUpdate(true); // forced update
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+ // if connected to SIX, ask
+ if HaveSerialSensor then
+ begin
+  if MessageDlg('A SIX is connected, do you really want to close?',
+        mtConfirmation, [mbYes]+[mbNo], 0, mbNo) = mrNo then
+   CanClose:= False
+  else
+   CanClose:= True;
+ end;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
