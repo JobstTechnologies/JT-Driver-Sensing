@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, Streamex, ExtCtrls, Spin, Buttons, LCLType, Registry, Process,
   Fileinfo, LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
-  TASeries, TATools, SpinEx, Types, TATextElements, TALegend,
+  TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
   SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
   TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
@@ -926,7 +926,8 @@ type
     function OpenActionFile(InputName: string): Boolean;
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
-    function ReadSensorData(Input: string): Boolean;
+    function ReadSensorData(Input: string;
+              out AppendMinute, AppendCounter: Int64): Boolean;
     procedure CloseLazSerialConn;
     procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
@@ -1208,7 +1209,7 @@ begin
   exit;
  end;
 
- if COMPort = '' then // user set no COM port or chanceled
+ if COMPort = '' then // user set no COM port or canceled
  begin
   if SerialUSBSelectionF.ModalResult = mrCancel then
    exit; // nothing needs to be done
@@ -2812,10 +2813,12 @@ begin
 end;
 
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
+var
+ AppendMinute, AppendCounter : Int64;
 begin
  // we can have the case that a file is dropped while we cannot load a file
  if LoadSensorDataMI.enabled then
-  ReadSensorData((Sender as TComponent).Name);
+  ReadSensorData((Sender as TComponent).Name, AppendMinute, AppendCounter);
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -2830,7 +2833,8 @@ begin
  end;
 end;
 
-function TMainForm.ReadSensorData(Input: string) : Boolean;
+function TMainForm.ReadSensorData(Input: string;
+          out AppendMinute, AppendCounter: Int64) : Boolean;
 // reads data out of sensor file
 var
  OpenFileStream : TFileStream;
@@ -2840,10 +2844,12 @@ var
  MousePointer : TPoint;
  i, rowCounter, blankCounter, TempRow : integer;
  ChanDbl, ChanRawDbl : array [1..8] of double;
- temperature, time, counter, previousCounter : double;
+ temperature, time : double;
+ counter, previousCounter : longint;
  isBlank : array [1..6] of Boolean;
  testArray : array of string = nil;
  Component : TComponent;
+ StartTime : TDateTime;
 begin
  // initialize
  Result:= false;
@@ -2886,8 +2892,17 @@ try
  OpenFileStream:= TFileStream.Create(InNameSensor, fmOpenRead);
  LineReader:= TStreamReader.Create(OpenFileStream);
 
- // read the first header line
+ // read the first header line that contains the creation time
  LineReader.ReadLine(ReadLine);
+ StringArray:= ReadLine.Split(' ');
+ StartTime:= EncodeDate(StrToInt(Copy(StringArray[1], 7, 4)),
+                        StrToInt(Copy(StringArray[1], 4, 2)),
+                        StrToInt(Copy(StringArray[1], 1, 2)));
+ StartTime:= StartTime +
+             EncodeTime(StrToInt(Copy(StringArray[2], 1, 2)),
+                        StrToInt(Copy(StringArray[2], 4, 2)),
+                        StrToInt(Copy(StringArray[2], 7, 2)),
+                        0);
 
  // now read the row description line
  // NOTE: the line ends with a tab, thus Length(StringArray) is larger than
@@ -3073,7 +3088,7 @@ try
   end;
   // first read the counter because corrupted files might thave missing
   // values and then following routines like calculating slopes would fail
-  if not TryStrToFloat(StringArray[0], counter) then
+  if not TryStrToInt(StringArray[0], counter) then
   begin
    MessageDlgPos('Counter in line ' + IntToStr(rowCounter) + ', row '
     + IntToStr(TempRow+1) + ' cannot be converted to a number',
@@ -3245,6 +3260,10 @@ try
     'Stable ' + (FindComponent('Channel' + IntToStr(i) + 'GB')
      as TGroupBox).Caption;
  end;
+
+ // to later append to right time, store the last found time and counter
+ AppendMinute:= MinutesBetween(Now, StartTime);
+ AppendCounter:= counter;
 
  Result:= true;
 
@@ -3915,17 +3934,19 @@ procedure TMainForm.SIXBiosensorsStart(Connected: Boolean);
 var
  Reg : TRegistry;
  i, k, COMNumber, COMIndex : integer;
+ AppendCounter, AppendMinute : Int64;
  MousePointer : TPoint;
  HeaderLine, ReturnName, LastLine, COMPort : string;
  dataArray : array[0..24] of byte;
  COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
- StringArray : TStringArray;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos;
  LastLine:= '';
  COMArray:= [''];
+ AppendCounter:= 0;
+ AppendMinute:= 0;
  // get the default gain for the raw values
  SetSIXFactors;
 
@@ -4050,7 +4071,7 @@ begin
    exit;
   end;
 
-  if COMPort = '' then // user set no COM port or chanceled
+  if COMPort = '' then // user set no COM port or canceled
   begin
    if SerialUSBSelectionF.ModalResult = mrCancel then
     exit; // nothing needs to be done
@@ -4197,7 +4218,7 @@ begin
    if FileExists(InNameSensor) then
    begin
     // try to read the data from the file into the chart
-    if ReadSensorData('none') = false then
+    if ReadSensorData('none', AppendMinute, AppendCounter) = false then
     begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -4226,26 +4247,19 @@ begin
     HaveSensorFileStream:= true; // assures stream will be closed in case of error
     // go to its end
     SensorFileStream.Seek(0, soFromEnd);
-    HeaderLine:= 'Appended: ';
-    // read the counters
-    StringArray:= LastLine.Split(#9);
-    if not TryStrToInt(StringArray[0], SIXControl.signalCounter) then
+    if AppendCounter < 2 then
     begin
-     MessageDlgPos('Either last line of input file does not start with an integer'
-      + LineEnding + 'or file contains not at least 3 complete data lines.',
+     MessageDlgPos('Either no line of the input file starts with an integer'
+      + LineEnding + 'or file contains not at least 2 complete data lines.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
       CloseLazSerialConn;
       IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
      exit;
-    end;
-    if not TryStrToFloat(StringArray[1], SIXControl.timeCounter) then
-    begin
-     MessageDlgPos('Last line of input file does not contain valid a time.',
-      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-     CloseLazSerialConn;
-     IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
-     exit;
-    end;
+    end
+    else
+     SIXControl.signalCounter:= AppendCounter;
+    SIXControl.timeCounter:= AppendMinute;
+    HeaderLine:= 'Appended: ';
    end
    else // new file
    begin

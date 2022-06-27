@@ -8,6 +8,8 @@ improvement:
 bugfix:
 - when changing if temperature correction is performed, all values in the chart
   must be recalculated 
+- when appending sensor data the time span between the last sensor data
+  and now is respected
 
 
 from version 0.998 to 0.999
