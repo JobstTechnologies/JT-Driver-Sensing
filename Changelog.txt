@@ -5,7 +5,7 @@ from version 0.999 to 0.999.1
 improvement:
 - on closing the program, ask the user when connected to a SIX if he really wants to
 
-bugfix:
+bugfixes:
 - when changing if temperature correction is performed, all values in the chart
   must be recalculated 
 - when appending sensor data the time span between the last sensor data
