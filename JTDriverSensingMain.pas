@@ -4466,6 +4466,8 @@ begin
 end;
 
 procedure TMainForm.CloseLazSerialConn;
+var
+ i : integer;
 begin
  // stop timer
  ReadTimer.Enabled:= false;
@@ -4483,6 +4485,10 @@ begin
   serSensor.free;
   HaveSerialSensor:= False;
   connectedSIX:= 0;
+  // empty all actual signal outputs
+  for i:= 1 to 8 do
+   (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
+    as TLabeledEdit).Text:= '';
  end;
 
  ConnComPortSensM.Text:= 'Not connected';
@@ -4581,7 +4587,7 @@ begin
    else
     DialogText:= 'Do you want to overwrite the existing file';
 
-   with CreateMessageDialog // MessageDlg with mbNo as default
+   with CreateMessageDialog
         (DialogText + LineEnding
              + ExtractFileName(OutNameTemp) + ' ?',
              mtWarning, [mbYes]+[mbNo]) do
