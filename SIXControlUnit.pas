@@ -1525,7 +1525,8 @@ begin
      as TLineSeries).YValue[j]:=
       (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
        as TLineSeries).YValue[j]
-       * exp(TemperGains[i] / 100 * (StrToFloat(MainForm.SIXTempLE.Text) - TemperGains[8]))
+       * exp(TemperGains[i] / 100
+             * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
        * GainsRaw[i] / Gains[i];
   end;
  end
