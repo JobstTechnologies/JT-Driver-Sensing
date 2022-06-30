@@ -4558,6 +4558,7 @@ begin
   for i:= 1 to 8 do
    (FindComponent('CurrChannel' + IntToStr(i) + 'LE')
     as TLabeledEdit).Text:= '';
+  SIXTempLE.Text:= '';
  end;
 
  ConnComPortSensM.Text:= 'Not connected';
