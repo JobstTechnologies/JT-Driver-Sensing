@@ -8039,7 +8039,7 @@ object MainForm: TMainForm
       object ActionsGB: TGroupBox
         Left = 552
         Height = 186
-        Top = 24
+        Top = 104
         Width = 148
         Caption = 'Actions'
         ClientHeight = 166
@@ -8122,7 +8122,7 @@ object MainForm: TMainForm
       object ValveSetupGB: TGroupBox
         Left = 552
         Height = 88
-        Top = 376
+        Top = 450
         Width = 148
         Caption = 'Valve Setup'
         ClientHeight = 68
@@ -8414,7 +8414,7 @@ object MainForm: TMainForm
       object PumpSetupGB: TGroupBox
         Left = 552
         Height = 88
-        Top = 220
+        Top = 296
         Width = 148
         Caption = 'Pump Setup'
         ClientHeight = 68
@@ -8458,7 +8458,7 @@ object MainForm: TMainForm
       object UseCalibGB: TGroupBox
         Left = 552
         Height = 50
-        Top = 316
+        Top = 392
         Width = 148
         Caption = 'Calibration'
         ClientHeight = 30
@@ -8474,6 +8474,38 @@ object MainForm: TMainForm
           ParentShowHint = False
           TabOrder = 0
         end
+      end
+      object DriverConnectionGB: TGroupBox
+        Left = 552
+        Height = 75
+        Top = 24
+        Width = 148
+        Caption = 'Connection'
+        ClientHeight = 55
+        ClientWidth = 144
+        TabOrder = 10
+        object DriverConnectBB: TBitBtn
+          Left = 8
+          Height = 39
+          Hint = 'Dis/connects to a pump driver'
+          Top = 4
+          Width = 126
+          Caption = 'Connect Driver'
+          OnClick = DriverConnectBBClick
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+        end
+      end
+      object HavePumpSerialCB: TCheckBox
+        Left = 560
+        Height = 19
+        Top = 560
+        Width = 165
+        Caption = 'HasPumpDriverConnection'
+        OnChange = HavePumpSerialCBChange
+        TabOrder = 11
+        Visible = False
       end
     end
     object TestSettingsTS: TTabSheet

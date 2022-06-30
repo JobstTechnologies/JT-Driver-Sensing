@@ -64,9 +64,12 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    HavePumpSerialCB: TCheckBox;
     GlucoseAvailChanL: TLabel;
     ChangeSensorDataFileMI: TMenuItem;
     AutoscaleMI: TMenuItem;
+    DriverConnectionGB: TGroupBox;
+    DriverConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
@@ -825,6 +828,7 @@ type
     procedure ConnComPortSensMChange(Sender: TObject);
     procedure ConnComPortSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
+    procedure DriverConnectBBClick(Sender: TObject);
     procedure DutyCycleXFSEChange(Sender: TObject);
     procedure EvalTimeFSEChange(Sender: TObject);
     procedure FirmwareResetMIClick(Sender: TObject);
@@ -836,6 +840,7 @@ type
     procedure CalibCLBItemClick(ASender{%H-}: TObject; AIndex{%H-}: Integer);
     procedure HasNoPumpsCBChange(Sender: TObject);
     procedure HasNoValvesCBChange(Sender: TObject);
+    procedure HavePumpSerialCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
     procedure IndicatorSensorPPaint(Sender: TObject);
     procedure InfoNoteClose(Sender: TObject; var CloseAction{%H-}: TCloseAction);
@@ -876,6 +881,7 @@ type
     procedure ScrollViewCBChange(Sender: TObject);
     procedure ChannelXGBDblClick(Sender: TObject);
     procedure PumpConnectionMIClick(Sender: TObject);
+    procedure PumpConnectionStart(Sender: TObject; Connect: Boolean);
     procedure FirmwareUpdateMIClick(Sender: TObject);
     procedure FormClose(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -949,7 +955,6 @@ var
   serSensor : TBlockSerial;
   COMListPumpDriver : array of Int32; // list with available pump drivers
   COMListSIX : array of Int32; // list with available SIX (list index is COM port number)
-  HaveSerialPump : Boolean = False;
   HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
   HaveSensorFileStream : Boolean = False;
@@ -1072,14 +1077,14 @@ begin
  for k:= 1 to PumpControl.PumpNum do
   command:= command + '0';
  command:= command + 'gLM500lM500G2R' + LineEnding;
- if HaveSerialPump then // the user set a COM port
+ if HavePumpSerialCB.Checked then // the user set a COM port
   try
    serPump.SendString(command);
    // purposely don't emit an error that the serial connection is no longer
    // since the program is closed anyway
   finally
    // close connection
-   if HaveSerialPump and (serPump.LastError <> 9997) then
+   if HavePumpSerialCB.Checked and (serPump.LastError <> 9997) then
    // we cannot close socket or free when the connection timed out
     ClosePumpSerialConn;
   end;
@@ -1096,6 +1101,11 @@ begin
 end;
 
 procedure TMainForm.PumpConnectionMIClick(Sender: TObject);
+begin
+ PumpConnectionStart(Sender, true); // always call to connect
+end;
+
+procedure TMainForm.PumpConnectionStart(Sender: TObject; Connect: Boolean);
 // opens the connection settings dialog and opens a connections according
 // to the dialog input
 var
@@ -1154,7 +1164,7 @@ begin
   else
   begin
    // if there is already a connection, display its port
-   if HaveSerialPump then
+   if HavePumpSerialCB.Checked then
      SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(connectedPumpCOM)
    else
     SerialUSBPortCB.ItemIndex:= -1;
@@ -1164,10 +1174,15 @@ begin
   if SerialUSBPortCB.ItemIndex > -1 then
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
 
-  // open connection dialog
-  ShowModal;
-  if ModalResult = mrOK then
-   COMPort:= SerialUSBPortCB.Text;
+  if Connect then
+  begin
+   // open connection dialog
+   ShowModal;
+   if ModalResult = mrOK then
+    COMPort:= SerialUSBPortCB.Text;
+  end
+  else
+   ModalResult:= mrNo;
 
  end; // end with with SerialUSBSelectionF
 
@@ -1192,7 +1207,7 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  if HaveSerialPump then
+  if HavePumpSerialCB.Checked then
   begin
    // stop pumps
    command:= '/0I';
@@ -1221,7 +1236,7 @@ begin
   IndicatorPumpP.Caption:= 'Connection failure';
   IndicatorPumpP.Color:= clRed;
   IndicatorPumpPPaint;
-  if HaveSerialPump then
+  if HavePumpSerialCB.Checked then
   begin
    // stop pumps
    command:= command + '/0I';
@@ -1243,9 +1258,9 @@ begin
   exit;
  end;
  // open new connection if not already available
- if not (HaveSerialPump and (COMPort = ConnComPortPumpLE.Text)) then
+ if not (HavePumpSerialCB.Checked and (COMPort = ConnComPortPumpLE.Text)) then
  try
-  if HaveSerialPump then
+  if HavePumpSerialCB.Checked then
    ClosePumpSerialConn;
   ConnComPortPumpLE.Color:= clHighlight;
   ConnComPortPumpLEChange;
@@ -1282,7 +1297,7 @@ begin
    ClosePumpSerialConn;
    exit;
   end;
-  HaveSerialPump:= True;
+  HavePumpSerialCB.Checked:= True;
   // output connected port
   ConnComPortPumpLE.Color:= clDefault;
   ConnComPortPumpLE.Text:= SerialUSBSelectionF.SerialUSBPortCB.Text;
@@ -1437,7 +1452,7 @@ procedure TMainForm.CalibCLBItemClick(ASender: TObject; AIndex: Integer);
 begin
  // we can allow to run the pumps since at least one series is selected
  // for calibration
- RunBB.Enabled:= (HaveSerialPump or HasNoPumpsCB.Checked);
+ RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
 end;
 
 procedure TMainForm.HasNoPumpsCBChange(Sender: TObject);
@@ -1448,6 +1463,14 @@ end;
 procedure TMainForm.HasNoValvesCBChange(Sender: TObject);
 begin
  PumpControl.PCHasNoValvesCBChange(Sender);
+end;
+
+procedure TMainForm.HavePumpSerialCBChange(Sender: TObject);
+begin
+ if HavePumpSerialCB.Checked then
+  DriverConnectBB.Caption:= 'Disconnect Driver'
+ else
+  DriverConnectBB.Caption:= 'Connect Driver';
 end;
 
 procedure TMainForm.FirmwareUpdate(forced: Boolean);
@@ -1548,7 +1571,7 @@ begin
    // therefore establish a new connection
    ClosePumpSerialConn;
    serPump:= TBlockSerial.Create;
-   HaveSerialPump:= True;
+   HavePumpSerialCB.Checked:= True;
    serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(COMPort);
    serPump.config(9600, 8, 'N', SB1, False, False);
@@ -1741,7 +1764,7 @@ begin
   // reconnect
   try
    serPump:= TBlockSerial.Create;
-   HaveSerialPump:= True;
+   HavePumpSerialCB.Checked:= True;
    serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(BootCOM);
    serPump.config(9600, 8, 'N', SB1, False, False);
@@ -2141,7 +2164,7 @@ begin
  CalibrationGB.Hint:= '';
  if not RunBB.Enabled then
  begin
-  RunBB.Enabled:= (haveSerialPump or HasNoPumpsCB.Checked);
+  RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
   RunBB.Hint:= 'Starts the pump action according to the current settings.'
    + LineEnding
    + 'To enable the button you must first connect to the pump driver'
@@ -2714,6 +2737,14 @@ procedure TMainForm.ConnComPortSensMContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
  Handled:= True;
+end;
+
+procedure TMainForm.DriverConnectBBClick(Sender: TObject);
+begin
+ if HavePumpSerialCB.Checked then
+  PumpConnectionStart(Sender, false) // call to disconnect
+ else
+  PumpConnectionStart(Sender, true);
 end;
 
 procedure TMainForm.LoadedActionFileMContextPopup(Sender: TObject;
@@ -3349,7 +3380,7 @@ procedure TMainForm.StopTimerFinished;
 // enable to execute new commands
 begin
  RunBB.Caption:= 'Run Pumps';
- RunBB.Enabled:= (HaveSerialPump or HasNoPumpsCB.Checked);
+ RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
  StopTimer.Enabled:= False;
 end;
 
@@ -3640,7 +3671,7 @@ begin
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end
     else
-     RunBB.Enabled:= (haveSerialPump or MainForm.HasNoPumpsCB.Checked); // might have been disabled before
+     RunBB.Enabled:= (HavePumpSerialCB.Checked or MainForm.HasNoPumpsCB.Checked); // might have been disabled before
    end
    // now the concentration values
    else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
@@ -4519,12 +4550,12 @@ end;
 
 procedure TMainForm.ClosePumpSerialConn;
 begin
- if HaveSerialPump then
+ if HavePumpSerialCB.Checked then
  begin
   // close connection
   serPump.CloseSocket;
   serPump.Free;
-  HaveSerialPump:= False;
+  HavePumpSerialCB.Checked:= False;
   connectedPumpCOM:= '';
   connectedPumpDriver:= 0;
  end;
@@ -4697,7 +4728,7 @@ begin
     ErrorCount:= 0;
 
     // exclude connected pump driver port
-    if HaveSerialPump and (PortName = connectedPumpCOM) then
+    if HavePumpSerialCB.Checked and (PortName = connectedPumpCOM) then
      continue;
 
     // if there is a connection, we can directly take the SIX number
@@ -4813,7 +4844,7 @@ begin
     // - if yes, we must directly take the driver number
     // since we cannot connect to an already connected port
     // - if not we must close the connection
-    if HaveSerialPump and (PortName = connectedPumpCOM) then
+    if HavePumpSerialCB.Checked and (PortName = connectedPumpCOM) then
     begin
      // to check the live state send a command
      try

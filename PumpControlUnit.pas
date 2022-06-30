@@ -1148,7 +1148,7 @@ begin
  else
   command:= command + LineEnding;
   // if we have an open serial connection, execute
- if HaveSerialPump then
+ if MainForm.HavePumpSerialCB.Checked then
  begin
   // disable the connection menu that the user cannot close
   // the conenction while the pumps are running
@@ -1423,7 +1423,7 @@ begin
   MainForm.StepTimer1.Enabled:= True;
   // when there are finite number of repeats PCRepeatTimerFinished
   // already just performed the calibation
-  if HaveSerialPump and
+  if MainForm.HavePumpSerialCB.Checked and
    (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
    // send repeat sequence to pump driver
    PCSendRepeatToPump;
@@ -1463,7 +1463,7 @@ begin
  // already just performed the calibation
 
  // send repeat sequence to pump driver
- if HaveSerialPump and
+ if MainForm.HavePumpSerialCB.Checked and
   (MainForm.RunEndlessCB.Checked or (MainForm.RepeatSE.Value > 0)) then
   PCSendRepeatToPump;
 
@@ -1545,7 +1545,7 @@ begin
   commandForRepeat:= command;
 
   // if we have a connection to the pump driver, execute
-  if HaveSerialPump then
+  if MainForm.HavePumpSerialCB.Checked then
   begin
    // disable the connection menu that the user cannot close
    // the conenction while the pumps are running
@@ -1722,7 +1722,7 @@ begin
  // execute
  MainForm.CommandM.Text:= command;
  command:= command + LineEnding;
- if HaveSerialPump then
+ if MainForm.HavePumpSerialCB.Checked then
  begin
   serPump.SendString(command);
   if serPump.LastError <> 0 then
@@ -1844,7 +1844,7 @@ end;
 procedure TPumpControl.PCSendRepeatToPump;
 // send command to pump driver
 begin
-  if HaveSerialPump then
+  if MainForm.HavePumpSerialCB.Checked then
   begin
    serPump.SendString(commandForRepeat);
    if serPump.LastError <> 0 then
@@ -1938,7 +1938,7 @@ begin
  MainForm.ChangeSensorDataFileMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
  if not MainForm.HasNoPumpsCB.Checked then
-  MainForm.RunBB.Enabled:= HaveSerialPump
+  MainForm.RunBB.Enabled:= MainForm.HavePumpSerialCB.Checked
  else
   MainForm.RunBB.Enabled:= true;
  MainForm.GenerateCommandBB.Enabled:= True;
@@ -1963,7 +1963,7 @@ begin
  command:= command + 'lR';
  // execute
  command:= command + LineEnding;
- if HaveSerialPump then
+ if MainForm.HavePumpSerialCB.Checked then
   serPump.SendString(command);
 
  // stop all timers and reset captions
@@ -2108,7 +2108,7 @@ begin
  else
  begin
   MainForm.PumpNumberSE.Value:= 1;
-  if not HaveSerialPump then
+  if not MainForm.HavePumpSerialCB.Checked then
    MainForm.RunBB.Enabled:= false;
  end;
 end;
@@ -2149,7 +2149,7 @@ begin
  MainForm.CalibEveryXStepsL2.Enabled:= AllowCalibEveryXSteps;
 
  // en/disable Run button
- if not HaveSerialPump then
+ if not MainForm.HavePumpSerialCB.Checked then
  begin
   if not MainForm.HasNoPumpsCB.Checked then
   begin
@@ -2352,7 +2352,8 @@ begin
  else
   // if value is zero, we don't recalibrate, thus can always allow to run
   found:= true;
- MainForm.RunBB.Enabled:= (found and (haveSerialPump or MainForm.HasNoPumpsCB.Checked));
+ MainForm.RunBB.Enabled:= (found and
+  (MainForm.HavePumpSerialCB.Checked or MainForm.HasNoPumpsCB.Checked));
 end;
 
 procedure TPumpControl.PCRepeatSEChange(Sender: TObject);
