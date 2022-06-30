@@ -1153,6 +1153,7 @@ begin
   // disable the connection menu that the user cannot close
   // the conenction while the pumps are running
   MainForm.PumpDriverMI.Enabled:= False;
+  MainForm.DriverConnectBB.Enabled:= False;
   MainForm.FirmwareUpdateMI.Enabled:= False;
   MainForm.FirmwareResetMI.Enabled:= False;
   // disable menu to load and save action files
@@ -1169,6 +1170,7 @@ begin
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.PumpDriverMI.Enabled:= True;
+   MainForm.DriverConnectBB.Enabled:= True;
    MainForm.RunBB.Enabled:= False;
    if serPump.LastError = 9997 then
    begin
@@ -1550,6 +1552,7 @@ begin
    // disable the connection menu that the user cannot close
    // the conenction while the pumps are running
    MainForm.PumpDriverMI.Enabled:= False;
+   MainForm.DriverConnectBB.Enabled:= False;
    MainForm.FirmwareUpdateMI.Enabled:= False;
    MainForm.FirmwareResetMI.Enabled:= False;
    // send the command
@@ -1563,6 +1566,7 @@ begin
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
     MainForm.PumpDriverMI.Enabled:= True;
+    MainForm.DriverConnectBB.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
     if serPump.LastError = 9997 then
     begin
@@ -1699,6 +1703,7 @@ var
 begin
  // re-enable the connection menu in every case
  MainForm.PumpDriverMI.Enabled:= True;
+ MainForm.DriverConnectBB.Enabled:= True;
  MainForm.FirmwareUpdateMI.Enabled:= True;
  MainForm.FirmwareResetMI.Enabled:= True;
  // re-enable menu to load and save action files
@@ -1734,6 +1739,7 @@ begin
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.PumpDriverMI.Enabled:= True;
+   MainForm.DriverConnectBB.Enabled:= True;
    if serPump.LastError = 9997 then
    begin
     MainForm.StopBB.Enabled:= False;
@@ -1856,6 +1862,7 @@ begin
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
     MainForm.PumpDriverMI.Enabled:= True;
+    MainForm.DriverConnectBB.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
     MainForm.ClosePumpSerialConn;
     exit;
@@ -1931,6 +1938,7 @@ begin
  MainForm.FinishTimePumpLE.Text:= finishTime;
  MainForm.OverallTimer.Enabled:= False;
  MainForm.PumpDriverMI.Enabled:= True;
+ MainForm.DriverConnectBB.Enabled:= True;
  MainForm.FirmwareUpdateMI.Enabled:= True;
  MainForm.FirmwareResetMI.Enabled:= True;
  MainForm.LoadActionMI.Enabled:= True;

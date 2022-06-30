@@ -1507,6 +1507,7 @@ begin
   // in this case no definition file is needed and the SIX connection
   // can be enabled
   MainForm.SIXBiosensorsMI.Enabled:= true;
+  MainForm.SIXConnectBB.Enabled:= true;
   MainForm.IndicatorSensorP.Color:= cldefault;
   // thus also clear the warning
   MainForm.IndicatorSensorP.Caption:= '';
@@ -1555,6 +1556,7 @@ begin
    MainForm.IndicatorSensorP.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
    MainForm.SIXBiosensorsMI.Enabled:= false;
+   MainForm.SIXConnectBB.Enabled:= false;
    // disable then also analog output
    MainForm.UseAnOutCB.Enabled:= false;
    MainForm.UseAnOutCB.Checked:= false;

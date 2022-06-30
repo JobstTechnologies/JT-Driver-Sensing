@@ -2156,6 +2156,7 @@ begin
  if HaveSerialSensorCB.Checked then
   StartTestBB.enabled:= true;
  SIXBiosensorsMI.enabled:= true;
+ SIXConnectBB.enabled:= true;
  NoSubtractBlankCB.enabled:= true;
  NoTempCorrectionCB.enabled:= true;
  UseAnOutCB.enabled:= true;
