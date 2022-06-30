@@ -4003,6 +4003,12 @@ begin
  // connect to SIX
  if not Connected then
  begin
+  // if no .def file loaded, issue file open dialog
+  // user can cancel it if he really does not like to have a .def file
+  if (not Disconnect) and (LoadedDefFileM.Text = 'None') then
+  begin
+   LoadDefBBClick((LoadDefBB as TObject));
+  end;
 
   // if no .def file loaded only raw values possible
   if LoadedDefFileM.Text = 'None' then
