@@ -2746,9 +2746,9 @@ end;
 procedure TMainForm.HaveSerialSensorCBChange(Sender: TObject);
 begin
  if HaveSerialSensorCB.Checked then
-  SIXConnectBB.Caption:= 'Disonnect from SIX'
+  SIXConnectBB.Caption:= 'Disonnect SIX'
  else
-  SIXConnectBB.Caption:= 'Connect to SIX';
+  SIXConnectBB.Caption:= 'Connect SIX';
 end;
 
 procedure TMainForm.SIXConnectBBClick(Sender: TObject);

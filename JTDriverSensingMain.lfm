@@ -200,16 +200,19 @@ object MainForm: TMainForm
         object LoadDefBB: TBitBtn
           Left = 128
           Height = 30
+          Hint = 'Loads a sensor definition file'
           Top = 37
           Width = 120
           Caption = 'Load definition file'
           OnClick = LoadDefBBClick
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 1
         end
         object UnloadDefBB: TBitBtn
           Left = 260
           Height = 30
-          Hint = 'Unloads the definition file'
+          Hint = 'Unloads sensor definition file'
           Top = 37
           Width = 64
           Caption = 'Unload'
@@ -225,8 +228,10 @@ object MainForm: TMainForm
           Hint = 'Dis/connects to a SIX biosensor'
           Top = 0
           Width = 120
-          Caption = 'Connect to SIX'
+          Caption = 'Connect SIX'
           OnClick = SIXConnectBBClick
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 3
         end
       end
