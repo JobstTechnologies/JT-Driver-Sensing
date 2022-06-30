@@ -64,12 +64,14 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    HaveSerialSensorCB: TCheckBox;
     HavePumpSerialCB: TCheckBox;
     GlucoseAvailChanL: TLabel;
     ChangeSensorDataFileMI: TMenuItem;
     AutoscaleMI: TMenuItem;
     DriverConnectionGB: TGroupBox;
     DriverConnectBB: TBitBtn;
+    SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
     LoadSensorDataMI: TMenuItem;
@@ -828,6 +830,8 @@ type
     procedure ConnComPortSensMChange(Sender: TObject);
     procedure ConnComPortSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
+    procedure HaveSerialSensorCBChange(Sender: TObject);
+    procedure SIXConnectBBClick(Sender: TObject);
     procedure DriverConnectBBClick(Sender: TObject);
     procedure DutyCycleXFSEChange(Sender: TObject);
     procedure EvalTimeFSEChange(Sender: TObject);
@@ -905,7 +909,7 @@ type
     procedure SaveActionMIClick(Sender: TObject);
     procedure ShowTempCBChange(Sender: TObject);
     procedure SIXBiosensorsMIClick(Sender: TObject);
-    procedure SIXBiosensorsStart(Connected: Boolean);
+    procedure SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
     procedure StartFitBClick(Sender: TObject);
@@ -955,7 +959,6 @@ var
   serSensor : TBlockSerial;
   COMListPumpDriver : array of Int32; // list with available pump drivers
   COMListSIX : array of Int32; // list with available SIX (list index is COM port number)
-  HaveSerialSensor : Boolean = False;
   SensorFileStream : TFileStream;
   HaveSensorFileStream : Boolean = False;
   InNamePump : string = ''; // name of loaded pump action file
@@ -1089,7 +1092,7 @@ begin
     ClosePumpSerialConn;
   end;
  // close connection to SIX
- if HaveSerialSensor and (serSensor.LastError <> 9997) then
+ if HaveSerialSensorCB.Checked and (serSensor.LastError <> 9997) then
   // we cannot close socket or free when the connection timed out
   CloseLazSerialConn;
 
@@ -1420,7 +1423,7 @@ end;
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
  // if connected to SIX, ask
- if HaveSerialSensor then
+ if HaveSerialSensorCB.Checked then
  begin
   if MessageDlg('A SIX is connected, do you really want to close?',
         mtConfirmation, [mbYes]+[mbNo], 0, mbNo) = mrNo then
@@ -1935,8 +1938,8 @@ end;
 
 procedure TMainForm.ChangeSensFileMIClick(Sender: TObject);
 begin
- // restart state aquisition with a new file
- SIXBiosensorsStart(true);
+ // restart aquisition with a new file
+ SIXBiosensorsStart(true, false);
 end;
 
 procedure TMainForm.ChannelXLEChange(Sender: TObject);
@@ -2036,7 +2039,7 @@ begin
  // RawCurrentCB must not be enabled when there are data loaded but
  // there is no connection to a SIX
  hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
-                        and (not haveSerialSensor));
+                        and (not HaveSerialSensorCB.Checked));
 
  if DropfileNameDef = '' then // no file was dropped into the General tab
  begin
@@ -2150,7 +2153,7 @@ begin
  // setup UI to start
  IndicatorSensorP.Color:= clDefault;
  IndicatorSensorP.Caption:= '';
- if HaveSerialSensor then
+ if HaveSerialSensorCB.Checked then
   StartTestBB.enabled:= true;
  SIXBiosensorsMI.enabled:= true;
  NoSubtractBlankCB.enabled:= true;
@@ -2284,7 +2287,7 @@ begin
  // RawCurrentCB must not be enabled when there are data loaded but
  // there is no connection to a SIX
  hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
-                        and (not haveSerialSensor));
+                        and (not HaveSerialSensorCB.Checked));
 
  // write a new header line to the output file if .def file was used
  if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None') then
@@ -2313,7 +2316,7 @@ begin
                       + 'sensor definition file is loaded';
  UseCalibCB.Checked:= false;
  // the values are then in nA
- if (not haveSerialSensor) or (not hasLoadedSensorData) then
+ if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
  begin
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
@@ -2737,6 +2740,22 @@ procedure TMainForm.ConnComPortSensMContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 begin
  Handled:= True;
+end;
+
+procedure TMainForm.HaveSerialSensorCBChange(Sender: TObject);
+begin
+ if HaveSerialSensorCB.Checked then
+  SIXConnectBB.Caption:= 'Disonnect from SIX'
+ else
+  SIXConnectBB.Caption:= 'Connect to SIX';
+end;
+
+procedure TMainForm.SIXConnectBBClick(Sender: TObject);
+begin
+ if HaveSerialSensorCB.Checked then
+  SIXBiosensorsStart(false, true) // call to disconnect
+ else
+  SIXBiosensorsStart(false, false);
 end;
 
 procedure TMainForm.DriverConnectBBClick(Sender: TObject);
@@ -3937,7 +3956,7 @@ end;
 procedure TMainForm.SIXBiosensorsMIClick(Sender: TObject);
 begin
  // start a new connection process
- SIXBiosensorsStart(false);
+ SIXBiosensorsStart(false, false); // always call to connect
 end;
 
 procedure TMainForm.SetSIXFactors;
@@ -3958,7 +3977,7 @@ for i:= 1 to SIXControl.NumChannels do
  end;
 end;
 
-procedure TMainForm.SIXBiosensorsStart(Connected: Boolean);
+procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
 // if Connected is true opens the connection settings dialog and opens a
 // connections according to the dialog input
 // in every case set the file to store the sensor data
@@ -4029,7 +4048,7 @@ begin
    end;
 
    // if there is already a connection, select its port
-   if HaveSerialSensor then
+   if HaveSerialSensorCB.Checked then
     SerialUSBPortCB.ItemIndex:=
      SerialUSBPortCB.Items.IndexOf('SIX ID #: ' + IntToStr(connectedSIX));
 
@@ -4050,7 +4069,7 @@ begin
    else
    begin
     // if there is already a connection, display its port
-    if HaveSerialSensor then
+    if HaveSerialSensorCB.Checked then
       SerialUSBPortCB.ItemIndex:=
        SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1])
     else
@@ -4063,20 +4082,25 @@ begin
    if SerialUSBPortCB.Text = '' then
     COMPort:= '';
 
-   // open connection dialog
-   // first change its appearance
-   SerialUSBPortL.Caption:= 'Select SIX device';
-   Caption:= 'SIX selection';
-   ShowModal;
-   // change appearance back
-   SerialUSBPortL.Caption:= 'Serial USB Port';
-   Caption:= 'Serial port selection';
-
-   if ModalResult = mrOK then
+   if not Disconnect then
    begin
-    COMPort:= SerialUSBPortCB.Text;
-    COMIndex:= SerialUSBPortCB.ItemIndex;
-   end;
+    // open connection dialog
+    // first change its appearance
+    SerialUSBPortL.Caption:= 'Select SIX device';
+    Caption:= 'SIX selection';
+    ShowModal;
+    // change appearance back
+    SerialUSBPortL.Caption:= 'Serial USB Port';
+    Caption:= 'Serial port selection';
+
+    if ModalResult = mrOK then
+    begin
+     COMPort:= SerialUSBPortCB.Text;
+     COMIndex:= SerialUSBPortCB.ItemIndex;
+    end;
+   end
+   else
+    ModalResult:= mrNo;
 
   end; // end with SerialUSBSelectionF
 
@@ -4089,7 +4113,7 @@ begin
    StartTestBB.Enabled:= false;
    StopTestBB.Enabled:= false;
    LoadSensorDataMI.Enabled:= true;
-   if HaveSerialSensor then
+   if HaveSerialSensorCB.Checked then
    begin
     CloseLazSerialConn;
     IndicatorSensorP.Caption:= 'SIX stopped';
@@ -4112,7 +4136,7 @@ begin
    StopTestBB.Enabled:= false;
    IndicatorSensorP.Caption:= 'Connection failure';
    IndicatorSensorP.Color:= clRed;
-   if HaveSerialSensor then
+   if HaveSerialSensorCB.Checked then
    begin
     CloseLazSerialConn;
     IndicatorSensorP.Caption:= 'SIX stopped';
@@ -4123,7 +4147,7 @@ begin
 
   COMPort:= COMArray[COMIndex];
   // open new connection if not already available
-  if not (HaveSerialSensor and (COMPort = ConnComPortSensM.Lines[0])) then
+  if not (HaveSerialSensorCB.Checked and (COMPort = ConnComPortSensM.Lines[0])) then
   try
    CloseLazSerialConn;
    // open the connection
@@ -4152,7 +4176,7 @@ begin
    end
    else
    begin
-    HaveSerialSensor:= True;
+    HaveSerialSensorCB.Checked:= True;
     COMNumber:= StrToInt(Copy(COMPort, 4, 4));
     connectedSIX:= COMListSIX[COMNumber];
    end;
@@ -4214,7 +4238,7 @@ begin
 
  // now open the file dialog to select the file to save the SIX data
  // if there is already a connection, display its port
- if not HaveSerialSensor then
+ if not HaveSerialSensorCB.Checked then
   InNameSensor:= '';
  ReturnName:= SaveHandling(InNameSensor, '.csv'); // opens file dialog
 
@@ -4523,12 +4547,12 @@ begin
   HaveSensorFileStream:= false;
   InNameSensor:= '';
  end;
- if HaveSerialSensor then
+ if HaveSerialSensorCB.Checked then
  begin
   // close connection
   serSensor.CloseSocket;
   serSensor.free;
-  HaveSerialSensor:= False;
+  HaveSerialSensorCB.Checked:= False;
   connectedSIX:= 0;
   // empty all actual signal outputs
   for i:= 1 to 8 do
@@ -4693,7 +4717,7 @@ begin
   begin
 
    // if connected, get the port number to exclude it from beeing connected
-   if HaveSerialSensor then
+   if HaveSerialSensorCB.Checked then
     for i:= 1 to Length(COMListSIX) -1 do
     begin
      if COMListSIX[i] = connectedSIX then
@@ -4732,7 +4756,7 @@ begin
      continue;
 
     // if there is a connection, we can directly take the SIX number
-    if HaveSerialSensor and (PortName = connectedPortNameSIX) then
+    if HaveSerialSensorCB.Checked and (PortName = connectedPortNameSIX) then
     begin
      Channel:= StrToInt(Copy(connectedPortNameSIX, 4, 4));
      COMListSIX[Channel]:= connectedSIX;

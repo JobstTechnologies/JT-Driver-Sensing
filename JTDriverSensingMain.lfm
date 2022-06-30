@@ -200,17 +200,17 @@ object MainForm: TMainForm
         object LoadDefBB: TBitBtn
           Left = 128
           Height = 30
-          Top = 17
-          Width = 125
+          Top = 37
+          Width = 120
           Caption = 'Load definition file'
           OnClick = LoadDefBBClick
           TabOrder = 1
         end
         object UnloadDefBB: TBitBtn
-          Left = 264
+          Left = 260
           Height = 30
           Hint = 'Unloads the definition file'
-          Top = 17
+          Top = 37
           Width = 64
           Caption = 'Unload'
           OnClick = UnloadDefBBClick
@@ -218,6 +218,16 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 2
           Visible = False
+        end
+        object SIXConnectBB: TBitBtn
+          Left = 128
+          Height = 30
+          Hint = 'Dis/connects to a SIX biosensor'
+          Top = 0
+          Width = 120
+          Caption = 'Connect to SIX'
+          OnClick = SIXConnectBBClick
+          TabOrder = 3
         end
       end
       object SixStatusGB: TGroupBox
@@ -959,6 +969,16 @@ object MainForm: TMainForm
         ParentShowHint = False
         ShowHint = True
         TabOrder = 12
+      end
+      object HaveSerialSensorCB: TCheckBox
+        Left = 8
+        Height = 19
+        Top = 496
+        Width = 125
+        Caption = 'HaveSerialSensorCB'
+        OnChange = HaveSerialSensorCBChange
+        TabOrder = 13
+        Visible = False
       end
     end
     object SIXValuesTS: TTabSheet

@@ -173,7 +173,7 @@ begin
      end;
     end;
 
-    HaveSerialSensor:= true;
+    MainForm.HaveSerialSensorCB.Checked:= true;
     ConnectionLost:= false;
     wasNoStopByte:= true; // to force a re-sync
     NoSound;
@@ -281,13 +281,13 @@ begin
    MainForm.IndicatorSensorP.Color:= clRed;
    //MainForm.StartTestBB.Enabled:= false;
    //MainForm.StopTestBB.Enabled:= false;
-   if HaveSerialSensor then
+   if MainForm.HaveSerialSensorCB.Checked then
    begin
     // close connection
     serSensor.CloseSocket;
     serSensor.free;
    end;
-   HaveSerialSensor:= False;
+   MainForm.HaveSerialSensorCB.Checked:= False;
    ConnectionLost:= true;
    lastInterval:= lastInterval + MainForm.ReadTimer.Interval / 60000;
    timeCounter:= timeCounter + lastInterval;
@@ -316,7 +316,7 @@ begin
 
  // will be the case if serSensor.LastError <> 0 since the exit there
  // only jumps out of the try finally block
- if not HaveSerialSensor then
+ if not MainForm.HaveSerialSensorCB.Checked then
   exit;
 
  // the are 3 different serial buffers:

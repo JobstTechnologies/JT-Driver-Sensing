@@ -1491,7 +1491,7 @@ var
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
   // if there should be a calibration but no sensor is connected, stop
-  if MainForm.UseCalibCB.Checked and (not haveSerialSensor) then
+  if MainForm.UseCalibCB.Checked and (not MainForm.HaveSerialSensorCB.Checked) then
   begin
    MessageDlgPos('The run sequence contains a calibration'
     + LineEnding + 'but no sensor is connected.',
@@ -1518,7 +1518,7 @@ begin
    CreateDir(ExtractFilePath(InNameDef) + 'DefinitionFiles\');
   end;
   // generate command
-  if haveSerialSensor then
+  if MainForm.HaveSerialSensorCB.Checked then
    CommandResult:= GenerateCommand(command, true)
   else
    CommandResult:= GenerateCommand(command);
