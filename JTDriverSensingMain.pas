@@ -4348,7 +4348,7 @@ begin
      finally
       Free;
      end;
-     if YesNo = mrYes then // ony Yes we need to do something
+     if YesNo = mrYes then // only for Yes we need to do something
      begin
       CloseLazSerialConn;
       IndicatorSensorP.Caption:= 'Connection aborted';
