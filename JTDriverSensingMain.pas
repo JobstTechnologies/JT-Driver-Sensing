@@ -936,8 +936,8 @@ type
     function OpenActionFile(InputName: string): Boolean;
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
-    function ReadSensorData(Input: string;
-              out AppendMinute, AppendCounter: Int64): Boolean;
+    function ReadSensorData(Input: string; out AppendMinute: Int64;
+              out AppendCounter: Int64; out LastDefFile: string): Boolean;
     procedure CloseLazSerialConn;
     procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
@@ -1426,7 +1426,7 @@ begin
  if HaveSerialSensorCB.Checked then
  begin
   if MessageDlg('A SIX is connected, do you really want to close?',
-        mtConfirmation, [mbYes]+[mbNo], 0, mbNo) = mrNo then
+                mtConfirmation, [mbYes]+[mbNo], 0, mbNo) = mrNo then
    CanClose:= False
   else
    CanClose:= True;
@@ -2866,10 +2866,12 @@ end;
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
 var
  AppendMinute, AppendCounter : Int64;
+ LastDefFile : string;
 begin
  // we can have the case that a file is dropped while we cannot load a file
  if LoadSensorDataMI.enabled then
-  ReadSensorData((Sender as TComponent).Name, AppendMinute, AppendCounter);
+  ReadSensorData((Sender as TComponent).Name,
+                 AppendMinute, AppendCounter, LastDefFile);
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -2884,8 +2886,8 @@ begin
  end;
 end;
 
-function TMainForm.ReadSensorData(Input: string;
-          out AppendMinute, AppendCounter: Int64) : Boolean;
+function TMainForm.ReadSensorData(Input: string; out AppendMinute: Int64;
+                   out AppendCounter: Int64; out LastDefFile: string) : Boolean;
 // reads data out of sensor file
 var
  OpenFileStream : TFileStream;
@@ -2906,6 +2908,7 @@ begin
  Result:= false;
  previousCounter:= 0; // a valid file must begin with counter '1'
  MousePointer:= Mouse.CursorPos; // store mouse position
+ LastDefFile:= 'None'; // there might not be any .def file
  TempRow:= -1;
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
@@ -2969,6 +2972,23 @@ try
   else
    LineReader.ReadLine(ReadLine);
   inc(rowCounter);
+
+  StringArray:= ReadLine.Split(' ');
+  if (StringArray[0] = 'Used') and (StringArray[1] = 'definition')
+   and (StringArray[2] = 'file:') then // we a line with name of .def file
+  begin
+   LastDefFile:= '';
+    // we can have spaces in the filename therefore concatenate all
+    for i:= 3 to Length(StringArray)-1 do
+    begin
+     LastDefFile:= LastDefFile + StringArray[i];
+     if i < (Length(StringArray) - 1) then
+      LastDefFile:= LastDefFile + ' ';
+    end;
+   RemovePadChars(LastDefFile, ['"']); // strip quotes
+   SetLength(LastDefFile, Length(LastDefFile) - 4); // without suffix '.def'
+   continue;
+  end;
 
   StringArray:= ReadLine.Split(#9);
   if StringArray[0] = 'Counter' then // we have a header line
@@ -3134,6 +3154,29 @@ try
       (MainForm.FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
        as TGroupBox).Caption:= testString;
      end;
+    continue;
+   end;
+   StringArray:= ReadLine.Split(' ');
+   if (StringArray[0] = 'Used') and (StringArray[1] = 'definition')
+    and (StringArray[2] = 'file:') then // we a line with name of .def file
+   begin
+    LastDefFile:= '';
+    // we can have spaces in the filename therefore concatenate all
+    for i:= 3 to Length(StringArray)-1 do
+    begin
+     LastDefFile:= LastDefFile + StringArray[i];
+     if i < (Length(StringArray) - 1) then
+      LastDefFile:= LastDefFile + ' ';
+    end;
+    RemovePadChars(LastDefFile, ['"']); // strip quotes
+    SetLength(LastDefFile, Length(LastDefFile) - 4); // without suffix '.def'
+    continue;
+   end;
+   if (StringArray[0] = 'Definition')
+    and (StringArray[1] = 'file:') then // .def file was unloaded
+   begin
+    LastDefFile:= 'None';
+    continue;
    end;
    continue;
   end;
@@ -3984,10 +4027,10 @@ procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
 // in every case set the file to store the sensor data
 var
  Reg : TRegistry;
- i, k, COMNumber, COMIndex : integer;
+ i, k, COMNumber, COMIndex, YesNo : integer;
  AppendCounter, AppendMinute : Int64;
  MousePointer : TPoint;
- HeaderLine, ReturnName, LastLine, COMPort : string;
+ HeaderLine, ReturnName, LastLine, COMPort, LastDefFile : string;
  dataArray : array[0..24] of byte;
  COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
@@ -3998,6 +4041,7 @@ begin
  COMArray:= [''];
  AppendCounter:= 0;
  AppendMinute:= 0;
+ LastDefFile:= 'None';
  // get the default gain for the raw values
  SetSIXFactors;
 
@@ -4280,13 +4324,37 @@ begin
    if FileExists(InNameSensor) then
    begin
     // try to read the data from the file into the chart
-    if ReadSensorData('none', AppendMinute, AppendCounter) = false then
+    if ReadSensorData('none', AppendMinute, AppendCounter, LastDefFile) = false then
     begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
-      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+                   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      CloseLazSerialConn;
      IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
      exit;
+    end;
+    if LastDefFile <> LoadedDefFileM.Text then
+    begin
+     with CreateMessageDialog
+        ('The input data file used the sensor definition file "' + LastDefFile + '"'
+         + LineEnding
+         + 'while the the currently loaded one is "' + LoadedDefFileM.Text + '".'
+         + LineEnding + LineEnding
+         + 'Do you want to load another data file or definition file' + LineEnding
+         + 'and then reconnect to the SIX?',
+         mtWarning, [mbYes]+[mbNo]) do
+     try
+      ActiveControl:= FindComponent('NO') as TWinControl;
+      YesNo:= ShowModal;
+     finally
+      Free;
+     end;
+     if YesNo = mrYes then // ony Yes we need to do something
+     begin
+      CloseLazSerialConn;
+      IndicatorSensorP.Caption:= 'Connection aborted';
+      IndicatorSensorP.Color:= clHighlight;
+      exit;
+     end;
     end;
     // read second to last line from existing file to determine the last time
     // the last line might be incomplete, thus the second to last
