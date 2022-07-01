@@ -2572,6 +2572,16 @@ try
  List.Add('PumpNumberSE.Value ' + IntToStr(MainForm.PumpNumberSE.Value));
  List.Add('ValveNumberSE.Value ' + IntToStr(MainForm.ValveNumberSE.Value));
 
+ // store last shown channels
+ List.Add('Channel1OnOffCB.Checked ' + BoolToStr(MainForm.Channel1OnOffCB.Checked));
+ List.Add('Channel2OnOffCB.Checked ' + BoolToStr(MainForm.Channel2OnOffCB.Checked));
+ List.Add('Channel3OnOffCB.Checked ' + BoolToStr(MainForm.Channel3OnOffCB.Checked));
+ List.Add('Channel4OnOffCB.Checked ' + BoolToStr(MainForm.Channel4OnOffCB.Checked));
+ List.Add('Channel5OnOffCB.Checked ' + BoolToStr(MainForm.Channel5OnOffCB.Checked));
+ List.Add('Channel6OnOffCB.Checked ' + BoolToStr(MainForm.Channel6OnOffCB.Checked));
+ List.Add('Channel7OnOffCB.Checked ' + BoolToStr(MainForm.Channel7OnOffCB.Checked));
+ List.Add('Channel8OnOffCB.Checked ' + BoolToStr(MainForm.Channel8OnOffCB.Checked));
+
  Chart:= MainForm.SIXCH;
  List.Add('Chart SIXCH');
 
@@ -2798,6 +2808,7 @@ var
  tempMultiplicity : TLegendMultiplicity;
  tempMarksStyle : TSeriesMarksStyle;
  tempPointerStyle : TSeriesPointerStyle;
+ Abool : Boolean;
 begin
 
  try
@@ -2813,7 +2824,7 @@ begin
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
   end;
-  // now readout the number of  valves
+  // readout the number of valves
   // also the valve line might not be there for older appearance files
   if TryStrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), i) then
@@ -2822,6 +2833,25 @@ begin
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
   end;
+  // readout the last shown channels
+  // also the channel lines might not be there for older appearance files
+  // therefore we cannot
+  if TryStrToBool(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), Abool) then
+  begin
+   MainForm.Channel1OnOffCB.Checked:= StrToBool(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   // we know now that there are 7 more lines
+   for i:= 2 to 8 do
+   begin
+    (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+      as TCheckBox).Checked:= StrToBool(
+          Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+    inc(m);
+   end;
+  end;
+
   // now read the chart properties
   Chart:= (MainForm.FindComponent(
            Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length))
