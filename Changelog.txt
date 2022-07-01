@@ -1,6 +1,6 @@
 Changes
 
-from version 0.999.1 to 1.0
+from version 0.999.1 to 1.0.0
 
 improvement:
 - on connecting to a SIX ask for a sensor definition file if not is yet loaded
