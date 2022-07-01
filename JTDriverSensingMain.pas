@@ -116,7 +116,7 @@ type
     ConnComPortSensM: TMemo;
     ConnComPortSensTestM: TMemo;
     ContextSensFilePM: TPopupMenu;
-    Label70: TLabel;
+    ConnComPortSensL: TLabel;
     Label71: TLabel;
     ChangeSensFileMI: TMenuItem;
     TimeMinuteMI: TMenuItem;
@@ -126,7 +126,7 @@ type
     ScrollIntervalFSE: TFloatSpinEdit;
     IndicatorAnOutP: TPanel;
     CalibrateTB: TToggleBox;
-    Label68: TLabel;
+    LoadedDefFileL: TLabel;
     Label69: TLabel;
     LoadedDefFileM: TMemo;
     LoadedDefFileTestM: TMemo;
@@ -146,7 +146,7 @@ type
     FirmwareResetMI: TMenuItem;
     IndicatorPumpGeneralP: TPanel;
     IndicatorSensorTestP: TPanel;
-    LoadedActionFileL: TLabel;
+    LoadedActionFileGeneraL: TLabel;
     Label67: TLabel;
     LoadedActionFileGeneralM: TMemo;
     LoadedFileSensTestM: TMemo;
@@ -264,7 +264,7 @@ type
     GeneralGB: TGroupBox;
     Channel7CB: TComboBox;
     EvalTimeFSE: TFloatSpinEdit;
-    Label1Ch8: TLabel;
+    Channel8L: TLabel;
     ReadTimer: TTimer;
     Channel4OnOffCB: TCheckBox;
     Channel4GB: TGroupBox;
@@ -282,8 +282,8 @@ type
     StartTestBB: TBitBtn;
     Channel7GB: TGroupBox;
     IndicatorSensorP: TPanel;
-    Label1Ch7: TLabel;
-    Label66: TLabel;
+    Channel7L: TLabel;
+    LoadedFileSensL: TLabel;
     LoadedFileSensM: TMemo;
     Channel2OnOffCB: TCheckBox;
     Channel1OnOffCB: TCheckBox;
@@ -385,7 +385,7 @@ type
     Label62: TLabel;
     Label63: TLabel;
     Label64: TLabel;
-    Label8: TLabel;
+    LoadedActionFileL: TLabel;
     LoadActionMI: TMenuItem;
     LoadedActionFileM: TMemo;
     Pump5DirectionRG1: TRadioGroup;

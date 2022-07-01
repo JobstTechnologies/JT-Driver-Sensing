@@ -278,7 +278,7 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 1
         end
-        object Label66: TLabel
+        object LoadedFileSensL: TLabel
           Left = 8
           Height = 15
           Top = 188
@@ -318,7 +318,7 @@ object MainForm: TMainForm
             TabOrder = 1
           end
         end
-        object Label68: TLabel
+        object LoadedDefFileL: TLabel
           Left = 7
           Height = 15
           Top = 120
@@ -357,7 +357,7 @@ object MainForm: TMainForm
           ReadOnly = True
           TabOrder = 4
         end
-        object Label70: TLabel
+        object ConnComPortSensL: TLabel
           Left = 8
           Height = 15
           Top = 54
@@ -413,7 +413,7 @@ object MainForm: TMainForm
           TabOrder = 1
           Text = 'mean(#2, #5)'
         end
-        object Label1Ch7: TLabel
+        object Channel7L: TLabel
           Left = 232
           Height = 15
           Top = 24
@@ -621,7 +621,7 @@ object MainForm: TMainForm
           TabOrder = 1
           Text = 'mean(#3, #6)'
         end
-        object Label1Ch8: TLabel
+        object Channel8L: TLabel
           Left = 232
           Height = 15
           Top = 24
@@ -952,7 +952,7 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 2
         end
-        object LoadedActionFileL: TLabel
+        object LoadedActionFileGeneraL: TLabel
           Left = 7
           Height = 15
           Top = 104
@@ -8013,7 +8013,7 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 6
         end
-        object Label8: TLabel
+        object LoadedActionFileL: TLabel
           Left = 7
           Height = 15
           Top = 104
