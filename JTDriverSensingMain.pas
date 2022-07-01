@@ -146,7 +146,7 @@ type
     FirmwareResetMI: TMenuItem;
     IndicatorPumpGeneralP: TPanel;
     IndicatorSensorTestP: TPanel;
-    Label65: TLabel;
+    LoadedActionFileL: TLabel;
     Label67: TLabel;
     LoadedActionFileGeneralM: TMemo;
     LoadedFileSensTestM: TMemo;
@@ -2137,11 +2137,6 @@ begin
  LoadedDefFileM.Text:= DummyString;
  LoadedDefFileM.Color:= clActiveCaption;
 
- // since the user purposely loaded a definition file we assume he doesn't
- // want to have values in nA
- if RawCurrentCB.Checked and (not hasLoadedSensorData) then
-  RawCurrentCB.Checked:= false;
-
  // the previous .def file might have had less channels defined
  // to calculate later the slopes fill the missing x-values of the new channels
  // with zeroes as y-values
@@ -2334,6 +2329,9 @@ begin
  // blanks cannot be subtracted anymore
  NoSubtractBlankCB.Checked:= false;
  NoSubtractBlankCB.Enabled:= false;
+ // temperature correction is not possible anymore
+ NoTempCorrectionCB.Checked:= false;
+ NoTempCorrectionCB.Enabled:= false;
  // there might be a calibration
  if MainForm.UseCalibCB.Checked then
   RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';

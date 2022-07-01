@@ -666,11 +666,10 @@ object MainForm: TMainForm
         object NoSubtractBlankCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'
+          Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'#13#10'(only available if definition file is loaded)'
           Top = 0
           Width = 163
           Caption = 'Don''t subtract blank values'
-          Enabled = False
           OnChange = NoSubtractBlankCBChange
           ParentShowHint = False
           ShowHint = True
@@ -720,11 +719,10 @@ object MainForm: TMainForm
         object NoTempCorrectionCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'
+          Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'#13#10'(only available if definition file is loaded)'
           Top = 48
           Width = 206
           Caption = 'Don''t apply temperature correction'
-          Enabled = False
           OnChange = NoTempCorrectionCBChange
           ParentShowHint = False
           ShowHint = True
@@ -954,7 +952,7 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 2
         end
-        object Label65: TLabel
+        object LoadedActionFileL: TLabel
           Left = 7
           Height = 15
           Top = 104
