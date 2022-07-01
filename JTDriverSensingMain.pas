@@ -1431,6 +1431,15 @@ begin
   else
    CanClose:= True;
  end;
+ // if action is running, ask
+ if OverallTimer.Enabled then
+ begin
+  if MessageDlg('An action is currently running, do you really want to close?',
+                mtConfirmation, [mbYes]+[mbNo], 0, mbNo) = mrNo then
+   CanClose:= False
+  else
+   CanClose:= True;
+ end;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
