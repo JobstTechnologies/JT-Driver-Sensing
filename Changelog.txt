@@ -8,6 +8,7 @@ improvement:
   menu entries an optional method to connect
 - when appending to existing data files, it is checked if the currently loaded
   definition file is the same than used for the data file
+- on closing the program, ask the user when action is running if he really wants to
 
 bugfixes:
 - when disconnecting from a SIX, empty the current temperature display
