@@ -4,7 +4,7 @@ from version 0.999.1 to 1.0.0
 
 improvement:
 - on connecting to a SIX ask for a sensor definition file if not is yet loaded
-- add buttons to connect to a pumpr driver and SIX so that the corresponding
+- add buttons to connect to a pump driver and SIX so that the corresponding
   menu entries an optional method to connect
 - when appending to existing data files, it is checked if the currently loaded
   definition file is the same than used for the data file
