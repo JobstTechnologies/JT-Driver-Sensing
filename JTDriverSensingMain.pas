@@ -1278,6 +1278,19 @@ begin
   serPump.Connect(COMPort);
   // the config must be set after the connection
   serPump.config(9600, 8, 'N', SB1, False, False);
+  if serPump.LastError <> 0 then
+  begin
+   // disable all buttons
+   RunBB.Enabled:= false;
+   StopBB.Enabled:= false;
+   IndicatorPumpP.Caption:= 'Connection failure';
+   IndicatorPumpP.Color:= clRed;
+   IndicatorPumpPPaint;
+   if serPump.LastError = 9997 then
+    exit; // we cannot close socket or free when the connection timed out
+   ClosePumpSerialConn;
+   exit;
+  end;
 
   // blink 5 times
   command:= '/0gLM500lM500G4R' + LineEnding;
