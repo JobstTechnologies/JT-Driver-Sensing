@@ -1202,8 +1202,8 @@ begin
                       + 'to the pump connectors.' + LineEnding
                       + 'Connect to a SIX and a pump driver'  + LineEnding
                       + 'to enable the button.';
-  if MainForm.RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
-   MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+  if RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
+   RunBB.Hint:= 'Starts the pump action according to the current settings.'
     + LineEnding
     + 'To enable the button you must first connect to the pump driver'
     + LineEnding + 'using the menu ''Connection''';
@@ -1911,7 +1911,7 @@ end;
 procedure TMainForm.AbortCalibrationMIClick(Sender: TObject);
 begin
  SIXControl.SCCalibrateTBChange(Sender, true);
- MainForm.AbortCalibrationMI.Visible:= false;
+ AbortCalibrationMI.Visible:= false;
 end;
 
 procedure TMainForm.AnOutConnectorXOnOffCBChange(Sender: TObject);
@@ -1986,15 +1986,15 @@ begin
  // all series except of SIXTempValues are connected to the left axis
  if SeriesName <> 'SIXTempValues' then
   AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+          [SIXCH.AxisList[1].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.X),
-           MainForm.SIXCH.AxisList[0].GetTransform.GraphToAxis(
+           SIXCH.AxisList[0].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.Y)])
  else
   AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+          [SIXCH.AxisList[1].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.X),
-           MainForm.SIXCH.AxisList[2].GetTransform.GraphToAxis(
+           SIXCH.AxisList[2].GetTransform.GraphToAxis(
             ATool.NearestGraphPoint.Y)])
 end;
 
@@ -2333,7 +2333,7 @@ begin
  NoTempCorrectionCB.Checked:= false;
  NoTempCorrectionCB.Enabled:= false;
  // there might be a calibration
- if MainForm.UseCalibCB.Checked then
+ if UseCalibCB.Checked then
   RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
 
  // store previous channel number and set to 6 channels
@@ -3048,7 +3048,7 @@ try
       testString:= testArray[0] + ' ' + testArray[1]
      else
       testString:= testArray[0];
-     (MainForm.FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
+     (FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
       as TGroupBox).Caption:= testString;
     end;
   end;
@@ -3158,7 +3158,7 @@ try
        testString:= testArray[0] + ' ' + testArray[1]
       else
        testString:= testArray[0];
-      (MainForm.FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
+      (FindComponent('Channel' + IntToStr(i-TempRow) + 'GB')
        as TGroupBox).Caption:= testString;
      end;
     continue;
@@ -3275,10 +3275,10 @@ try
   for i:= 1 to SIXControl.NumChannels do
   begin
    if RawCurrentCB.Checked then
-    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanRawDbl[i])
    else
-    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanDbl[i]);
   end;
 
@@ -3290,10 +3290,10 @@ try
    ChanRawDbl[i]:= 0.0;
    ChanDbl[i]:= 0.0;
    if RawCurrentCB.Checked then
-    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanRawDbl[i])
    else
-    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
      as TLineSeries).AddXY(time, ChanDbl[i]);
   end;
 
@@ -3310,21 +3310,21 @@ try
   begin
    // handle case that there are items are the item index is -1
    // (can occur depending on prior loaded .def files)
-   if ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+   if ((FindComponent('Channel' + IntToStr(i) + 'CB')
        as TComboBox).ItemIndex = -1)
-     and ((MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+     and ((FindComponent('Channel' + IntToStr(i) + 'CB')
                 as TComboBox).Items.Count > 0) then
-    (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+    (FindComponent('Channel' + IntToStr(i) + 'CB')
                 as TComboBox).ItemIndex:= 0;
-   if (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+   if (FindComponent('Channel' + IntToStr(i) + 'CB')
                 as TComboBox).ItemIndex > -1 then
    begin
-    Component:= (MainForm.FindComponent('Channel' + IntToStr(i) + 'CB')
+    Component:= (FindComponent('Channel' + IntToStr(i) + 'CB')
                 as TComboBox);
     SIXControl.SCChannelXCBChange(Component);
    end;
    // re-enable channel groupBoxes because they might have been diables
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+   (FindComponent('Channel' + IntToStr(i) + 'GB')
     as TGroupBox).Enabled:= True;
   end;
  end
@@ -3332,7 +3332,7 @@ try
  begin
   // disable channel operations
   for i:= 7 to 8 do
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+   (FindComponent('Channel' + IntToStr(i) + 'GB')
     as TGroupBox).Enabled:= False;
  end;
 
@@ -3340,13 +3340,13 @@ try
  if SIXControl.NumChannels < 6 then
  begin
   for i:=  SIXControl.NumChannels + 1 to 6 do
-   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+   (FindComponent('Channel' + IntToStr(i) + 'GB')
     as TGroupBox).Enabled:= False;
  end;
 
  // enable available channels
  for i:= 1 to SIXControl.NumChannels do
-  (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
+  (FindComponent('Channel' + IntToStr(i) + 'GB')
    as TGroupBox).Enabled:= True;
 
  // update chart legend according to channel names
@@ -3741,7 +3741,7 @@ begin
       mtWarning, [mbOK], 0, FormPointer.X, FormPointer.Y);
     end
     else
-     RunBB.Enabled:= (HavePumpSerialCB.Checked or MainForm.HasNoPumpsCB.Checked); // might have been disabled before
+     RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked); // might have been disabled before
    end
    // now the concentration values
    else if LeftStr(StringList[j], Length('Glucose:')) = 'Glucose:' then
