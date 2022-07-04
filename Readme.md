@@ -74,17 +74,19 @@ To update or upload a new firmware to a pump driver:
 - Use the menu *Miscellaneous → Pump Driver Firmware Update*.
 - Follow the steps provided by the software.
 
-You can get the latest firmware version as binary from here: https://github.com/JobstTechnologies/JT-PumpDriver-Firmware/releases
+You can get the latest firmware version as binary from [here](https://github.com/JobstTechnologies/JT-PumpDriver-Firmware/releases/latest).
 
 # Copyrights
 
 Copyright by Jobst Technologies.
 
-This project uses the Arduino tool **bossac**: https://github.com/arduino/arduino-flash-tools
+This project uses the Arduino tool [**bossac**](https://github.com/arduino/arduino-flash-tools).
 
 # Compilation
 
-- Install the **Lazarus** IDE: https://www.lazarus-ide.org/.</br>
+- Install the [**Lazarus** IDE](https://www.lazarus-ide.org/).</br>
   Note: You must use Lazarus 2.2.0 or newer.
+- Only for the first run of Lazarus:
+  - Open the menu *Package → Online Package Manager* and install there the packages **LazSerial** and **Synapse**.
 - Open the file *JTDriverSensing.lpi* in Lazarus.
 - Build the Lazarus project or run it.
