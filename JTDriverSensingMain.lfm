@@ -201,26 +201,13 @@ object MainForm: TMainForm
           Left = 128
           Height = 30
           Hint = 'Loads a sensor definition file'
-          Top = 37
+          Top = 36
           Width = 120
           Caption = 'Load definition file'
           OnClick = LoadDefBBClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
-        end
-        object UnloadDefBB: TBitBtn
-          Left = 260
-          Height = 30
-          Hint = 'Unloads sensor definition file'
-          Top = 37
-          Width = 64
-          Caption = 'Unload'
-          OnClick = UnloadDefBBClick
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 2
-          Visible = False
         end
         object SIXConnectBB: TBitBtn
           Left = 128
@@ -232,7 +219,7 @@ object MainForm: TMainForm
           OnClick = SIXConnectBBClick
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 3
+          TabOrder = 2
         end
       end
       object SixStatusGB: TGroupBox
@@ -656,10 +643,10 @@ object MainForm: TMainForm
         Left = 360
         Height = 92
         Top = 8
-        Width = 516
+        Width = 680
         Caption = 'Expert Settings'
         ClientHeight = 72
-        ClientWidth = 512
+        ClientWidth = 676
         ParentColor = False
         TabOrder = 8
         Visible = False
@@ -729,13 +716,13 @@ object MainForm: TMainForm
           TabOrder = 3
         end
         object PerformTestingGB: TGroupBox
-          Left = 368
+          Left = 530
           Height = 80
           Top = -10
-          Width = 135
+          Width = 139
           Caption = 'Testing'
           ClientHeight = 60
-          ClientWidth = 131
+          ClientWidth = 135
           ParentColor = False
           TabOrder = 4
           object PerformTestsCB: TCheckBox
@@ -764,6 +751,19 @@ object MainForm: TMainForm
             ShowHint = True
             TabOrder = 1
           end
+        end
+        object UnloadDefBB: TBitBtn
+          Left = 367
+          Height = 30
+          Hint = 'Unloads sensor definition file'
+          Top = 36
+          Width = 136
+          Caption = 'Unload definition file'
+          OnClick = UnloadDefBBClick
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+          Visible = False
         end
       end
       object Channel3GB: TGroupBox
@@ -10408,5 +10408,26 @@ object MainForm: TMainForm
     Top = 328
     object ValuesLinearTransform: TLinearAxisTransform
     end
+  end
+  object ImageList: TImageList
+    Left = 188
+    Top = 527
+    Bitmap = {
+      4C7A0200000010000000100000006B0000000000000078DAED92410A00200804
+      7B94FFEAFF273B09222AD61242E4C9833388EB18EF16CFC908DBC50BE7F1156F
+      C40BAB1DD18C7743DB6B47E6DBD93BE3911CD02CBBFEF0D7791113236C172F9C
+      C757BC112FAC764433DE0D6DAF1D996F67EF8C477240B3ECFAC3DBB5004D4EC2
+      8B
+    }
+    BitmapAdv = {
+      4C69010000004C7A020000002000000020000000D70000000000000078DAED96
+      5D0A00210884BB7147DF23B4F4B010D2CF48922DCE3C06CD6769694A14F53F95
+      9C4B547E6547E57F6C4FBE57FEDB737BF1B5F56F19A7966F592BD267E6297334
+      8BA18D11F15CBDC1919F5CEFED5F7922B9DDBDEB51EC686D59D51B9217F4FE4E
+      F5A0D37F82FC8FBCF9D1FAC12DFC1BE611CEA214455141F4A412965FD951F91F
+      DB93EF95FFF6DC5E7C6DFD5BC6A9E55BD68AF49979CA1CCD626863443C576F70
+      E427D77BFB579E486E77EF7A143B5A5B56F586E405BDBF533DE8F49F20FF236F
+      7EB47E700BFF867984B32845A9F50273939258
+    }
   end
 end

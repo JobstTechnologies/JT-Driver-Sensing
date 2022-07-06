@@ -71,6 +71,8 @@ type
     AutoscaleMI: TMenuItem;
     DriverConnectionGB: TGroupBox;
     DriverConnectBB: TBitBtn;
+    IconImage: TImage;
+    ImageList: TImageList;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -2074,7 +2076,6 @@ begin
    IndicatorSensorP.Caption:= 'No definition file loaded';
    LoadedDefFileM.Text:= 'None';
    LoadedDefFileM.ShowHint:= false;
-   LoadedDefFileM.Color:= clDefault;
    StartTestBB.enabled:= false;
    NoSubtractBlankCB.enabled:= false;
    NoTempCorrectionCB.enabled:= false;
@@ -2117,7 +2118,6 @@ begin
   IndicatorSensorP.Caption:= 'No definition file loaded';
   LoadedDefFileM.Text:= 'None';
   LoadedDefFileM.ShowHint:= false;
-  LoadedDefFileM.Color:= clDefault;
   StartTestBB.enabled:= false;
   NoSubtractBlankCB.enabled:= false;
   NoTempCorrectionCB.enabled:= false;
@@ -2148,7 +2148,6 @@ begin
  LoadedDefFileM.Hint:= InNameDef;
  // set Text after Hint since this change triggers the sync with the other tabs
  LoadedDefFileM.Text:= DummyString;
- LoadedDefFileM.Color:= clActiveCaption;
 
  // the previous .def file might have had less channels defined
  // to calculate later the slopes fill the missing x-values of the new channels
@@ -2323,7 +2322,6 @@ begin
  IndicatorSensorP.Color:= clDefault;
  IndicatorSensorP.Caption:= 'No definition file loaded';
  LoadedDefFileM.Text:= 'None';
- LoadedDefFileM.Color:= clDefault;
  LoadedDefFileM.ShowHint:= false;
  InNameDef:= '';
  StartTestBB.enabled:= false;
@@ -2764,11 +2762,36 @@ begin
 end;
 
 procedure TMainForm.HaveSerialSensorCBChange(Sender: TObject);
+var
+ IconFile : TIcon;
 begin
+ try
+  IconFile:= TIcon.Create;
+
  if HaveSerialSensorCB.Checked then
-  SIXConnectBB.Caption:= 'Disonnect SIX'
+ begin
+  SIXConnectBB.Caption:= 'Disonnect SIX';
+  ImageList.GetBitmap(1, IconImage.Picture.Bitmap);
+  Application.Icon.Assign(IconImage.Picture.Icon);
+  //Application.Icon.Current:= Application.Icon.GetBestIndexForSize(Size(32, 32));
+  IndicatorSensorP.Caption:= 'Measurement running';
+  IndicatorSensorP.Color:= clLime;
+ end
  else
+ begin
   SIXConnectBB.Caption:= 'Connect SIX';
+  ImageList.GetBitmap(0, IconImage.Picture.BitMap);
+  Application.Icon.Assign(IconImage.Picture.Graphic);
+  if LoadedFileSensM.Text <> 'None' then
+   MainForm.Caption:= 'JT Driver Sensing ' + Version
+   + ' - Sensor data file: ' + LoadedFileSensM.Text + '.csv'
+  else
+   MainForm.Caption:= 'JT Driver Sensing';
+ end;
+
+ finally
+  IconFile.Free;
+ end;
 end;
 
 procedure TMainForm.SIXConnectBBClick(Sender: TObject);
@@ -2851,7 +2874,6 @@ end;
 
 procedure TMainForm.LoadedDefFileMChange(Sender: TObject);
 begin
- LoadedDefFileTestM.Color:= LoadedDefFileM.Color;
  LoadedDefFileTestM.Text:= LoadedDefFileM.Text;
  LoadedDefFileTestM.ShowHint:= LoadedDefFileM.ShowHint;
  LoadedDefFileTestM.Hint:= LoadedDefFileM.Hint;
@@ -2868,8 +2890,12 @@ begin
  if LoadedFileSensM.Text = 'None' then
   MainForm.Caption:= 'JT Driver Sensing ' + Version
  else
+ begin
   MainForm.Caption:= 'JT Driver Sensing ' + Version
    + ' - Sensor data file: ' + LoadedFileSensM.Text + '.csv';
+  if HaveSerialSensorCB.Checked then
+   MainForm.Caption:= MainForm.Caption + ' (autosave, measurement running)';
+ end;
 end;
 
 procedure TMainForm.LoadedFileSensMContextPopup(Sender: TObject;
@@ -4256,8 +4282,6 @@ begin
    exit;
 
   ConnComPortSensM.Color:= clDefault;
-  IndicatorSensorP.Caption:= 'Connection successful';
-  IndicatorSensorP.Color:= clDefault;
   // output the connected port and SIX ID
   // we don't just add a line because this would add a linebreak so that a
   // third memo line would be shown and the memo size is designed for 2 lines
@@ -4320,6 +4344,7 @@ begin
  begin
   CloseLazSerialConn;
   IndicatorSensorP.Caption:= 'No Sensor Data File';
+  IndicatorSensorP.Color:= clHighlight;
   exit;
  end;
 
