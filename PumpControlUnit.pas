@@ -2215,9 +2215,13 @@ begin
   if PumpNum > 0 then
    // enable the specified number of pumps if the step is used
    for k:= 1 to PumpNum do
+   begin
     (MainForm.FindComponent('Pump' + IntToStr(k) + 'GB' + IntToStr(j))
      as TGroupBox).Enabled:= (MainForm.FindComponent('Step'
                               + IntToStr(j) + 'UseCB') as TCheckBox).checked;
+    (MainForm.FindComponent('Pump' + IntToStr(k) + 'GB' + IntToStr(j))
+     as TGroupBox).ShowHint:= true;
+   end;
   // disable non-existent pumps
   if k < 8 then
   begin
@@ -2227,6 +2231,8 @@ begin
      as TCheckBox).Checked:= false;
     (MainForm.FindComponent('Pump' + IntToStr(l) + 'GB' + IntToStr(j))
      as TGroupBox).Enabled:= false;
+    (MainForm.FindComponent('Pump' + IntToStr(l) + 'GB' + IntToStr(j))
+     as TGroupBox).ShowHint:= false;
    end;
   end;
   // show/hide the pumps 5-8 tab
