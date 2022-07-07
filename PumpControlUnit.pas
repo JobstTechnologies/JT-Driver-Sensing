@@ -2269,9 +2269,13 @@ begin
   k:= 1; // just to silence the compiler
   // enable the specified number of valves if the step is used
   for k:= 1 to ValveNum do
+  begin
    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
     as TRadioGroup).Enabled:= (MainForm.FindComponent('Step'
                                 + IntToStr(j) + 'UseCB') as TCheckBox).checked;
+   (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+    as TRadioGroup).ShowHint:= true;
+  end;
   // disable non-existent valves
   if k < 8 then
   begin
@@ -2281,6 +2285,8 @@ begin
      as TRadioGroup).ItemIndex:= 0;
     (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
      as TRadioGroup).Enabled:= false;
+    (MainForm.FindComponent('Valve' + IntToStr(k) + 'RG' + IntToStr(j))
+     as TRadioGroup).ShowHint:= false;
    end;
   end;
  end;
