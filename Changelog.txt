@@ -1,8 +1,18 @@
 Changes
 
+from version 1.0.0 to 1.1.0
+
+improvements:
+- when a SIX measurement is running, the application icon changes to green
+  to indicate this
+
+bugfix:
+- don't show hints how th change name for disabled pumps and valves
+
+
 from version 0.999.1 to 1.0.0
 
-improvement:
+improvements:
 - on connecting to a SIX ask for a sensor definition file if not is yet loaded
 - add buttons to connect to a pump driver and SIX so that the corresponding
   menu entries are now optional methods to connect
