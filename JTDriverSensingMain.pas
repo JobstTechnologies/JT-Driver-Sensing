@@ -71,8 +71,8 @@ type
     AutoscaleMI: TMenuItem;
     DriverConnectionGB: TGroupBox;
     DriverConnectBB: TBitBtn;
-    IconImage: TImage;
-    ImageList: TImageList;
+    IconImageBlue: TImage;
+    IconImageGreen: TImage;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -540,7 +540,7 @@ type
     S1P58: TTabSheet;
     ActionControlTS: TTabSheet;
     TotalTimeLE: TLabeledEdit;
-    Panel1: TPanel;
+    ActionCommandSplitter: TPanel;
     RunTime1FSE: TFloatSpinEdit;
     RunTime2FSE: TFloatSpinEdit;
     RunTime3FSE: TFloatSpinEdit;
@@ -2771,17 +2771,14 @@ begin
  if HaveSerialSensorCB.Checked then
  begin
   SIXConnectBB.Caption:= 'Disonnect SIX';
-  ImageList.GetBitmap(1, IconImage.Picture.Bitmap);
-  Application.Icon.Assign(IconImage.Picture.Icon);
-  //Application.Icon.Current:= Application.Icon.GetBestIndexForSize(Size(32, 32));
+  Application.Icon.Assign(IconImageGreen.Picture.Icon);
   IndicatorSensorP.Caption:= 'Measurement running';
   IndicatorSensorP.Color:= clLime;
  end
  else
  begin
   SIXConnectBB.Caption:= 'Connect SIX';
-  ImageList.GetBitmap(0, IconImage.Picture.BitMap);
-  Application.Icon.Assign(IconImage.Picture.Graphic);
+  Application.Icon.Assign(IconImageBlue.Picture.Icon);
   if LoadedFileSensM.Text <> 'None' then
    MainForm.Caption:= 'JT Driver Sensing ' + Version
    + ' - Sensor data file: ' + LoadedFileSensM.Text + '.csv'
