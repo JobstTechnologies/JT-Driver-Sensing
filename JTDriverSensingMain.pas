@@ -2986,7 +2986,16 @@ begin
  end;
 
 try
- OpenFileStream:= TFileStream.Create(InNameSensor, fmOpenRead);
+ try
+  OpenFileStream:= TFileStream.Create(InNameSensor, fmOpenRead or fmShareDenyNone);
+ except
+  on EFOpenError do
+  begin
+   MessageDlgPos('Sensor data file is used by another program and cannot be opened.',
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+ end;
  LineReader:= TStreamReader.Create(OpenFileStream);
 
  // read the first header line that contains the creation time
@@ -4372,6 +4381,7 @@ begin
                    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      CloseLazSerialConn;
      IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
+     IndicatorSensorP.Color:= clRed;
      exit;
     end;
     if LastDefFile <> LoadedDefFileM.Text then
@@ -4402,7 +4412,19 @@ begin
     // the last line might be incomplete, thus the second to last
     // Note: we purpusely don't use a TStreamReader because the files can be
     // very big. Instead we put the file into the memory and seek back.
-    SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenRead or fmShareDenyNone);
+    try
+     SensorFileStream:= TFileStream.Create(InNameSensor, fmOpenRead or fmShareDenyNone);
+    except
+     on EFOpenError do
+     begin
+      MessageDlgPos('Sensor data file is used by another program and cannot be opened.',
+                    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+      CloseLazSerialConn;
+      IndicatorSensorP.Caption:= 'Data File inaccessible';
+      IndicatorSensorP.Color:= clRed;
+      exit;
+     end;
+    end;
     SensorFileStream.Seek(-1*BufferSize, soFromEnd);
     SetLength(lastLine, BufferSize);
     SensorFileStream.Read(lastLine[1], BufferSize);

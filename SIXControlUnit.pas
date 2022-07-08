@@ -1851,11 +1851,13 @@ var
  gainFactor : single;
  i, oldItem : integer;
  StringArray : TStringArray;
+ MousePointer : TPoint;
  ppp : PChar;
  Component : TComponent = nil;
 begin
  // initialize
  result:= false;
+ MousePointer:= Mouse.CursorPos; // store mouse position
  // enable maybe previously disabled GroupBoxes
  for i:= 1 to 8 do
   (MainForm.FindComponent('Channel' + IntToStr(i) + 'GB')
@@ -1873,7 +1875,16 @@ begin
 
  // open file stream
  try
-  OpenFileStream:= TFileStream.Create(InFile, fmOpenRead);
+  try
+   OpenFileStream:= TFileStream.Create(InFile, fmOpenRead or fmShareDenyNone);
+  except
+   on EFOpenError do
+   begin
+    MessageDlgPos('Definition file is used by another program and cannot be opened.',
+                  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    exit;
+   end;
+  end;
   LineReader:= TStreamReader.Create(OpenFileStream);
 
   // read first line
