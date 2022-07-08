@@ -132,6 +132,7 @@ object ChartTitleFootFrame: TChartTitleFootFrame
       EditLabel.Height = 15
       EditLabel.Width = 360
       EditLabel.Caption = 'Text'
+      EditLabel.ParentColor = False
       TabOrder = 0
       OnChange = leTextChange
     end

@@ -20,6 +20,7 @@ object ChartPointerFrame: TChartPointerFrame
     Caption = 'Pointer style'
     Color = clForm
     Font.Style = [fsBold]
+    ParentColor = False
     ParentFont = False
     Transparent = False
   end
@@ -69,6 +70,7 @@ object ChartPointerFrame: TChartPointerFrame
       BorderSpacing.Left = 8
       Caption = 'Size'
       FocusControl = sePointerSize
+      ParentColor = False
     end
     object sePointerSize: TSpinEdit
       AnchorSideLeft.Side = asrBottom

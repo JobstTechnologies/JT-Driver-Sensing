@@ -116,6 +116,7 @@ object ChartSeriesFrame: TChartSeriesFrame
         Top = 62
         Width = 71
         Caption = 'Legend items'
+        ParentColor = False
       end
     end
     object gbMarks: TGroupBox
@@ -146,6 +147,7 @@ object ChartSeriesFrame: TChartSeriesFrame
         Width = 25
         BorderSpacing.Left = 8
         Caption = 'Style'
+        ParentColor = False
       end
       object cbMarksStyle: TComboBox
         AnchorSideLeft.Control = edMarksFormat
@@ -188,6 +190,7 @@ object ChartSeriesFrame: TChartSeriesFrame
         Top = 37
         Width = 38
         Caption = 'Format'
+        ParentColor = False
       end
       object edMarksFormat: TEdit
         AnchorSideLeft.Control = Label2

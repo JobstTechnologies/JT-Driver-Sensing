@@ -193,6 +193,7 @@ object ChartLegendFrame: TChartLegendFrame
         Top = 67
         Width = 32
         Caption = 'Width'
+        ParentColor = False
       end
       object lblPenStyle: TLabel
         AnchorSideTop.Control = cbBorderStyle
@@ -202,6 +203,7 @@ object ChartLegendFrame: TChartLegendFrame
         Top = 37
         Width = 25
         Caption = 'Style'
+        ParentColor = False
       end
     end
     object gbFont: TGroupBox
@@ -357,6 +359,7 @@ object ChartLegendFrame: TChartLegendFrame
         BorderSpacing.Right = 8
         Caption = 'X'
         FocusControl = seMarginX
+        ParentColor = False
       end
       object seMarginX: TSpinEdit
         AnchorSideTop.Control = gbMargins
@@ -386,6 +389,7 @@ object ChartLegendFrame: TChartLegendFrame
         BorderSpacing.Right = 8
         Caption = 'Y'
         FocusControl = seMarginY
+        ParentColor = False
       end
       object seMarginY: TSpinEdit
         AnchorSideTop.Control = seMarginX
@@ -461,6 +465,7 @@ object ChartLegendFrame: TChartLegendFrame
         BorderSpacing.Right = 8
         Caption = 'Columns'
         FocusControl = seColumns
+        ParentColor = False
       end
       object lblItemFillOrder: TLabel
         AnchorSideLeft.Control = cbInverted
@@ -474,6 +479,7 @@ object ChartLegendFrame: TChartLegendFrame
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Right = 8
         Caption = 'Item fill order'
+        ParentColor = False
       end
       object cbItemFillOrder: TComboBox
         AnchorSideTop.Control = seColumns
@@ -528,6 +534,7 @@ object ChartLegendFrame: TChartLegendFrame
         BorderSpacing.Right = 8
         Caption = 'Spacing'
         FocusControl = seSpacing
+        ParentColor = False
       end
       object seSymbolWidth: TSpinEdit
         AnchorSideTop.Control = seSpacing
@@ -560,6 +567,7 @@ object ChartLegendFrame: TChartLegendFrame
         BorderSpacing.Right = 8
         Caption = 'Symbol width'
         FocusControl = seSymbolWidth
+        ParentColor = False
       end
     end
   end

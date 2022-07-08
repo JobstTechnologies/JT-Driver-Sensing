@@ -11,7 +11,7 @@ object ChartAxisEditor: TChartAxisEditor
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.0.2'
+  LCLVersion = '2.2.2.0'
   object ButtonPanel: TButtonPanel
     Left = 6
     Height = 34

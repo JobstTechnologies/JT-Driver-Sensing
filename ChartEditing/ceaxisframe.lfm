@@ -68,6 +68,7 @@ object ChartAxisFrame: TChartAxisFrame
           Width = 21
           BorderSpacing.Top = 2
           Caption = 'Text'
+          ParentColor = False
         end
         object mmoTitle: TMemo
           AnchorSideLeft.Control = lblTitle
@@ -200,6 +201,7 @@ object ChartAxisFrame: TChartAxisFrame
           Width = 45
           Caption = 'Distance'
           FocusControl = seTitleDistance
+          ParentColor = False
         end
         object seTitleDistance: TSpinEdit
           AnchorSideLeft.Control = lblTitleDistance
@@ -392,6 +394,7 @@ object ChartAxisFrame: TChartAxisFrame
           Top = 31
           Width = 38
           Caption = 'Format'
+          ParentColor = False
         end
         object seLabelDistance: TSpinEdit
           AnchorSideLeft.Control = edLabelFormat
@@ -418,6 +421,7 @@ object ChartAxisFrame: TChartAxisFrame
           Width = 45
           Caption = 'Distance'
           FocusControl = seLabelDistance
+          ParentColor = False
         end
       end
       object Bevel2: TBevel
@@ -490,6 +494,7 @@ object ChartAxisFrame: TChartAxisFrame
           Width = 67
           BorderSpacing.Left = 16
           Caption = 'Outer length'
+          ParentColor = False
         end
         object lblTickInnerLength: TLabel
           AnchorSideLeft.Control = lblTickLength
@@ -500,6 +505,7 @@ object ChartAxisFrame: TChartAxisFrame
           Top = 37
           Width = 64
           Caption = 'Inner length'
+          ParentColor = False
         end
         object cbTickColor: TColorButton
           AnchorSideTop.Side = asrCenter
@@ -652,6 +658,7 @@ object ChartAxisFrame: TChartAxisFrame
           Top = 39
           Width = 61
           Caption = 'Base length'
+          ParentColor = False
         end
         object lblArrowLength: TLabel
           AnchorSideLeft.Control = cbArrowVisible
@@ -662,6 +669,7 @@ object ChartAxisFrame: TChartAxisFrame
           Top = 70
           Width = 37
           Caption = 'Length'
+          ParentColor = False
         end
         object lblArrowWidth: TLabel
           AnchorSideLeft.Control = cbArrowVisible
@@ -672,6 +680,7 @@ object ChartAxisFrame: TChartAxisFrame
           Top = 101
           Width = 32
           Caption = 'Width'
+          ParentColor = False
         end
         object seArrowBaseLength: TSpinEdit
           AnchorSideLeft.Control = lblArrowBaseLength

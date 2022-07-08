@@ -237,6 +237,7 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       Top = 67
       Width = 32
       Caption = 'Width'
+      ParentColor = False
     end
     object lblPenStyle: TLabel
       AnchorSideTop.Control = cbBorderStyle
@@ -246,6 +247,7 @@ object ChartShapeBrushPenMarginsFrame: TChartShapeBrushPenMarginsFrame
       Top = 37
       Width = 25
       Caption = 'Style'
+      ParentColor = False
     end
     object cmbShape: TComboBox
       AnchorSideLeft.Control = cbShowBorder

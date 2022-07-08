@@ -38,6 +38,7 @@ object ChartBrushFrame: TChartBrushFrame
     Top = 5
     Width = 25
     Caption = 'Style'
+    ParentColor = False
   end
   object cbBrushColor: TColorButton
     AnchorSideLeft.Side = asrBottom
