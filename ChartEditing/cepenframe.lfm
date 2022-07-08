@@ -36,6 +36,7 @@ object ChartPenFrame: TChartPenFrame
     Top = 4
     Width = 25
     Caption = 'Style'
+    ParentColor = False
   end
   object cbPenWidth: TChartComboBox
     AnchorSideLeft.Control = lblPenWidth
@@ -45,6 +46,7 @@ object ChartPenFrame: TChartPenFrame
     AnchorSideRight.Control = Bevel1
     Left = 48
     Height = 22
+    Hint = 'Note: For performance reasons the line width'#13#10' is only used for the Scrolling View'
     Top = 30
     Width = 128
     Mode = ccmPenWidth
@@ -55,6 +57,8 @@ object ChartPenFrame: TChartPenFrame
     BorderSpacing.Top = 8
     ItemHeight = 16
     ItemIndex = 0
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 1
     OnChange = cbPenWidthChange
   end
@@ -66,6 +70,7 @@ object ChartPenFrame: TChartPenFrame
     Top = 34
     Width = 32
     Caption = 'Width'
+    ParentColor = False
   end
   object cbPenColor: TColorButton
     AnchorSideLeft.Side = asrBottom
