@@ -4492,7 +4492,7 @@ begin
  end;
 
  // write header lines
- HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy, hh:nn:ss', now) + LineEnding;
+ HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy hh:nn:ss', now) + LineEnding;
  if LoadedDefFileM.Text = 'None' then
  begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
