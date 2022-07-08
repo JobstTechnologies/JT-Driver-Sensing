@@ -1876,7 +1876,9 @@ begin
  // open file stream
  try
   try
-   OpenFileStream:= TFileStream.Create(InFile, fmOpenRead or fmShareDenyNone);
+   // purposely open with write access to assure that no other program can modify it
+   // while it is in use
+   OpenFileStream:= TFileStream.Create(InFile, fmOpenReadWrite);
   except
    on EFOpenError do
    begin
