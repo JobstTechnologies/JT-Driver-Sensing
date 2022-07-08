@@ -3929,7 +3929,10 @@ var
  CommandResult: Boolean;
  k : integer;
  selectedSeries : TChartSeries;
+ MousePointer : TPoint;
 begin
+ MousePointer:= Mouse.CursorPos; // store mouse position
+
  // generate command according to current settings
  CommandResult:= PumpControl.GenerateCommand(command);
  // if GenerateCommand returns e.g. a too long time do nothing
@@ -3940,15 +3943,37 @@ begin
  OutName:= SaveHandling(InNamePump, '.PDAction'); // opens file dialog
  if OutName <> '' then
  begin
-  try
-   if FileExists(OutName) then
+  if FileExists(OutName) then
+  begin
+   try
+    SaveFileStream:= TFileStream.Create(OutName, fmOpenReadWrite);
+   except
+    on EFOpenError do
     begin
-     SaveFileStream:= TFileStream.Create(OutName, fmOpenReadWrite);
-     // the new command might be shorter, therefore delete its content
-     SaveFileStream.Size:= 0;
-    end
-   else
+     MessageDlgPos('Action file is used by another program and cannot be opened.',
+                   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+   end;
+   // the new command might be shorter, therefore delete its content
+   SaveFileStream.Size:= 0;
+  end
+  else
+  begin
+   try
     SaveFileStream:= TFileStream.Create(OutName, fmCreate);
+   except
+    on EFOpenError do
+    begin
+     MessageDlgPos('Action file could not be created.' + LineEnding +
+                   'Probably you don''t have write access to the specified folder.',
+                   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+     exit;
+    end;
+   end;
+  end;
+
+  try
    // write the command
    SaveFileStream.Write(command[1], Length(command));
    SaveFileStream.Write(LineEnding, 2); // line break
