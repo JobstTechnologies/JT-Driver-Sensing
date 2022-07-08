@@ -48,8 +48,8 @@ type
     procedure SCPerformAutoCalib(CalibSubstance: Substance);
     procedure SCChangeBackColorMIClick(Sender: TObject);
     procedure SCNoTempCorrectionCBChange(Sender: TObject);
-    procedure SCSaveAppearance(iniFile : string);
-    procedure SCLoadAppearance(iniFile : string);
+    procedure SCSaveAppearance(iniFile: string);
+    procedure SCLoadAppearance(iniFile: string);
 
   private
 
@@ -2568,7 +2568,7 @@ begin
  end;
 end;
 
-procedure TSIXControl.SCSaveAppearance(iniFile : string);
+procedure TSIXControl.SCSaveAppearance(iniFile: string);
 var
  i : integer;
  Chart : TChart;
@@ -2805,7 +2805,7 @@ begin
   RemoveTrailingChars(result, [',']);
 end;
 
-procedure TSIXControl.SCLoadAppearance(iniFile : string);
+procedure TSIXControl.SCLoadAppearance(iniFile: string);
 var
  i, m : integer;
  Chart : TChart;
@@ -2848,7 +2848,6 @@ begin
   end;
   // readout the last shown channels
   // also the channel lines might not be there for older appearance files
-  // therefore we cannot
   if TryStrToBool(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length), Abool) then
   begin
