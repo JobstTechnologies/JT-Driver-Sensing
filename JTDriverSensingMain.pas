@@ -30,6 +30,7 @@ type
     Appearance8BB: TBitBtn;
     Appearance5BB: TBitBtn;
     Appearance4BB: TBitBtn;
+    AutoscaleB: TButton;
     CalibEveryXStepsL2: TLabel;
     CalibStepCB: TComboBox;
     Channel1TestGB: TGroupBox;
@@ -1941,8 +1942,13 @@ end;
 
 procedure TMainForm.AutoscaleMIClick(Sender: TObject);
 begin
+ // sensor data axis
  SIXCH.AxisList[0].Range.UseMax:= False;
  SIXCH.AxisList[0].Range.UseMin:= False;
+ // temperature axis
+ SIXCH.AxisList[2].Range.UseMax:= False;
+ SIXCH.AxisList[2].Range.UseMin:= False;
+ // time axis
  SIXCH.BottomAxis.Range.UseMax:= false;
  SIXCH.BottomAxis.Range.UseMin:= false;
  // for the x-axis also te extent must be set

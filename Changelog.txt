@@ -5,9 +5,14 @@ from version 1.0.0 to 1.1.0
 improvements:
 - when a SIX measurement is running, the application icon changes to green
   to indicate this
+- add always visible button to autoscale instead of the current chart's
+  context menu entry to autoscale
+- issue proper error messages when reading or writing files that are currently
+  in use by other programs
 
-bugfix:
+bugfixes:
 - don't show hints how th change name for disabled pumps and valves
+- autoscale scales now also the temperature axis
 
 
 from version 0.999.1 to 1.0.0

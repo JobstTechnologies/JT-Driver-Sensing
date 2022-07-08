@@ -18,7 +18,7 @@ object MainForm: TMainForm
   LCLVersion = '2.2.2.0'
   object MainPC: TPageControl
     Left = 4
-    Height = 675
+    Height = 676
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -27,7 +27,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       object Channel1GB: TGroupBox
         Left = 0
@@ -1344,11 +1344,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 647
+        Height = 648
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1647,10 +1647,22 @@ object MainForm: TMainForm
         TabOrder = 1
         Value = 10
       end
+      object AutoscaleB: TButton
+        Left = -1
+        Height = 20
+        Hint = 'Autoscales all axes'
+        Top = 629
+        Width = 65
+        Caption = 'Autoscale'
+        OnClick = AutoscaleMIClick
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 5
+      end
     end
     object ActionControlTS: TTabSheet
       Caption = 'Action Control'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
@@ -8891,7 +8903,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -9923,12 +9935,12 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 647
+        Height = 648
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -10020,7 +10032,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 647
+      ClientHeight = 648
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
@@ -10744,6 +10756,7 @@ object MainForm: TMainForm
     end
     object AutoscaleMI: TMenuItem
       Caption = 'Auto scale'
+      Visible = False
       OnClick = AutoscaleMIClick
     end
   end
