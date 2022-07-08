@@ -1553,7 +1553,7 @@ begin
   // if there is no definition file loaded issue a warning
   if MainForm.LoadedDefFileM.Text = 'None' then
   begin
-   MainForm.IndicatorSensorP.Color:= clRed;
+   MainForm.IndicatorSensorP.Color:= clHighlight;
    MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
    MainForm.SIXBiosensorsMI.Enabled:= false;
    MainForm.SIXConnectBB.Enabled:= false;

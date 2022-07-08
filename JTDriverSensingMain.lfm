@@ -239,7 +239,7 @@ object MainForm: TMainForm
           Width = 138
           BevelOuter = bvNone
           Caption = 'No definition file loaded'
-          Color = clRed
+          Color = clHighlight
           ParentBackground = False
           ParentColor = False
           ParentShowHint = False
@@ -8259,7 +8259,7 @@ object MainForm: TMainForm
         Height = 384
         Top = 136
         Width = 148
-        Caption = 'Status Info'
+        Caption = 'Pump Driver Status Info'
         ClientHeight = 364
         ClientWidth = 144
         ParentColor = False

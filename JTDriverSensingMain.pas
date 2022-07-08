@@ -2072,7 +2072,7 @@ begin
   if (DummyString = '') and (InNameDef = '') then
   begin
    // user aborted the loading
-   IndicatorSensorP.Color:= clRed;
+   IndicatorSensorP.Color:= clHighlight;
    IndicatorSensorP.Caption:= 'No definition file loaded';
    LoadedDefFileM.Text:= 'None';
    LoadedDefFileM.ShowHint:= false;
@@ -2114,7 +2114,7 @@ begin
  begin
   MessageDlgPos('Invalid definition file',
   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  IndicatorSensorP.Color:= clRed;
+  IndicatorSensorP.Color:= clHighlight;
   IndicatorSensorP.Caption:= 'No definition file loaded';
   LoadedDefFileM.Text:= 'None';
   LoadedDefFileM.ShowHint:= false;
@@ -2319,7 +2319,7 @@ begin
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 
- IndicatorSensorP.Color:= clDefault;
+ IndicatorSensorP.Color:= clHighlight;
  IndicatorSensorP.Caption:= 'No definition file loaded';
  LoadedDefFileM.Text:= 'None';
  LoadedDefFileM.ShowHint:= false;
