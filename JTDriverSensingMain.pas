@@ -1061,7 +1061,7 @@ begin
  ActiveControl:= LoadDefBB;
 
  // load the current chart appearance settings
- // we write into the same folder than the program .exe
+ // we load from the same folder than the program .exe
  iniFile:= ExtractFilePath(Application.ExeName) + AppearanceFile;
  if FileExists(iniFile) then
   SIXControl.SCLoadAppearance(iniFile)
