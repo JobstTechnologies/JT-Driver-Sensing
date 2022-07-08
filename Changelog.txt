@@ -11,7 +11,7 @@ improvements:
   in use by other programs
 
 bugfixes:
-- don't show hints how th change name for disabled pumps and valves
+- for disabled pumps/valves don't show hint how to change pump/valve name
 - autoscale scales now also the temperature axis
 
 
