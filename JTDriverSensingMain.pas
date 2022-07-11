@@ -542,6 +542,62 @@ type
     ActionControlTS: TTabSheet;
     TotalTimeLE: TLabeledEdit;
     ActionCommandSplitter: TPanel;
+    Pump1ResultLE1: TLabeledEdit;
+    Pump2ResultLE1: TLabeledEdit;
+    Pump3ResultLE1: TLabeledEdit;
+    Pump4ResultLE1: TLabeledEdit;
+    Pump5ResultLE1: TLabeledEdit;
+    Pump6ResultLE1: TLabeledEdit;
+    Pump7ResultLE1: TLabeledEdit;
+    Pump8ResultLE1: TLabeledEdit;
+    Pump1ResultLE2: TLabeledEdit;
+    Pump2ResultLE2: TLabeledEdit;
+    Pump3ResultLE2: TLabeledEdit;
+    Pump4ResultLE2: TLabeledEdit;
+    Pump5ResultLE2: TLabeledEdit;
+    Pump6ResultLE2: TLabeledEdit;
+    Pump7ResultLE2: TLabeledEdit;
+    Pump8ResultLE2: TLabeledEdit;
+    Pump1ResultLE3: TLabeledEdit;
+    Pump2ResultLE3: TLabeledEdit;
+    Pump3ResultLE3: TLabeledEdit;
+    Pump4ResultLE3: TLabeledEdit;
+    Pump5ResultLE3: TLabeledEdit;
+    Pump6ResultLE3: TLabeledEdit;
+    Pump7ResultLE3: TLabeledEdit;
+    Pump8ResultLE3: TLabeledEdit;
+    Pump1ResultLE4: TLabeledEdit;
+    Pump2ResultLE4: TLabeledEdit;
+    Pump3ResultLE4: TLabeledEdit;
+    Pump4ResultLE4: TLabeledEdit;
+    Pump5ResultLE4: TLabeledEdit;
+    Pump6ResultLE4: TLabeledEdit;
+    Pump7ResultLE4: TLabeledEdit;
+    Pump8ResultLE4: TLabeledEdit;
+    Pump1ResultLE5: TLabeledEdit;
+    Pump2ResultLE5: TLabeledEdit;
+    Pump3ResultLE5: TLabeledEdit;
+    Pump4ResultLE5: TLabeledEdit;
+    Pump5ResultLE5: TLabeledEdit;
+    Pump6ResultLE5: TLabeledEdit;
+    Pump7ResultLE5: TLabeledEdit;
+    Pump8ResultLE5: TLabeledEdit;
+    Pump1ResultLE6: TLabeledEdit;
+    Pump2ResultLE6: TLabeledEdit;
+    Pump3ResultLE6: TLabeledEdit;
+    Pump4ResultLE6: TLabeledEdit;
+    Pump5ResultLE6: TLabeledEdit;
+    Pump6ResultLE6: TLabeledEdit;
+    Pump7ResultLE6: TLabeledEdit;
+    Pump8ResultLE6: TLabeledEdit;
+    Pump1ResultLE7: TLabeledEdit;
+    Pump2ResultLE7: TLabeledEdit;
+    Pump3ResultLE7: TLabeledEdit;
+    Pump4ResultLE7: TLabeledEdit;
+    Pump5ResultLE7: TLabeledEdit;
+    Pump6ResultLE7: TLabeledEdit;
+    Pump7ResultLE7: TLabeledEdit;
+    Pump8ResultLE7: TLabeledEdit;
     RunTime1FSE: TFloatSpinEdit;
     RunTime2FSE: TFloatSpinEdit;
     RunTime3FSE: TFloatSpinEdit;
@@ -2541,10 +2597,9 @@ begin
 end;
 
 procedure TMainForm.PumpVoltageFSChange(Sender: TObject);
+// recalculate pump speed displays
 begin
- // if in live mode send trigger command generation and sending
- if LiveModeCB.Checked and OverallTimer.Enabled then
-  PumpControl.RunImmediate;
+ PumpControl.PCPumpVoltageFSChange(Sender);
 end;
 
 procedure TMainForm.RepeatPCChange(Sender: TObject);
@@ -2554,8 +2609,8 @@ begin
 end;
 
 procedure TMainForm.RunBBClick(Sender: TObject);
+// execute generated command
 begin
- // execute generated command
  PumpControl.PCRunBBClick(Sender);
 end;
 

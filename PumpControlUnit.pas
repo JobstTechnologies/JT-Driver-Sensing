@@ -26,6 +26,7 @@ type
     procedure PCRepeatTimerFinished;
     procedure PCOverallTimerFinished;
     procedure PCStepXUseCBChange(Sender: TObject);
+    procedure PCPumpVoltageFSChange(Sender: TObject);
     procedure PCRepeatPCChange(Sender: TObject);
     procedure PCPumpGBDblClick(Sender: TObject);
     procedure PCValveRGDblClick(Sender: TObject);
@@ -1320,6 +1321,15 @@ begin
   (MainForm.FindComponent('RunTime' + IntToStr(Step) + 'FSE')
         as TFloatSpinEdit).Value:= DutyTime;
 
+  // update the resulting speed
+  for j:= 1 to PumpNum do
+   (MainForm.FindComponent('Pump' + IntToStr(j) + 'ResultLE' + IntToStr(Step))
+     as TLabeledEdit).Text:= FloatToStr(RoundTo(
+      (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
+        as TFloatSpinEdit).Value *
+      (MainForm.FindComponent('Pump' + IntToStr(j) + 'VoltageFS' + IntToStr(Step))
+        as TFloatSpinEdit).Value / 3.3 , -2));
+
  // if in live mode send trigger command generation and sending
  if MainForm.LiveModeCB.Checked and MainForm.OverallTimer.Enabled then
   RunImmediate;
@@ -1374,6 +1384,29 @@ begin
    MainForm.ActionTime1GB.Enabled:= False;
  end;
  PCRepeatPCChange(Sender);
+end;
+
+procedure TPumpControl.PCPumpVoltageFSChange(Sender: TObject);
+var
+ Step, PumpNumber : integer;
+ SenderName : string;
+begin
+ SenderName:= (Sender as TComponent).Name;
+ // SenderName is in the form "PumpXVoltageFSY" and we need the X and Y
+ // so get the 5th and 15th character of the name
+ Step:= StrToInt(Copy(SenderName, 15, 1));
+ PumpNumber:= StrToInt(Copy(SenderName, 5, 1));
+ // update the resulting speed
+ (MainForm.FindComponent('Pump' + IntToStr(PumpNumber) + 'ResultLE' + IntToStr(Step))
+  as TLabeledEdit).Text:= FloatToStr(RoundTo(
+  (MainForm.FindComponent('DutyCycle' + IntToStr(Step) + 'FSE')
+   as TFloatSpinEdit).Value *
+  (MainForm.FindComponent('Pump' + IntToStr(PumpNumber) + 'VoltageFS' + IntToStr(Step))
+   as TFloatSpinEdit).Value / 3.3 , -2));
+
+ // if in live mode send trigger command generation and sending
+ if MainForm.LiveModeCB.Checked and MainForm.OverallTimer.Enabled then
+  PumpControl.RunImmediate;
 end;
 
 procedure TPumpControl.PCRepeatPCChange(Sender: TObject);
