@@ -7,12 +7,13 @@ improvements:
   to indicate this
 - add always visible button to autoscale instead of the current chart's
   context menu entry to autoscale
-- issue proper error messages when reading or writing files that are currently
-  in use by other programs
+- percentage of maximal speed is displayed for every pump
 
 bugfixes:
 - for disabled pumps/valves don't show hint how to change pump/valve name
 - autoscale scales now also the temperature axis
+- issue proper error messages when reading or writing files that are currently
+  in use by other programs
 
 
 from version 0.999.1 to 1.0.0
