@@ -65,6 +65,7 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    DataPointClickTool: TDataPointClickTool;
     HaveSerialSensorCB: TCheckBox;
     HavePumpSerialCB: TCheckBox;
     GlucoseAvailChanL: TLabel;
@@ -74,6 +75,62 @@ type
     DriverConnectBB: TBitBtn;
     IconImageBlue: TImage;
     IconImageGreen: TImage;
+    Label100: TLabel;
+    Label101: TLabel;
+    Label102: TLabel;
+    Label103: TLabel;
+    Label104: TLabel;
+    Label105: TLabel;
+    Label106: TLabel;
+    Label107: TLabel;
+    Label108: TLabel;
+    Label109: TLabel;
+    Label110: TLabel;
+    Label111: TLabel;
+    Label112: TLabel;
+    Label113: TLabel;
+    Label114: TLabel;
+    Label115: TLabel;
+    Label116: TLabel;
+    Label117: TLabel;
+    Label118: TLabel;
+    Label119: TLabel;
+    Label120: TLabel;
+    Label167: TLabel;
+    Label169: TLabel;
+    Label171: TLabel;
+    Label65: TLabel;
+    Label66: TLabel;
+    Label68: TLabel;
+    Label70: TLabel;
+    Label72: TLabel;
+    Label73: TLabel;
+    Label74: TLabel;
+    Label75: TLabel;
+    Label76: TLabel;
+    Label77: TLabel;
+    Label78: TLabel;
+    Label79: TLabel;
+    Label80: TLabel;
+    Label81: TLabel;
+    Label82: TLabel;
+    Label83: TLabel;
+    Label84: TLabel;
+    Label85: TLabel;
+    Label86: TLabel;
+    Label87: TLabel;
+    Label88: TLabel;
+    Label89: TLabel;
+    Label90: TLabel;
+    Label91: TLabel;
+    Label92: TLabel;
+    Label93: TLabel;
+    Label94: TLabel;
+    Label95: TLabel;
+    Label96: TLabel;
+    Label97: TLabel;
+    Label98: TLabel;
+    Label99: TLabel;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -875,6 +932,8 @@ type
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
     procedure ChartToolsetAxisClickToolClick(Sender: TChartTool;
       Axis: TChartAxis; HitInfo: TChartAxisHitTests);
+    procedure DataPointClickToolPointClick(ATool: TChartTool;
+      APoint{%H-}: TPoint);
     procedure ChartToolsetDataPointHintToolHint(ATool: TDataPointHintTool;
       const APoint{%H-}: TPoint; var AHint: String);
     procedure ChartToolsetDataPointHintToolHintPosition(
@@ -1043,6 +1102,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
  iniFile : string;
  FileVerInfo: TFileVersionInfo;
+ i : integer;
 begin
  try
   FileVerInfo:= TFileVersionInfo.Create(nil);
@@ -1124,6 +1184,24 @@ begin
  else
   // assume there are no valves
   HasNoValvesCB.Checked:= true;
+
+ // more chart settings after the ini file was loaded
+ for i:=1 to 8 do
+ begin
+  // paint datapoint notes like the line series
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Marks.LabelBrush.Color:=
+   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+    as TLineSeries).LinePen.Color;
+  // show the marks
+  // we must do this here and not in the .lfm file because the DataPointHintTool would overwrite this
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Marks.Style:= smsLabel;
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Marks.Style:= smsLabel;
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Marks.LabelFont.Color:= clGray;
+ end;
 
 end;
 
@@ -2052,6 +2130,26 @@ procedure TMainForm.ChartToolsetAxisClickToolClick(Sender: TChartTool;
   Axis: TChartAxis; HitInfo: TChartAxisHitTests);
 begin
  SIXControl.SCChartToolsetAxisClickToolClick(Sender, Axis, HitInfo);
+end;
+
+procedure TMainForm.DataPointClickToolPointClick(ATool: TChartTool;
+  APoint: TPoint);
+var
+ NoteText: String;
+ tool: TDataPointTool;
+ series: TChartSeries;
+begin
+ tool := ATool as TDataPointTool;
+ if tool.PointIndex > -1 then
+ begin
+  series:= tool.Series as TChartSeries;
+  NoteText:= series.Source[tool.PointIndex]^.Text;
+  if InputQuery(series.Title, 'Add or edit note:', NoteText) then
+  begin
+   series.Source[tool.PointIndex]^.Text:= NoteText;
+   SIXCH.Invalidate;
+  end;
+ end;
 end;
 
 procedure TMainForm.ChartToolsetDataPointHintToolHint(

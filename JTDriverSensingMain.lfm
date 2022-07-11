@@ -12069,6 +12069,10 @@ object MainForm: TMainForm
       OnAfterMouseDown = RectangleSelectionToolAfterMouseDown
       OnAfterMouseMove = RectangleSelectionToolAfterMouseMove
     end
+    object DataPointClickTool: TDataPointClickTool
+      Shift = [ssCtrl, ssLeft]
+      OnPointClick = DataPointClickToolPointClick
+    end
   end
   object ReadTimer: TTimer
     Enabled = False

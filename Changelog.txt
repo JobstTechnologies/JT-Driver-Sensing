@@ -7,6 +7,7 @@ improvements:
   to indicate this
 - add always visible button to autoscale instead of the current chart's
   context menu entry to autoscale
+- by Ctrl + Leftclick on a data point in the chart it is possible to add notes
 - percentage of maximal speed is displayed for every pump
 
 bugfixes:
