@@ -202,7 +202,7 @@ object MainForm: TMainForm
           Height = 30
           Hint = 'Loads a sensor definition file'
           Top = 36
-          Width = 120
+          Width = 136
           Caption = 'Load definition file'
           OnClick = LoadDefBBClick
           ParentShowHint = False
@@ -212,10 +212,10 @@ object MainForm: TMainForm
         object SIXConnectBB: TBitBtn
           Left = 128
           Height = 30
-          Hint = 'Dis/connects to a SIX biosensor'
+          Hint = 'Dis/connects to a SIX biosensor'#13#10'and starts immediately a measurement'
           Top = 0
-          Width = 120
-          Caption = 'Connect SIX'
+          Width = 136
+          Caption = 'Start SIX measurement'
           OnClick = SIXConnectBBClick
           ParentShowHint = False
           ShowHint = True
@@ -764,6 +764,18 @@ object MainForm: TMainForm
           ShowHint = True
           TabOrder = 5
           Visible = False
+        end
+        object LoadOtherDefBB: TBitBtn
+          Left = 367
+          Height = 30
+          Hint = 'Loads a sensor definition file'
+          Top = 0
+          Width = 136
+          Caption = 'Load other definition file'
+          OnClick = LoadDefBBClick
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 6
         end
       end
       object Channel3GB: TGroupBox

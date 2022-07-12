@@ -131,6 +131,7 @@ type
     Label97: TLabel;
     Label98: TLabel;
     Label99: TLabel;
+    LoadOtherDefBB: TBitBtn;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -2491,18 +2492,22 @@ begin
  CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                       + 'sensor definition file is loaded';
  UseCalibCB.Checked:= false;
- // the values are then in nA
+
  if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
  begin
+  // the values are then in nA
   RawCurrentCB.Checked:= true;
   RawCurrentCB.Enabled:= false;
  end;
- // blanks cannot be subtracted anymore
- NoSubtractBlankCB.Checked:= false;
- NoSubtractBlankCB.Enabled:= false;
- // temperature correction is not possible anymore
- NoTempCorrectionCB.Checked:= false;
- NoTempCorrectionCB.Enabled:= false;
+ if HaveSerialSensorCB.Checked then
+ begin
+  // blanks cannot be subtracted anymore
+  NoSubtractBlankCB.Checked:= false;
+  NoSubtractBlankCB.Enabled:= false;
+  // temperature correction is not possible anymore
+  NoTempCorrectionCB.Checked:= false;
+  NoTempCorrectionCB.Enabled:= false;
+ end;
  // there might be a calibration
  if UseCalibCB.Checked then
   RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
@@ -2944,6 +2949,7 @@ begin
   else
    MainForm.Caption:= 'JT Driver Sensing';
  end;
+ LoadDefBB.Enabled:= not HaveSerialSensorCB.Checked;
 
  finally
   IconFile.Free;
@@ -3050,7 +3056,7 @@ begin
   MainForm.Caption:= 'JT Driver Sensing ' + Version
    + ' - Sensor data file: ' + LoadedFileSensM.Text + '.csv';
   if HaveSerialSensorCB.Checked then
-   MainForm.Caption:= MainForm.Caption + ' (autosave, measurement running)';
+   MainForm.Caption:= MainForm.Caption + ' (autosave on)';
  end;
 end;
 
@@ -4258,8 +4264,7 @@ for i:= 1 to SIXControl.NumChannels do
 end;
 
 procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
-// if Connected is true opens the connection settings dialog and opens a
-// connections according to the dialog input
+// if Connected is false a port scan is done and a dialog to connect is opened
 // in every case set the file to store the sensor data
 var
  Reg : TRegistry;
