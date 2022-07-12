@@ -12031,46 +12031,46 @@ object MainForm: TMainForm
   object ChartToolset: TChartToolset
     Left = 1000
     Top = 280
-    object ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool
+    object DataPointCrosshairTool: TDataPointCrosshairTool
       GrabRadius = 10
     end
-    object ChartToolsetDataPointHintTool: TDataPointHintTool
+    object DataPointHintTool: TDataPointHintTool
       GrabRadius = 5
-      OnHint = ChartToolsetDataPointHintToolHint
-      OnHintPosition = ChartToolsetDataPointHintToolHintPosition
+      OnHint = DataPointHintToolHint
+      OnHintPosition = DataPointHintToolHintPosition
     end
-    object ChartToolsetLegendClickTool: TLegendClickTool
+    object LegendClickTool: TLegendClickTool
       Shift = [ssLeft, ssDouble]
-      OnClick = ChartToolsetLegendClickToolClick
+      OnClick = LegendClickToolClick
     end
-    object ChartToolsetZoomDragTool: TZoomDragTool
+    object ZoomDragTool: TZoomDragTool
       Shift = [ssLeft]
-      OnAfterMouseUp = ChartToolsetZoomDragToolAfterMouseUp
+      OnAfterMouseUp = ZoomDragToolAfterMouseUp
       Brush.Style = bsClear
       DrawingMode = tdmNormal
       RestoreExtentOn = [zreDragTopLeft, zreDragBottomLeft]
     end
-    object ChartToolsetPanMouseWheelTool: TPanMouseWheelTool
+    object PanMouseWheelTool: TPanMouseWheelTool
       LimitToExtent = [pdUp, pdRight, pdDown]
       WheelUpDirection = pdLeft
     end
-    object ChartToolsetZoomMouseWheelTool: TZoomMouseWheelTool
+    object ZoomMouseWheelTool: TZoomMouseWheelTool
       Shift = [ssCtrl]
       ZoomFactor = 1.1
       ZoomRatio = 1.1
     end
-    object ChartToolsetPanDragTool: TPanDragTool
+    object PanDragTool: TPanDragTool
       Shift = [ssAlt]
       LimitToExtent = [pdUp, pdRight, pdDown]
       MinDragRadius = 3
     end
-    object ChartToolsetTitleFootClickTool: TTitleFootClickTool
+    object TitleFootClickTool: TTitleFootClickTool
       Shift = [ssLeft, ssDouble]
-      OnClick = ChartToolsetTitleFootClickToolClick
+      OnClick = TitleFootClickToolClick
     end
-    object ChartToolsetAxisClickTool: TAxisClickTool
+    object AxisClickTool: TAxisClickTool
       Shift = [ssLeft, ssDouble]
-      OnClick = ChartToolsetAxisClickToolClick
+      OnClick = AxisClickToolClick
     end
     object LineDragTool: TDataPointDragTool
       OnDrag = LineDragToolDrag

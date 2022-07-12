@@ -293,15 +293,15 @@ type
     SIXTempGB: TGroupBox;
     LoadDefBB: TBitBtn;
     ChartToolset: TChartToolset;
-    ChartToolsetAxisClickTool: TAxisClickTool;
-    ChartToolsetDataPointCrosshairTool: TDataPointCrosshairTool;
-    ChartToolsetDataPointHintTool: TDataPointHintTool;
-    ChartToolsetLegendClickTool: TLegendClickTool;
-    ChartToolsetPanDragTool: TPanDragTool;
-    ChartToolsetPanMouseWheelTool: TPanMouseWheelTool;
-    ChartToolsetTitleFootClickTool: TTitleFootClickTool;
-    ChartToolsetZoomDragTool: TZoomDragTool;
-    ChartToolsetZoomMouseWheelTool: TZoomMouseWheelTool;
+    AxisClickTool: TAxisClickTool;
+    DataPointCrosshairTool: TDataPointCrosshairTool;
+    DataPointHintTool: TDataPointHintTool;
+    LegendClickTool: TLegendClickTool;
+    PanDragTool: TPanDragTool;
+    PanMouseWheelTool: TPanMouseWheelTool;
+    TitleFootClickTool: TTitleFootClickTool;
+    ZoomDragTool: TZoomDragTool;
+    ZoomMouseWheelTool: TZoomMouseWheelTool;
     RawCurrentCB: TCheckBox;
     ExpertGB: TGroupBox;
     SIXCh7Values: TLineSeries;
@@ -931,19 +931,19 @@ type
     procedure ChannelXLEChange(Sender: TObject);
     procedure ChannelXCBChange(Sender: TObject);
     procedure ChanAnOutConnectorXOnOffCBChange(Sender: TObject);
-    procedure ChartToolsetAxisClickToolClick(Sender: TChartTool;
+    procedure AxisClickToolClick(Sender: TChartTool;
       Axis: TChartAxis; HitInfo: TChartAxisHitTests);
     procedure DataPointClickToolPointClick(ATool: TChartTool;
       APoint{%H-}: TPoint);
-    procedure ChartToolsetDataPointHintToolHint(ATool: TDataPointHintTool;
+    procedure DataPointHintToolHint(ATool: TDataPointHintTool;
       const APoint{%H-}: TPoint; var AHint: String);
-    procedure ChartToolsetDataPointHintToolHintPosition(
+    procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
-    procedure ChartToolsetLegendClickToolClick(Sender: TChartTool;
+    procedure LegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
-    procedure ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
+    procedure TitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
-    procedure ChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
+    procedure ZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
     procedure ConnComPortSensMChange(Sender: TObject);
@@ -2127,10 +2127,10 @@ begin
  SIXControl.SCShowTempCBChange(Sender);
 end;
 
-procedure TMainForm.ChartToolsetAxisClickToolClick(Sender: TChartTool;
+procedure TMainForm.AxisClickToolClick(Sender: TChartTool;
   Axis: TChartAxis; HitInfo: TChartAxisHitTests);
 begin
- SIXControl.SCChartToolsetAxisClickToolClick(Sender, Axis, HitInfo);
+ SIXControl.SCAxisClickToolClick(Sender, Axis, HitInfo);
 end;
 
 procedure TMainForm.DataPointClickToolPointClick(ATool: TChartTool;
@@ -2153,7 +2153,7 @@ begin
  end;
 end;
 
-procedure TMainForm.ChartToolsetDataPointHintToolHint(
+procedure TMainForm.DataPointHintToolHint(
   ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
 var
  SeriesName : string;
@@ -2174,29 +2174,29 @@ begin
             ATool.NearestGraphPoint.Y)])
 end;
 
-procedure TMainForm.ChartToolsetDataPointHintToolHintPosition(
+procedure TMainForm.DataPointHintToolHintPosition(
  ATool: TDataPointHintTool; var APoint: TPoint);
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
- SIXControl.SCChartToolsetDataPointHintToolHintPosition(ATool, APoint);
+ SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
 end;
 
-procedure TMainForm.ChartToolsetLegendClickToolClick(Sender: TChartTool;
+procedure TMainForm.LegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 begin
- SIXControl.SCChartToolsetLegendClickToolClick(Sender, Legend)
+ SIXControl.SCLegendClickToolClick(Sender, Legend)
 end;
 
-procedure TMainForm.ChartToolsetTitleFootClickToolClick(Sender: TChartTool;
+procedure TMainForm.TitleFootClickToolClick(Sender: TChartTool;
   Title: TChartTitle);
 begin
- SIXControl.SCChartToolsetTitleFootClickToolClick(Sender, Title);
+ SIXControl.SCTitleFootClickToolClick(Sender, Title);
 end;
 
-procedure TMainForm.ChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
+procedure TMainForm.ZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
 begin
- SIXControl.SCChartToolsetZoomDragToolAfterMouseUp(ATool, APoint);
+ SIXControl.SCZoomDragToolAfterMouseUp(ATool, APoint);
 end;
 
 procedure TMainForm.DutyCycleXFSEChange(Sender: TObject);

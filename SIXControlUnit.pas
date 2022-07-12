@@ -18,7 +18,7 @@ type
   TSIXControl = class
     constructor create;
     procedure SCScrollViewCBChange(Sender: TObject);
-    procedure SCChartToolsetDataPointHintToolHintPosition(
+    procedure SCDataPointHintToolHintPosition(
        ATool: TDataPointHintTool; var APoint: TPoint);
     procedure SCSaveCSVResultBClick(Sender: TObject);
     procedure SCSaveScreenshotLiveBClick(Sender: TObject);
@@ -30,13 +30,13 @@ type
     procedure SCNoSubtractBlankCBChange(Sender: TObject);
     procedure SCRawCurrentCBChange(Sender: TObject);
     procedure SCReadTimerTimerFinished(Sender: TObject);
-    procedure SCChartToolsetTitleFootClickToolClick(Sender: TChartTool;
+    procedure SCTitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
-    procedure SCChartToolsetZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
+    procedure SCZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
-    procedure SCChartToolsetLegendClickToolClick(Sender: TChartTool;
+    procedure SCLegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
-    procedure SCChartToolsetAxisClickToolClick(Sender{%H-}: TChartTool;
+    procedure SCAxisClickToolClick(Sender{%H-}: TChartTool;
       AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
     procedure SCAppearanceXBBClick(Sender: TObject);
     procedure SCChannelXOnOffCBChange(Sender: TObject);
@@ -1020,7 +1020,7 @@ begin
           + Nonlinear(0.1);
 end;
 
-procedure TSIXControl.SCChartToolsetDataPointHintToolHintPosition(
+procedure TSIXControl.SCDataPointHintToolHintPosition(
  ATool: TDataPointHintTool; var APoint: TPoint);
 var
  series : TLineSeries;
@@ -1046,7 +1046,7 @@ begin
         series.ListSource[ATool.PointIndex]^.Y));
 
  // get hint text - just call the event handler of OnHint
- MainForm.ChartToolsetDataPointHintToolHint(ATool, APoint, HintText);
+ MainForm.DataPointHintToolHint(ATool, APoint, HintText);
 
  HintWindow:= THintWindow.Create(nil);
  try
@@ -1634,7 +1634,7 @@ begin
 
 end;
 
-procedure TSIXControl.SCChartToolsetTitleFootClickToolClick(Sender: TChartTool;
+procedure TSIXControl.SCTitleFootClickToolClick(Sender: TChartTool;
   Title: TChartTitle);
 var
  editor : TChartTitleFootEditor;
@@ -1648,7 +1648,7 @@ begin
  end;
 end;
 
-procedure TSIXControl.SCChartToolsetZoomDragToolAfterMouseUp(ATool: TChartTool;
+procedure TSIXControl.SCZoomDragToolAfterMouseUp(ATool: TChartTool;
   APoint: TPoint);
 var
  i : integer;
@@ -1667,8 +1667,8 @@ begin
  // > 20k points, see procedure SCScrollViewCBChange for the reason
  // To test of if the next tep is the zoom out, check the selection rect since
  // when it is directed to the left, it will be zoomed out.
- if (MainForm.ChartToolsetZoomDragTool.SelectionRect.TopLeft.X >
-     MainForm.ChartToolsetZoomDragTool.SelectionRect.BottomRight.X)
+ if (MainForm.ZoomDragTool.SelectionRect.TopLeft.X >
+     MainForm.ZoomDragTool.SelectionRect.BottomRight.X)
   and (MainForm.SIXTempValues.LinePen.Width = 2)
   and MainForm.ScrollViewCB.Checked
   and (timeCounter > MainForm.ScrollIntervalFSE.Value) then
@@ -1684,7 +1684,7 @@ begin
   MainForm.SIXCH.ZoomFull;
 end;
 
-procedure TSIXControl.SCChartToolsetLegendClickToolClick(Sender: TChartTool;
+procedure TSIXControl.SCLegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 var
  editor : TChartLegendEditor;
@@ -1698,7 +1698,7 @@ begin
  end;
 end;
 
-procedure TSIXControl.SCChartToolsetAxisClickToolClick(Sender: TChartTool;
+procedure TSIXControl.SCAxisClickToolClick(Sender: TChartTool;
   AnAxis: TChartAxis; HitInfo: TChartAxisHitTests);
 var
   page : TChartAxisEditorPage;
@@ -1721,7 +1721,7 @@ begin
   editor.Page:= page;
   editor.ShowModal; // shows the dialog
 
-  // Info: calling the dialog triggers ChartToolsetZoomDragToolAfterMouseUp
+  // Info: calling the dialog triggers ZoomDragToolAfterMouseUp
   // keep that in mind
 
   // update the axis settings for the LiveView
@@ -2050,11 +2050,11 @@ begin
  // enable rectangle tool
  MainForm.RectangleSelectionTool.Enabled:= MainForm.CalibrateTB.Checked;
  // disable unused tools
- MainForm.ChartToolsetZoomDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
- MainForm.ChartToolsetDataPointHintTool.Enabled:= (not MainForm.CalibrateTB.Checked);
- MainForm.ChartToolsetDataPointCrosshairTool.Enabled:= (not MainForm.CalibrateTB.Checked);
- MainForm.ChartToolsetPanDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
- MainForm.ChartToolsetPanMouseWheelTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.ZoomDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.DataPointHintTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.DataPointCrosshairTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.PanDragTool.Enabled:= (not MainForm.CalibrateTB.Checked);
+ MainForm.PanMouseWheelTool.Enabled:= (not MainForm.CalibrateTB.Checked);
  // prevent scrolling while in calibration selection mode
  inCalibration:= MainForm.CalibrateTB.Checked;
 
