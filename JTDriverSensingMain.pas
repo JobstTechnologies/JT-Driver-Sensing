@@ -2222,7 +2222,6 @@ begin
                         and (not HaveSerialSensorCB.Checked));
 
  LoadedDefFileM.ShowHint:= HaveDefFileCB.Checked;
- //StartTestBB.enabled:= HaveDefFileCB.Checked;
  NoSubtractBlankCB.enabled:= HaveDefFileCB.Checked;
  NoSubtractBlankCB.Checked:= HaveDefFileCB.Checked;
  NoTempCorrectionCB.enabled:= HaveDefFileCB.Checked;
@@ -2234,10 +2233,12 @@ begin
 
  if HaveDefFileCB.Checked then
  begin
-  IndicatorSensorP.Color:= clDefault;
-  IndicatorSensorP.Caption:= '';
-  if HaveSerialSensorCB.Checked then
+  if not HaveSerialSensorCB.Checked then
+  begin
+   IndicatorSensorP.Color:= clDefault;
+   IndicatorSensorP.Caption:= '';
    StartTestBB.enabled:= true;
+  end;
   SIXBiosensorsMI.enabled:= true;
   SIXConnectBB.enabled:= true;
   UseAnOutCB.enabled:= true;
@@ -2245,18 +2246,17 @@ begin
    RawCurrentCB.Enabled:= true;
   CalibrationGB.Hint:= '';
   if not RunBB.Enabled then
-  begin
    RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
-   RunBB.Hint:= 'Starts the pump action according to the current settings.'
-                + LineEnding
-                + 'To enable the button you must first connect to the pump driver'
-                + LineEnding + 'using the menu ''Connection''';
-  end;
+  MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+    + LineEnding + 'If button is disabled you must first start a SIX measurement.';
  end
  else
  begin
-  IndicatorSensorP.Color:= clHighlight;
-  IndicatorSensorP.Caption:= 'No definition file loaded';
+  if not HaveSerialSensorCB.Checked then
+  begin
+   IndicatorSensorP.Color:= clHighlight;
+   IndicatorSensorP.Caption:= 'No definition file loaded';
+  end;
   LoadedDefFileM.Text:= 'None';
   if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
   begin
@@ -2267,8 +2267,10 @@ begin
 
   // there might be a calibration
   if UseCalibCB.Checked then
+  begin
    RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
-  UseCalibCB.Checked:= false;
+   RunBB.Enabled:= false;
+  end;
   CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                        + 'sensor definition file is loaded';
  end;
@@ -2511,6 +2513,7 @@ begin
 
  HaveDefFileCB.Checked:= false;
  InNameDef:= '';
+ LoadDefBB.Enabled:= true;
 
  // store previous channel number and set to 6 channels
  NumChannelsPrev:= SIXControl.NumChannels;

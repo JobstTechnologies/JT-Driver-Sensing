@@ -1529,7 +1529,8 @@ begin
   if MainForm.UseCalibCB.Checked and (not MainForm.HaveSerialSensorCB.Checked) then
   begin
    MessageDlgPos('The run sequence contains a calibration'
-    + LineEnding + 'but no sensor is connected.',
+    + LineEnding + 'but no sensor is connected.' + LineEnding
+    + 'Start a SIX measurement first',
     mtError, [mbOK], 0 , MousePointer.X, MousePointer.Y);
    exit;
   end;
@@ -1726,6 +1727,13 @@ begin
      as TTabSheet).TabVisible:= False;
   end;
 
+ // if calibration is used, the .def file must not be unloaded or changed
+ if MainForm.UseCalibCB.Checked then
+ begin
+  MainForm.LoadOtherDefBB.enabled:= False;
+  MainForm.UnloadDefBB.enabled:= False;
+ end;
+
 end;
 
 procedure TPumpControl.PCStopBBClick(Sender: TObject);
@@ -1742,6 +1750,9 @@ begin
  // re-enable menu to load and save action files
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
+ // enable .def file loading
+ MainForm.LoadOtherDefBB.enabled:= True;
+ MainForm.UnloadDefBB.enabled:= True;
  // address
  command:= '/0';
  // disable all valves
@@ -1976,6 +1987,8 @@ begin
  MainForm.FirmwareResetMI.Enabled:= True;
  MainForm.LoadActionMI.Enabled:= True;
  MainForm.SaveActionMI.Enabled:= True;
+ MainForm.LoadOtherDefBB.enabled:= True;
+ MainForm.UnloadDefBB.enabled:= True;
  MainForm.ChangeSensorDataFileMI.Enabled:= True;
  MainForm.RunBB.Caption:= 'Run Pumps';
  if not MainForm.HasNoPumpsCB.Checked then
@@ -2198,8 +2211,7 @@ begin
    if MainForm.RunBB.Hint = 'Calibration is used but no sensor definition file is loaded' then
     MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
      + LineEnding
-     + 'To enable the button you must first connect to the pump driver'
-     + LineEnding + 'using the menu ''Connection''';
+     + 'If button is disabled you must first start a SIX measurement.';
   end;
  end
  else

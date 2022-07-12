@@ -9852,7 +9852,7 @@ object MainForm: TMainForm
         object RunBB: TBitBtn
           Left = 20
           Height = 39
-          Hint = 'Starts the pump action according to the current settings.'#13#10'To enable the button you must first connect to the pump driver'#13#10'using the menu ''Connection''.'
+          Hint = 'Starts the pump action according to the current settings.'#13#10'If button is disabled you must first start a SIX measurement.'
           Top = 4
           Width = 104
           Caption = 'Run Action'
