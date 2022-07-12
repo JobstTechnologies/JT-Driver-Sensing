@@ -1061,6 +1061,7 @@ type
     procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
     procedure COMPortScan(PortType: string);
+    procedure DisconnectPumpDriver;
     procedure SetSIXFactors;
     procedure DisconnectSIX;
 
@@ -1247,6 +1248,46 @@ begin
  PumpConnectionStart(Sender, true); // always call to connect
 end;
 
+procedure TMainForm.DisconnectPumpDriver;
+var
+ command : string;
+ i : integer;
+begin
+ ConnComPortPumpLE.Color:= clHighlight;
+ ConnComPortPumpLE.Text:= 'Not connected';
+ IndicatorPumpP.Caption:= '';
+ IndicatorPumpP.Color:= clDefault;
+ IndicatorPumpPPaint;
+ AnOutOnOffTB.Checked:= false;
+ AnOutOnOffTB.Enabled:= false;
+ AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
+                     + 'to the pump connectors.' + LineEnding
+                     + 'Connect to a SIX and a pump driver'  + LineEnding
+                     + 'to enable the button.';
+ if RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
+  RunBB.Hint:= 'Starts the pump action according to the current settings.'
+   + LineEnding
+   + 'To enable the button you must first connect to the pump driver'
+   + LineEnding + 'using the menu ''Connection''';
+ // disable all buttons
+ RunBB.Enabled:= false;
+ StopBB.Enabled:= false;
+ if HavePumpSerialCB.Checked then
+ begin
+  // stop pumps
+  command:= '/0I';
+  for i:= 1 to PumpControl.PumpNum do
+   command:= command + '0';
+  // blink 3 times
+  command:= command + 'gLM500lM500G2R' + LineEnding;
+  serPump.SendString(command);
+  ClosePumpSerialConn;
+  IndicatorPumpP.Caption:= 'Pumps stopped';
+  IndicatorPumpP.Color:= clHighlight;
+  IndicatorPumpPPaint;
+ end;
+end;
+
 procedure TMainForm.PumpConnectionStart(Sender: TObject; Connect: Boolean);
 // opens the connection settings dialog and opens a connections according
 // to the dialog input
@@ -1264,6 +1305,13 @@ begin
  GetFirmwareVersionMI.Enabled:= true;
  FirmwareUpdateMI.Enabled:= true;
  FirmwareResetMI.Enabled:= true;
+
+ if not Connect then
+ begin
+  DisconnectPumpDriver;
+  exit;
+ end;
+
  // determine all possible COM ports
  Reg:= TRegistry.Create;
  try
@@ -1328,41 +1376,9 @@ begin
 
  end; // end with with SerialUSBSelectionF
 
- if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
+ if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Cancel
  begin
-  ConnComPortPumpLE.Color:= clHighlight;
-  ConnComPortPumpLE.Text:= 'Not connected';
-  IndicatorPumpP.Caption:= '';
-  IndicatorPumpP.Color:= clDefault;
-  IndicatorPumpPPaint;
-  AnOutOnOffTB.Checked:= false;
-  AnOutOnOffTB.Enabled:= false;
-  AnOutOnOffTB.Hint:= 'Outputs the sensor signal' + LineEnding
-                      + 'to the pump connectors.' + LineEnding
-                      + 'Connect to a SIX and a pump driver'  + LineEnding
-                      + 'to enable the button.';
-  if RunBB.Hint= 'Calibration is used but no sensor definition file is loaded' then
-   RunBB.Hint:= 'Starts the pump action according to the current settings.'
-    + LineEnding
-    + 'To enable the button you must first connect to the pump driver'
-    + LineEnding + 'using the menu ''Connection''';
-  // disable all buttons
-  RunBB.Enabled:= false;
-  StopBB.Enabled:= false;
-  if HavePumpSerialCB.Checked then
-  begin
-   // stop pumps
-   command:= '/0I';
-   for k:= 1 to PumpControl.PumpNum do
-    command:= command + '0';
-   // blink 3 times
-   command:= command + 'gLM500lM500G2R' + LineEnding;
-   serPump.SendString(command);
-   ClosePumpSerialConn;
-   IndicatorPumpP.Caption:= 'Pumps stopped';
-   IndicatorPumpP.Color:= clHighlight;
-   IndicatorPumpPPaint;
-  end;
+  DisconnectPumpDriver;
   exit;
  end;
 
@@ -1381,7 +1397,7 @@ begin
   if HavePumpSerialCB.Checked then
   begin
    // stop pumps
-   command:= command + '/0I';
+   command:= '/0I';
    for k:= 1 to PumpControl.PumpNum do
     command:= command + '0';
    command:= command + 'gLM500lM500G2R' + LineEnding;
@@ -1632,9 +1648,15 @@ end;
 procedure TMainForm.HavePumpSerialCBChange(Sender: TObject);
 begin
  if HavePumpSerialCB.Checked then
-  DriverConnectBB.Caption:= 'Disconnect Driver'
+ begin
+  DriverConnectBB.Caption:= 'Disconnect Driver';
+  DriverConnectBB.Hint:= 'Connects to a pump driver';
+ end
  else
+ begin
   DriverConnectBB.Caption:= 'Connect Driver';
+  DriverConnectBB.Hint:= 'Disconnects from the pump driver';
+ end;
 end;
 
 procedure TMainForm.FirmwareUpdate(forced: Boolean);
