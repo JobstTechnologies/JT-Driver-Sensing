@@ -10,7 +10,7 @@ uses
   Fileinfo, LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
-  SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
+  NoteEditing, SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
   TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
 
 type
@@ -2157,21 +2157,25 @@ end;
 procedure TMainForm.DataPointClickToolPointClick(ATool: TChartTool;
   APoint: TPoint);
 var
- NoteText: String;
- tool: TDataPointTool;
- series: TChartSeries;
+ NoteText : String;
+ tool : TDataPointTool;
+ series : TChartSeries;
 begin
- tool := ATool as TDataPointTool;
- if tool.PointIndex > -1 then
+ tool:= ATool as TDataPointTool;
+ if tool.PointIndex < 0 then
+  exit;
+
+ series:= tool.Series as TChartSeries;
+ NoteText:= series.Source[tool.PointIndex]^.Text;
+ with NoteEditingF do
  begin
-  series:= tool.Series as TChartSeries;
-  NoteText:= series.Source[tool.PointIndex]^.Text;
-  if InputQuery(series.Title, 'Add or edit note:', NoteText) then
-  begin
-   series.Source[tool.PointIndex]^.Text:= NoteText;
-   SIXCH.Invalidate;
-  end;
+  NoteLabelL.Caption:= 'Note for ' + series.Title + ':';
+  NoteTextM.Lines.Text:= NoteText;
+  ShowModal;
+  series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
  end;
+ // force a redraw of the chart
+ SIXCH.Invalidate;
 end;
 
 procedure TMainForm.DataPointHintToolHint(
