@@ -1536,6 +1536,7 @@ begin
      + LineEnding + 'You have an unknown old firmware version installed.'
      + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    ClosePumpSerialConn;
     IndicatorPumpP.Caption:= 'Firmware too old';
     IndicatorPumpP.Color:= clRed;
     IndicatorPumpPPaint;
@@ -1555,6 +1556,7 @@ begin
      + LineEnding + 'You have firmware version ' + FirmwareVersion + ' installed.'
      + LineEnding + 'Please use the menu Miscellaneous -> Firmware Update.',
      mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    ClosePumpSerialConn;
     IndicatorPumpP.Caption:= 'Firmware too old';
     IndicatorPumpP.Color:= clRed;
     IndicatorPumpPPaint;
@@ -1650,12 +1652,12 @@ begin
  if HavePumpSerialCB.Checked then
  begin
   DriverConnectBB.Caption:= 'Disconnect Driver';
-  DriverConnectBB.Hint:= 'Connects to a pump driver';
+  DriverConnectBB.Hint:= 'Disconnects from the pump driver';
  end
  else
  begin
   DriverConnectBB.Caption:= 'Connect Driver';
-  DriverConnectBB.Hint:= 'Disconnects from the pump driver';
+  DriverConnectBB.Hint:= 'Connects to a the pump driver';
  end;
 end;
 
@@ -1757,7 +1759,6 @@ begin
    // therefore establish a new connection
    ClosePumpSerialConn;
    serPump:= TBlockSerial.Create;
-   HavePumpSerialCB.Checked:= True;
    serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(COMPort);
    serPump.config(9600, 8, 'N', SB1, False, False);
@@ -1806,7 +1807,9 @@ begin
   // if connected to wrong device, the exit only jumps out of try..finally block
   if exited then
    exit;
-    // allow the user to flush the device anyway
+
+  HavePumpSerialCB.Checked:= True;
+  // allow the user to flush the device anyway
   if forced then
   begin
    with CreateMessageDialog // MessageDlg
@@ -1950,7 +1953,6 @@ begin
   // reconnect
   try
    serPump:= TBlockSerial.Create;
-   HavePumpSerialCB.Checked:= True;
    serPump.DeadlockTimeout:= 5000; //set timeout to 5 s
    serPump.Connect(BootCOM);
    serPump.config(9600, 8, 'N', SB1, False, False);
@@ -1980,6 +1982,7 @@ begin
    ConnComPortPumpLE.Color:= clDefault;
    ConnComPortPumpLE.Text:= BootCOM;
    IndicatorPumpP.Caption:= 'Firmware updated';
+   HavePumpSerialCB.Checked:= True;
    // inform the user
    if (AnsiContainsStr(BossacOut, 'Verify successful'))
      and (FirmwareVersion <> 'unknown') then
