@@ -86,7 +86,7 @@ begin
  MainForm.PumpSetupGB.Enabled:= True;
  MainForm.ValveSetupGB.Enabled:= True;
  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
- if MainForm.LoadedDefFileM.Text = 'None' then
+ if not MainForm.HaveDefFileCB.Checked then
   MainForm.CalibrationGB.Enabled:= false;
 
  // check all possible steps
@@ -2206,14 +2206,13 @@ begin
  begin
   if MainForm.UseCalibCB.Checked then
   begin
-   if MainForm.LoadedDefFileM.Text <> 'None' then
+   if MainForm.HaveDefFileCB.Checked then
     MainForm.RunBB.Enabled:= true
-    else
-    begin
-     MainForm.RunBB.Enabled:= false;
-     if MainForm.LoadedDefFileM.Text <> 'None' then
-      MainForm.RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
-    end;
+   else
+   begin
+    MainForm.RunBB.Enabled:= false;
+    MainForm.RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
+   end;
   end
   else
   begin

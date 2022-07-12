@@ -73,6 +73,7 @@ type
     AutoscaleMI: TMenuItem;
     DriverConnectionGB: TGroupBox;
     DriverConnectBB: TBitBtn;
+    HaveDefFileCB: TCheckBox;
     IconImageBlue: TImage;
     IconImageGreen: TImage;
     Label100: TLabel;
@@ -939,6 +940,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure HaveDefFileCBChange(Sender: TObject);
     procedure LegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
     procedure TitleFootClickToolClick(Sender: TChartTool;
@@ -1560,7 +1562,7 @@ begin
    end;
    // enable all buttons
    // don't allow to run, if calibration is used but no .def file is used
-   if not (UseCalibCB.Checked and (LoadedDefFileM.Text = 'None')) then
+   if not (UseCalibCB.Checked and (not HaveDefFileCB.Checked)) then
     RunBB.Enabled:= true
    else
     RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
@@ -2206,6 +2208,68 @@ begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
 end;
 
+procedure TMainForm.HaveDefFileCBChange(Sender: TObject);
+var
+ hasLoadedSensorData : Boolean;
+begin
+ // if we have something in the chart but no connection to the SIX,
+ // we have a data file loaded
+ hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
+                        and (not HaveSerialSensorCB.Checked));
+
+ LoadedDefFileM.ShowHint:= HaveDefFileCB.Checked;
+ //StartTestBB.enabled:= HaveDefFileCB.Checked;
+ NoSubtractBlankCB.enabled:= HaveDefFileCB.Checked;
+ NoSubtractBlankCB.Checked:= HaveDefFileCB.Checked;
+ NoTempCorrectionCB.enabled:= HaveDefFileCB.Checked;
+ NoTempCorrectionCB.Checked:= HaveDefFileCB.Checked;
+ LoadOtherDefBB.Enabled:= HaveDefFileCB.Checked;
+ UnloadDefBB.Enabled:= HaveDefFileCB.Checked;
+ CalibrateTB.Enabled:= HaveDefFileCB.Checked;
+ CalibrationGB.Enabled:= HaveDefFileCB.Checked;
+
+ if HaveDefFileCB.Checked then
+ begin
+  IndicatorSensorP.Color:= clDefault;
+  IndicatorSensorP.Caption:= '';
+  if HaveSerialSensorCB.Checked then
+   StartTestBB.enabled:= true;
+  SIXBiosensorsMI.enabled:= true;
+  SIXConnectBB.enabled:= true;
+  UseAnOutCB.enabled:= true;
+  if not hasLoadedSensorData then
+   RawCurrentCB.Enabled:= true;
+  CalibrationGB.Hint:= '';
+  if not RunBB.Enabled then
+  begin
+   RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
+   RunBB.Hint:= 'Starts the pump action according to the current settings.'
+                + LineEnding
+                + 'To enable the button you must first connect to the pump driver'
+                + LineEnding + 'using the menu ''Connection''';
+  end;
+ end
+ else
+ begin
+  IndicatorSensorP.Color:= clHighlight;
+  IndicatorSensorP.Caption:= 'No definition file loaded';
+  LoadedDefFileM.Text:= 'None';
+  if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
+  begin
+   // the values are then in nA
+   RawCurrentCB.Checked:= true;
+   RawCurrentCB.Enabled:= false;
+  end;
+
+  // there might be a calibration
+  if UseCalibCB.Checked then
+   RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
+  UseCalibCB.Checked:= false;
+  CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
+                       + 'sensor definition file is loaded';
+ end;
+end;
+
 procedure TMainForm.LegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 begin
@@ -2239,17 +2303,12 @@ end;
 procedure TMainForm.LoadDefBBClick(Sender: TObject);
 var
  ParseSuccess : Boolean = false;
- hasLoadedSensorData : Boolean;
  MousePointer : TPoint;
  DummyString : string = '';
  HeaderLine : string = '';
  i, j, diff, NumChannelsPrev : integer;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
- // RawCurrentCB must not be enabled when there are data loaded but
- // there is no connection to a SIX
- hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
-                        and (not HaveSerialSensorCB.Checked));
 
  if DropfileNameDef = '' then // no file was dropped into the General tab
  begin
@@ -2258,25 +2317,7 @@ begin
   if (DummyString = '') and (InNameDef = '') then
   begin
    // user aborted the loading
-   IndicatorSensorP.Color:= clHighlight;
-   IndicatorSensorP.Caption:= 'No definition file loaded';
-   LoadedDefFileM.Text:= 'None';
-   LoadedDefFileM.ShowHint:= false;
-   StartTestBB.enabled:= false;
-   NoSubtractBlankCB.enabled:= false;
-   NoTempCorrectionCB.enabled:= false;
-   UnloadDefBB.visible:= false;
-   CalibrateTB.Enabled:= false;
-   CalibrationGB.Enabled:= false;
-   CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
-                        + 'sensor definition file is loaded';
-   UseCalibCB.Checked:= false;
-   // the values are then in nA
-   if not hasLoadedSensorData then
-   begin
-    RawCurrentCB.Checked:= true;
-    RawCurrentCB.Enabled:= false;
-   end;
+   HaveDefFileCB.Checked:= false;
    exit;
   end
   else if (DummyString = '') and (InNameDef <> '') then
@@ -2299,26 +2340,8 @@ begin
  if not ParseSuccess then
  begin
   MessageDlgPos('Invalid definition file',
-  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-  IndicatorSensorP.Color:= clHighlight;
-  IndicatorSensorP.Caption:= 'No definition file loaded';
-  LoadedDefFileM.Text:= 'None';
-  LoadedDefFileM.ShowHint:= false;
-  StartTestBB.enabled:= false;
-  NoSubtractBlankCB.enabled:= false;
-  NoTempCorrectionCB.enabled:= false;
-  UnloadDefBB.visible:= false;
-  CalibrateTB.Enabled:= false;
-  CalibrationGB.Enabled:= false;
-  CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
-                       + 'sensor definition file is loaded';
-  UseCalibCB.Checked:= false;
-  // the values are then in nA
-  if not hasLoadedSensorData then
-  begin
-   RawCurrentCB.Checked:= true;
-   RawCurrentCB.Enabled:= false;
-  end;
+   mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  HaveDefFileCB.Checked:= false;
   exit;
  end;
 
@@ -2353,29 +2376,8 @@ begin
  end;
 
  // setup UI to start
- IndicatorSensorP.Color:= clDefault;
- IndicatorSensorP.Caption:= '';
- if HaveSerialSensorCB.Checked then
-  StartTestBB.enabled:= true;
- SIXBiosensorsMI.enabled:= true;
- SIXConnectBB.enabled:= true;
- NoSubtractBlankCB.enabled:= true;
- NoTempCorrectionCB.enabled:= true;
- UseAnOutCB.enabled:= true;
- UnloadDefBB.visible:= true;
- if not hasLoadedSensorData then
-  RawCurrentCB.Enabled:= true;
- CalibrateTB.Enabled:= true;
- CalibrationGB.Enabled:= true;
- CalibrationGB.Hint:= '';
- if not RunBB.Enabled then
- begin
-  RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
-  RunBB.Hint:= 'Starts the pump action according to the current settings.'
-   + LineEnding
-   + 'To enable the button you must first connect to the pump driver'
-   + LineEnding + 'using the menu ''Connection''';
- end;
+ HaveDefFileCB.Checked:= true;
+
  // update chart legend according to channel names
  for i:= 1 to SIXControl.NumChannels do
  begin
@@ -2485,15 +2487,9 @@ procedure TMainForm.UnloadDefBBClick(Sender: TObject);
 var
  i, j, diff, NumChannelsPrev : integer;
  HeaderLine : string;
- hasLoadedSensorData : Boolean;
 begin
- // RawCurrentCB must not be enabled when there are data loaded but
- // there is no connection to a SIX
- hasLoadedSensorData:= ((SIXCh1Values.LastValueIndex > 0)
-                        and (not HaveSerialSensorCB.Checked));
-
  // write a new header line to the output file if .def file was used
- if HaveSensorFileStream and (LoadedDefFileM.Text <> 'None') then
+ if HaveSensorFileStream and HaveDefFileCB.Checked then
  begin
   HeaderLine:= 'Definition file: "' + LoadedDefFileM.Text
                + '.def" was unloaded' + LineEnding;
@@ -2505,37 +2501,8 @@ begin
   SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
  end;
 
- IndicatorSensorP.Color:= clHighlight;
- IndicatorSensorP.Caption:= 'No definition file loaded';
- LoadedDefFileM.Text:= 'None';
- LoadedDefFileM.ShowHint:= false;
+ HaveDefFileCB.Checked:= false;
  InNameDef:= '';
- StartTestBB.enabled:= false;
- UnloadDefBB.visible:= false;
- CalibrateTB.Enabled:= false;
- CalibrationGB.Enabled:= false;
- CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
-                      + 'sensor definition file is loaded';
- UseCalibCB.Checked:= false;
-
- if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
- begin
-  // the values are then in nA
-  RawCurrentCB.Checked:= true;
-  RawCurrentCB.Enabled:= false;
- end;
- if HaveSerialSensorCB.Checked then
- begin
-  // blanks cannot be subtracted anymore
-  NoSubtractBlankCB.Checked:= false;
-  NoSubtractBlankCB.Enabled:= false;
-  // temperature correction is not possible anymore
-  NoTempCorrectionCB.Checked:= false;
-  NoTempCorrectionCB.Enabled:= false;
- end;
- // there might be a calibration
- if UseCalibCB.Checked then
-  RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
 
  // store previous channel number and set to 6 channels
  NumChannelsPrev:= SIXControl.NumChannels;
@@ -3307,7 +3274,7 @@ try
  // there might have been a definition file load that doesn't fit to the data
  // therefore unload it
  // only when file was loaded by the user
- if LoadedDefFileM.Text <> 'None' then
+ if HaveDefFileCB.Checked then
   UnloadDefBBClick(MainForm);
 
   // for the parsing set time unit to hours since this fits for most cases
@@ -3966,7 +3933,7 @@ begin
     // we know now that there are calibration settings
     UseCalibCB.Checked:= true;
     // when no .def file is loaded, we must disable the RunBB button
-    if LoadedDefFileM.Text = 'None' then
+    if not HaveDefFileCB.Checked then
     begin
      RunBB.Enabled:= False;
      RunBB.Hint:= 'Calibration is used but no sensor definition file is loaded';
@@ -4347,14 +4314,10 @@ begin
  begin
   // if no .def file loaded, issue file open dialog
   // user can cancel it if he really does not like to have a .def file
-  if LoadedDefFileM.Text = 'None' then
+  if not HaveDefFileCB.Checked then
   begin
    LoadDefBBClick(LoadDefBB as TObject);
-  end;
-
-  // if no .def file loaded only raw values possible
-  if LoadedDefFileM.Text = 'None' then
-  begin
+   // only raw values possible
    RawCurrentCB.Checked:= true;
    RawCurrentCB.Enabled:= false;
   end;
@@ -4716,7 +4679,7 @@ begin
 
  // write header lines
  HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy hh:nn:ss', now) + LineEnding;
- if LoadedDefFileM.Text = 'None' then
+ if not HaveDefFileCB.Checked then
  begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   for i:= 1 to SIXControl.NumChannels do

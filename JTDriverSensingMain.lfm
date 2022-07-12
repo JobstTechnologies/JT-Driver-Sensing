@@ -759,19 +759,20 @@ object MainForm: TMainForm
           Top = 36
           Width = 136
           Caption = 'Unload definition file'
+          Enabled = False
           OnClick = UnloadDefBBClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 5
-          Visible = False
         end
         object LoadOtherDefBB: TBitBtn
           Left = 367
           Height = 30
-          Hint = 'Loads a sensor definition file'
+          Hint = 'Changes a sensor definition file'
           Top = 0
           Width = 136
           Caption = 'Change definition file'
+          Enabled = False
           OnClick = LoadDefBBClick
           ParentShowHint = False
           ShowHint = True
@@ -1351,6 +1352,16 @@ object MainForm: TMainForm
           FFFF0000FFFF0000FFBF0000FFBF0000FF1F0000E75F0000974F0000736C0000
           FAE10000FAF30000FCFF0000FCFF0000FEFF0000FFFF0000FFFF0000FFFF0000
         }
+        Visible = False
+      end
+      object HaveDefFileCB: TCheckBox
+        Left = 8
+        Height = 19
+        Top = 524
+        Width = 98
+        Caption = 'HaveDefFileCB'
+        OnChange = HaveDefFileCBChange
+        TabOrder = 14
         Visible = False
       end
     end

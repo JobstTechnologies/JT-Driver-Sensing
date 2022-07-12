@@ -473,7 +473,7 @@ begin
  for i:= 1 to NumChannels do
   ChanRawDbl[i]:= Chan[i] * GainsRaw[i] / 100;
 
- if (MainForm.LoadedDefFileM.Text <> 'None') then
+ if MainForm.HaveDefFileCB.Checked then
  // convert to mM
  begin
   for i:= 1 to NumChannels do
@@ -508,7 +508,7 @@ begin
  end;
 
  // store also the raw current values
- if (MainForm.LoadedDefFileM.Text <> 'None')
+ if MainForm.HaveDefFileCB.Checked
   and (not MainForm.NoSubtractBlankCB.Checked) then
   // subtract blank values
   for i:= 1 to NumChannels do
@@ -519,7 +519,7 @@ begin
   OutLine:= OutLine + FormatFloat('0.0000', ChanRawDbl[i]) + #9;
 
  // output temperature if not already
- if (MainForm.LoadedDefFileM.Text = 'None') then
+ if  not MainForm.HaveDefFileCB.Checked then
   OutLine:= OutLine + FormatFloat('0.00', temperature) + #9;
  OutLine:= OutLine + LineEnding;
 
@@ -561,7 +561,7 @@ begin
  // draw SIX data
  for i:= 1 to NumChannels do
  begin
-  if (MainForm.LoadedDefFileM.Text <> 'None')
+  if MainForm.HaveDefFileCB.Checked
    and (not MainForm.RawCurrentCB.Checked) then
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
@@ -571,7 +571,7 @@ begin
  end;
  for i:= 7 to 8 do
  begin
-  if (MainForm.LoadedDefFileM.Text <> 'None')
+  if MainForm.HaveDefFileCB.Checked
    and (not MainForm.RawCurrentCB.Checked) then
    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).AddXY(timeCounter, ChanDbl[i])
@@ -1314,7 +1314,7 @@ begin
  if (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex > 2 then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [nA]';
- if (MainForm.LoadedDefFileM.Text <> 'None')
+ if MainForm.HaveDefFileCB.Checked
   and ((MainForm.FindComponent(SenderName) as TComboBox).ItemIndex < 3) then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
     as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
@@ -1423,7 +1423,7 @@ begin
  // write a new header line to the output file
  if HaveSensorFileStream then
  begin
-  if MainForm.LoadedDefFileM.Text <> 'None' then
+  if MainForm.HaveDefFileCB.Checked then
   begin
    HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
    // output all non-blank channels
@@ -1551,7 +1551,7 @@ begin
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'mM will become 3.3 V output';
   // if there is no definition file loaded issue a warning
-  if MainForm.LoadedDefFileM.Text = 'None' then
+  if not MainForm.HaveDefFileCB.Checked then
   begin
    MainForm.IndicatorSensorP.Color:= clHighlight;
    MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
