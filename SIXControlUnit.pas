@@ -1555,10 +1555,6 @@ begin
   // if there is no definition file loaded issue a warning
   if not MainForm.HaveDefFileCB.Checked then
   begin
-   MainForm.IndicatorSensorP.Color:= clHighlight;
-   MainForm.IndicatorSensorP.Caption:= 'No definition file loaded';
-   MainForm.SIXBiosensorsMI.Enabled:= false;
-   MainForm.SIXConnectBB.Enabled:= false;
    // disable then also analog output
    MainForm.UseAnOutCB.Enabled:= false;
    MainForm.UseAnOutCB.Checked:= false;

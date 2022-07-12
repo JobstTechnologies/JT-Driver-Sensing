@@ -16,6 +16,7 @@ bugfixes:
 - issue proper error messages when reading or writing files that are currently
   in use by other programs
 - don't make a time-costly port scan on disconnecting from SIX or pump driver
+- when appending date assure that its channel names are used
 
 
 from version 0.999.1 to 1.0.0

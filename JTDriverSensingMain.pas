@@ -4561,6 +4561,7 @@ begin
   try
    if FileExists(InNameSensor) then
    begin
+    // we can try to append data
     // try to read the data from the file into the chart
     if not ReadSensorData('none', AppendMinute, AppendCounter, LastDefFile) then
     begin
@@ -4641,6 +4642,11 @@ begin
      SIXControl.signalCounter:= AppendCounter;
     SIXControl.timeCounter:= AppendMinute;
     HeaderLine:= 'Appended: ';
+    // We must update the header string to the channel names read out from the
+    // data file. We do this here after all checks and not during the parsing.
+    for i:= 1 to SIXControl.NumChannels do
+     SIXControl.HeaderStrings[i]:= (MainForm.FindComponent('Channel'
+                                    + IntToStr(i) + 'GB') as TGroupBox).Caption;
    end
    else // new file
    begin
