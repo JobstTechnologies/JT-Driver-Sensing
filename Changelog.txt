@@ -19,6 +19,7 @@ bugfixes:
   in use by other programs
 - don't make a time-costly port scan on disconnecting from SIX or pump driver
 - when appending sensor data assure that its channel names are used
+- stop running action when connection to pump driver is lost
 
 
 from version 0.999.1 to 1.0.0
