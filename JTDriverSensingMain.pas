@@ -2918,12 +2918,7 @@ begin
 end;
 
 procedure TMainForm.HaveSerialSensorCBChange(Sender: TObject);
-var
- IconFile : TIcon;
 begin
- try
-  IconFile:= TIcon.Create;
-
  if HaveSerialSensorCB.Checked then
  begin
   SIXConnectBB.Caption:= 'End SIX measurement';
@@ -2944,10 +2939,6 @@ begin
    MainForm.Caption:= 'JT Driver Sensing';
  end;
  LoadDefBB.Enabled:= not HaveSerialSensorCB.Checked;
-
- finally
-  IconFile.Free;
- end;
 end;
 
 procedure TMainForm.SIXConnectBBClick(Sender: TObject);
