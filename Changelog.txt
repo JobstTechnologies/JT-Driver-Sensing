@@ -8,6 +8,8 @@ improvements:
 - add always visible button to autoscale instead of the current chart's
   context menu entry to autoscale
 - by Ctrl + Leftclick on a data point in the chart it is possible to add notes
+- when appending sensor data check for the SIX number used the last time and
+  warn if the current connected SIX is different
 - percentage of maximal speed is displayed for every pump
 
 bugfixes:
@@ -16,7 +18,7 @@ bugfixes:
 - issue proper error messages when reading or writing files that are currently
   in use by other programs
 - don't make a time-costly port scan on disconnecting from SIX or pump driver
-- when appending date assure that its channel names are used
+- when appending sensor data assure that its channel names are used
 
 
 from version 0.999.1 to 1.0.0

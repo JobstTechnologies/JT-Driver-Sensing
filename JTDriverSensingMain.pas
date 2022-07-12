@@ -1058,7 +1058,8 @@ type
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
     function ReadSensorData(Input: string; out AppendMinute: Int64;
-              out AppendCounter: Int64; out LastDefFile: string): Boolean;
+              out AppendCounter: Int64; out LastDefFile: string;
+              out LastSIXID: string): Boolean;
     procedure CloseLazSerialConn;
     procedure ClosePumpSerialConn;
     procedure FirmwareUpdate(forced: Boolean);
@@ -3069,12 +3070,12 @@ end;
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
 var
  AppendMinute, AppendCounter : Int64;
- LastDefFile : string;
+ LastDefFile, LastSIXID : string;
 begin
  // we can have the case that a file is dropped while we cannot load a file
  if LoadSensorDataMI.enabled then
   ReadSensorData((Sender as TComponent).Name,
-                 AppendMinute, AppendCounter, LastDefFile);
+                 AppendMinute, AppendCounter, LastDefFile, LastSIXID);
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -3090,7 +3091,8 @@ begin
 end;
 
 function TMainForm.ReadSensorData(Input: string; out AppendMinute: Int64;
-                   out AppendCounter: Int64; out LastDefFile: string) : Boolean;
+                   out AppendCounter: Int64; out LastDefFile: string;
+                   out LastSIXID: string) : Boolean;
 // reads data out of sensor file
 var
  OpenFileStream : TFileStream;
@@ -3112,6 +3114,7 @@ begin
  previousCounter:= 0; // a valid file must begin with counter '1'
  MousePointer:= Mouse.CursorPos; // store mouse position
  LastDefFile:= 'None'; // there might not be any .def file
+ LastSIXID:= 'unknown SIX';
  TempRow:= -1;
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
@@ -3187,18 +3190,32 @@ try
 
   StringArray:= ReadLine.Split(' ');
   if (StringArray[0] = 'Used') and (StringArray[1] = 'definition')
-   and (StringArray[2] = 'file:') then // we a line with name of .def file
+   and (StringArray[2] = 'file:') then // line with name of .def file
   begin
    LastDefFile:= '';
-    // we can have spaces in the filename therefore concatenate all
-    for i:= 3 to Length(StringArray)-1 do
-    begin
-     LastDefFile:= LastDefFile + StringArray[i];
-     if i < (Length(StringArray) - 1) then
-      LastDefFile:= LastDefFile + ' ';
-    end;
+   // we can have spaces in the filename therefore concatenate all
+   for i:= 3 to Length(StringArray)-1 do
+   begin
+    LastDefFile:= LastDefFile + StringArray[i];
+    if i < (Length(StringArray) - 1) then
+     LastDefFile:= LastDefFile + ' ';
+   end;
    RemovePadChars(LastDefFile, ['"']); // strip quotes
    SetLength(LastDefFile, Length(LastDefFile) - 4); // without suffix '.def'
+   continue;
+  end;
+
+  if (StringArray[0] = 'Used') and (StringArray[1] = 'SIX')
+   and (StringArray[2] = 'ID') then // line with ID of SIX
+  begin
+   // concatenate all except of the first
+   LastSIXID:= '';
+   for i:= 1 to Length(StringArray)-1 do
+   begin
+    LastSIXID:= LastSIXID + StringArray[i];
+    if i < (Length(StringArray) - 1) then
+     LastSIXID:= LastSIXID + ' ';
+   end;
    continue;
   end;
 
@@ -3259,7 +3276,8 @@ try
   end;
  until (StringArray[0] = 'Counter') or (rowCounter = 3);
 
- if (rowCounter = 3) and (StringArray[0] <> 'Counter') then
+ // we only have 4 header lines
+ if (rowCounter = 4) and (StringArray[0] <> 'Counter') then
  begin
   MessageDlgPos('File has no header line defining the value units.',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -3370,7 +3388,7 @@ try
    end;
    StringArray:= ReadLine.Split(' ');
    if (StringArray[0] = 'Used') and (StringArray[1] = 'definition')
-    and (StringArray[2] = 'file:') then // we a line with name of .def file
+    and (StringArray[2] = 'file:') then // line with name of .def file
    begin
     LastDefFile:= '';
     // we can have spaces in the filename therefore concatenate all
@@ -3388,6 +3406,19 @@ try
     and (StringArray[1] = 'file:') then // .def file was unloaded
    begin
     LastDefFile:= 'None';
+    continue;
+   end;
+   if (StringArray[0] = 'Used') and (StringArray[1] = 'SIX')
+    and (StringArray[2] = 'ID') then // line with ID of SIX
+   begin
+    // concatenate all except of the first
+    LastSIXID:= '';
+    for i:= 1 to Length(StringArray)-1 do
+    begin
+     LastSIXID:= LastSIXID + StringArray[i];
+     if i < (Length(StringArray) - 1) then
+      LastSIXID:= LastSIXID + ' ';
+    end;
     continue;
    end;
    continue;
@@ -4289,7 +4320,7 @@ var
  i, k, COMNumber, COMIndex, YesNo : integer;
  AppendCounter, AppendMinute : Int64;
  MousePointer : TPoint;
- HeaderLine, ReturnName, LastLine, COMPort, LastDefFile : string;
+ HeaderLine, ReturnName, LastLine, COMPort, LastDefFile, LastSIXID : string;
  dataArray : array[0..24] of byte;
  COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
@@ -4563,7 +4594,8 @@ begin
    begin
     // we can try to append data
     // try to read the data from the file into the chart
-    if not ReadSensorData('none', AppendMinute, AppendCounter, LastDefFile) then
+    if not ReadSensorData('none', AppendMinute, AppendCounter,
+     LastDefFile, LastSIXID) then
     begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
                    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -4581,6 +4613,29 @@ begin
          + LineEnding + LineEnding
          + 'Do you want to load another data file or definition file' + LineEnding
          + 'and then reconnect to the SIX?',
+         mtWarning, [mbYes]+[mbNo]) do
+     try
+      ActiveControl:= FindComponent('NO') as TWinControl;
+      YesNo:= ShowModal;
+     finally
+      Free;
+     end;
+     if YesNo = mrYes then // only for Yes we need to do something
+     begin
+      CloseLazSerialConn;
+      IndicatorSensorP.Caption:= 'Connection aborted';
+      IndicatorSensorP.Color:= clHighlight;
+      exit;
+     end;
+    end;
+    if LastSIXID <> ConnComPortSensM.Lines[1] then
+    begin
+     with CreateMessageDialog
+        ('The input data file used "' + LastSIXID + '"'
+         + LineEnding
+         + 'while the the currently connected one "' + ConnComPortSensM.Lines[1]
+         + '".' + LineEnding + LineEnding
+         + 'Do you want to reconnect to another the SIX?',
          mtWarning, [mbYes]+[mbNo]) do
      try
       ActiveControl:= FindComponent('NO') as TWinControl;
@@ -4686,6 +4741,8 @@ begin
 
  // write header lines
  HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy hh:nn:ss', now) + LineEnding;
+ // output the used SIX
+ HeaderLine:= HeaderLine + 'Used ' + ConnComPortSensM.Lines[1] + LineEnding;
  if not HaveDefFileCB.Checked then
  begin
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
