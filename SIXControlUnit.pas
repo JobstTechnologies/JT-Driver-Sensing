@@ -183,7 +183,9 @@ begin
     MainForm.ConnComPortSensM.Lines[0]:= 'COM' + IntToStr(i);
 
     MainForm.ConnComPortSensM.Color:= clDefault;
-    MainForm.IndicatorSensorP.Caption:= 'Reconnection successful';
+    MainForm.IndicatorSensorP.Hint:= 'Connection to Six was lost for some time but'
+     + LineEnding + 'automatic reconnection was successful';
+    MainForm.IndicatorSensorP.Caption:= 'Measurement running';
     MainForm.IndicatorSensorP.Color:= clYellow;
     MainForm.InfoNote.Hide; // hide the note
     MainForm.InfoNote.Color:= clInfoBk;

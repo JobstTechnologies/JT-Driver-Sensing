@@ -2268,6 +2268,10 @@ begin
   CalibrationGB.Hint:= 'Calibration is only possible if a' + LineEnding
                        + 'sensor definition file is loaded';
  end;
+
+ // only for a successful reconnection there is a hint
+ // therefore we can always delete it here
+ IndicatorSensorP.Hint:= '';
 end;
 
 procedure TMainForm.LegendClickToolClick(Sender: TChartTool;
@@ -2939,6 +2943,9 @@ begin
    MainForm.Caption:= 'JT Driver Sensing';
  end;
  LoadDefBB.Enabled:= not HaveSerialSensorCB.Checked;
+ // only for a successful reconnection there is a hint
+ // therefore we can always delete it here
+ IndicatorSensorP.Hint:= '';
 end;
 
 procedure TMainForm.SIXConnectBBClick(Sender: TObject);
