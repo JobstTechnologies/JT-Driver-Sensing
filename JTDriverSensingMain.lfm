@@ -212,7 +212,7 @@ object MainForm: TMainForm
         object SIXConnectBB: TBitBtn
           Left = 128
           Height = 30
-          Hint = 'Dis/connects to a SIX biosensor'#13#10'and starts immediately a measurement'
+          Hint = 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement'
           Top = 0
           Width = 136
           Caption = 'Start SIX measurement'
@@ -771,7 +771,7 @@ object MainForm: TMainForm
           Hint = 'Loads a sensor definition file'
           Top = 0
           Width = 136
-          Caption = 'Load other definition file'
+          Caption = 'Change definition file'
           OnClick = LoadDefBBClick
           ParentShowHint = False
           ShowHint = True

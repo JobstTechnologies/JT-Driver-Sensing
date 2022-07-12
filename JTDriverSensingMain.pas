@@ -2934,14 +2934,16 @@ begin
 
  if HaveSerialSensorCB.Checked then
  begin
-  SIXConnectBB.Caption:= 'Disonnect SIX';
+  SIXConnectBB.Caption:= 'End SIX measurement';
+  SIXConnectBB.Hint:= 'Disconnects from the SIX biosensor'#13#10'and stops the measurement';
   Application.Icon.Assign(IconImageGreen.Picture.Icon);
   IndicatorSensorP.Caption:= 'Measurement running';
   IndicatorSensorP.Color:= clLime;
  end
  else
  begin
-  SIXConnectBB.Caption:= 'Connect SIX';
+  SIXConnectBB.Caption:= 'Start SIX measurement';
+  SIXConnectBB.Hint:= 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement';
   Application.Icon.Assign(IconImageBlue.Picture.Icon);
   if LoadedFileSensM.Text <> 'None' then
    MainForm.Caption:= 'JT Driver Sensing ' + Version
@@ -4266,6 +4268,7 @@ end;
 procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
 // if Connected is false a port scan is done and a dialog to connect is opened
 // in every case set the file to store the sensor data
+// if Connected is true, a file dialog is opened to change the sensor data file
 var
  Reg : TRegistry;
  i, k, COMNumber, COMIndex, YesNo : integer;
@@ -4286,14 +4289,36 @@ begin
  // get the default gain for the raw values
  SetSIXFactors;
 
+ if Disconnect then
+  begin
+   ConnComPortSensM.Text:= 'Not connected';
+   ConnComPortSensM.Color:= clHighlight;
+   IndicatorSensorP.Caption:= '';
+   IndicatorSensorP.Color:= clDefault;
+   StartTestBB.Enabled:= false;
+   StopTestBB.Enabled:= false;
+   LoadSensorDataMI.Enabled:= true;
+   if HaveSerialSensorCB.Checked then
+   begin
+    CloseLazSerialConn;
+    IndicatorSensorP.Caption:= 'SIX stopped';
+    IndicatorSensorP.Color:= clHighlight;
+   end;
+   // SIX type can now be set again
+   SIXTypeRG.Enabled:= true;
+   RawCurrentCB.Enabled:= true;
+   LoadDefBB.Enabled:= true;
+   exit;
+  end;
+
  // connect to SIX
  if not Connected then
  begin
   // if no .def file loaded, issue file open dialog
   // user can cancel it if he really does not like to have a .def file
-  if (not Disconnect) and (LoadedDefFileM.Text = 'None') then
+  if LoadedDefFileM.Text = 'None' then
   begin
-   LoadDefBBClick((LoadDefBB as TObject));
+   LoadDefBBClick(LoadDefBB as TObject);
   end;
 
   // if no .def file loaded only raw values possible
@@ -4374,26 +4399,20 @@ begin
    if SerialUSBPortCB.Text = '' then
     COMPort:= '';
 
-   if not Disconnect then
+   // open connection dialog
+   // first change its appearance
+   SerialUSBPortL.Caption:= 'Select SIX device';
+   Caption:= 'SIX selection';
+   ShowModal;
+   // change appearance back
+   SerialUSBPortL.Caption:= 'Serial USB Port';
+   Caption:= 'Serial port selection';
+
+   if ModalResult = mrOK then
    begin
-    // open connection dialog
-    // first change its appearance
-    SerialUSBPortL.Caption:= 'Select SIX device';
-    Caption:= 'SIX selection';
-    ShowModal;
-    // change appearance back
-    SerialUSBPortL.Caption:= 'Serial USB Port';
-    Caption:= 'Serial port selection';
-
-    if ModalResult = mrOK then
-    begin
-     COMPort:= SerialUSBPortCB.Text;
-     COMIndex:= SerialUSBPortCB.ItemIndex;
-    end;
-   end
-   else
-    ModalResult:= mrNo;
-
+    COMPort:= SerialUSBPortCB.Text;
+    COMIndex:= SerialUSBPortCB.ItemIndex;
+   end;
   end; // end with SerialUSBSelectionF
 
   if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
