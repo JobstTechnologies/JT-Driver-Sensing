@@ -1062,6 +1062,7 @@ type
     procedure FirmwareUpdate(forced: Boolean);
     procedure COMPortScan(PortType: string);
     procedure SetSIXFactors;
+    procedure DisconnectSIX;
 
   end;
 
@@ -4265,6 +4266,28 @@ for i:= 1 to SIXControl.NumChannels do
  end;
 end;
 
+procedure TMainForm.DisconnectSIX;
+// disconnects from SIX
+begin
+ ConnComPortSensM.Text:= 'Not connected';
+ ConnComPortSensM.Color:= clHighlight;
+ IndicatorSensorP.Caption:= '';
+ IndicatorSensorP.Color:= clDefault;
+ StartTestBB.Enabled:= false;
+ StopTestBB.Enabled:= false;
+ LoadSensorDataMI.Enabled:= true;
+ if HaveSerialSensorCB.Checked then
+ begin
+  CloseLazSerialConn;
+  IndicatorSensorP.Caption:= 'SIX stopped';
+  IndicatorSensorP.Color:= clHighlight;
+ end;
+ // SIX type can now be set again
+ SIXTypeRG.Enabled:= true;
+ RawCurrentCB.Enabled:= true;
+ LoadDefBB.Enabled:= true;
+end;
+
 procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
 // if Connected is false a port scan is done and a dialog to connect is opened
 // in every case set the file to store the sensor data
@@ -4291,23 +4314,7 @@ begin
 
  if Disconnect then
   begin
-   ConnComPortSensM.Text:= 'Not connected';
-   ConnComPortSensM.Color:= clHighlight;
-   IndicatorSensorP.Caption:= '';
-   IndicatorSensorP.Color:= clDefault;
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
-   LoadSensorDataMI.Enabled:= true;
-   if HaveSerialSensorCB.Checked then
-   begin
-    CloseLazSerialConn;
-    IndicatorSensorP.Caption:= 'SIX stopped';
-    IndicatorSensorP.Color:= clHighlight;
-   end;
-   // SIX type can now be set again
-   SIXTypeRG.Enabled:= true;
-   RawCurrentCB.Enabled:= true;
-   LoadDefBB.Enabled:= true;
+   DisconnectSIX;
    exit;
   end;
 
@@ -4415,25 +4422,9 @@ begin
    end;
   end; // end with SerialUSBSelectionF
 
-  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
+  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Cancel
   begin
-   ConnComPortSensM.Text:= 'Not connected';
-   ConnComPortSensM.Color:= clHighlight;
-   IndicatorSensorP.Caption:= '';
-   IndicatorSensorP.Color:= clDefault;
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
-   LoadSensorDataMI.Enabled:= true;
-   if HaveSerialSensorCB.Checked then
-   begin
-    CloseLazSerialConn;
-    IndicatorSensorP.Caption:= 'SIX stopped';
-    IndicatorSensorP.Color:= clHighlight;
-   end;
-   // SIX type can now be set again
-   SIXTypeRG.Enabled:= true;
-   RawCurrentCB.Enabled:= true;
-   LoadDefBB.Enabled:= true;
+   DisconnectSIX;
    exit;
   end;
 
