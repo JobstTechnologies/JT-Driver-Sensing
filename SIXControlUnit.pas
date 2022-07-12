@@ -1143,7 +1143,7 @@ begin
 
  MainForm.ScrollIntervalFSE.Enabled:= MainForm.ScrollViewCB.Checked;
 
- if MainForm.ScrollViewCB.Checked = false then
+ if not MainForm.ScrollViewCB.Checked then
  begin
   // We might have many data points. And when now the line thickess is not 1
   // Windows will perform some calculations that slow down the display of the

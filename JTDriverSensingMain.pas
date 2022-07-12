@@ -1201,8 +1201,6 @@ begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Marks.Style:= smsLabel;
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).Marks.Style:= smsLabel;
-  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Marks.LabelFont.Color:= clGray;
  end;
 
@@ -4596,7 +4594,7 @@ begin
    if FileExists(InNameSensor) then
    begin
     // try to read the data from the file into the chart
-    if ReadSensorData('none', AppendMinute, AppendCounter, LastDefFile) = false then
+    if not ReadSensorData('none', AppendMinute, AppendCounter, LastDefFile) then
     begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
                    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
