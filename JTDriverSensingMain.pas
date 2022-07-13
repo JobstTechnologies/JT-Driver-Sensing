@@ -2222,10 +2222,6 @@ begin
                         and (not HaveSerialSensorCB.Checked));
 
  LoadedDefFileM.ShowHint:= HaveDefFileCB.Checked;
- NoSubtractBlankCB.enabled:= HaveDefFileCB.Checked;
- NoSubtractBlankCB.Checked:= HaveDefFileCB.Checked;
- NoTempCorrectionCB.enabled:= HaveDefFileCB.Checked;
- NoTempCorrectionCB.Checked:= HaveDefFileCB.Checked;
  LoadOtherDefBB.Enabled:= HaveDefFileCB.Checked;
  UnloadDefBB.Enabled:= HaveDefFileCB.Checked;
  CalibrateTB.Enabled:= HaveDefFileCB.Checked;
@@ -2239,11 +2235,15 @@ begin
    IndicatorSensorP.Caption:= '';
    StartTestBB.enabled:= true;
   end;
-  SIXBiosensorsMI.enabled:= true;
-  SIXConnectBB.enabled:= true;
-  UseAnOutCB.enabled:= true;
+  SIXBiosensorsMI.Enabled:= true;
+  SIXConnectBB.Enabled:= true;
+  UseAnOutCB.Enabled:= true;
+  RawCurrentCB.Enabled:= true;
   if not hasLoadedSensorData then
-   RawCurrentCB.Enabled:= true;
+  begin
+   NoTempCorrectionCB.Enabled:= true;
+   NoSubtractBlankCB.Enabled:= true;
+  end;
   CalibrationGB.Hint:= '';
   if not RunBB.Enabled then
    RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
@@ -2252,17 +2252,25 @@ begin
  end
  else
  begin
+  // only change indicator if no measurement is running because it is
+  // more important that the user sees that a measurement is running
   if not HaveSerialSensorCB.Checked then
   begin
    IndicatorSensorP.Color:= clHighlight;
    IndicatorSensorP.Caption:= 'No definition file loaded';
   end;
   LoadedDefFileM.Text:= 'None';
-  if (not HaveSerialSensorCB.Checked) or (not hasLoadedSensorData) then
+  if (HaveSerialSensorCB.Checked) or (hasLoadedSensorData) then
   begin
    // the values are then in nA
    RawCurrentCB.Checked:= true;
    RawCurrentCB.Enabled:= false;
+   // temperature connection is not possible
+   NoTempCorrectionCB.Checked:= false;
+   NoTempCorrectionCB.Enabled:= false;
+   // subtracting blanks not possible because blanks are unknown
+   NoSubtractBlankCB.Checked:= false;
+   NoSubtractBlankCB.Enabled:= false;
   end;
 
   // there might be a calibration
@@ -3621,10 +3629,6 @@ end;
    TimeDayMIClick(MainForm)
   else if time < 1000 then
    TimeMinuteMIClick(MainForm);
-
-  // we must prevent that the display is changed by loaded .def files
-  // because different portions of the file belong to different .def files
-  RawCurrentCB.Enabled:= false;
  end;
 
  // at last display the file name as chart title

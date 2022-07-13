@@ -1484,10 +1484,19 @@ procedure TSIXControl.SCRawCurrentCBChange(Sender: TObject);
 var
  i, j : integer;
  LastIndex : integer = 0;
+ hasLoadedSensorData : Boolean;
+ AppendMinute, AppendCounter : Int64;
+ LastDefFile, LastSIXID : string;
 begin
  // if RawCurrentCB is disabled we must not recalculate
  if (not MainForm.RawCurrentCB.Enabled) then
   exit;
+
+ // if we have something in the chart but no connection to the SIX,
+ // we have a data file loaded
+ hasLoadedSensorData:= ((MainForm.SIXCh1Values.LastValueIndex > 0)
+                        and (not MainForm.HaveSerialSensorCB.Checked));
+
  if MainForm.RawCurrentCB.Checked then
  begin
   // rename the chart axis
@@ -1518,19 +1527,26 @@ begin
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'nA will become 3.3 V output';
 
-  // recalculate the mmol values in the plot to nA
-  // Note: this will purposely not have any influence on the output .csv file
-  for i:= 1 to NumChannels do
+  if hasLoadedSensorData then
+   // we need to re-read the file and don't recalculate
+   MainForm.ReadSensorData('MainForm', AppendMinute, AppendCounter,
+                           LastDefFile, LastSIXID)
+  else
   begin
-   for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-    as TLineSeries).LastValueIndex do
-    (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-     as TLineSeries).YValue[j]:=
-      (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-       as TLineSeries).YValue[j]
-       * exp(TemperGains[i] / 100
-             * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
-       * GainsRaw[i] / Gains[i];
+   // recalculate the mmol values in the plot to nA
+   // Note: this will purposely not have any influence on the output .csv file
+   for i:= 1 to NumChannels do
+   begin
+    for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).LastValueIndex do
+     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).YValue[j]:=
+       (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+        as TLineSeries).YValue[j]
+        * exp(TemperGains[i] / 100
+              * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
+        * GainsRaw[i] / Gains[i];
+   end;
   end;
  end
  else // not checked
@@ -1561,19 +1577,26 @@ begin
   end
   else
   begin
-   // recalculate the nA values in the plot to mmol
-   // Note: this will purposely not have any influence on the output .csv file
-   for i:= 1 to NumChannels do
+   if hasLoadedSensorData then
+    // we need to re-read the file and don't recalculate
+    MainForm.ReadSensorData('MainForm', AppendMinute, AppendCounter,
+                            LastDefFile, LastSIXID)
+   else
    begin
-    for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-     as TLineSeries).LastValueIndex do
-     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-      as TLineSeries).YValue[j]:=
-       (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-        as TLineSeries).YValue[j]
-        / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
-        * Gains[i] / GainsRaw[i];
-   end;
+    // recalculate the nA values in the plot to mmol
+    // Note: this will purposely not have any influence on the output .csv file
+    for i:= 1 to NumChannels do
+    begin
+     for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).LastValueIndex do
+      (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+       as TLineSeries).YValue[j]:=
+        (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+         as TLineSeries).YValue[j]
+         / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
+         * Gains[i] / GainsRaw[i];
+    end;
+   end; // else if hasLoadedSensorData
   end;
  end; // end not checked
 

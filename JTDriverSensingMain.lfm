@@ -653,7 +653,7 @@ object MainForm: TMainForm
         object NoSubtractBlankCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'#13#10'(only available if definition file is loaded)'
+          Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'#13#10'(only available for running measurements'#13#10' and if definition file is loaded)'
           Top = 0
           Width = 163
           Caption = 'Don''t subtract blank values'
@@ -665,7 +665,7 @@ object MainForm: TMainForm
         object RawCurrentCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'The raw channel current values'#13#10'will be output and displayed'
+          Hint = 'The raw channel current values'#13#10'will be output and displayed'#13#10'(can only be disabled if a definition'#13#10' file is loaded)'
           Top = 24
           Width = 125
           Caption = 'Display values in nA'
@@ -706,7 +706,7 @@ object MainForm: TMainForm
         object NoTempCorrectionCB: TCheckBox
           Left = 8
           Height = 19
-          Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'#13#10'(only available if definition file is loaded)'
+          Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'#13#10'(only available for running measurements'#13#10' and if definition file is loaded)'
           Top = 48
           Width = 206
           Caption = 'Don''t apply temperature correction'
