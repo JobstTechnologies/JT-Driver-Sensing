@@ -243,10 +243,10 @@ object ChartAxisFrame: TChartAxisFrame
         TabOrder = 0
         object cbAutoMinMax: TCheckBox
           AnchorSideTop.Side = asrBottom
-          Left = 32
+          Left = 16
           Height = 19
           Hint = 'Not available when scrolling is active'
-          Top = 29
+          Top = 28
           Width = 76
           BorderSpacing.Left = 16
           BorderSpacing.Top = 10
@@ -260,10 +260,10 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = gbAxisRange
           AnchorSideRight.Side = asrBottom
-          Left = 128
+          Left = 152
           Height = 23
-          Top = 27
-          Width = 116
+          Top = 26
+          Width = 92
           Alignment = taRightJustify
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 8
@@ -276,10 +276,10 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = gbAxisRange
           AnchorSideRight.Side = asrBottom
-          Left = 128
+          Left = 152
           Height = 23
           Top = 58
-          Width = 116
+          Width = 92
           Alignment = taRightJustify
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 8
@@ -301,6 +301,22 @@ object ChartAxisFrame: TChartAxisFrame
           Caption = 'Inverted'
           OnChange = cbInvertedChange
           TabOrder = 3
+        end
+        object lMaximum: TLabel
+          Left = 120
+          Height = 15
+          Top = 30
+          Width = 26
+          Caption = 'Max:'
+          ParentColor = False
+        end
+        object lMinimum: TLabel
+          Left = 120
+          Height = 15
+          Top = 62
+          Width = 24
+          Caption = 'Min:'
+          ParentColor = False
         end
       end
       object gbLabelFont: TGroupBox
