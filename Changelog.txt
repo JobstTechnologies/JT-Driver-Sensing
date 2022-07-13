@@ -1,5 +1,16 @@
 Changes
 
+from version 1.1.0 to 1.1.1
+
+improvement:
+- when changing chart axis range from 'automatic' propose sensible min/max values
+
+bugfixes:
+- fix several definition file handling issues
+- fix bug that for existing data files the values were not properly recalculated
+  when changing between raw and mmol/l values
+
+
 from version 1.0.0 to 1.1.0
 
 improvements:

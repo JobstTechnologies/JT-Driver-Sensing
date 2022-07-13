@@ -20,6 +20,9 @@ To readout and visualize biosensorsensor data:
 - To change the appearance of the values chart, double-click on the different chart elements
   like the axes, legend etc. To change the sensor channel names, double click on them in the
   tab *General*.
+- To add notes in the chart, Ctrl + click on a datapoint. To modify or delete an existing note
+  Ctrl + click on its datapoint.</br>
+  **Note**: Currently notes are not stored. When JT Pump Driver is closed all notes are gone.
 
 ### Calibration
 
