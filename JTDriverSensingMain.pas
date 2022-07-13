@@ -3629,6 +3629,14 @@ end;
    TimeDayMIClick(MainForm)
   else if time < 1000 then
    TimeMinuteMIClick(MainForm);
+  // for existing data we don't perform calibrations
+  NoSubtractBlankCB.Enabled:= false;
+  NoSubtractBlankCB.Checked:= false;
+  NoTempCorrectionCB.Enabled:= false;
+  NoTempCorrectionCB.Checked:= false;
+  // also disable to load a new .def file because this would lead to
+  // wrong channel names
+  LoadDefBB.Enabled:= false;
  end;
 
  // at last display the file name as chart title
