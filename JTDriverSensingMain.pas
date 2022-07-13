@@ -3084,9 +3084,11 @@ var
  LastDefFile, LastSIXID : string;
 begin
  // we can have the case that a file is dropped while we cannot load a file
- if LoadSensorDataMI.enabled then
-  ReadSensorData((Sender as TComponent).Name,
-                 AppendMinute, AppendCounter, LastDefFile, LastSIXID);
+ if not LoadSensorDataMI.enabled then
+ exit;
+
+ ReadSensorData((Sender as TComponent).Name,
+                AppendMinute, AppendCounter, LastDefFile, LastSIXID);
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -3637,6 +3639,13 @@ end;
   // also disable to load a new .def file because this would lead to
   // wrong channel names
   LoadDefBB.Enabled:= false;
+  // hide the blanks
+  for i:= 1 to SIXControl.NumChannels do
+  begin
+   if isBlank[i] then
+    (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+     as TCheckBox).Checked:= false;
+  end;
  end;
 
  // at last display the file name as chart title
