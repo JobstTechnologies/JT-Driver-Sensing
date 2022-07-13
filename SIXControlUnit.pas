@@ -1568,7 +1568,12 @@ begin
   end;
   // change 3.3V output label
   MainForm.AnOutMaxLabel.Caption:= 'mM will become 3.3 V output';
-  // if there is no definition file loaded issue a warning
+
+  if hasLoadedSensorData then
+   // we need to re-read the file
+   MainForm.ReadSensorData('none', AppendMinute, AppendCounter,
+                           LastDefFile, LastSIXID);
+
   if not MainForm.HaveDefFileCB.Checked then
   begin
    // disable then also analog output
@@ -1577,26 +1582,19 @@ begin
   end
   else
   begin
-   if hasLoadedSensorData then
-    // we need to re-read the file and don't recalculate
-    MainForm.ReadSensorData('none', AppendMinute, AppendCounter,
-                            LastDefFile, LastSIXID)
-   else
+   // recalculate the nA values in the plot to mmol
+   // Note: this will purposely not have any influence on the output .csv file
+   for i:= 1 to NumChannels do
    begin
-    // recalculate the nA values in the plot to mmol
-    // Note: this will purposely not have any influence on the output .csv file
-    for i:= 1 to NumChannels do
-    begin
-     for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-      as TLineSeries).LastValueIndex do
-      (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-       as TLineSeries).YValue[j]:=
-        (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-         as TLineSeries).YValue[j]
-         / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
-         * Gains[i] / GainsRaw[i];
-    end;
-   end; // else if hasLoadedSensorData
+    for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+     as TLineSeries).LastValueIndex do
+     (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+      as TLineSeries).YValue[j]:=
+       (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
+        as TLineSeries).YValue[j]
+        / exp(TemperGains[i] / 100 * (MainForm.SIXTempValues.YValue[j] - TemperGains[8]))
+        * Gains[i] / GainsRaw[i];
+   end;
   end;
  end; // end not checked
 
