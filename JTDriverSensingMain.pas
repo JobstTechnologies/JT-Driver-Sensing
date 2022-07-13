@@ -2239,7 +2239,7 @@ begin
   SIXConnectBB.Enabled:= true;
   UseAnOutCB.Enabled:= true;
   RawCurrentCB.Enabled:= true;
-  if not hasLoadedSensorData then
+  if HaveSerialSensorCB.Checked or (not hasLoadedSensorData) then
   begin
    NoTempCorrectionCB.Enabled:= true;
    NoSubtractBlankCB.Enabled:= true;
@@ -4814,6 +4814,7 @@ begin
  ScrollViewCB.Enabled:= true;
 
  // final UI settings
+
  StartTestBB.Enabled:= true;
  // enable analog output when also connected to a pump driver
  if ConnComPortPumpLE.Color = clDefault then
@@ -4874,8 +4875,12 @@ begin
  LoadSensorDataMI.Enabled:= false;
  // reset chart title to default
  SIXCH.Title.Text[0]:= 'SIX Values';
- // allow to display in nA
- RawCurrentCB.Enabled:= true;
+ if HaveDefFileCB.Checked then
+ begin
+  RawCurrentCB.Enabled:= true;
+  NoTempCorrectionCB.Enabled:= true;
+  NoSubtractBlankCB.Enabled:= true;
+ end;
 
  // we can now set the timer interval
  ReadTimer.Interval:= Trunc(EvalTimeFSE.Value * 1000); // in ms

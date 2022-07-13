@@ -1529,7 +1529,7 @@ begin
 
   if hasLoadedSensorData then
    // we need to re-read the file and don't recalculate
-   MainForm.ReadSensorData('MainForm', AppendMinute, AppendCounter,
+   MainForm.ReadSensorData('none', AppendMinute, AppendCounter,
                            LastDefFile, LastSIXID)
   else
   begin
@@ -1579,7 +1579,7 @@ begin
   begin
    if hasLoadedSensorData then
     // we need to re-read the file and don't recalculate
-    MainForm.ReadSensorData('MainForm', AppendMinute, AppendCounter,
+    MainForm.ReadSensorData('none', AppendMinute, AppendCounter,
                             LastDefFile, LastSIXID)
    else
    begin
