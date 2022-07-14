@@ -2167,23 +2167,8 @@ end;
 
 procedure TMainForm.DataPointHintToolHint(
   ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
-var
- SeriesName : string;
 begin
- SeriesName:= ATool.Series.Name;
- // all series except of SIXTempValues are connected to the left axis
- if SeriesName <> 'SIXTempValues' then
-  AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [SIXCH.AxisList[1].GetTransform.GraphToAxis(
-            ATool.NearestGraphPoint.X),
-           SIXCH.AxisList[0].GetTransform.GraphToAxis(
-            ATool.NearestGraphPoint.Y)])
- else
-  AHint:= Format('time = %.3g,' + LineEnding + 'value = %.4g',
-          [SIXCH.AxisList[1].GetTransform.GraphToAxis(
-            ATool.NearestGraphPoint.X),
-           SIXCH.AxisList[2].GetTransform.GraphToAxis(
-            ATool.NearestGraphPoint.Y)])
+ SIXControl.SCDataPointHintToolHint(ATool, APoint, AHint);
 end;
 
 procedure TMainForm.DataPointHintToolHintPosition(

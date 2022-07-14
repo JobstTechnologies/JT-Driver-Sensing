@@ -6,6 +6,8 @@ improvements:
 - notes are now stored together with the sensor data and will be read in
   when loading or appending a data file
 - a progress bar is shown when scanning for SIX and pump drivers is performed
+- when hovering over a chart datapoint, the time is shown in the format
+  days:hours:minutes to help distinguishing times of long measurements 
 
   
 from version 1.1.0 to 1.1.1

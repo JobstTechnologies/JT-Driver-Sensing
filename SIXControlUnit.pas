@@ -18,6 +18,8 @@ type
   TSIXControl = class
     constructor create;
     procedure SCScrollViewCBChange(Sender: TObject);
+    procedure SCDataPointHintToolHint(ATool: TDataPointHintTool;
+      const APoint{%H-}: TPoint; var AHint: String);
     procedure SCDataPointHintToolHintPosition(
        ATool: TDataPointHintTool; var APoint: TPoint);
     procedure SCSaveCSVResultBClick(Sender: TObject);
@@ -1023,6 +1025,54 @@ function TSIXControl.Linear(X: double): double;
 begin
  result:= (Nonlinear(3.3) - Nonlinear(0.1))/(3.3 - 0.1) * (X - 0.1)
           + Nonlinear(0.1);
+end;
+
+procedure TSIXControl.SCDataPointHintToolHint(
+  ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
+var
+ SeriesName : string;
+ x : double;
+ days, hours, minutes : integer;
+begin
+ SeriesName:= ATool.Series.Name;
+ x:= MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+      ATool.NearestGraphPoint.X);
+ days:= 0; hours:= 0; minutes:= 0;
+ // reformat the time to the format day:hour:minute
+ if MainForm.TimeMinuteMI.Checked then
+ begin
+  days:= floor(x / 1440);
+  hours:= floor((x / 1440 - days) * 24);
+  minutes:= round(((x / 1440 - days) * 24 - hours) * 60);
+ end
+ else if MainForm.TimeHourMI.Checked then
+ begin
+  days:= floor(x / 24);
+  hours:= floor((x / 24 - days) * 24);
+  minutes:= round(((x / 24 - days) * 24 - hours) * 60);
+ end
+ else if MainForm.TimeDayMI.Checked then
+ begin
+  days:= floor(x);
+  hours:= floor((x - days) * 24);
+  minutes:= round(((x - days) * 24 - hours) * 60);
+ end;
+ Format('[%.4]',[IntToStr(hours)]);
+ // all series except of SIXTempValues are connected to the left axis
+ if SeriesName <> 'SIXTempValues' then
+  AHint:= 'time = ' + Format('%.2d',[days]) + ':'
+          + Format('%.2d',[hours]) + ':' + Format('%.2d',[minutes])
+          + LineEnding
+          + Format('value = %.4g',
+                   [MainForm.SIXCH.AxisList[0].GetTransform.GraphToAxis(
+                    ATool.NearestGraphPoint.Y)])
+ else
+  AHint:= 'time = ' + Format('%.2d',[days]) + ':'
+          + Format('%.2d',[hours]) + ':' + Format('%.2d',[minutes])
+          + LineEnding
+          + Format('value = %.4g',
+                   [MainForm.SIXCH.AxisList[2].GetTransform.GraphToAxis(
+                    ATool.NearestGraphPoint.Y)])
 end;
 
 procedure TSIXControl.SCDataPointHintToolHintPosition(
