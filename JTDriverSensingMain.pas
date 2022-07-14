@@ -4154,7 +4154,7 @@ begin
    SaveFileStream.Write(command[1], Length(command));
    SaveFileStream.Write(LineEnding, 2); // line break
    // write the pump names
-   // only do this if there are valves
+   // only do this if there are pumps
    if PumpControl.PumpNum > 0 then
    begin
     for k:= 1 to PumpControl.PumpNum do
