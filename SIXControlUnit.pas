@@ -2841,14 +2841,17 @@ begin
  // write mark to the .notes file
  // we write into the same folder than the program .exe
  if InNameSensor.IsEmpty then
-  NotesFile:= 'unknown.marks'
+  NotesFile:= 'unknown.notes'
  else
-  NotesFile:= InNameSensor + '.notes';
- NotesFile:= ExtractFileName(Application.ExeName) + NotesFile;
+  NotesFile:= ExtractFileName(InNameSensor) + '.notes';
+ NotesFile:= ExtractFilePath(Application.ExeName) + NotesFile;
 
  try
   try
-   NotesFileStream:= TFileStream.Create(NotesFile, fmOpenRead or fmShareDenyNone);
+   if FileExists(NotesFile) then
+    NotesFileStream:= TFileStream.Create(NotesFile, fmOpenReadWrite or fmShareDenyNone)
+   else
+    NotesFileStream:= TFileStream.Create(NotesFile, fmCreate or fmShareDenyNone);
   except
    on EFOpenError do
    begin
@@ -2860,13 +2863,12 @@ begin
   end;
   // seek to end and append the mark
   NotesFileStream.Seek(0, soFromEnd);
-  OutputLine:= series.Name + #9 + IntToStr(tool.PointIndex)
-               + #9 + NoteEditingF.NoteTextM.Lines.Text + LineEnding;
-
+  OutputLine:= series.Name + #9 + IntToStr(tool.PointIndex) + LineEnding
+               + NoteEditingF.NoteTextM.Lines.Text + LineEnding + LineEnding;
   try
-   SensorFileStream.Write(OutputLine[1], Length(OutputLine));
+   NotesFileStream.Write(OutputLine[1], Length(OutputLine));
   except
-   SensorFileStream.Free;
+   NotesFileStream.Free;
    MessageDlgPos('Notes could not be written to the .notes file.',
                  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
   end;
