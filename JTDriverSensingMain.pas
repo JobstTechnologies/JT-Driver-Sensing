@@ -4044,8 +4044,8 @@ begin
   end;
 
   // update available pumps and valves
-  PumpNumberSE.value:= PumpControl.PumpNumFile;
-  ValveNumberSE.value:= ValveNumFile;
+  PumpNumberSE.Value:= PumpControl.PumpNumFile;
+  ValveNumberSE.Value:= ValveNumFile;
 
   result:= True;
  finally
