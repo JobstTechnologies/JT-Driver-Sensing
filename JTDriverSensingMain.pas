@@ -5147,14 +5147,11 @@ begin
   end;
 
   // since the COM port scan can take some time depending on how many SIX/pumps
-  // are connected, display a progess bar if there is more than one COM port
-  if RegStrings.Count > 1 then
-  begin
+  // are connected, display a progess bar even if there is only one COM port
    ScanningProgressF.ScanningPB.Max:= RegStrings.Count;
    ScanningProgressF.Show;
-   // tell the OS that it has to refresh its window list
+   // that the OS can refresh its window list
    Application.ProcessMessages;
-  end;
 
   // test all COM ports
   for i:= 0 to RegStrings.Count - 1 do
@@ -5162,8 +5159,8 @@ begin
    PortName:= Reg.ReadString(RegStrings[i]);
    ScanningProgressF.ScanningPB.Position:= i;
 
-   // the the OS the application is alive and to assure the changed
-   // is shown
+   // that the application is alive and to assure the changed
+   // progress bar is shown
    Application.ProcessMessages;
 
    // Since every SIX has a unique ID, we can connect the COM port with this
