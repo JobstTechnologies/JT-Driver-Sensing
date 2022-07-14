@@ -2055,7 +2055,8 @@ begin
   PumpConnectionMIClick(Sender);
  // check again
  StringFound:= Pos('COM', ConnComPortPumpLE.Text);
- if (StringFound = 0) or (ConnComPortPumpLE.Color = clRed) then // abort
+ if ((StringFound = 0) or (ConnComPortPumpLE.Color = clRed))
+  and (IndicatorPumpP.Caption <> 'Firmware too old') then // abort
  begin
   MessageDlgPos('Error: No connection to a pump driver',
    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -3929,7 +3930,7 @@ begin
       as TRadioGroup).Caption:= Copy(StringList[k], Length(PumpControl.ValvePrefix) + 1,
                                      Length(StringList[k])); // omit the prefix
    end;
-   // reset names of undefined pumps
+   // reset names of undefined valves
    if PumpControl.ValveNum < 8 then // we only support 8 valves
    begin
     for k:= PumpControl.ValveNum + 1 to 8 do
