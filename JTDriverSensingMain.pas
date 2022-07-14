@@ -2228,7 +2228,7 @@ begin
   CalibrationGB.Hint:= '';
   if not RunBB.Enabled then
    RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
-  MainForm.RunBB.Hint:= 'Starts the pump action according to the current settings.'
+  RunBB.Hint:= 'Starts the pump action according to the current settings.'
     + LineEnding + 'If button is disabled you must first start a SIX measurement.';
  end
  else
@@ -4708,7 +4708,7 @@ begin
     // We must update the header string to the channel names read out from the
     // data file. We do this here after all checks and not during the parsing.
     for i:= 1 to SIXControl.NumChannels do
-     SIXControl.HeaderStrings[i]:= (MainForm.FindComponent('Channel'
+     SIXControl.HeaderStrings[i]:= (FindComponent('Channel'
                                     + IntToStr(i) + 'GB') as TGroupBox).Caption;
     // the file was sucessfully read and we can read the notes
     SIXControl.ReadNotes;
