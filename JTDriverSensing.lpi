@@ -131,7 +131,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="19">
+    <Units Count="20">
       <Unit0>
         <Filename Value="JTDriverSensing.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -264,6 +264,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit18>
+      <Unit19>
+        <Filename Value="scanningprogress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ScanningProgressF"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ScanningProgress"/>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

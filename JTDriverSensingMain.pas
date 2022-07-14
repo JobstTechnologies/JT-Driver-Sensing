@@ -10,7 +10,7 @@ uses
   Fileinfo, LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
-  SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
+  ScanningProgress, SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
   TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
 
 type
@@ -5146,10 +5146,25 @@ begin
    Reg.GetValueNames(RegStrings);
   end;
 
-  // now test all COM ports
+  // since the COM port scan can take some time depending on how many SIX/pumps
+  // are connected, display a progess bar if there is more than one COM port
+  if RegStrings.Count > 1 then
+  begin
+   ScanningProgressF.ScanningPB.Max:= RegStrings.Count;
+   ScanningProgressF.Show;
+   // tell the OS that it has to refresh its window list
+   Application.ProcessMessages;
+  end;
+
+  // test all COM ports
   for i:= 0 to RegStrings.Count - 1 do
   begin
    PortName:= Reg.ReadString(RegStrings[i]);
+   ScanningProgressF.ScanningPB.Position:= i;
+
+   // the the OS the application is alive and to assure the changed
+   // is shown
+   Application.ProcessMessages;
 
    // Since every SIX has a unique ID, we can connect the COM port with this
    if PortType = 'SIX' then
@@ -5302,61 +5317,66 @@ begin
     end;
 
     // open the connection
-   try
     try
-     serTest:= TBlockSerial.Create;
-     serTest.DeadlockTimeout:= 1000; //set timeout to 1 s
-     serTest.Connect(PortName);
-     // the config must be set after the connection
-     serTest.config(9600, 8, 'N', SB1, False, False);
-    except
-     continue;
-    end;
-
-    // get Firmware version by first sending a command and receiving the reply
-    try
-     // if another pump driver is currently running, don't send it a command
-     if serTest.LastError = 0 then
-     begin
-      command:= '/0lR' + LineEnding;
-      serTest.SendString(command);
-      FirmwareVersion:= serTest.RecvPacket(1000);
+     try
+      serTest:= TBlockSerial.Create;
+      serTest.DeadlockTimeout:= 1000; //set timeout to 1 s
+      serTest.Connect(PortName);
+      // the config must be set after the connection
+      serTest.config(9600, 8, 'N', SB1, False, False);
+     except
+      continue;
      end;
+
+     // get Firmware version by first sending a command and receiving the reply
+     try
+      // if another pump driver is currently running, don't send it a command
+      if serTest.LastError = 0 then
+      begin
+       command:= '/0lR' + LineEnding;
+       serTest.SendString(command);
+       FirmwareVersion:= serTest.RecvPacket(1000);
+      end;
+     finally
+      if serTest.LastError <> 0 then
+       inc(ErrorCount);
+     end;
+
     finally
-     if serTest.LastError <> 0 then
-      inc(ErrorCount);
+     serTest.Free;
     end;
 
-   finally
-    serTest.Free;
-   end;
+    if ErrorCount > 0 then
+     continue;
 
-   if ErrorCount > 0 then
-    continue;
+    // FirmwareVersion has now this format:
+    // "JT-PumpDriver-Firmware x.y\n Received command: ..."
+    // but on old versions the firmware does not have any number,
+    // only "received command" is sent back
+    // therefore check for a number dot
+    if Pos('.', FirmwareVersion) > 0 then
+     FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
+    // omit the 'r' because some versions used a capital letter 'R'
+    else if Pos('eceived command:', FirmwareVersion) > 0 then
+     FirmwareVersion:= 'unknown'
+    else // no pump driver
+     continue;
 
-   // FirmwareVersion has now this format:
-   // "JT-PumpDriver-Firmware x.y\n Received command: ..."
-   // but on old versions the firmware does not have any number,
-   // only "received command" is sent back
-   // therefore check for a number dot
-   if Pos('.', FirmwareVersion) > 0 then
-    FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
-   // omit the 'r' because some versions used a capital letter 'R'
-   else if Pos('eceived command:', FirmwareVersion) > 0 then
-    FirmwareVersion:= 'unknown'
-   else // no pump driver
-    continue;
+    Channel:= StrToInt(Copy(PortName, 4, 4));
+    // at the moment the pump drivers have no ID, so we set their "ID" to 1
+    COMListPumpDriver[Channel]:= 1;
 
-   Channel:= StrToInt(Copy(PortName, 4, 4));
-   // at the moment the pump drivers have no ID, so we set their "ID" to 1
-   COMListPumpDriver[Channel]:= 1;
-
-   end;
+   end; // end else if PortType = 'PumpDriver'
 
   end; // test all COM ports
+
  finally
   Reg.Free;
   RegStrings.Free;
+  ScanningProgressF.Hide;
+  // tell the OS there is a window less and this way assures that a subsequent
+  // SerialUSBSelectionF window is properly shown
+  Application.ProcessMessages;
  end;
 
 end;

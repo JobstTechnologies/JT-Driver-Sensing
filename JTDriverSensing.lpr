@@ -11,7 +11,7 @@ uses
   SerialUSBSelection, NameSetting, SIXControlUnit, Fitting, PumpControlUnit,
   AboutForm, ceFontFrame, ceAxisDlg, ceBrushFrame, ceLegendDlg, cePenFrame,
   cePointerFrame, ceSeriesDlg, ceShapeBrushPenMarginsFrame, ceTitleFootDlg,
-  ceUtils, Calibration, TAChartLiveView, NoteEditing;
+  ceUtils, Calibration, TAChartLiveView, NoteEditing, ScanningProgress;
 
 {$R *.res}
 
@@ -27,6 +27,7 @@ begin
   Application.CreateForm(TAboutFormF, AboutFormF);
   Application.CreateForm(TCalibrationF, CalibrationF);
   Application.CreateForm(TNoteEditingF, NoteEditingF);
+  Application.CreateForm(TScanningProgressF, ScanningProgressF);
   Application.Run;
 end.
 
