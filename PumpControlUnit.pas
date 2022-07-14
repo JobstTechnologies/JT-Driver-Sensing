@@ -35,6 +35,7 @@ type
     procedure PCUseCalibCBChange(Sender: TObject);
     procedure PCPumpNumberSEChange(Sender: TObject);
     procedure PCValveNumberSEChange(Sender: TObject);
+    procedure PCHavePumpSerialCBChange(Sender: TObject);
     procedure AnOutPumpXGBDblClick(Sender: TObject);
     procedure PCRunEndlessCBChange(Sender: TObject);
     procedure PCCalibValueFSEChange(Sender: TObject);
@@ -2333,6 +2334,22 @@ begin
      as TRadioGroup).ShowHint:= false;
    end;
   end;
+ end;
+end;
+
+procedure TPumpControl.PCHavePumpSerialCBChange(Sender: TObject);
+begin
+ if MainForm.HavePumpSerialCB.Checked then
+ begin
+  MainForm.DriverConnectBB.Caption:= 'Disconnect Driver';
+  MainForm.DriverConnectBB.Hint:= 'Disconnects from the pump driver';
+ end
+ else
+ begin
+  MainForm.DriverConnectBB.Caption:= 'Connect Driver';
+  MainForm.DriverConnectBB.Hint:= 'Connects to a the pump driver';
+  MainForm.ConnComPortPumpLE.Color:= clHighlight;
+  MainForm.ConnComPortPumpLE.Text:= 'Not connected';
  end;
 end;
 

@@ -9,7 +9,10 @@ improvements:
 - when hovering over a chart datapoint, the time is shown in the format
   days:hours:minutes to help distinguishing times of long measurements 
 
-  
+bugfix:
+- always display correctly when there is no connection
+
+
 from version 1.1.0 to 1.1.1
 
 improvement:

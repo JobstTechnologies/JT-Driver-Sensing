@@ -1649,16 +1649,7 @@ end;
 
 procedure TMainForm.HavePumpSerialCBChange(Sender: TObject);
 begin
- if HavePumpSerialCB.Checked then
- begin
-  DriverConnectBB.Caption:= 'Disconnect Driver';
-  DriverConnectBB.Hint:= 'Disconnects from the pump driver';
- end
- else
- begin
-  DriverConnectBB.Caption:= 'Connect Driver';
-  DriverConnectBB.Hint:= 'Connects to a the pump driver';
- end;
+ PumpControl.PCHavePumpSerialCBChange(Sender);
 end;
 
 procedure TMainForm.FirmwareUpdate(forced: Boolean);
