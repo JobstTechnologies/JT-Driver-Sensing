@@ -3082,6 +3082,9 @@ begin
   SIXCH.Extent.UseXMax:= false;
   SIXCH.Extent.UseXMin:= false;
  end;
+
+ // read the notes
+ SIXControl.ReadNotes;
 end;
 
 function TMainForm.ReadSensorData(Input: string; out AppendMinute: Int64;
@@ -4707,6 +4710,8 @@ begin
     for i:= 1 to SIXControl.NumChannels do
      SIXControl.HeaderStrings[i]:= (MainForm.FindComponent('Channel'
                                     + IntToStr(i) + 'GB') as TGroupBox).Caption;
+    // the file was sucessfully read and we can read the notes
+    SIXControl.ReadNotes;
    end
    else // new file
    begin

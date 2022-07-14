@@ -1,5 +1,12 @@
 Changes
 
+from version 1.1.1 to 1.2.0
+
+improvement:
+- notes are now stored together with the sensor data and will be read in on
+  loading or appending a data file
+
+  
 from version 1.1.0 to 1.1.1
 
 improvement:

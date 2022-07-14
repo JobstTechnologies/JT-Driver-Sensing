@@ -64,6 +64,7 @@ type
     function Linear(X: double): double;
     function FontStylesToString(FontStyles: TFontStyles): string;
     function StringToFontStyles(s: string): TFontStyles;
+    procedure ReadNotes;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -2876,6 +2877,113 @@ begin
  finally
   NotesFileStream.Free;
  end;
+
+end;
+
+procedure TSIXControl.ReadNotes;
+// reads marks from .notes file ad adds them to the chart
+var
+ NotesFileStream : TFileStream;
+ LineReader : TStreamReader;
+ StringArray : TStringArray;
+ series : TChartSeries;
+ ReadLine, NotesFile, OutputLine : string;
+ MousePointer : TPoint;
+ rowCounter, PointIndex : integer;
+ skipNote : Boolean;
+begin
+ // initialize
+ rowCounter:= 0;
+ series:= nil;
+ MousePointer:= Mouse.CursorPos;
+
+ NotesFile:= ExtractFileName(InNameSensor) + '.notes';
+ NotesFile:= ExtractFilePath(Application.ExeName) + NotesFile;
+ if not FileExists(NotesFile) then
+  // nothing to do
+  exit;
+
+try
+ try
+  NotesFileStream:= TFileStream.Create(NotesFile, fmOpenRead or fmShareDenyNone)
+ except
+  on EFOpenError do
+  begin
+   MessageDlgPos('Notes file is used by another program and cannot be opened.'
+                 + LineEnding + 'New notes cannot be saved.',
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   exit;
+  end;
+ end;
+ LineReader:= TStreamReader.Create(NotesFileStream);
+
+ // parse the file to the end
+ while not LineReader.Eof do
+ begin
+  skipNote:= false;
+  inc(rowCounter);
+  LineReader.ReadLine(ReadLine);
+  StringArray:= ReadLine.Split(#9);
+  // the first part is the series name the second one the point index
+  series:= (MainForm.FindComponent(StringArray[0]) as TChartSeries);
+  if series = nil then
+  begin
+   MessageDlgPos('In line ' + IntToStr(rowCounter) + ' "' + StringArray[0]
+                 + '" is no valid chart series name.'
+                 + LineEnding + 'This note could not be read.',
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   skipNote:= true;
+  end;
+  if not skipNote then
+  begin
+   if not TryStrToInt(StringArray[1], PointIndex) then
+   begin
+    MessageDlgPos('Point index in line ' + IntToStr(rowCounter)
+                  + ' is no valid integer.' + LineEnding
+                  + 'This note could not be read.',
+                  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    skipNote:= true;
+   end;
+  if PointIndex < 0 then
+   begin
+   MessageDlgPos('Point index in line ' + IntToStr(rowCounter)
+                  + ' is negative.' + LineEnding
+                  + 'This note could not be read.',
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    skipNote:= true;
+   end
+   else if PointIndex > series.Count then
+   begin
+    MessageDlgPos('Point index in line ' + IntToStr(rowCounter)
+                  + ' is "' + IntToStr(PointIndex)
+                  + '" and thus larger than "' + IntToStr(series.Count)
+                  + '", the number of points in the series.'
+                  + LineEnding + 'This note could not be read.',
+                  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    skipNote:= true;
+   end;
+  end; // end if not skipNote
+
+  // now read as many lines until there is an empty line (2 subsequent LineEndings)
+  OutputLine:= '';
+  repeat
+   inc(rowCounter);
+   LineReader.ReadLine(ReadLine);
+   OutputLine:= OutputLine + ReadLine + LineEnding;
+  until ReadLine.IsEmpty;
+  // remove the two LineEndings at the end
+  OutputLine:= Copy(OutputLine, 0, Length(OutputLine) - 2 * Length(LineEnding));
+  // set the mark
+  if not skipNote then
+   series.Source[PointIndex]^.Text:= OutputLine;
+ end; // end of while not LineReader.Eof do
+
+finally
+ LineReader.Free;
+ NotesFileStream.Free;
+ // force a redraw of the chart
+ MainForm.SIXCH.Invalidate;
+end;
 
 end;
 
