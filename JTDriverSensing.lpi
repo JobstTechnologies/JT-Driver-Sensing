@@ -265,12 +265,11 @@
         <ResourceBaseClass Value="Form"/>
       </Unit18>
       <Unit19>
-        <Filename Value="scanningprogress.pas"/>
+        <Filename Value="ScanningProgress.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ScanningProgressF"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="ScanningProgress"/>
       </Unit19>
     </Units>
   </ProjectOptions>
