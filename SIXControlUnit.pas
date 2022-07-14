@@ -11,7 +11,7 @@ uses
   Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
   TATypes, TAGeometry, TAChartLiveView, StrUtils, DateUtils, SynaSer,
   // custom forms
-  JTDriverSensingMain, NameSetting;
+  JTDriverSensingMain, NameSetting, NoteEditing;
 
 type
 
@@ -50,6 +50,8 @@ type
     procedure SCNoTempCorrectionCBChange(Sender: TObject);
     procedure SCSaveAppearance(iniFile: string);
     procedure SCLoadAppearance(iniFile: string);
+    procedure SCDataPointClickToolPointClick(ATool: TChartTool;
+      APoint{%H-}: TPoint);
 
   private
 
@@ -2594,7 +2596,7 @@ var
  Axis : TChartAxis;
  Series : TLineSeries;
  tempStr : string;
- List: TStringList;
+ List : TStringList;
 begin
 
 try
@@ -2807,6 +2809,71 @@ try
 finally
  List.Free;
 end;
+
+end;
+
+procedure TSIXControl.SCDataPointClickToolPointClick(ATool: TChartTool;
+  APoint: TPoint);
+var
+ NoteText, NotesFile, OutputLine : string;
+ tool : TDataPointTool;
+ series : TChartSeries;
+ NotesFileStream : TFileStream;
+ MousePointer : TPoint;
+begin
+ MousePointer:= Mouse.CursorPos;
+ tool:= ATool as TDataPointTool;
+ if tool.PointIndex < 0 then
+  exit;
+
+ series:= tool.Series as TChartSeries;
+ NoteText:= series.Source[tool.PointIndex]^.Text;
+ with NoteEditingF do
+ begin
+  NoteLabelL.Caption:= 'Note for ' + series.Title + ':';
+  NoteTextM.Lines.Text:= NoteText;
+  ShowModal;
+  series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
+ end;
+ // force a redraw of the chart
+ MainForm.SIXCH.Invalidate;
+
+ // write mark to the .notes file
+ // we write into the same folder than the program .exe
+ if InNameSensor.IsEmpty then
+  NotesFile:= 'unknown.marks'
+ else
+  NotesFile:= InNameSensor + '.notes';
+ NotesFile:= ExtractFileName(Application.ExeName) + NotesFile;
+
+ try
+  try
+   NotesFileStream:= TFileStream.Create(NotesFile, fmOpenRead or fmShareDenyNone);
+  except
+   on EFOpenError do
+   begin
+    MessageDlgPos('Notes file is used by another program and cannot be opened.'
+                  + LineEnding + 'New notes cannot be saved.',
+                  mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+    exit;
+   end;
+  end;
+  // seek to end and append the mark
+  NotesFileStream.Seek(0, soFromEnd);
+  OutputLine:= series.Name + #9 + IntToStr(tool.PointIndex)
+               + #9 + NoteEditingF.NoteTextM.Lines.Text + LineEnding;
+
+  try
+   SensorFileStream.Write(OutputLine[1], Length(OutputLine));
+  except
+   SensorFileStream.Free;
+   MessageDlgPos('Notes could not be written to the .notes file.',
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+  end;
+
+ finally
+  NotesFileStream.Free;
+ end;
 
 end;
 

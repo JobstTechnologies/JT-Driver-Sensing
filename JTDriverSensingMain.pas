@@ -10,7 +10,7 @@ uses
   Fileinfo, LazFileUtils, SynaSer, Crt, StrUtils, PopupNotifier, TAGraph,
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
-  NoteEditing, SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
+  SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
   TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
 
 type
@@ -1241,7 +1241,6 @@ begin
  // we write into the same folder than the program .exe
  iniFile:= ExtractFilePath(Application.ExeName) + AppearanceFile;
  SIXControl.SCSaveAppearance(iniFile);
-
 end;
 
 procedure TMainForm.PumpConnectionMIClick(Sender: TObject);
@@ -2162,26 +2161,8 @@ end;
 
 procedure TMainForm.DataPointClickToolPointClick(ATool: TChartTool;
   APoint: TPoint);
-var
- NoteText : String;
- tool : TDataPointTool;
- series : TChartSeries;
 begin
- tool:= ATool as TDataPointTool;
- if tool.PointIndex < 0 then
-  exit;
-
- series:= tool.Series as TChartSeries;
- NoteText:= series.Source[tool.PointIndex]^.Text;
- with NoteEditingF do
- begin
-  NoteLabelL.Caption:= 'Note for ' + series.Title + ':';
-  NoteTextM.Lines.Text:= NoteText;
-  ShowModal;
-  series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
- end;
- // force a redraw of the chart
- SIXCH.Invalidate;
+ SIXControl.SCDataPointClickToolPointClick(ATool, APoint);
 end;
 
 procedure TMainForm.DataPointHintToolHint(
