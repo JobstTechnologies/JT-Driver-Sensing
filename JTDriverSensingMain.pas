@@ -3786,10 +3786,12 @@ begin
    // call command generation to get the action time calculated and to add
    // time steps in case many pumps have to be started at once
    PumpControl.GenerateCommand(command);
+
   // disable all setting possibilities
   RunSettingsGB.Enabled:= False;
   LiveModeCB.Enabled:= False;
   PumpSetupGB.Enabled:= False;
+  UseCalibGB.Enabled:= False;
   ValveSetupGB.Enabled:= False;
   for j:= 1 to PumpControl.StepNum do
   begin
@@ -4040,6 +4042,11 @@ begin
      as TRadioGroup).Caption;
    end;
   end;
+
+  // update available pumps and valves
+  PumpNumberSE.value:= PumpControl.PumpNumFile;
+  ValveNumberSE.value:= ValveNumFile;
+
   result:= True;
  finally
   StringList.Free;

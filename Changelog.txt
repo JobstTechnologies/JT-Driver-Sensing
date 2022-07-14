@@ -9,8 +9,9 @@ improvements:
 - when hovering over a chart datapoint, the time is shown in the format
   days:hours:minutes to help distinguishing times of long measurements 
 
-bugfix:
+bugfixes:
 - always display correctly when there is no connection
+- display correct number of pumps and valves for loaded action files
 
 
 from version 1.1.0 to 1.1.1

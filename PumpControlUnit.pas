@@ -85,6 +85,7 @@ begin
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
  MainForm.PumpSetupGB.Enabled:= True;
+ MainForm.UseCalibGB.Enabled:= False;
  MainForm.ValveSetupGB.Enabled:= True;
  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
  if not MainForm.HaveDefFileCB.Checked then
