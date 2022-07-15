@@ -5354,7 +5354,7 @@ begin
  finally
   Reg.Free;
   RegStrings.Free;
-  ScanningProgressF.Hide;
+  ScanningProgressF.Close;
   // tell the OS there is a window less and this way assures that a subsequent
   // SerialUSBSelectionF window is properly shown
   Application.ProcessMessages;

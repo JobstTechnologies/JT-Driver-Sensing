@@ -14,7 +14,6 @@ type
   TScanningProgressF = class(TForm)
     ScanningL: TLabel;
     ScanningPB: TProgressBar;
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
 
   public
@@ -30,12 +29,6 @@ implementation
 
 { TScanningProgressF }
 
-procedure TScanningProgressF.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-begin
- // don't allow
- CanClose:= False;
-end;
 
 end.
 
