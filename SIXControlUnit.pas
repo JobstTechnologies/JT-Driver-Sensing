@@ -54,6 +54,9 @@ type
     procedure SCLoadAppearance(iniFile: string);
     procedure SCDataPointClickToolPointClick(ATool: TChartTool;
       APoint{%H-}: TPoint);
+    procedure SCTimeDayMIClick(Sender: TObject);
+    procedure SCTimeHourMIClick(Sender: TObject);
+    procedure SCTimeMinuteMIClick(Sender: TObject);
 
   private
 
@@ -3546,6 +3549,69 @@ begin
  result:= [];
  for i:= 1 to WordCount(s, [',']) do
   result:= result + [TFontStyle(StrToInt(ExtractWord(i, s, [','])))];
+end;
+
+procedure TSIXControl.SCTimeDayMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
+ previousScale : double;
+begin
+ // store current zoom state because changing scale will zoom out
+ extent:= MainForm.SIXCH.LogicalExtent;
+ // save the scale to be able to recalculate the new range min/max
+ previousScale:= MainForm.ValuesLinearTransform.Scale;
+ MainForm.ValuesLinearTransform.Scale:= 1440; // 24 * 60
+ // set back zoom state
+ MainForm.SIXCH.Prepare;
+ MainForm.SIXCH.LogicalExtent:= extent;
+ MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
+ MainForm.TimeMinuteMI.Checked:= false;
+ MainForm.TimeHourMI.Checked:= false;
+ MainForm.TimeDayMI.Checked:= true;
+ MainForm.SIXCH.BottomAxis.Range.Min:= MainForm.SIXCH.BottomAxis.Range.Min
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
+ MainForm.SIXCH.BottomAxis.Range.Max:= MainForm.SIXCH.BottomAxis.Range.Max
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
+end;
+
+procedure TSIXControl.SCTimeHourMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
+ previousScale : double;
+begin
+ extent:= MainForm.SIXCH.LogicalExtent;
+ previousScale:= MainForm.ValuesLinearTransform.Scale;
+ MainForm.ValuesLinearTransform.Scale:= 60;
+ MainForm.SIXCH.Prepare;
+ MainForm.SIXCH.LogicalExtent:= extent;
+ MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [hour]';
+ MainForm.TimeMinuteMI.Checked:= false;
+ MainForm.TimeHourMI.Checked:= true;
+ MainForm.TimeDayMI.Checked:= false;
+ MainForm.SIXCH.BottomAxis.Range.Min:= MainForm.SIXCH.BottomAxis.Range.Min
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
+ MainForm.SIXCH.BottomAxis.Range.Max:= MainForm.SIXCH.BottomAxis.Range.Max
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
+end;
+
+procedure TSIXControl.SCTimeMinuteMIClick(Sender: TObject);
+var
+ extent: TDoubleRect;
+ previousScale : double;
+begin
+ extent:= MainForm.SIXCH.LogicalExtent;
+ previousScale:= MainForm.ValuesLinearTransform.Scale;
+ MainForm.ValuesLinearTransform.Scale:= 1;
+ MainForm.SIXCH.Prepare;
+ MainForm.SIXCH.LogicalExtent:= extent;
+ MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [min]';
+ MainForm.TimeMinuteMI.Checked:= true;
+ MainForm.TimeHourMI.Checked:= false;
+ MainForm.TimeDayMI.Checked:= false;
+ MainForm.SIXCH.BottomAxis.Range.Min:= MainForm.SIXCH.BottomAxis.Range.Min
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
+ MainForm.SIXCH.BottomAxis.Range.Max:= MainForm.SIXCH.BottomAxis.Range.Max
+   * previousScale / MainForm.ValuesLinearTransform.Scale;
 end;
 
 end. //unit

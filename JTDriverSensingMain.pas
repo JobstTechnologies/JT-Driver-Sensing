@@ -2739,66 +2739,18 @@ begin
 end;
 
 procedure TMainForm.TimeDayMIClick(Sender: TObject);
-var
- extent: TDoubleRect;
- previousScale : double;
 begin
- // store current zoom state because changing scale will zoom out
- extent:= SIXCH.LogicalExtent;
- // save the scale to be able to recalculate the new range min/max
- previousScale:= ValuesLinearTransform.Scale;
- ValuesLinearTransform.Scale:= 1440; // 24 * 60
- // set back zoom state
- SIXCH.Prepare;
- SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
- TimeMinuteMI.Checked:= false;
- TimeHourMI.Checked:= false;
- TimeDayMI.Checked:= true;
- SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
-                              / ValuesLinearTransform.Scale;
- SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
-                              / ValuesLinearTransform.Scale;
+ SIXControl.SCTimeDayMIClick(Sender);
 end;
 
 procedure TMainForm.TimeHourMIClick(Sender: TObject);
-var
- extent: TDoubleRect;
- previousScale : double;
 begin
- extent:= SIXCH.LogicalExtent;
- previousScale:= ValuesLinearTransform.Scale;
- ValuesLinearTransform.Scale:= 60;
- SIXCH.Prepare;
- SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption:= 'Time [hour]';
- TimeMinuteMI.Checked:= false;
- TimeHourMI.Checked:= true;
- TimeDayMI.Checked:= false;
- SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
-                              / ValuesLinearTransform.Scale;
- SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
-                              / ValuesLinearTransform.Scale;
+ SIXControl.SCTimeHourMIClick(Sender);
 end;
 
 procedure TMainForm.TimeMinuteMIClick(Sender: TObject);
-var
- extent: TDoubleRect;
- previousScale : double;
 begin
- extent:= SIXCH.LogicalExtent;
- previousScale:= ValuesLinearTransform.Scale;
- ValuesLinearTransform.Scale:= 1;
- SIXCH.Prepare;
- SIXCH.LogicalExtent:= extent;
- SIXCH.BottomAxis.Title.Caption:= 'Time [min]';
- TimeMinuteMI.Checked:= true;
- TimeHourMI.Checked:= false;
- TimeDayMI.Checked:= false;
- SIXCH.BottomAxis.Range.Min:= SIXCH.BottomAxis.Range.Min * previousScale
-                              / ValuesLinearTransform.Scale;
- SIXCH.BottomAxis.Range.Max:= SIXCH.BottomAxis.Range.Max * previousScale
-                              / ValuesLinearTransform.Scale;
+ SIXControl.SCTimeMinuteMIClick(Sender);
 end;
 
 procedure TMainForm.UseAnOutCBChange(Sender: TObject);
