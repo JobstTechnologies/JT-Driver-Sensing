@@ -1,6 +1,10 @@
 Changes
 
-from version 1.2.0 to 1.21
+from version 1.2.0 to 1.30
+
+improvement:
+- it is now possible to change the time format to [days:hours:minutes] by
+  right-clicking in the chart and choosing the corresponding context menu entry
 
 bugfixes:
 - port scan progress bar did not properly close after the scanning

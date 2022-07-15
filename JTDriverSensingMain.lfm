@@ -1397,6 +1397,7 @@ object MainForm: TMainForm
             Title.Caption = 'Time [min]'
             Title.LabelBrush.Style = bsClear
             Transformations = ChartAxisTransformTime
+            OnGetMarkText = SIXCHAxisList1GetMarkText
           end        
           item
             Visible = False
@@ -12168,9 +12169,12 @@ object MainForm: TMainForm
       Caption = 'Time in days'
       OnClick = TimeDayMIClick
     end
+    object DaysHoursMinMI: TMenuItem
+      Caption = 'Time format DD:HH:MM'
+      OnClick = DaysHoursMinMIClick
+    end
     object AutoscaleMI: TMenuItem
       Caption = 'Auto scale'
-      Visible = False
       OnClick = AutoscaleMIClick
     end
   end

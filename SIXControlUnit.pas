@@ -67,6 +67,7 @@ type
     function FontStylesToString(FontStyles: TFontStyles): string;
     function StringToFontStyles(s: string): TFontStyles;
     procedure ReadNotes;
+    function CalcDaysHoursMins(x : double) : string;
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -1027,18 +1028,12 @@ begin
           + Nonlinear(0.1);
 end;
 
-procedure TSIXControl.SCDataPointHintToolHint(
-  ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
+function TSIXControl.CalcDaysHoursMins(x : double) : string;
+// reformats x to the format day:hour:minute
 var
- SeriesName : string;
- x : double;
  days, hours, minutes : integer;
 begin
- SeriesName:= ATool.Series.Name;
- x:= MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
-      ATool.NearestGraphPoint.X);
  days:= 0; hours:= 0; minutes:= 0;
- // reformat the time to the format day:hour:minute
  if MainForm.TimeMinuteMI.Checked then
  begin
   days:= floor(x / 1440);
@@ -1057,19 +1052,29 @@ begin
   hours:= floor((x - days) * 24);
   minutes:= round(((x - days) * 24 - hours) * 60);
  end;
- Format('[%.4]',[IntToStr(hours)]);
+
+ result:= Format('%.2d',[days]) + ':'
+          + Format('%.2d',[hours]) + ':' + Format('%.2d',[minutes]);
+end;
+
+procedure TSIXControl.SCDataPointHintToolHint(
+  ATool: TDataPointHintTool; const APoint: TPoint; var AHint: String);
+var
+ SeriesName : string;
+ x : double;
+begin
+ SeriesName:= ATool.Series.Name;
+ x:= MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
+      ATool.NearestGraphPoint.X);
+
  // all series except of SIXTempValues are connected to the left axis
  if SeriesName <> 'SIXTempValues' then
-  AHint:= 'time = ' + Format('%.2d',[days]) + ':'
-          + Format('%.2d',[hours]) + ':' + Format('%.2d',[minutes])
-          + LineEnding
+  AHint:= 'time = ' + CalcDaysHoursMins(x) + LineEnding
           + Format('value = %.4g',
                    [MainForm.SIXCH.AxisList[0].GetTransform.GraphToAxis(
                     ATool.NearestGraphPoint.Y)])
  else
-  AHint:= 'time = ' + Format('%.2d',[days]) + ':'
-          + Format('%.2d',[hours]) + ':' + Format('%.2d',[minutes])
-          + LineEnding
+  AHint:= 'time = ' + CalcDaysHoursMins(x) + LineEnding
           + Format('value = %.4g',
                    [MainForm.SIXCH.AxisList[2].GetTransform.GraphToAxis(
                     ATool.NearestGraphPoint.Y)])

@@ -11,7 +11,7 @@ uses
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
   ScanningProgress, SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
-  TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
+  TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries, TAChartAxisUtils;
 
 type
 
@@ -133,6 +133,7 @@ type
     Label98: TLabel;
     Label99: TLabel;
     LoadOtherDefBB: TBitBtn;
+    DaysHoursMinMI: TMenuItem;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -940,9 +941,12 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure DaysHoursMinMIClick(Sender: TObject);
     procedure HaveDefFileCBChange(Sender: TObject);
     procedure LegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
+    procedure SIXCHAxisList1GetMarkText(Sender: TObject; var AText: String;
+      AMark: Double);
     procedure TitleFootClickToolClick(Sender: TChartTool;
       Title: TChartTitle);
     procedure ZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
@@ -2176,6 +2180,13 @@ begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
 end;
 
+procedure TMainForm.DaysHoursMinMIClick(Sender: TObject);
+begin
+ DaysHoursMinMI.Checked:= not DaysHoursMinMI.Checked;
+ // trigger the repaint of the x-axis labels
+ SIXCH.Invalidate;
+end;
+
 procedure TMainForm.HaveDefFileCBChange(Sender: TObject);
 var
  hasLoadedSensorData : Boolean;
@@ -2256,6 +2267,23 @@ procedure TMainForm.LegendClickToolClick(Sender: TChartTool;
   Legend: TChartLegend);
 begin
  SIXControl.SCLegendClickToolClick(Sender, Legend)
+end;
+
+procedure TMainForm.SIXCHAxisList1GetMarkText(Sender: TObject;
+  var AText: String; AMark: Double);
+begin
+ if DaysHoursMinMI.Checked then
+ begin
+  AText:= SIXControl.CalcDaysHoursMins(AMark);
+  SIXCH.AxisList[1].Intervals.MaxLength:= 100;
+ end
+ else
+ begin
+  // do nothing
+  AText:= FloatToStr(AMark);
+  // use the default width for labels
+  SIXCH.AxisList[1].Intervals.MaxLength:= 50;
+ end;
 end;
 
 procedure TMainForm.TitleFootClickToolClick(Sender: TChartTool;
