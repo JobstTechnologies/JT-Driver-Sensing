@@ -2,8 +2,9 @@ Changes
 
 from version 1.2.0 to 1.21
 
-bugfix:
+bugfixes:
 - port scan progress bar did not properly close after the scanning
+- assure that the specified y-axis chart range is used, also if there are notes
 
 
 from version 1.1.1 to 1.2.0

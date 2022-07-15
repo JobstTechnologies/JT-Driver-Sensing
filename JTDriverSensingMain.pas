@@ -1200,11 +1200,17 @@ begin
    (FindComponent('SIXCh' + IntToStr(i) + 'Values')
     as TLineSeries).LinePen.Color;
   // show the marks
-  // we must do this here and not in the .lfm file because the DataPointHintTool would overwrite this
+  // we must do this here and not in the .lfm file to have an effect
+  // (also in the Lazarus forum they don't know why)
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Marks.Style:= smsLabel;
   (FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).Marks.LabelFont.Color:= clGray;
+  // Turn of AutoMargins for marks because this adds always additional y-axis
+  // range, no matter if actually needed. The result is that hen the axis range
+  // setting made by the user would be ignored.
+  (FindComponent('SIXCh' + IntToStr(i) + 'Values')
+   as TLineSeries).Marks.AutoMargins:= false;
  end;
 
 end;
