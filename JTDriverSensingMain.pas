@@ -2275,14 +2275,21 @@ begin
  if DaysHoursMinMI.Checked then
  begin
   AText:= SIXControl.CalcDaysHoursMins(AMark);
-  SIXCH.AxisList[1].Intervals.MaxLength:= 100;
+  SIXCH.BottomAxis.Intervals.MaxLength:= 100;
+  SIXCH.BottomAxis.Title.Caption:= 'Time [dd:hh:mm]';
  end
  else
  begin
   // do nothing
   AText:= FloatToStr(AMark);
   // use the default width for labels
-  SIXCH.AxisList[1].Intervals.MaxLength:= 50;
+  SIXCH.BottomAxis.Intervals.MaxLength:= 50;
+  if TimeHourMI.Checked then
+   SIXCH.BottomAxis.Title.Caption:= 'Time [min]'
+  else if TimeHourMI.Checked then
+   SIXCH.BottomAxis.Title.Caption:= 'Time [hour]'
+  else if TimeDayMI.Checked then
+   SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
  end;
 end;
 

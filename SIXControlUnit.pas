@@ -1033,6 +1033,13 @@ function TSIXControl.CalcDaysHoursMins(x : double) : string;
 var
  days, hours, minutes : integer;
 begin
+ // only if the data format is actually used, we do the calculation
+ if not MainForm.DaysHoursMinMI.checked then
+ begin
+  result:= FloatToStr(x);
+  exit;
+ end;
+
  days:= 0; hours:= 0; minutes:= 0;
  if MainForm.TimeMinuteMI.Checked then
  begin
