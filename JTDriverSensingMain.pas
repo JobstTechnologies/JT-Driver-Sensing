@@ -11,7 +11,7 @@ uses
   TASeries, TATools, SpinEx, Types, TATextElements, TALegend, DateUtils,
   // the custom forms
   ScanningProgress, SerialUSBSelection, AboutForm, TAChartAxis, TAChartListbox,
-  TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries, TAChartAxisUtils;
+  TATransformations, TAChartUtils, TAChartLiveView, TACustomSeries;
 
 type
 
@@ -2265,25 +2265,7 @@ end;
 procedure TMainForm.SIXCHAxisList1GetMarkText(Sender: TObject;
   var AText: String; AMark: Double);
 begin
- if TimeDaysHoursMinMI.Checked then
- begin
-  AText:= SIXControl.CalcDaysHoursMins(AMark);
-  SIXCH.BottomAxis.Intervals.MaxLength:= 100;
-  SIXCH.BottomAxis.Title.Caption:= 'Time [dd:hh:mm]';
- end
- else
- begin
-  // do nothing
-  AText:= FloatToStr(AMark);
-  // use the default width for labels
-  SIXCH.BottomAxis.Intervals.MaxLength:= 50;
-  if TimeHourMI.Checked then
-   SIXCH.BottomAxis.Title.Caption:= 'Time [min]'
-  else if TimeHourMI.Checked then
-   SIXCH.BottomAxis.Title.Caption:= 'Time [hour]'
-  else if TimeDayMI.Checked then
-   SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
- end;
+ SIXControl.SCSIXCHAxisList1GetMarkText(Sender, AText, AMark);
 end;
 
 procedure TMainForm.TitleFootClickToolClick(Sender: TChartTool;
@@ -2747,8 +2729,13 @@ begin
 end;
 
 procedure TMainForm.TimeDaysHoursMinMIClick(Sender: TObject);
+var
+ SenderName : string;
 begin
- TimeDaysHoursMinMI.Checked:= not TimeDaysHoursMinMI.Checked;
+ SenderName:= (Sender as TComponent).Name;
+ // cbTimeReformat will call this function also on initializing its dialog
+ if SenderName <> 'cbTimeReformat' then
+  TimeDaysHoursMinMI.Checked:= not TimeDaysHoursMinMI.Checked;
  // trigger the repaint of the x-axis labels
  SIXCH.Invalidate;
 end;

@@ -30,6 +30,7 @@ type
     cbTickColor: TColorButton;
     cbTitleVisible: TCheckBox;
     cbTimeFormat: TComboBox;
+    cbTimeReformat: TCheckBox;
     edLabelFormat: TEdit;
     gbArrow: TGroupBox;
     gbAxisLine: TGroupBox;
@@ -83,6 +84,7 @@ type
     procedure cbShowChange(Sender: TObject);
     procedure cbTickColorColorChanged(Sender: TObject);
     procedure cbTimeFormatChange(Sender: TObject);
+    procedure cbTimeReformatChange(Sender: TObject);
     procedure cbTitleVisibleChange(Sender: TObject);
     procedure edLabelFormatEditingDone(Sender: TObject);
     procedure mmoTitleChange(Sender: TObject);
@@ -235,6 +237,7 @@ begin
    cbTimeFormat.ItemIndex:= 1
   else if MainForm.TimeDayMI.Checked then
    cbTimeFormat.ItemIndex:= 2;
+  cbTimeReformat.Checked:= MainForm.TimeDaysHoursMinMI.Checked;
 end;
 
 procedure TChartAxisFrame.CalculatePreferredSize(
@@ -366,6 +369,12 @@ begin
   MainForm.TimeDayMIClick(Sender);
 end;
 
+procedure TChartAxisFrame.cbTimeReformatChange(Sender: TObject);
+begin
+ MainForm.TimeDaysHoursMinMIClick(Sender);
+ MainForm.TimeDaysHoursMinMI.Checked:= cbTimeReformat.Checked;
+end;
+
 procedure TChartAxisFrame.cbTitleVisibleChange(Sender: TObject);
 begin
   FAxis.Title.Visible := cbTitleVisible.Checked;
@@ -493,6 +502,12 @@ begin
   // the inversion for the right axis
   if Axis = MainForm.SIXCH.AxisList[2] then
    cbInverted.Visible := false;
+  // if it is not the (time) x-axis the time format cannot be changed
+  cbTimeFormat.Enabled:= not (Axis <> MainForm.SIXCH.AxisList[1]);
+  cbTimeReformat.Enabled:= not (Axis <> MainForm.SIXCH.AxisList[1]);
+  cbTimeReformat.ShowHint:= not (Axis <> MainForm.SIXCH.AxisList[1]);
+  lblTimeFormat.Enabled:= not (Axis <> MainForm.SIXCH.AxisList[1]);
+
   cbInverted.Checked := Axis.Inverted;
   seTickLength.Value := Axis.TickLength;
   seTickInnerLength.Value := Axis.TickInnerLength;

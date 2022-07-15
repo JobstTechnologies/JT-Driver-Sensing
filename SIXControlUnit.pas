@@ -57,6 +57,8 @@ type
     procedure SCTimeDayMIClick(Sender: TObject);
     procedure SCTimeHourMIClick(Sender: TObject);
     procedure SCTimeMinuteMIClick(Sender: TObject);
+    procedure SCSIXCHAxisList1GetMarkText(Sender: TObject; var AText: String;
+      AMark: Double);
 
   private
 
@@ -1040,7 +1042,12 @@ begin
  // only if the data format is actually used, we do the calculation
  if not MainForm.TimeDaysHoursMinMI.checked then
  begin
-  result:= FloatToStr(x);
+  if MainForm.TimeMinuteMI.checked then
+   // we want decimals
+   result:= Format('%.2f', [x])
+  else
+   // take the chart's formatting
+   result:= Format(MainForm.SIXCH.BottomAxis.Marks{%H-}.Format, [x]);
   exit;
  end;
 
@@ -3596,6 +3603,30 @@ begin
  MainForm.TimeMinuteMI.Checked:= true;
  MainForm.TimeHourMI.Checked:= false;
  MainForm.TimeDayMI.Checked:= false;
+end;
+
+procedure TSIXControl.SCSIXCHAxisList1GetMarkText(Sender: TObject;
+  var AText: String; AMark: Double);
+begin
+ if MainForm.TimeDaysHoursMinMI.Checked then
+ begin
+  AText:= SIXControl.CalcDaysHoursMins(AMark);
+  MainForm.SIXCH.BottomAxis.Intervals.MaxLength:= 100;
+  MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [dd:hh:mm]';
+ end
+ else
+ begin
+  // do nothing
+  AText:= Format(MainForm.SIXCH.BottomAxis.Marks{%H-}.Format, [AMark]);
+  // use the default width for labels
+  MainForm.SIXCH.BottomAxis.Intervals.MaxLength:= 50;
+  if MainForm.TimeMinuteMI.Checked then
+   MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [min]'
+  else if MainForm.TimeHourMI.Checked then
+   MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [hour]'
+  else if MainForm.TimeDayMI.Checked then
+   MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
+ end;
 end;
 
 end. //unit
