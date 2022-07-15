@@ -1,9 +1,9 @@
 object ChartAxisFrame: TChartAxisFrame
   Left = 0
-  Height = 400
+  Height = 422
   Top = 0
   Width = 573
-  ClientHeight = 400
+  ClientHeight = 422
   ClientWidth = 573
   TabOrder = 0
   DesignLeft = 1165
@@ -37,26 +37,26 @@ object ChartAxisFrame: TChartAxisFrame
   object PageControl: TPageControl
     AnchorSideTop.Side = asrBottom
     Left = 0
-    Height = 375
+    Height = 397
     Top = 25
     Width = 573
-    ActivePage = pgTitle
+    ActivePage = pgLabels
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 1
     object pgTitle: TTabSheet
       Caption = 'Title'
-      ClientHeight = 347
+      ClientHeight = 369
       ClientWidth = 565
       object TitleMemoPanel: TPanel
         Left = 8
-        Height = 120
+        Height = 142
         Top = 8
         Width = 549
         Align = alClient
         BorderSpacing.Around = 8
         BevelOuter = bvNone
-        ClientHeight = 120
+        ClientHeight = 142
         ClientWidth = 549
         TabOrder = 0
         object lblTitle: TLabel
@@ -79,7 +79,7 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideBottom.Control = TitleMemoPanel
           AnchorSideBottom.Side = asrBottom
           Left = 0
-          Height = 99
+          Height = 121
           Top = 21
           Width = 549
           Anchors = [akTop, akLeft, akRight, akBottom]
@@ -109,7 +109,7 @@ object ChartAxisFrame: TChartAxisFrame
       object TitleParamsPanel: TPanel
         Left = 8
         Height = 203
-        Top = 136
+        Top = 158
         Width = 549
         Align = alBottom
         BorderSpacing.Around = 8
@@ -223,7 +223,7 @@ object ChartAxisFrame: TChartAxisFrame
     end
     object pgLabels: TTabSheet
       Caption = 'Labels'
-      ClientHeight = 347
+      ClientHeight = 369
       ClientWidth = 565
       object gbAxisRange: TGroupBox
         AnchorSideLeft.Control = pgLabels
@@ -341,12 +341,13 @@ object ChartAxisFrame: TChartAxisFrame
         AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = gbLabelFont
         AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = gbTicks
         AnchorSideBottom.Side = asrBottom
         Left = 288
-        Height = 246
+        Height = 273
         Top = 89
         Width = 269
-        Anchors = [akTop, akLeft, akRight]
+        Anchors = [akTop, akLeft, akRight, akBottom]
         BorderSpacing.Top = 8
         Caption = 'gbShapeFillBorder'
         Constraints.MinHeight = 246
@@ -358,14 +359,14 @@ object ChartAxisFrame: TChartAxisFrame
         AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = Bevel2
         Left = 8
-        Height = 113
+        Height = 142
         Top = 124
         Width = 268
         Anchors = [akTop, akLeft, akRight]
         AutoSize = True
         BorderSpacing.Top = 8
         Caption = 'Labels'
-        ClientHeight = 93
+        ClientHeight = 122
         ClientWidth = 264
         TabOrder = 1
         object cbLabelsVisible: TCheckBox
@@ -388,12 +389,13 @@ object ChartAxisFrame: TChartAxisFrame
           AnchorSideTop.Side = asrBottom
           AnchorSideRight.Control = gbLabels
           AnchorSideRight.Side = asrBottom
-          Left = 96
+          Left = 111
           Height = 23
+          Hint = 'according to the Printf specification:'#13#10'https://en.wikipedia.org/wiki/Printf'
           Top = 27
-          Width = 148
+          Width = 133
           Anchors = [akTop, akLeft, akRight]
-          BorderSpacing.Left = 35
+          BorderSpacing.Left = 50
           BorderSpacing.Top = 6
           BorderSpacing.Right = 20
           BorderSpacing.Bottom = 8
@@ -401,42 +403,82 @@ object ChartAxisFrame: TChartAxisFrame
           TabOrder = 1
           Text = 'edLabelFormat'
         end
-        object lblLabelFormat: TLabel
+        object lblPrecisionFormat: TLabel
           AnchorSideLeft.Control = cbLabelsVisible
           AnchorSideTop.Control = edLabelFormat
           AnchorSideTop.Side = asrCenter
           Left = 16
           Height = 15
           Top = 31
-          Width = 38
-          Caption = 'Format'
+          Width = 87
+          Caption = 'Precision format'
           ParentColor = False
         end
         object seLabelDistance: TSpinEdit
           AnchorSideLeft.Control = edLabelFormat
-          AnchorSideTop.Control = edLabelFormat
+          AnchorSideTop.Control = cbTimeFormat
           AnchorSideTop.Side = asrBottom
-          Left = 96
+          AnchorSideRight.Control = edLabelFormat
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Side = asrCenter
+          Left = 111
           Height = 23
-          Top = 58
-          Width = 95
+          Top = 87
+          Width = 83
           Alignment = taRightJustify
           Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 6
+          BorderSpacing.Right = 50
           BorderSpacing.Bottom = 12
           MaxValue = 1000
           OnChange = seLabelDistanceChange
           TabOrder = 2
         end
         object lblLabelDistance: TLabel
-          AnchorSideLeft.Control = lblLabelFormat
+          AnchorSideLeft.Control = lblPrecisionFormat
           AnchorSideTop.Control = seLabelDistance
           AnchorSideTop.Side = asrCenter
           Left = 16
           Height = 15
-          Top = 62
+          Top = 91
           Width = 45
           Caption = 'Distance'
           FocusControl = seLabelDistance
+          ParentColor = False
+        end
+        object cbTimeFormat: TComboBox
+          AnchorSideLeft.Control = edLabelFormat
+          AnchorSideTop.Control = edLabelFormat
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = edLabelFormat
+          AnchorSideRight.Side = asrBottom
+          Left = 111
+          Height = 23
+          Top = 58
+          Width = 133
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 6
+          ItemHeight = 15
+          ItemIndex = 0
+          Items.Strings = (
+            'Minutes'
+            'Hours'
+            'Days'
+            'Days:Hours:Minutes'
+          )
+          OnChange = cbTimeFormatChange
+          TabOrder = 3
+          Text = 'Minutes'
+        end
+        object lblTimeFormat: TLabel
+          AnchorSideLeft.Control = cbLabelsVisible
+          AnchorSideTop.Control = cbTimeFormat
+          AnchorSideTop.Side = asrCenter
+          Left = 16
+          Height = 15
+          Top = 62
+          Width = 65
+          Caption = 'Time format'
           ParentColor = False
         end
       end
@@ -458,7 +500,7 @@ object ChartAxisFrame: TChartAxisFrame
         AnchorSideBottom.Side = asrBottom
         Left = 8
         Height = 88
-        Top = 245
+        Top = 274
         Width = 268
         Anchors = [akTop, akLeft, akRight]
         AutoSize = True
@@ -541,7 +583,7 @@ object ChartAxisFrame: TChartAxisFrame
     end
     object pgGrid: TTabSheet
       Caption = 'Grid'
-      ClientHeight = 347
+      ClientHeight = 369
       ClientWidth = 565
       object gbGrid: TGroupBox
         AnchorSideLeft.Control = pgGrid
@@ -577,7 +619,7 @@ object ChartAxisFrame: TChartAxisFrame
     end
     object pgLine: TTabSheet
       Caption = 'Line'
-      ClientHeight = 347
+      ClientHeight = 369
       ClientWidth = 565
       object gbFrame: TGroupBox
         AnchorSideLeft.Control = pgLine

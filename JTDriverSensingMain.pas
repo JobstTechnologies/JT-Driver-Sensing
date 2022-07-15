@@ -133,7 +133,7 @@ type
     Label98: TLabel;
     Label99: TLabel;
     LoadOtherDefBB: TBitBtn;
-    DaysHoursMinMI: TMenuItem;
+    TimeDaysHoursMinMI: TMenuItem;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
     HasNoPumpsCB: TCheckBox;
@@ -941,7 +941,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
-    procedure DaysHoursMinMIClick(Sender: TObject);
+    procedure TimeDaysHoursMinMIClick(Sender: TObject);
     procedure HaveDefFileCBChange(Sender: TObject);
     procedure LegendClickToolClick(Sender: TChartTool;
       Legend: TChartLegend);
@@ -2180,13 +2180,6 @@ begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
 end;
 
-procedure TMainForm.DaysHoursMinMIClick(Sender: TObject);
-begin
- DaysHoursMinMI.Checked:= not DaysHoursMinMI.Checked;
- // trigger the repaint of the x-axis labels
- SIXCH.Invalidate;
-end;
-
 procedure TMainForm.HaveDefFileCBChange(Sender: TObject);
 var
  hasLoadedSensorData : Boolean;
@@ -2272,7 +2265,7 @@ end;
 procedure TMainForm.SIXCHAxisList1GetMarkText(Sender: TObject;
   var AText: String; AMark: Double);
 begin
- if DaysHoursMinMI.Checked then
+ if TimeDaysHoursMinMI.Checked then
  begin
   AText:= SIXControl.CalcDaysHoursMins(AMark);
   SIXCH.BottomAxis.Intervals.MaxLength:= 100;
@@ -2751,6 +2744,13 @@ end;
 procedure TMainForm.TimeMinuteMIClick(Sender: TObject);
 begin
  SIXControl.SCTimeMinuteMIClick(Sender);
+end;
+
+procedure TMainForm.TimeDaysHoursMinMIClick(Sender: TObject);
+begin
+ TimeDaysHoursMinMI.Checked:= not TimeDaysHoursMinMI.Checked;
+ // trigger the repaint of the x-axis labels
+ SIXCH.Invalidate;
 end;
 
 procedure TMainForm.UseAnOutCBChange(Sender: TObject);

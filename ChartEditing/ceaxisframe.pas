@@ -29,6 +29,7 @@ type
     cbShow: TCheckBox;
     cbTickColor: TColorButton;
     cbTitleVisible: TCheckBox;
+    cbTimeFormat: TComboBox;
     edLabelFormat: TEdit;
     gbArrow: TGroupBox;
     gbAxisLine: TGroupBox;
@@ -41,13 +42,14 @@ type
     gbTicks: TGroupBox;
     gbTitleFont: TGroupBox;
     gbTitleShapeBrushPenMargins: TGroupBox;
+    lblTimeFormat: TLabel;
     lMaximum: TLabel;
     lMinimum: TLabel;
     lblArrowBaseLength: TLabel;
     lblArrowLength: TLabel;
     lblArrowWidth: TLabel;
     lblLabelDistance: TLabel;
-    lblLabelFormat: TLabel;
+    lblPrecisionFormat: TLabel;
     lblTickInnerLength: TLabel;
     lblTickLength: TLabel;
     lblTitle: TLabel;
@@ -80,6 +82,7 @@ type
     procedure cbLabelsVisibleChange(Sender: TObject);
     procedure cbShowChange(Sender: TObject);
     procedure cbTickColorColorChanged(Sender: TObject);
+    procedure cbTimeFormatChange(Sender: TObject);
     procedure cbTitleVisibleChange(Sender: TObject);
     procedure edLabelFormatEditingDone(Sender: TObject);
     procedure mmoTitleChange(Sender: TObject);
@@ -344,6 +347,18 @@ end;
 procedure TChartAxisFrame.cbTickColorColorChanged(Sender: TObject);
 begin
   FAxis.TickColor := cbTickColor.ButtonColor;
+end;
+
+procedure TChartAxisFrame.cbTimeFormatChange(Sender: TObject);
+begin
+ if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Minutes' then
+  MainForm.TimeMinuteMIClick(Sender)
+ else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Hours' then
+  MainForm.TimeHourMIClick(Sender)
+ else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Days' then
+  MainForm.TimeDayMIClick(Sender)
+ else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Days:Hours:Minutes' then
+  MainForm.TimeDaysHoursMinMIClick(Sender)
 end;
 
 procedure TChartAxisFrame.cbTitleVisibleChange(Sender: TObject);

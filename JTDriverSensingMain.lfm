@@ -12169,9 +12169,9 @@ object MainForm: TMainForm
       Caption = 'Time in days'
       OnClick = TimeDayMIClick
     end
-    object DaysHoursMinMI: TMenuItem
+    object TimeDaysHoursMinMI: TMenuItem
       Caption = 'Time format DD:HH:MM'
-      OnClick = DaysHoursMinMIClick
+      OnClick = TimeDaysHoursMinMIClick
     end
     object AutoscaleMI: TMenuItem
       Caption = 'Auto scale'

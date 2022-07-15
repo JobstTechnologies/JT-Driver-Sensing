@@ -1037,7 +1037,7 @@ var
  days, hours, minutes : integer;
 begin
  // only if the data format is actually used, we do the calculation
- if not MainForm.DaysHoursMinMI.checked then
+ if not MainForm.TimeDaysHoursMinMI.checked then
  begin
   result:= FloatToStr(x);
   exit;
