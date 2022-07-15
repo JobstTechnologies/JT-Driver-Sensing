@@ -228,6 +228,13 @@ begin
   BoldHeaders(self);
 
   TitleParamsPanel.AutoSize := true;
+
+  if MainForm.TimeMinuteMI.Checked then
+   cbTimeFormat.ItemIndex:= 0
+  else if MainForm.TimeHourMI.Checked then
+   cbTimeFormat.ItemIndex:= 1
+  else if MainForm.TimeDayMI.Checked then
+   cbTimeFormat.ItemIndex:= 2;
 end;
 
 procedure TChartAxisFrame.CalculatePreferredSize(
@@ -356,9 +363,7 @@ begin
  else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Hours' then
   MainForm.TimeHourMIClick(Sender)
  else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Days' then
-  MainForm.TimeDayMIClick(Sender)
- else if cbTimeFormat.Items[cbTimeFormat.ItemIndex] = 'Days:Hours:Minutes' then
-  MainForm.TimeDaysHoursMinMIClick(Sender)
+  MainForm.TimeDayMIClick(Sender);
 end;
 
 procedure TChartAxisFrame.cbTitleVisibleChange(Sender: TObject);

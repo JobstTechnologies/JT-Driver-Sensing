@@ -40,9 +40,9 @@ object ChartAxisFrame: TChartAxisFrame
     Height = 397
     Top = 25
     Width = 573
-    ActivePage = pgLabels
+    ActivePage = pgTitle
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     object pgTitle: TTabSheet
       Caption = 'Title'
@@ -400,6 +400,8 @@ object ChartAxisFrame: TChartAxisFrame
           BorderSpacing.Right = 20
           BorderSpacing.Bottom = 8
           OnEditingDone = edLabelFormatEditingDone
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 1
           Text = 'edLabelFormat'
         end
@@ -464,7 +466,6 @@ object ChartAxisFrame: TChartAxisFrame
             'Minutes'
             'Hours'
             'Days'
-            'Days:Hours:Minutes'
           )
           OnChange = cbTimeFormatChange
           TabOrder = 3
