@@ -1409,7 +1409,6 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  IndicatorPumpPPaint;
   if HavePumpSerialCB.Checked then
   begin
    // stop pumps

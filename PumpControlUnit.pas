@@ -542,6 +542,7 @@ begin
  begin
   MainForm.IndicatorPumpP.Color:= clDefault;
   MainForm.IndicatorPumpP.Caption:= '';
+  MainForm.IndicatorPumpPPaint;
  end;
  MainForm.IndicatorPumpP.Hint:= '';
  SOrder:= nil;
@@ -1053,8 +1054,9 @@ begin
    if timeStep > 2147483646 then
    begin
     MainForm.IndicatorPumpP.Color:= clRed;
-    MainForm.IndicatorPumpP.Caption:= 'Action Time ' + jStr + 'too long!';
-    MainForm.IndicatorPumpP.Hint:= 'The time for one action must not exceed 596 h.';
+    MainForm.IndicatorPumpP.Caption:= 'Step time ' + jStr + 'too long!';
+    MainForm.IndicatorPumpP.Hint:= 'time for one step must not exceed 596 h';
+    MainForm.IndicatorPumpPPaint;
     result:= False;
     exit;
    end;
@@ -1174,6 +1176,7 @@ begin
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.IndicatorPumpP.Color:= clRed;
+   MainForm.IndicatorPumpPPaint;
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.DriverConnectBB.Enabled:= True;
    MainForm.RunBB.Enabled:= False;
@@ -1605,6 +1608,7 @@ begin
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
     MainForm.IndicatorPumpP.Color:= clRed;
+    MainForm.IndicatorPumpPPaint;
     MainForm.PumpDriverMI.Enabled:= True;
     MainForm.DriverConnectBB.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
@@ -1669,6 +1673,7 @@ begin
   MainForm.RepeatOutputLE.Visible:= False;
   MainForm.IndicatorPumpP.Caption:= 'Action is running';
   MainForm.IndicatorPumpP.Color:= clRed;
+  MainForm.IndicatorPumpPPaint;
   // set timers
   if (StrToInt(MainForm.RepeatSE.Text) > 0)
    and (MainForm.RunEndlessCB.Checked = False) then
@@ -1771,6 +1776,7 @@ begin
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.IndicatorPumpP.Color:= clRed;
+   MainForm.IndicatorPumpPPaint;
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.DriverConnectBB.Enabled:= True;
    if serPump.LastError = 9997 then
@@ -1789,6 +1795,7 @@ begin
   MainForm.FinishTimePumpLE.Text:= stopTime;
   MainForm.IndicatorPumpP.Caption:= 'Manually stopped';
   MainForm.IndicatorPumpP.Color:= clHighlight;
+  MainForm.IndicatorPumpPPaint;
  end;
  MainForm.OverallTimer.Enabled:= False;
  MainForm.RepeatTimer.Enabled:= False;
@@ -1898,6 +1905,7 @@ begin
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
    MainForm.IndicatorPumpP.Color:= clRed;
+   MainForm.IndicatorPumpPPaint;
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.DriverConnectBB.Enabled:= True;
    MainForm.RunBB.Enabled:= False;
@@ -1905,8 +1913,11 @@ begin
    MousePointer:= Mouse.CursorPos;
    // since the dialog will interrupt the code execution
    // it must be after ClosePumpSerialConn
-   MessageDlgPos(saveCOMPort + ' error: '
-   + errorMsg, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   // Don't show this message if InfoNote is shown because it would hide
+   // the note and that note is important
+   if MainForm.InfoNote.Color = clInfoBk then // is shown color would be clRed
+    MessageDlgPos(saveCOMPort + ' error: ' + errorMsg, mtError,
+                  [mbOK], 0, MousePointer.X, MousePointer.Y);
    exit;
   end;
  end
@@ -1956,6 +1967,7 @@ begin
  MainForm.GenerateCommandBB.Enabled:= False;
  MainForm.IndicatorPumpP.Caption:= 'Action is running';
  MainForm.IndicatorPumpP.Color:= clLime;
+ MainForm.IndicatorPumpPPaint;
  MainForm.GenerateCommandBB.Enabled:= False;
  // disable menu to load and save action files
  MainForm.LoadActionMI.Enabled:= False;
@@ -2020,6 +2032,7 @@ begin
  MainForm.GenerateCommandBB.Enabled:= True;
  MainForm.IndicatorPumpP.Caption:= 'Run finished';
  MainForm.IndicatorPumpP.Color:= clInfoBk;
+ MainForm.IndicatorPumpPPaint;
  MainForm.RepeatOutputLE.Visible:= False;
 
  // stop all pumps and valves

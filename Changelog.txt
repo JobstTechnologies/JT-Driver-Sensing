@@ -2,7 +2,7 @@ Changes
 
 from version 1.30 to 1.31
 
-improvements:
+improvement:
 - better feedback if no SIX or pump driver was found during port scan
 
 bugfixes:

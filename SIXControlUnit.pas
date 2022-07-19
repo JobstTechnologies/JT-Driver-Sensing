@@ -106,6 +106,7 @@ var
   inCalibration : Boolean = false; // to prevent chart scrolling while calibrating
   LiveViewWasAuto : Boolean = false; // if the left axis was in auto range when LiveView was turned off
   ConnectionLost : Boolean = false; // if connection is lost
+  ConnectionLostChecking : Boolean = false; // if a port scane is already running when connection loss
 
 implementation
 
@@ -158,16 +159,20 @@ begin
 
  if ConnectionLost then
  begin
-  BeginTime:= Now;
   // We can into a timer issue: The time finished already a few times
   // while in the meantime we have reconnected.
   // In this case, when this was initially executed ConnectionLost was false
-  // Since every COMPortScan needs time we can have already a reconnection
+  // Since every COMPortScan needs time we must not start a new scan until
+  // the current one is ready or we can have meanwhile a reconnection
   // and then cannot setup a new connection over the existing one.
-  // So we need to check if ConnectionLost is meanwhile true.
-  if not ConnectionLost then
+  // So we need to check if ConnectionLost is meanwhile true and that
+  // no scan is running.
+  if ConnectionLostChecking or (not ConnectionLost) then
    exit;
+  BeginTime:= Now;
+  ConnectionLostChecking:= true;
   MainForm.COMPortScan('SIX');
+  ConnectionLostChecking:= false;
   // search the COM list if the SIX is listed there
   i:= Pos(':', MainForm.ConnComPortSensM.Lines[1]);
   for i:= 0 to Length(COMListSIX) - 1 do
