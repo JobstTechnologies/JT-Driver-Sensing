@@ -1591,26 +1591,29 @@ begin
    exit;
   end;
 
-  // send the command
-  serPump.SendString(command);
-  if serPump.LastError <> 0 then
+  if MainForm.HavePumpSerialCB.Checked then
   begin
-   with Application do
-    MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
-                     'Error', MB_ICONERROR + MB_OK);
-   MainForm.ConnComPortPumpLE.Color:= clRed;
-   MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
-   MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
-   MainForm.PumpDriverMI.Enabled:= True;
-   MainForm.DriverConnectBB.Enabled:= True;
-   MainForm.RunBB.Enabled:= False;
-   if serPump.LastError = 9997 then
+   // send the command
+   serPump.SendString(command);
+   if serPump.LastError <> 0 then
    begin
-    MainForm.StopBB.Enabled:= False;
-    exit; // we cannot close socket or free if the connection timed out
-  end;
-   MainForm.ClosePumpSerialConn;
-   exit;
+    with Application do
+     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+                      'Error', MB_ICONERROR + MB_OK);
+    MainForm.ConnComPortPumpLE.Color:= clRed;
+    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
+    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+    MainForm.PumpDriverMI.Enabled:= True;
+    MainForm.DriverConnectBB.Enabled:= True;
+    MainForm.RunBB.Enabled:= False;
+    if serPump.LastError = 9997 then
+    begin
+     MainForm.StopBB.Enabled:= False;
+     exit; // we cannot close socket or free if the connection timed out
+    end;
+    MainForm.ClosePumpSerialConn;
+    exit;
+   end;
   end;
 
   // not the pump settings when in live mode

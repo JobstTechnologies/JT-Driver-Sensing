@@ -1750,7 +1750,7 @@ begin
   if SerialUSBSelectionF.ModalResult = mrOK then
    COMPort:= SerialUSBSelectionF.SerialUSBPortCB.Text;
 
-  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Disconnect
+  if SerialUSBSelectionF.ModalResult = mrNo then
   begin
    MessageDlgPos('No connection, no firmware update possible.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
@@ -1813,7 +1813,7 @@ begin
    end;
   end;
 
-  // if connected to wrong device, the exit only jumps out of try..finally block
+  // if connected to wrong device, exit; only jumps out of try..finally block
   if exited then
    exit;
 
@@ -1854,7 +1854,13 @@ begin
   end;
 
   // Closing open connections
-  ClosePumpSerialConn;
+  // we don't call ClosePumpSerialConn because we need the COMPort info
+  if HavePumpSerialCB.Checked then
+  begin
+   serPump.CloseSocket;
+   serPump.Free;
+   HavePumpSerialCB.Checked:= False;
+  end;
 
   // open new connection with 1200 baud,
   // this rate is mandatory to set the Arduino into boot mode
