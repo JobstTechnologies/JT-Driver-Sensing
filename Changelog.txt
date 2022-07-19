@@ -6,6 +6,8 @@ improvements:
 - better feedback if no SIX or pump driver was found during port scan
 
 bugfixes:
+- fix automatic reconnection when connection to SIX was lost
+  and the port scan lasted long (many USB devices connected)
 - fix inconsistent user interface wording
 
 

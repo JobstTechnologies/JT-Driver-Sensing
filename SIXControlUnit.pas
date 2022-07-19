@@ -131,7 +131,7 @@ var
  OutLine : string;
  dataString : AnsiString;
  slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
- i, StopPos, ItemIndex, SIXNumber : integer;
+ i, StopPos, ItemIndex : integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
  tempArray : packed array of byte;
@@ -159,18 +159,27 @@ begin
  if ConnectionLost then
  begin
   BeginTime:= Now;
+  // We can into a timer issue: The time finished already a few times
+  // while in the meantime we have reconnected.
+  // In this case, when this was initially executed ConnectionLost was false
+  // Since every COMPortScan needs time we can have already a reconnection
+  // and then cannot setup a new connection over the existing one.
+  // So we need to check if ConnectionLost is meanwhile true.
+  if not ConnectionLost then
+   exit;
   MainForm.COMPortScan('SIX');
   // search the COM list if the SIX is listed there
   i:= Pos(':', MainForm.ConnComPortSensM.Lines[1]);
-  SIXNumber:= connectedSIX;
   for i:= 0 to Length(COMListSIX) - 1 do
   begin
-   if COMListSIX[i] = SIXNumber then
+   if COMListSIX[i] = connectedSIX then
    begin
-    // open new connection if not already available
-    // open the connection
+   // open new connection
    try
     try
+     // same check as described above
+     if not ConnectionLost then
+      exit;
      serSensor:= TBlockSerial.Create;
      serSensor.DeadlockTimeout:= 1000; //set timeout to 1 s
      serSensor.Connect('COM' + IntToStr(i));
@@ -185,8 +194,8 @@ begin
      end;
     end;
 
-    MainForm.HaveSerialSensorCB.Checked:= true;
     ConnectionLost:= false;
+    MainForm.HaveSerialSensorCB.Checked:= true;
     wasNoStopByte:= true; // to force a re-sync
     NoSound;
 
