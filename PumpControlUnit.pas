@@ -2319,7 +2319,7 @@ begin
   MainForm.HasNoValvesCB.Checked:= false;
  for j:= 1 to StepNum do
  begin
-  k:= 1; // just to silence the compiler
+  k:= 1;
   // enable the specified number of valves if the step is used
   for k:= 1 to ValveNum do
   begin
@@ -2342,6 +2342,12 @@ begin
      as TRadioGroup).ShowHint:= false;
    end;
   end;
+  // when there are no pumps, we must activate the valve tab
+  if MainForm.HasNoPumpsCB.Checked then
+   (MainForm.FindComponent('S' + IntToStr(j) + 'PC')
+    as TPageControl).ActivePage:=
+     (MainForm.FindComponent('S' + IntToStr(j) + 'Valves')
+      as TTabSheet);
  end;
 end;
 
