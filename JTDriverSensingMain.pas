@@ -1409,8 +1409,6 @@ begin
   // disable all buttons
   RunBB.Enabled:= false;
   StopBB.Enabled:= false;
-  IndicatorPumpP.Caption:= 'Connection failure';
-  IndicatorPumpP.Color:= clRed;
   IndicatorPumpPPaint;
   if HavePumpSerialCB.Checked then
   begin

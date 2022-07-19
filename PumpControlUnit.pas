@@ -1173,6 +1173,7 @@ begin
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+   MainForm.IndicatorPumpP.Color:= clRed;
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.DriverConnectBB.Enabled:= True;
    MainForm.RunBB.Enabled:= False;
@@ -1603,6 +1604,7 @@ begin
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+    MainForm.IndicatorPumpP.Color:= clRed;
     MainForm.PumpDriverMI.Enabled:= True;
     MainForm.DriverConnectBB.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
@@ -1767,6 +1769,7 @@ begin
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+   MainForm.IndicatorPumpP.Color:= clRed;
    MainForm.PumpDriverMI.Enabled:= True;
    MainForm.DriverConnectBB.Enabled:= True;
    if serPump.LastError = 9997 then
@@ -1890,6 +1893,7 @@ begin
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
     MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+    MainForm.IndicatorPumpP.Color:= clRed;
     MainForm.PumpDriverMI.Enabled:= True;
     MainForm.DriverConnectBB.Enabled:= True;
     MainForm.RunBB.Enabled:= False;
