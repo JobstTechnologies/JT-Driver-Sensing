@@ -1992,7 +1992,7 @@ begin
  MainForm.LoadOtherDefBB.enabled:= True;
  MainForm.UnloadDefBB.enabled:= True;
  MainForm.ChangeSensorDataFileMI.Enabled:= True;
- MainForm.RunBB.Caption:= 'Run Pumps';
+ MainForm.RunBB.Caption:= 'Run Action';
  if not MainForm.HasNoPumpsCB.Checked then
   MainForm.RunBB.Enabled:= MainForm.HavePumpSerialCB.Checked
  else

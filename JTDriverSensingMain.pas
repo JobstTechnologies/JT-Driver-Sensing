@@ -3650,7 +3650,7 @@ end;
 procedure TMainForm.StopTimerFinished;
 // enable to execute new commands
 begin
- RunBB.Caption:= 'Run Pumps';
+ RunBB.Caption:= 'Run Action';
  RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
  StopTimer.Enabled:= False;
 end;

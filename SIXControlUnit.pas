@@ -1043,7 +1043,7 @@ begin
  if not MainForm.TimeDaysHoursMinMI.checked then
  begin
   if MainForm.TimeMinuteMI.checked then
-   // we want decimals
+   // we explicitly want decimals in this case
    result:= Format('%.2f', [x])
   else
    // take the chart's formatting
