@@ -1728,6 +1728,7 @@ procedure TPumpControl.PCStopBBClick(Sender: TObject);
 var
  command, stopTime, Substance : string;
  i, j, k : integer;
+ MousePointer : TPoint;
 begin
  // re-enable the connection menu in every case
  MainForm.PumpDriverMI.Enabled:= True;
@@ -1763,9 +1764,9 @@ begin
   serPump.SendString(command);
   if serPump.LastError <> 0 then
   begin
-   with Application do
-    MessageBox(PChar(connectedPumpCOM + 'error: ' + serPump.LastErrorDesc),
-                     'Error', MB_ICONERROR+MB_OK);
+   MousePointer:= Mouse.CursorPos;
+   MessageDlgPos(connectedPumpCOM + ' error: '
+    + serPump.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1880,33 +1881,41 @@ begin
 end;
 
 procedure TPumpControl.PCSendRepeatToPump;
-// send command to pump driver
+// sends command to pump driver
+var
+ errorMsg, saveCOMPort : string;
+ MousePointer : TPoint;
 begin
-  if MainForm.HavePumpSerialCB.Checked then
+ if MainForm.HavePumpSerialCB.Checked then
+ begin
+  serPump.SendString(commandForRepeat);
+  if serPump.LastError <> 0 then
   begin
-   serPump.SendString(commandForRepeat);
-   if serPump.LastError <> 0 then
-   begin
-    with Application do
-     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
-                      'Error', MB_ICONERROR + MB_OK);
-    MainForm.ConnComPortPumpLE.Color:= clRed;
-    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
-    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
-    MainForm.IndicatorPumpP.Color:= clRed;
-    MainForm.PumpDriverMI.Enabled:= True;
-    MainForm.DriverConnectBB.Enabled:= True;
-    MainForm.RunBB.Enabled:= False;
-    MainForm.ClosePumpSerialConn;
-    exit;
-   end;
-  end
-  else // no serial connection
-  begin
-   if not MainForm.HasNoPumpsCB.Checked then
-    MainForm.RunBB.Enabled:= False;
+   // store message and COMPort because CloseSerialConn will empty them
+   errorMsg:= serPump.LastErrorDesc;
+   saveCOMPort:= connectedPumpCOM;
+   MainForm.ConnComPortPumpLE.Color:= clRed;
+   MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
+   MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+   MainForm.IndicatorPumpP.Color:= clRed;
+   MainForm.PumpDriverMI.Enabled:= True;
+   MainForm.DriverConnectBB.Enabled:= True;
+   MainForm.RunBB.Enabled:= False;
+   MainForm.ClosePumpSerialConn;
+   MousePointer:= Mouse.CursorPos;
+   // since the dialog will interrupt the code execution
+   // it must be after ClosePumpSerialConn
+   MessageDlgPos(saveCOMPort + ' error: '
+   + errorMsg, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    exit;
   end;
+ end
+ else // no serial connection
+ begin
+  if not MainForm.HasNoPumpsCB.Checked then
+   MainForm.RunBB.Enabled:= False;
+  exit;
+ end;
 end;
 
 procedure TPumpControl.PCRepeatTimerFinished;

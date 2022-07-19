@@ -9,6 +9,7 @@ bugfixes:
 - fix automatic reconnection when connection to SIX was lost
   and the port scan lasted long (many USB devices connected)
 - fix inconsistent user interface wording
+- avoid countless error messages when connection to driver was lost
 
 
 from version 1.2.0 to 1.30

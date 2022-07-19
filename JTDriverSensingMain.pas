@@ -1452,6 +1452,8 @@ begin
   if serPump.LastError <> 0 then
   begin
    // disable all buttons
+   MessageDlgPos(COMPort + ' connection error: '
+    + serPump.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    RunBB.Enabled:= false;
    StopBB.Enabled:= false;
    IndicatorPumpP.Caption:= 'Connection failure';
