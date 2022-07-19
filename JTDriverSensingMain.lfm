@@ -11909,6 +11909,7 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 100
     OnTimer = OverallTimerFinished
+    OnStartTimer = OverallTimerStartTimer
     Left = 1104
     Top = 472
   end

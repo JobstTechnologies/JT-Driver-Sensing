@@ -24,6 +24,7 @@ type
     procedure PCPumpOnOffCBLoopChange(Sender: TObject);
     procedure PCSendRepeatToPump;
     procedure PCRepeatTimerFinished;
+    procedure PCOverallTimerStartTimer(Sender: TObject);
     procedure PCOverallTimerFinished;
     procedure PCStepXUseCBChange(Sender: TObject);
     procedure PCPumpVoltageFSChange(Sender: TObject);
@@ -1582,57 +1583,36 @@ begin
   // save command to be resend on every repeat
   commandForRepeat:= command;
 
-  // if we have a connection to the pump driver, execute
-  if MainForm.HavePumpSerialCB.Checked then
+  // if no serial connection but pumps, we can stop here
+  if (not MainForm.HavePumpSerialCB.Checked)
+   and (not MainForm.HasNoPumpsCB.Checked) then
   begin
-   // disable the connection menu that the user cannot close
-   // the conenction while the pumps are running
-   MainForm.PumpDriverMI.Enabled:= False;
-   MainForm.DriverConnectBB.Enabled:= False;
-   MainForm.FirmwareUpdateMI.Enabled:= False;
-   MainForm.FirmwareResetMI.Enabled:= False;
-   // send the command
-   serPump.SendString(command);
-   if serPump.LastError <> 0 then
-   begin
-    with Application do
-     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
-                      'Error', MB_ICONERROR + MB_OK);
-    MainForm.ConnComPortPumpLE.Color:= clRed;
-    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
-    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
-    MainForm.PumpDriverMI.Enabled:= True;
-    MainForm.DriverConnectBB.Enabled:= True;
-    MainForm.RunBB.Enabled:= False;
-    if serPump.LastError = 9997 then
-    begin
-     MainForm.StopBB.Enabled:= False;
-     exit; // we cannot close socket or free if the connection timed out
-    end;
-    MainForm.ClosePumpSerialConn;
-    exit;
-   end;
-  end
-  else // no serial connection
-  begin
-   if not MainForm.HasNoPumpsCB.Checked then
-   begin
-    MainForm.RunBB.Enabled:= False;
-    exit;
-   end;
+   MainForm.RunBB.Enabled:= False;
+   exit;
   end;
-  // disable menu to load and save action files
-  MainForm.LoadActionMI.Enabled:= False;
-  MainForm.SaveActionMI.Enabled:= False;
 
-  MainForm.RunBB.Caption:= 'Action running';
-  MainForm.RunBB.Enabled:= False;
-  MainForm.GenerateCommandBB.Enabled:= False;
-  // disable all setting possibilities
-  MainForm.RunSettingsGB.Enabled:= False;
-  MainForm.LiveModeCB.Enabled:= False;
-  MainForm.PumpSetupGB.Enabled:= False;
-  MainForm.ValveSetupGB.Enabled:= False;
+  // send the command
+  serPump.SendString(command);
+  if serPump.LastError <> 0 then
+  begin
+   with Application do
+    MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+                     'Error', MB_ICONERROR + MB_OK);
+   MainForm.ConnComPortPumpLE.Color:= clRed;
+   MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
+   MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
+   MainForm.PumpDriverMI.Enabled:= True;
+   MainForm.DriverConnectBB.Enabled:= True;
+   MainForm.RunBB.Enabled:= False;
+   if serPump.LastError = 9997 then
+   begin
+    MainForm.StopBB.Enabled:= False;
+    exit; // we cannot close socket or free if the connection timed out
+  end;
+   MainForm.ClosePumpSerialConn;
+   exit;
+  end;
+
   // not the pump settings when in live mode
   if not MainForm.LiveModeCB.Checked then
   begin
@@ -1951,6 +1931,30 @@ begin
  else
   MainForm.RepeatTimer.Enabled:= False;
 
+end;
+
+procedure TPumpControl.PCOverallTimerStartTimer(Sender: TObject);
+begin
+ MainForm.RunBB.Caption:= 'Action running';
+ MainForm.RunBB.Enabled:= False;
+ MainForm.GenerateCommandBB.Enabled:= False;
+ MainForm.IndicatorPumpP.Caption:= 'Action is running';
+ MainForm.IndicatorPumpP.Color:= clLime;
+ MainForm.GenerateCommandBB.Enabled:= False;
+ // disable menu to load and save action files
+ MainForm.LoadActionMI.Enabled:= False;
+ MainForm.SaveActionMI.Enabled:= False;
+ // disable all setting possibilities
+ MainForm.RunSettingsGB.Enabled:= False;
+ MainForm.LiveModeCB.Enabled:= False;
+ MainForm.PumpSetupGB.Enabled:= False;
+ MainForm.ValveSetupGB.Enabled:= False;
+ // disable the connection menu that the user cannot close
+ // the conenction while the pumps are running
+ MainForm.PumpDriverMI.Enabled:= False;
+ MainForm.DriverConnectBB.Enabled:= False;
+ MainForm.FirmwareUpdateMI.Enabled:= False;
+ MainForm.FirmwareResetMI.Enabled:= False;
 end;
 
 procedure TPumpControl.PCOverallTimerFinished;

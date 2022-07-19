@@ -941,6 +941,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure OverallTimerStartTimer(Sender: TObject);
     procedure TimeDaysHoursMinMIClick(Sender: TObject);
     procedure HaveDefFileCBChange(Sender: TObject);
     procedure LegendClickToolClick(Sender: TChartTool;
@@ -2178,6 +2179,11 @@ procedure TMainForm.DataPointHintToolHintPosition(
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
+end;
+
+procedure TMainForm.OverallTimerStartTimer(Sender: TObject);
+begin
+ PumpControl.PCOverallTimerStartTimer(Sender);
 end;
 
 procedure TMainForm.HaveDefFileCBChange(Sender: TObject);
