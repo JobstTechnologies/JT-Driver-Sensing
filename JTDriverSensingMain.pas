@@ -1359,8 +1359,15 @@ begin
     inc(i);
   end;
 
+  ConnectBB.Enabled:= true;
+  SerialUSBPortCB.Text:= '';
+  if SerialUSBPortCB.Items.Count = 0 then
+  begin
+   ConnectBB.Enabled:= false;
+   SerialUSBPortCB.Text:= 'No driver found';
+  end
   // if there is only one COM port, preselect it
-  if SerialUSBPortCB.Items.Count = 1 then
+  else if SerialUSBPortCB.Items.Count = 1 then
    SerialUSBPortCB.ItemIndex:= 0
   else
   begin
@@ -4384,8 +4391,15 @@ begin
      SerialUSBPortCB.Items[i]:= 'SIX ID #: ' + IntToStr(COMListSIX[COMNumber]);
    end;
 
+   ConnectBB.Enabled:= true;
+   SerialUSBPortCB.Text:= '';
+   if SerialUSBPortCB.Items.Count = 0 then
+   begin
+    ConnectBB.Enabled:= false;
+    SerialUSBPortCB.Text:= 'No SIX found';
+   end
    // if there is only one COM port, preselect it
-   if SerialUSBPortCB.Items.Count = 1 then
+   else if SerialUSBPortCB.Items.Count = 1 then
     SerialUSBPortCB.ItemIndex:= 0
    else
    begin
