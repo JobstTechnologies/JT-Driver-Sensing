@@ -1092,7 +1092,7 @@ var
   HaveSensorFileStream : Boolean = False;
   InNamePump : string = ''; // name of loaded pump action file
   DropfileNamePump : string = ''; // name of dropped pump action file
-  connectedPumpCOM : string = ''; // name of connected pump COM port
+  connectedPumpName : string = ''; // name of connected pump COM port
   InNameDef : string = ''; // name of loaded sensor definition file
   DropfileNameDef : string = ''; // name of dropped sensor definition file
   InNameSensor : string = ''; // name of sensor data file
@@ -1305,12 +1305,15 @@ procedure TMainForm.PumpConnectionStart(Sender: TObject; Connect: Boolean);
 var
  command, COMPort : string;
  Reg : TRegistry;
- i, k, COMNumber, Channel : integer;
+ i, k, COMNumber, Channel, COMIndex : integer;
  FirmwareNumber : double = 0.0;
  MousePointer : TPoint;
  gotFirmwareNumber : Boolean = false;
+ COMArray : array of string;
 begin
- MousePointer:= Mouse.CursorPos; // store mouse position
+ // initialize
+ MousePointer:= Mouse.CursorPos;
+ COMArray:= [''];
  // enable all menus because they would be disabled when formerly
  // connected to an unknown device
  GetFirmwareVersionMI.Enabled:= true;
@@ -1359,6 +1362,18 @@ begin
     inc(i);
   end;
 
+  // output driver ID
+  SerialUSBPortCB.Sorted:= false;
+  SetLength(COMArray, SerialUSBPortCB.Items.Count);
+  for i:= 0 to SerialUSBPortCB.Items.Count-1 do
+  begin
+   COMNumber:= StrToInt(Copy(SerialUSBPortCB.Items[i], 4, 4));
+   COMArray[i]:= SerialUSBPortCB.Items[i];
+   if COMListPumpDriver[COMNumber] > 1 then
+    SerialUSBPortCB.Items[i]:= 'Driver SN ' +
+     IntToStr(COMListPumpDriver[COMNumber]);
+  end;
+
   ConnectBB.Enabled:= true;
   SerialUSBPortCB.Text:= '';
   if SerialUSBPortCB.Items.Count = 0 then
@@ -1373,21 +1388,27 @@ begin
   begin
    // if there is already a connection, display its port
    if HavePumpSerialCB.Checked then
-     SerialUSBPortCB.ItemIndex:= SerialUSBPortCB.Items.IndexOf(connectedPumpCOM)
+     SerialUSBPortCB.ItemIndex:=
+      SerialUSBPortCB.Items.IndexOf(ConnComPortPumpLE.Text)
    else
     SerialUSBPortCB.ItemIndex:= -1;
   end;
   // update the text since this will be displayed
-  // as proposal when the connection dialog is shwon
+  // as proposal when the connection dialog is shown
   if SerialUSBPortCB.ItemIndex > -1 then
    SerialUSBPortCB.Text:= SerialUSBPortCB.Items[SerialUSBPortCB.ItemIndex];
+  if SerialUSBPortCB.Text = '' then
+    COMPort:= '';
 
   if Connect then
   begin
    // open connection dialog
    ShowModal;
    if ModalResult = mrOK then
+   begin
     COMPort:= SerialUSBPortCB.Text;
+    COMIndex:= SerialUSBPortCB.ItemIndex;
+   end;
   end
   else
    ModalResult:= mrNo;
@@ -1430,6 +1451,8 @@ begin
   end;
   exit;
  end;
+
+ COMPort:= COMArray[COMIndex];
  // open new connection if not already available
  if not (HavePumpSerialCB.Checked and (COMPort = ConnComPortPumpLE.Text)) then
  try
@@ -1489,7 +1512,7 @@ begin
   // output connected port
   ConnComPortPumpLE.Color:= clDefault;
   ConnComPortPumpLE.Text:= SerialUSBSelectionF.SerialUSBPortCB.Text;
-  connectedPumpCOM:= SerialUSBSelectionF.SerialUSBPortCB.Text;
+  connectedPumpName:= SerialUSBSelectionF.SerialUSBPortCB.Text;
   Channel:= StrToInt(Copy(COMPort, 4, 4));
   connectedPumpDriver:= COMListPumpDriver[Channel];
   IndicatorPumpP.Caption:= 'Connection successful';
@@ -4326,10 +4349,10 @@ begin
  SetSIXFactors;
 
  if Disconnect then
-  begin
-   DisconnectSIX;
-   exit;
-  end;
+ begin
+  DisconnectSIX;
+  exit;
+ end;
 
  // connect to SIX
  if not Connected then
@@ -4379,11 +4402,6 @@ begin
     else
      inc(i);
    end;
-
-   // if there is already a connection, select its port
-   if HaveSerialSensorCB.Checked then
-    SerialUSBPortCB.ItemIndex:=
-     SerialUSBPortCB.Items.IndexOf('SIX ID #: ' + IntToStr(connectedSIX));
 
    // output SIX ID
    SerialUSBPortCB.Sorted:= false;
@@ -4974,7 +4992,7 @@ begin
   serPump.CloseSocket;
   serPump.Free;
   HavePumpSerialCB.Checked:= False;
-  connectedPumpCOM:= '';
+  connectedPumpName:= '';
   connectedPumpDriver:= 0;
   StopBBClick(StopBB as TObject);
  end;
@@ -5094,7 +5112,8 @@ type
 var
  Reg : TRegistry;
  RegStrings : TStrings;
- PortName, connectedPortNameSIX, command, FirmwareVersion : string;
+ PortName, connectedPortNameSIX, connectedPortNameDriver,
+   command, FirmwareVersion, driverFeedback : string;
  serTest : TBlockSerial;
  i, j, k, ErrorCount, StopPos, Attempts, Channel : integer;
  dataString : AnsiString;
@@ -5110,14 +5129,22 @@ begin
   Reg.RootKey:= HKEY_LOCAL_MACHINE;
   if Reg.OpenKeyReadOnly('HARDWARE\DEVICEMAP\SERIALCOMM') then
   begin
-
    // if connected, get the port number to exclude it from beeing connected
    if HaveSerialSensorCB.Checked then
-    for i:= 1 to Length(COMListSIX) -1 do
+    for i:= 1 to Length(COMListSIX) - 1 do
     begin
      if COMListSIX[i] = connectedSIX then
       begin
        connectedPortNameSIX:= 'COM' + IntToStr(i);
+       break;
+      end;
+     end;
+   if HavePumpSerialCB.Checked then
+    for i:= 1 to Length(COMListPumpDriver) - 1 do
+    begin
+     if COMListPumpDriver[i] = connectedPumpDriver then
+      begin
+       connectedPortNameDriver:= 'COM' + IntToStr(i);
        break;
       end;
      end;
@@ -5159,7 +5186,7 @@ begin
     ErrorCount:= 0;
 
     // exclude connected pump driver port
-    if HavePumpSerialCB.Checked and (PortName = connectedPumpCOM) then
+    if HavePumpSerialCB.Checked and (PortName = connectedPortNameDriver) then
      continue;
 
     // if there is a connection, we can directly take the SIX number
@@ -5275,7 +5302,7 @@ begin
     // - if yes, we must directly take the driver number
     // since we cannot connect to an already connected port
     // - if not we must close the connection
-    if HavePumpSerialCB.Checked and (PortName = connectedPumpCOM) then
+    if HavePumpSerialCB.Checked and (PortName = connectedPortNameDriver) then
     begin
      // to check the live state send a command
      try
@@ -5297,7 +5324,7 @@ begin
      end;
      if ErrorCount > 0 then
       continue;
-     Channel:= StrToInt(Copy(connectedPumpCOM, 4, 4));
+     Channel:= StrToInt(Copy(connectedPortNameDriver, 4, 4));
      COMListPumpDriver[Channel]:= connectedPumpDriver;
      continue;
     end;
@@ -5321,7 +5348,7 @@ begin
       begin
        command:= '/0lR' + LineEnding;
        serTest.SendString(command);
-       FirmwareVersion:= serTest.RecvPacket(1000);
+       driverFeedback:= serTest.RecvPacket(1000);
       end;
      finally
       if serTest.LastError <> 0 then
@@ -5335,13 +5362,16 @@ begin
     if ErrorCount > 0 then
      continue;
 
-    // FirmwareVersion has now this format:
-    // "JT-PumpDriver-Firmware x.y\n Received command: ..."
-    // but on old versions the firmware does not have any number,
-    // only "received command" is sent back
-    // therefore check for a number dot
-    if Pos('.', FirmwareVersion) > 0 then
-     FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
+    // driverFeedback has now either this format:
+    // "JT-PumpDriver-ID zz\nJT-PumpDriver-Firmware x.y\n Received command:..."
+    // or this format:
+    // "JT-PumpDriver-Firmware x.y\n Received command:..."
+    // on very old firmware this format:
+    // "received command:..."
+
+    // check for a number dot to get the firmware version
+    if Pos('.', driverFeedback) > 0 then
+     FirmwareVersion:= copy(driverFeedback, Pos('.', driverFeedback) - 1, 3)
     // omit the 'r' because some versions used a capital letter 'R'
     else if Pos('eceived command:', FirmwareVersion) > 0 then
      FirmwareVersion:= 'unknown'
@@ -5349,8 +5379,17 @@ begin
      continue;
 
     Channel:= StrToInt(Copy(PortName, 4, 4));
-    // at the moment the pump drivers have no ID, so we set their "ID" to 1
-    COMListPumpDriver[Channel]:= 1;
+    // determine the driver ID: from first space to first #10
+    // (driver uses only #10 for the line ending)
+    k:= Length('JT-PumpDriver-ID');
+    if copy(driverFeedback, 0, k) = 'JT-PumpDriver-ID' then
+    begin
+     driverFeedback:= copy(driverFeedback, k + 2,
+                           (Pos(#10, driverFeedback) - 1) - (k + 1));
+     COMListPumpDriver[Channel]:= StrToInt(driverFeedback);
+    end;
+    if COMListPumpDriver[Channel] = 0 then // no driver ID
+     COMListPumpDriver[Channel]:= 1;
 
    end; // end else if PortType = 'PumpDriver'
 

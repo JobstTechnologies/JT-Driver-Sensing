@@ -1170,7 +1170,7 @@ begin
   if serPump.LastError <> 0 then
   begin
    with Application do
-    MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+    MessageBox(PChar(connectedPumpName + ' error: ' + serPump.LastErrorDesc),
                      'Error', MB_ICONERROR+MB_OK);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
@@ -1602,7 +1602,7 @@ begin
    if serPump.LastError <> 0 then
    begin
     with Application do
-     MessageBox(PChar(connectedPumpCOM + ' error: ' + serPump.LastErrorDesc),
+     MessageBox(PChar(connectedPumpName + ' error: ' + serPump.LastErrorDesc),
                       'Error', MB_ICONERROR + MB_OK);
     MainForm.ConnComPortPumpLE.Color:= clRed;
     MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
@@ -1770,8 +1770,8 @@ begin
   if serPump.LastError <> 0 then
   begin
    MousePointer:= Mouse.CursorPos;
-   MessageDlgPos(connectedPumpCOM + ' error: '
-    + serPump.LastErrorDesc, mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
+   MessageDlgPos(connectedPumpName + ' error: ' + serPump.LastErrorDesc,
+                 mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1890,7 +1890,7 @@ end;
 procedure TPumpControl.PCSendRepeatToPump;
 // sends command to pump driver
 var
- errorMsg, saveCOMPort : string;
+ errorMsg, savePumpName : string;
  MousePointer : TPoint;
 begin
  if MainForm.HavePumpSerialCB.Checked then
@@ -1900,7 +1900,7 @@ begin
   begin
    // store message and COMPort because CloseSerialConn will empty them
    errorMsg:= serPump.LastErrorDesc;
-   saveCOMPort:= connectedPumpCOM;
+   savePumpName:= connectedPumpName;
    MainForm.ConnComPortPumpLE.Color:= clRed;
    MainForm.ConnComPortPumpLE.Text:= 'Try to reconnect';
    MainForm.IndicatorPumpP.Caption:= 'Connection failiure';
@@ -1916,7 +1916,7 @@ begin
    // Don't show this message if InfoNote is shown because it would hide
    // the note and that note is important
    if MainForm.InfoNote.Color = clInfoBk then // is shown color would be clRed
-    MessageDlgPos(saveCOMPort + ' error: ' + errorMsg, mtError,
+    MessageDlgPos(savePumpName + ' error: ' + errorMsg, mtError,
                   [mbOK], 0, MousePointer.X, MousePointer.Y);
    exit;
   end;

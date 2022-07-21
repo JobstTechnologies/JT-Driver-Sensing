@@ -1,5 +1,11 @@
 Changes
 
+from version 1.31 to 1.32
+
+improvement:
+- support for pump drivers that have a unique ID
+
+
 from version 1.30 to 1.31
 
 improvement:
