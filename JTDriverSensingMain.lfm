@@ -1599,7 +1599,7 @@ object MainForm: TMainForm
         MinValue = 0.1
         OnChange = ScrollIntervalFSEChange
         TabOrder = 1
-        Value = 10
+        Value = 30
       end
       object AutoscaleB: TButton
         Left = -1

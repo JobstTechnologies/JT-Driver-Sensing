@@ -504,3 +504,4 @@ Title.Margins.Left 4
 Title.Margins.Top 2
 Title.Margins.Right 4
 Title.Margins.Bottom 2
+ScrollIntervalFSE.Value 30.0

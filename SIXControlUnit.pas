@@ -2892,6 +2892,9 @@ try
  List.Add('Title.Margins.Right ' + IntToStr(Chart.Title.Margins.Right));
  List.Add('Title.Margins.Bottom ' + IntToStr(Chart.Title.Margins.Bottom));
 
+ // Scrolling View
+ List.Add('ScrollIntervalFSE.Value ' + FloatToStr(MainForm.ScrollIntervalFSE.Value));
+
  // save the list
  List.SaveToFile(iniFile);
 
@@ -3558,6 +3561,11 @@ begin
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
   inc(m);
   Chart.Title.Margins.Bottom:= StrToInt(
+   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  inc(m);
+
+  // Scrolling View
+  MainForm.ScrollIntervalFSE.Value:= StrToFloat(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
 
  finally
