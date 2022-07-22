@@ -5,6 +5,10 @@ from version 1.31 to 1.32
 improvement:
 - support for pump drivers that have a unique ID
 
+bugfix:
+- when autoscale button was pressed while being in scrolling mode
+  the scrolling mode stopped working 
+
 
 from version 1.30 to 1.31
 

@@ -2141,18 +2141,7 @@ end;
 
 procedure TMainForm.AutoscaleMIClick(Sender: TObject);
 begin
- // sensor data axis
- SIXCH.AxisList[0].Range.UseMax:= False;
- SIXCH.AxisList[0].Range.UseMin:= False;
- // temperature axis
- SIXCH.AxisList[2].Range.UseMax:= False;
- SIXCH.AxisList[2].Range.UseMin:= False;
- // time axis
- SIXCH.BottomAxis.Range.UseMax:= false;
- SIXCH.BottomAxis.Range.UseMin:= false;
- // for the x-axis also te extent must be set
- SIXCH.Extent.UseXMax:= false;
- SIXCH.Extent.UseXMin:= false;
+ SIXControl.AutoscaleMIClick(Sender);
 end;
 
 procedure TMainForm.CalibrateTBChange(Sender: TObject);

@@ -59,6 +59,7 @@ type
     procedure SCTimeMinuteMIClick(Sender: TObject);
     procedure SCSIXCHAxisList1GetMarkText(Sender: TObject; var AText: String;
       AMark: Double);
+    procedure AutoscaleMIClick(Sender: TObject);
 
   private
 
@@ -3641,6 +3642,27 @@ begin
   else if MainForm.TimeDayMI.Checked then
    MainForm.SIXCH.BottomAxis.Title.Caption:= 'Time [day]';
  end;
+end;
+
+procedure TSIXControl.AutoscaleMIClick(Sender: TObject);
+begin
+ // sensor data axis
+ MainForm.SIXCH.AxisList[0].Range.UseMax:= False;
+ MainForm.SIXCH.AxisList[0].Range.UseMin:= False;
+ // temperature axis
+ MainForm.SIXCH.AxisList[2].Range.UseMax:= False;
+ MainForm.SIXCH.AxisList[2].Range.UseMin:= False;
+ // time axis
+ MainForm.SIXCH.BottomAxis.Range.UseMax:= false;
+ MainForm.SIXCH.BottomAxis.Range.UseMin:= false;
+ // for the x-axis also te extent must be set
+ MainForm.SIXCH.Extent.UseXMax:= false;
+ MainForm.SIXCH.Extent.UseXMin:= false;
+
+ // when in scrolling mode the change to the extent zoomed out completely
+ // and we must trigger SCScrollViewCBChange to bring it back to scrolling
+ if MainForm.ScrollViewCB.Checked then
+  SCScrollViewCBChange(Sender);
 end;
 
 end. //unit
