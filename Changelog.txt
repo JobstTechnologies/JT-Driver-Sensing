@@ -2,12 +2,13 @@ Changes
 
 from version 1.31 to 1.32
 
-improvement:
+improvements:
 - support for pump drivers that have a unique ID
+- last used minutes for scrolling view are stored for next program call
 
 bugfix:
-- when autoscale button was pressed while being in scrolling mode
-  the scrolling mode stopped working 
+- when autoscale button was pressed while being in scrolling view
+  the scrolling mode stopped working
 
 
 from version 1.30 to 1.31
