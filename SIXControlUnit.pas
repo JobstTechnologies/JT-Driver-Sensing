@@ -3562,11 +3562,15 @@ begin
   inc(m);
   Chart.Title.Margins.Bottom:= StrToInt(
    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
-  inc(m);
 
   // Scrolling View
-  MainForm.ScrollIntervalFSE.Value:= StrToFloat(
-   Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  // this line might not be there for older appearance files
+  if List.Count > m + 1 then
+  begin
+   inc(m);
+   MainForm.ScrollIntervalFSE.Value:= StrToFloat(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+  end;
 
  finally
   List.Free;
