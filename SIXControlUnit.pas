@@ -59,7 +59,7 @@ type
     procedure SCTimeMinuteMIClick(Sender: TObject);
     procedure SCSIXCHAxisList1GetMarkText(Sender: TObject; var AText: String;
       AMark: Double);
-    procedure AutoscaleMIClick(Sender: TObject);
+    procedure SCAutoscaleMIClick(Sender: TObject);
 
   private
 
@@ -3652,7 +3652,7 @@ begin
  end;
 end;
 
-procedure TSIXControl.AutoscaleMIClick(Sender: TObject);
+procedure TSIXControl.SCAutoscaleMIClick(Sender: TObject);
 begin
  // sensor data axis
  MainForm.SIXCH.AxisList[0].Range.UseMax:= False;

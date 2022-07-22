@@ -2141,7 +2141,7 @@ end;
 
 procedure TMainForm.AutoscaleMIClick(Sender: TObject);
 begin
- SIXControl.AutoscaleMIClick(Sender);
+ SIXControl.SCAutoscaleMIClick(Sender);
 end;
 
 procedure TMainForm.CalibrateTBChange(Sender: TObject);
