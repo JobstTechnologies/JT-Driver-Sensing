@@ -1,5 +1,11 @@
 Changes
 
+from version 1.32 to 1.33
+
+improvement:
+- the SIX measurement start time is now displayed
+
+
 from version 1.31 to 1.32
 
 improvements:
