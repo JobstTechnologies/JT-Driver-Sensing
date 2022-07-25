@@ -27,7 +27,6 @@ begin
   Application.CreateForm(TAboutFormF, AboutFormF);
   Application.CreateForm(TCalibrationF, CalibrationF);
   Application.CreateForm(TNoteEditingF, NoteEditingF);
-  Application.CreateForm(TScanningProgressF, ScanningProgressF);
   Application.Run;
 end.
 

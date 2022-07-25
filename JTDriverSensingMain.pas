@@ -1411,7 +1411,6 @@ begin
     COMPort:= SerialUSBPortCB.Text;
     COMIndex:= SerialUSBPortCB.ItemIndex;
    end;
-   MainForm.BringToFront;
   end
   else
    ModalResult:= mrNo;
@@ -5160,10 +5159,11 @@ begin
 
   // since the COM port scan can take some time depending on how many SIX/pumps
   // are connected, display a progess bar even if there is only one COM port
-   ScanningProgressF.ScanningPB.Max:= RegStrings.Count;
-   ScanningProgressF.Show;
-   // that the OS can refresh its window list
-   Application.ProcessMessages;
+  ScanningProgressF:= TScanningProgressF.Create(Nil);
+  ScanningProgressF.ScanningPB.Max:= RegStrings.Count;
+  ScanningProgressF.Show;
+  // that the OS can refresh its window list
+  Application.ProcessMessages;
 
   // test all COM ports
   for i:= 0 to RegStrings.Count - 1 do
@@ -5395,9 +5395,7 @@ begin
   Reg.Free;
   RegStrings.Free;
   ScanningProgressF.Close;
-  // tell the OS there is a window less and this way assures that a subsequent
-  // SerialUSBSelectionF window is properly shown
-  Application.ProcessMessages;
+  ScanningProgressF.Free;
  end;
 
 end;
