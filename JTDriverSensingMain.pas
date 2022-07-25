@@ -1390,8 +1390,8 @@ begin
   begin
    // if there is already a connection, display its port
    if HavePumpSerialCB.Checked then
-     SerialUSBPortCB.ItemIndex:=
-      SerialUSBPortCB.Items.IndexOf(ConnComPortPumpLE.Text)
+    SerialUSBPortCB.ItemIndex:=
+     SerialUSBPortCB.Items.IndexOf(ConnComPortPumpLE.Text)
    else
     SerialUSBPortCB.ItemIndex:= -1;
   end;
@@ -1411,6 +1411,7 @@ begin
     COMPort:= SerialUSBPortCB.Text;
     COMIndex:= SerialUSBPortCB.ItemIndex;
    end;
+   MainForm.BringToFront;
   end
   else
    ModalResult:= mrNo;
@@ -3274,6 +3275,11 @@ try
  // we know the file is valid thus we can empty the data chart and
  // read in the data
 
+ // for the parsing set time unit to hours since this fits for most cases
+ // will be reset later if necessary
+ // this must be done before the existing data is deleted
+ TimeHourMIClick(MainForm);
+
  // actions only when file was loaded by the user:
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
@@ -3282,11 +3288,6 @@ try
  // only when file was loaded by the user
  if HaveDefFileCB.Checked then
   UnloadDefBBClick(MainForm);
-
-  // for the parsing set time unit to hours since this fits for most cases
-  // will be reset later if necessary
-  // this must be done before the existing data is deleted
-  TimeHourMIClick(MainForm);
  end;
 
  // delete existing live chart data
@@ -3596,15 +3597,16 @@ finally
  OpenFileStream.Free;
 end;
 
- // only when file was loaded by the user
- if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
- begin
   // set proper time unit (hour was already set above)
   SIXCH.Refresh; // necessary to update the plot range Min/Max values
   if time > 60000 then
    TimeDayMIClick(MainForm)
   else if time < 1000 then
    TimeMinuteMIClick(MainForm);
+
+ // only when file was loaded by the user
+ if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
+ begin
   // for existing data we don't perform calibrations
   NoSubtractBlankCB.Enabled:= false;
   NoSubtractBlankCB.Checked:= false;
@@ -5395,7 +5397,6 @@ begin
   ScanningProgressF.Close;
   // tell the OS there is a window less and this way assures that a subsequent
   // SerialUSBSelectionF window is properly shown
-  MainForm.BringToFront;
   Application.ProcessMessages;
  end;
 
