@@ -66,6 +66,7 @@ type
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     DataPointClickTool: TDataPointClickTool;
+    StartTimeLE: TEdit;
     HaveSerialSensorCB: TCheckBox;
     HavePumpSerialCB: TCheckBox;
     GlucoseAvailChanL: TLabel;
@@ -112,6 +113,7 @@ type
     Label77: TLabel;
     Label78: TLabel;
     Label79: TLabel;
+    StartTimeL: TLabel;
     Label80: TLabel;
     Label81: TLabel;
     Label82: TLabel;
@@ -2908,7 +2910,7 @@ procedure TMainForm.HaveSerialSensorCBChange(Sender: TObject);
 begin
  if HaveSerialSensorCB.Checked then
  begin
-  SIXConnectBB.Caption:= 'End SIX measurement';
+  SIXConnectBB.Caption:= 'End SIX Measurement';
   SIXConnectBB.Hint:= 'Disconnects from the SIX biosensor'#13#10'and stops the measurement';
   Application.Icon.Assign(IconImageGreen.Picture.Icon);
   IndicatorSensorP.Caption:= 'Measurement running';
@@ -2916,7 +2918,7 @@ begin
  end
  else
  begin
-  SIXConnectBB.Caption:= 'Start SIX measurement';
+  SIXConnectBB.Caption:= 'Start SIX Measurement';
   SIXConnectBB.Hint:= 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement';
   Application.Icon.Assign(IconImageBlue.Picture.Icon);
   if LoadedFileSensM.Text <> 'None' then
@@ -3156,6 +3158,7 @@ try
                         StrToInt(Copy(StringArray[2], 4, 2)),
                         StrToInt(Copy(StringArray[2], 7, 2)),
                         0);
+ StartTimeLE.Text:= StringArray[1] + ' ' + StringArray[2];
 
  // now read the row description line
  // NOTE: the line ends with a tab, thus Length(StringArray) is larger than
@@ -4571,7 +4574,7 @@ begin
    and ((ReturnName = 'canceled') or (ReturnName = '')) then
  begin
   CloseLazSerialConn;
-  IndicatorSensorP.Caption:= 'No Sensor Data File';
+  IndicatorSensorP.Caption:= 'No sensor data file';
   IndicatorSensorP.Color:= clHighlight;
   exit;
  end;
@@ -4604,7 +4607,7 @@ begin
      MessageDlgPos('The input file cannot be used to append sensor data.',
                    mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
      CloseLazSerialConn;
-     IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
+     IndicatorSensorP.Caption:= 'Damaged sensor data file';
      IndicatorSensorP.Color:= clRed;
      exit;
     end;
@@ -4615,7 +4618,7 @@ begin
          + LineEnding
          + 'while the the currently loaded one is "' + LoadedDefFileM.Text + '".'
          + LineEnding + LineEnding
-         + 'Do you want to load another data file or definition file' + LineEnding
+         + 'Do you want to stop, load another data file or definition file' + LineEnding
          + 'and then reconnect to the SIX?',
          mtWarning, [mbYes]+[mbNo]) do
      try
@@ -4639,7 +4642,7 @@ begin
          + LineEnding
          + 'while the the currently connected one "' + ConnComPortSensM.Lines[1]
          + '".' + LineEnding + LineEnding
-         + 'Do you want to reconnect to another the SIX?',
+         + 'Do you want to stop and reconnect to another the SIX?',
          mtWarning, [mbYes]+[mbNo]) do
      try
       ActiveControl:= FindComponent('NO') as TWinControl;
@@ -4667,7 +4670,7 @@ begin
       MessageDlgPos('Sensor data file is used by another program and cannot be opened.',
                     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
       CloseLazSerialConn;
-      IndicatorSensorP.Caption:= 'Data File inaccessible';
+      IndicatorSensorP.Caption:= 'Data file inaccessible';
       IndicatorSensorP.Color:= clRed;
       exit;
      end;
@@ -4694,7 +4697,7 @@ begin
       + LineEnding + 'or file contains not at least 2 complete data lines.',
       mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
       CloseLazSerialConn;
-      IndicatorSensorP.Caption:= 'Damaged Sensor Data File';
+      IndicatorSensorP.Caption:= 'Damaged sensor data file';
      exit;
     end
     else
@@ -4722,6 +4725,8 @@ begin
      (FindComponent('SIXCh' + IntToStr(i) + 'Values')
       as TLineSeries).Clear;
     SIXTempValues.Clear;
+    // output start time
+    StartTimeLE.Text:= FormatDateTime('dd.mm.yyyy hh:nn:ss', now);
    end;
    SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
   except
@@ -5390,6 +5395,7 @@ begin
   ScanningProgressF.Close;
   // tell the OS there is a window less and this way assures that a subsequent
   // SerialUSBSelectionF window is properly shown
+  MainForm.BringToFront;
   Application.ProcessMessages;
  end;
 

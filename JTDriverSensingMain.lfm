@@ -175,19 +175,21 @@ object MainForm: TMainForm
         TabOrder = 2
         object Label2Parse: TLabel
           Left = 8
-          Height = 15
-          Top = 8
+          Height = 16
+          Top = 7
           Width = 100
+          AutoSize = False
           Caption = 'Evaluation Time [s]'
           ParentColor = False
         end
         object EvalTimeFSE: TFloatSpinEdit
-          Left = 24
-          Height = 23
+          Left = 120
+          Height = 22
           Hint = 'Time after a sensor value is readout'#13#10'and written to the data file'
-          Top = 24
-          Width = 70
+          Top = 4
+          Width = 62
           Alignment = taCenter
+          AutoSize = False
           DecimalPlaces = 1
           MaxValue = 99
           MinValue = 3
@@ -198,28 +200,50 @@ object MainForm: TMainForm
           Value = 3
         end
         object LoadDefBB: TBitBtn
-          Left = 128
+          Left = 192
           Height = 30
           Hint = 'Loads a sensor definition file'
-          Top = 36
+          Top = 37
           Width = 136
-          Caption = 'Load definition file'
+          Caption = 'Load Definition File'
           OnClick = LoadDefBBClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
         end
         object SIXConnectBB: TBitBtn
-          Left = 128
+          Left = 192
           Height = 30
           Hint = 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement'
           Top = 0
           Width = 136
-          Caption = 'Start SIX measurement'
+          Caption = 'Start SIX Measurement'
           OnClick = SIXConnectBBClick
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
+        end
+        object StartTimeLE: TEdit
+          Left = 72
+          Height = 22
+          Hint = 'Measurement start time'#13#10'in format'#13#10'dd.mm.yyyy hh:nn:ss'
+          Top = 41
+          Width = 110
+          Alignment = taCenter
+          AutoSize = False
+          ParentShowHint = False
+          ReadOnly = True
+          ShowHint = True
+          TabOrder = 3
+        end
+        object StartTimeL: TLabel
+          Left = 8
+          Height = 16
+          Top = 44
+          Width = 53
+          AutoSize = False
+          Caption = 'Start Time'
+          ParentColor = False
         end
       end
       object SixStatusGB: TGroupBox
@@ -758,7 +782,7 @@ object MainForm: TMainForm
           Hint = 'Unloads sensor definition file'
           Top = 36
           Width = 136
-          Caption = 'Unload definition file'
+          Caption = 'Unload Definition File'
           Enabled = False
           OnClick = UnloadDefBBClick
           ParentShowHint = False
@@ -771,7 +795,7 @@ object MainForm: TMainForm
           Hint = 'Changes a sensor definition file'
           Top = 0
           Width = 136
-          Caption = 'Change definition file'
+          Caption = 'Change Definition File'
           Enabled = False
           OnClick = LoadDefBBClick
           ParentShowHint = False
