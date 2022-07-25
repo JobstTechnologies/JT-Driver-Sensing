@@ -175,10 +175,9 @@ object MainForm: TMainForm
         TabOrder = 2
         object Label2Parse: TLabel
           Left = 8
-          Height = 16
+          Height = 15
           Top = 7
           Width = 100
-          AutoSize = False
           Caption = 'Evaluation Time [s]'
           ParentColor = False
         end
@@ -238,10 +237,9 @@ object MainForm: TMainForm
         end
         object StartTimeL: TLabel
           Left = 8
-          Height = 16
+          Height = 15
           Top = 44
           Width = 53
-          AutoSize = False
           Caption = 'Start Time'
           ParentColor = False
         end
