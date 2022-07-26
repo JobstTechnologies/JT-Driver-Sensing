@@ -1699,7 +1699,8 @@ procedure TMainForm.FirmwareUpdate(forced: Boolean);
 var
  COMListStart, COMListBoot : TStringList;
  Reg : TRegistry;
- BootCOM, BossacOut, FirmwareFile, bossacPath, command, COMPort : string;
+ BootCOM, BossacOut, FirmwareFile, bossacPath, command,
+   COMPort, driverFeedback : string;
  i, YesNo : integer;
  MousePointer : TPoint;
  exited : Boolean = false;
@@ -1753,6 +1754,7 @@ begin
    begin
     with SerialUSBSelectionF do
     begin
+     SerialUSBPortCB.Text:= '';
      SerialUSBPortCB.Items.Clear;
      SerialUSBPortCB.Sorted:= false;
      Reg.GetValueNames(SerialUSBPortCB.Items);
@@ -2000,7 +2002,7 @@ begin
    command:= '/0LM500lM500R' + LineEnding;
    serPump.SendString(command);
    // receive firmware version
-   FirmwareVersion:= serPump.Recvstring(1000);
+   driverFeedback:= serPump.Recvstring(1000);
   finally
    if serPump.LastError <> 0 then
    begin
@@ -2013,13 +2015,24 @@ begin
     ClosePumpSerialConn;
     exit;
    end;
-   if Pos('JT-PumpDriver-Firmware', FirmwareVersion) > 0 then
-     FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
+   if Pos('JT-PumpDriver-Firmware', driverFeedback) > 0 then
+     FirmwareVersion:= copy(driverFeedback, Pos('.', driverFeedback) - 1, 3)
    else
      FirmwareVersion:= 'unknown';
    // output connected port
+   // determine the driver ID: from first space to first #10
+   // (driver uses only #10 for the line ending)
+   i:= Length('JT-PumpDriver-ID');
+   if copy(driverFeedback, 0, i) = 'JT-PumpDriver-ID' then
+   begin
+    driverFeedback:= copy(driverFeedback, i + 2,
+                          (Pos(#10, driverFeedback) - 1) - (i + 1));
+    // get rid of leading zeros by a str - int back and forth conversion
+    ConnComPortPumpLE.Text:= 'Driver SN ' + IntToStr(StrToInt(driverFeedback));
+   end
+   else
+    ConnComPortPumpLE.Text:= BootCOM;
    ConnComPortPumpLE.Color:= clDefault;
-   ConnComPortPumpLE.Text:= BootCOM;
    IndicatorPumpP.Caption:= 'Firmware updated';
    HavePumpSerialCB.Checked:= True;
    // inform the user
@@ -5366,7 +5379,7 @@ begin
     // "received command:..."
 
     // check for a number dot to get the firmware version
-    if Pos('.', driverFeedback) > 0 then
+    if Pos('JT-PumpDriver-Firmware', driverFeedback) > 0 then
      FirmwareVersion:= copy(driverFeedback, Pos('.', driverFeedback) - 1, 3)
     // omit the 'r' because some versions used a capital letter 'R'
     else if Pos('eceived command:', FirmwareVersion) > 0 then
