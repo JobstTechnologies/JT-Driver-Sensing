@@ -2016,9 +2016,9 @@ begin
     exit;
    end;
    if Pos('JT-PumpDriver-Firmware', driverFeedback) > 0 then
-     FirmwareVersion:= copy(driverFeedback, Pos('.', driverFeedback) - 1, 3)
+    FirmwareVersion:= copy(driverFeedback, Pos('.', driverFeedback) - 1, 3)
    else
-     FirmwareVersion:= 'unknown';
+    FirmwareVersion:= 'unknown';
    // output connected port
    // determine the driver ID: from first space to first #10
    // (driver uses only #10 for the line ending)
