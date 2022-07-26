@@ -4434,8 +4434,8 @@ begin
    begin
     // if there is already a connection, display its port
     if HaveSerialSensorCB.Checked then
-      SerialUSBPortCB.ItemIndex:=
-       SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1])
+     SerialUSBPortCB.ItemIndex:=
+      SerialUSBPortCB.Items.IndexOf(ConnComPortSensM.Lines[1])
     else
      SerialUSBPortCB.ItemIndex:= -1;
    end;
