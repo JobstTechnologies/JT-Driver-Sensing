@@ -5,7 +5,7 @@ from version 1.32 to 1.33
 improvement:
 - the SIX measurement start time is now displayed in the tab "General"
 
-bugfix:
+bugfixes:
 - on some PCs the previews in the Windows taskbar were wrong
 - fix (rather random) connection errors to pump driver
 
