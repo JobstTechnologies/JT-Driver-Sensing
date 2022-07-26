@@ -1526,7 +1526,7 @@ begin
   SaveActionMI.Enabled:= True;
   // get Firmware version
   try
-   FirmwareVersion:= serPump.RecvPacket(1000);
+   FirmwareVersion:= serPump.Recvstring(1000);
   finally
    if serPump.LastError <> 0 then
    begin
@@ -1553,7 +1553,7 @@ begin
    // but on old versions the firmware does not have any number,
    // only "received command" is sent back
    // therefore check for a number dot
-   if Pos('.', FirmwareVersion) > 0 then
+   if Pos('JT-PumpDriver-Firmware', FirmwareVersion) > 0 then
     FirmwareVersion:= copy(FirmwareVersion, Pos('.', FirmwareVersion) - 1, 3)
    // omit the 'r' because some versions used a capital letter 'R'
    else if Pos('eceived command:', FirmwareVersion) > 0 then
