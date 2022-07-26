@@ -230,8 +230,8 @@ object MainForm: TMainForm
           Width = 110
           Alignment = taCenter
           AutoSize = False
+          Enabled = False
           ParentShowHint = False
-          ReadOnly = True
           ShowHint = True
           TabOrder = 3
         end
@@ -241,6 +241,7 @@ object MainForm: TMainForm
           Top = 44
           Width = 53
           Caption = 'Start Time'
+          Enabled = False
           ParentColor = False
         end
       end
