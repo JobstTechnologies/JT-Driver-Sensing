@@ -4460,13 +4460,13 @@ begin
     COMPort:= SerialUSBPortCB.Text;
     COMIndex:= SerialUSBPortCB.ItemIndex;
    end;
+  
+   if ModalResult = mrNo then // user pressed Cancel
+   begin
+    DisconnectSIX;
+    exit;
+   end;
   end; // end with SerialUSBSelectionF
-
-  if SerialUSBSelectionF.ModalResult = mrNo then // user pressed Cancel
-  begin
-   DisconnectSIX;
-   exit;
-  end;
 
   if COMPort = '' then // user set no COM port or canceled
   begin
