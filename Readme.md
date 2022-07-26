@@ -1,4 +1,4 @@
-# JT Pump Driver
+# JT Driver Sensing
 
 Program output and visualize SIX sensor values: https://www.jobst-technologies.com/products/biosensors/
 and to control a driver for CCP micropumps: https://www.jobst-technologies.com/products/microfluidics/
@@ -52,7 +52,7 @@ Existing measurements can be displayed either by:
 - using the menu *File → Load Sensor Data*.
 - dropping a data file into the program window when the tab *SIX Values* is open.
 
-## CP Pumps and Actions
+## Pumps and Actions
 
 To run pumps (actions like calibration can also be done without a pump driver):
 - Connect the pump driver to the PC.
@@ -69,7 +69,7 @@ To save a pump action:
 - Set the parameters in the different steps and then use the menu
   *File → Save Action File*.
 
-### Pump driver Firmware Update
+### Pump Driver Firmware Update
 
 To update or upload a new firmware to a pump driver:
 - Connect the pump driver to the PC.
@@ -82,7 +82,7 @@ You can get the latest firmware version as binary from [here](https://github.com
 
 Copyright by Jobst Technologies.
 
-JT Pump Driver uses the Arduino tool [**bossac**](https://github.com/arduino/arduino-flash-tools).
+JT Driver Sensing uses the Arduino tool [**bossac**](https://github.com/arduino/arduino-flash-tools).
 
 # Compilation
 
