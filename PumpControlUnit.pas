@@ -819,7 +819,9 @@ begin
     end;
    end;
    // action
-   command:= command + 'I';
+   // if there are no pumps omit I
+   if PumpNum > 0 then
+    command:= command + 'I';
    for k:= 1 to PumpNum do
     command:= command +
      BoolToStr((MainForm.FindComponent('Pump' + IntToStr(k) + 'OnOffCB' + jStr)
@@ -1091,9 +1093,12 @@ begin
    for k:= 1 to ValveNum do
     command:= command + '0';
   end;
-  command:= command + 'I';
-  for k:= 1 to PumpNum do
-   command:= command + '0';
+  if PumpNum > 0 then
+  begin
+   command:= command + 'I';
+   for k:= 1 to PumpNum do
+    command:= command + '0';
+  end;
   command:= command + 'lR';
 
   // calculate the total time

@@ -6,7 +6,7 @@ improvement:
 - the SIX measurement start time is now displayed in the tab "General"
 
 bugfix:
-- on some PCs the previews in the Windows' taskbar was wrong
+- on some PCs the previews in the Windows taskbar were wrong
 - fix (rather random) connection errors to pump driver
 
 
