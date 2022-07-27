@@ -65,6 +65,7 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
+    DataPointMarksClickTool2: TDataPointMarksClickTool;
     DataPointMarksClickTool: TDataPointMarksClickTool;
     StartTimeLE: TEdit;
     HaveSerialSensorCB: TCheckBox;
@@ -943,6 +944,8 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure DataPointMarksClickToolBeforeMouseMove(ATool: TChartTool;
+      APoint: TPoint);
     procedure OverallTimerStartTimer(Sender: TObject);
     procedure TimeDaysHoursMinMIClick(Sender: TObject);
     procedure HaveDefFileCBChange(Sender: TObject);
@@ -2218,6 +2221,41 @@ procedure TMainForm.DataPointHintToolHintPosition(
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
+end;
+
+procedure TMainForm.DataPointMarksClickToolBeforeMouseMove(ATool: TChartTool;
+  APoint: TPoint);
+var
+ tool : TDatapointMarksClickTool;
+ currentSeries, otherSeries : TBasicChartSeries;
+ i : Integer;
+ currentZ, otherZ : Integer;
+begin
+ // currenlty crashes due to bug in Lazarus, thus exit
+ exit;
+ otherSeries:= nil;
+ tool:= ATool as TDatapointMarksClickTool;
+ currentSeries:= tool.Series;
+ currentZ:= currentSeries.ZPosition;
+ otherZ:= -1;
+
+ for i:= 0 to SIXCH.SeriesCount - 1 do
+ begin
+  if (SIXCH.Series[i] is TChartSeries)
+   and (SIXCH.Series[i].ZPosition > otherZ) then
+  begin
+   otherSeries:= SIXCH.Series[i];
+   otherZ:= otherSeries.ZPosition;
+  end;
+ end;
+ if currentSeries <> otherSeries then
+ begin
+  currentSeries.ZPosition:= otherZ;
+  otherSeries.ZPosition:= currentZ;
+ end;
+
+ ShowMessage(Format('Series "%s" datapoint #%d clicked.',
+  [(currentSeries as TChartSeries).Title, tool.PointIndex]));
 end;
 
 procedure TMainForm.OverallTimerStartTimer(Sender: TObject);
