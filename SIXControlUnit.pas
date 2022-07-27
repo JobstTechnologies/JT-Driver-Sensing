@@ -2925,8 +2925,15 @@ begin
   NoteLabelL.Caption:= 'Note for ' + series.Title + ':';
   NoteTextM.Lines.Text:= NoteText;
   ShowModal;
-  series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
+  // if nothing was changed, do nothing
+  if (CompareStr(series.Source[tool.PointIndex]^.Text,
+                 NoteTextM.Lines.Text) = 0)
+    or (ModalResult = mrCancel) then
+   exit
+  else
+   series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
  end;
+
  // force a redraw of the chart
  MainForm.SIXCH.Invalidate;
 

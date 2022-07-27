@@ -7,9 +7,11 @@ improvement:
   (no need to zoom in anymore and Ctrl+Click on the data point the note
    is attached to)
 
-bugfix:
+bugfixes:
 - existing sensor data where a chart note was deleted, could not be opened
   or appended
+- don't write to the .notes file when a note was edited but eventually
+  not changed
 
 
 from version 1.32 to 1.33
