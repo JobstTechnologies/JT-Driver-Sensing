@@ -2,6 +2,11 @@ Changes
 
 from version 1.33 to 1.34
 
+improvement:
+- notes can now directly be changed by Ctrl+Click on a note
+  (no need to zoom in anymore and Ctrl+Click on the data point the note
+   is attached to)
+
 bugfix:
 - existing sensor data where a chart note was deleted, could not be opened
   or appended

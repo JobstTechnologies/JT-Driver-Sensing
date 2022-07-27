@@ -15,7 +15,7 @@ object MainForm: TMainForm
   OnDropFiles = FormDropFiles
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.2.2.0'
+  LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
     Left = 4
     Height = 676
@@ -12047,7 +12047,7 @@ object MainForm: TMainForm
       OnAfterMouseDown = RectangleSelectionToolAfterMouseDown
       OnAfterMouseMove = RectangleSelectionToolAfterMouseMove
     end
-    object DataPointClickTool: TDataPointClickTool
+    object DataPointMarksClickTool: TDataPointMarksClickTool
       Shift = [ssCtrl, ssLeft]
       OnPointClick = DataPointClickToolPointClick
     end

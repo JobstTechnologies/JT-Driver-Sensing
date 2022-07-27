@@ -65,7 +65,7 @@ type
     Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
-    DataPointClickTool: TDataPointClickTool;
+    DataPointMarksClickTool: TDataPointMarksClickTool;
     StartTimeLE: TEdit;
     HaveSerialSensorCB: TCheckBox;
     HavePumpSerialCB: TCheckBox;
