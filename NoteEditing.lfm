@@ -1,24 +1,39 @@
 object NoteEditingF: TNoteEditingF
-  Left = 322
+  Left = 584
   Height = 218
-  Top = 414
+  Top = 451
   Width = 195
   Caption = 'Note'
   ClientHeight = 218
   ClientWidth = 195
-  LCLVersion = '2.2.2.0'
+  Position = poOwnerFormCenter
+  LCLVersion = '2.3.0.0'
   object NoteTextM: TMemo
-    Left = 16
-    Height = 133
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = OKBB
+    Left = 15
+    Height = 138
     Top = 32
-    Width = 163
+    Width = 165
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 15
+    BorderSpacing.Right = 15
+    BorderSpacing.Bottom = 10
     TabOrder = 0
   end
   object OKBB: TBitBtn
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
     Left = 56
-    Height = 24
-    Top = 176
+    Height = 28
+    Top = 180
     Width = 88
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Top = 10
+    BorderSpacing.Bottom = 10
     Default = True
     DefaultCaption = True
     Kind = bkOK
@@ -29,8 +44,8 @@ object NoteEditingF: TNoteEditingF
     Left = 16
     Height = 15
     Top = 8
-    Width = 60
-    Caption = 'NoteLabelL'
+    Width = 26
+    Caption = 'Note'
     ParentColor = False
   end
 end
