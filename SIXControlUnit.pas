@@ -3061,7 +3061,9 @@ try
    inc(rowCounter);
    LineReader.ReadLine(ReadLine);
    OutputLine:= OutputLine + ReadLine + LineEnding;
-  until ReadLine.IsEmpty;
+  // we can have an empty line for a deleted note, therefore until we
+  // have at least 2 LineEndings
+  until ReadLine.IsEmpty and (Length(OutputLine) >= 2 * Length(LineEnding));
   // remove the two LineEndings at the end
   OutputLine:= Copy(OutputLine, 0, Length(OutputLine) - 2 * Length(LineEnding));
   // set the mark
