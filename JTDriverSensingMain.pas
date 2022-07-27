@@ -944,7 +944,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
-    procedure DataPointMarksClickToolBeforeMouseMove(ATool: TChartTool;
+    procedure DataPointMarksClickToolBeforeMouseDown(ATool: TChartTool;
       APoint: TPoint);
     procedure OverallTimerStartTimer(Sender: TObject);
     procedure TimeDaysHoursMinMIClick(Sender: TObject);
@@ -2223,7 +2223,7 @@ begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
 end;
 
-procedure TMainForm.DataPointMarksClickToolBeforeMouseMove(ATool: TChartTool;
+procedure TMainForm.DataPointMarksClickToolBeforeMouseDown(ATool: TChartTool;
   APoint: TPoint);
 var
  tool : TDatapointMarksClickTool;
