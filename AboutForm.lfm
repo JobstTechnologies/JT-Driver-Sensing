@@ -14,7 +14,6 @@ object AboutFormF: TAboutFormF
     Top = 120
     Width = 141
     Caption = 'Source code is available at:'
-    ParentColor = False
   end
   object GitHubLink: TLabel
     Cursor = crHandPoint
@@ -25,7 +24,6 @@ object AboutFormF: TAboutFormF
     Caption = 'https://github.com/JobstTechnologies/JT-Driver-Sensing'
     Font.Color = clHighlight
     Font.Style = [fsUnderline]
-    ParentColor = False
     ParentFont = False
     OnClick = GitHubLinkClick
   end
@@ -54,7 +52,6 @@ object AboutFormF: TAboutFormF
     Top = 13
     Width = 129
     Caption = 'JT Driver Sensing version'
-    ParentColor = False
   end
   object VersionNumber: TLabel
     Left = 150
@@ -62,7 +59,6 @@ object AboutFormF: TAboutFormF
     Top = 13
     Width = 82
     Caption = 'VersionNumber'
-    ParentColor = False
   end
   object DescriptionText: TStaticText
     Left = 16
@@ -81,7 +77,6 @@ object AboutFormF: TAboutFormF
     Caption = 'Readme.md'
     Font.Color = clHighlight
     Font.Style = [fsUnderline]
-    ParentColor = False
     ParentFont = False
     OnClick = ReadmeLinkClick
   end

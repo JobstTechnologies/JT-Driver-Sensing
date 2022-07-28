@@ -107,7 +107,6 @@ object CalibrationF: TCalibrationF
       EditLabel.Height = 15
       EditLabel.Width = 144
       EditLabel.Caption = 'Mean Value'
-      EditLabel.ParentColor = False
       Enabled = False
       ParentShowHint = False
       ShowHint = True

@@ -44,6 +44,5 @@ object NameSettingF: TNameSettingF
     Top = 19
     Width = 70
     Caption = 'Pump Name:'
-    ParentColor = False
   end
 end

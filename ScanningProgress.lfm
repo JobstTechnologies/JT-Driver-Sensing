@@ -13,7 +13,6 @@ object ScanningProgressF: TScanningProgressF
     Height = 20
     Top = 40
     Width = 215
-    ParentColor = False
     TabOrder = 0
   end
   object ScanningL: TLabel
@@ -22,6 +21,5 @@ object ScanningProgressF: TScanningProgressF
     Top = 8
     Width = 113
     Caption = 'Scanning COM ports '
-    ParentColor = False
   end
 end

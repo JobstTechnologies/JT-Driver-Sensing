@@ -46,6 +46,5 @@ object NoteEditingF: TNoteEditingF
     Top = 8
     Width = 26
     Caption = 'Note'
-    ParentColor = False
   end
 end

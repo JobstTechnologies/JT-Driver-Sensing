@@ -126,7 +126,6 @@ object FitForm: TFitForm
             BorderSpacing.Right = 4
             BorderSpacing.Bottom = 4
             Caption = 'x, y : two columns, separator semicolon or tab'#13#10'dy: in optional third column'
-            ParentColor = False
             ParentFont = False
           end
         end
@@ -171,7 +170,6 @@ object FitForm: TFitForm
             Top = 39
             Width = 114
             Caption = 'Degree of polynomial'
-            ParentColor = False
           end
           object FitEquationCB: TComboBox
             AnchorSideLeft.Control = lblFitEquation
@@ -210,7 +208,6 @@ object FitForm: TFitForm
             Width = 63
             BorderSpacing.Left = 14
             Caption = 'Fit equation'
-            ParentColor = False
           end
           object GroupBox1: TGroupBox
             AnchorSideLeft.Control = lblFitEquation
@@ -278,7 +275,6 @@ object FitForm: TFitForm
           EditLabel.Height = 15
           EditLabel.Width = 104
           EditLabel.Caption = 'reduced Chi^2'
-          EditLabel.ParentColor = False
           Enabled = False
           TabOrder = 2
         end
@@ -302,7 +298,6 @@ object FitForm: TFitForm
           EditLabel.Height = 15
           EditLabel.Width = 104
           EditLabel.Caption = 'P > Chi^2'
-          EditLabel.ParentColor = False
           Enabled = False
           TabOrder = 4
         end
