@@ -6,7 +6,6 @@ improvement:
 - notes can now directly be changed by Ctrl+Click on a note
   (no need to zoom in anymore and Ctrl+Click on the data point the note
    is attached to)
-  (this feature is not available for the 32-bit windows version)
 
 bugfixes:
 - existing sensor data where a chart note was deleted, could not be opened
