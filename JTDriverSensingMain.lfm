@@ -254,6 +254,7 @@ object MainForm: TMainForm
           Caption = 'No definition file loaded'
           Color = clHighlight
           ParentBackground = False
+          ParentColor = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
@@ -10910,6 +10911,7 @@ object MainForm: TMainForm
           Caption = 'No definition file loaded'
           Color = clRed
           ParentBackground = False
+          ParentColor = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
