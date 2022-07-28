@@ -1095,7 +1095,30 @@ procedure TSIXControl.SCDataPointHintToolHint(
 var
  SeriesName : string;
  x : double;
+ currentSeries, otherSeries : TBasicChartSeries;
+ i : integer;
 begin
+ otherSeries:= nil;
+ currentSeries:= ATool.Series;
+
+ for i:= 0 to MainForm.SIXCH.SeriesCount - 1 do
+ begin
+  if (MainForm.SIXCH.Series[i] is TLineSeries)
+   and (MainForm.SIXCH.Series[i].Active)
+   then
+  begin
+   otherSeries:= MainForm.SIXCH.Series[i];
+   if currentSeries <> otherSeries then
+    otherSeries.ZPosition:= 0;
+  end;
+ end;
+ // repaint chart if necessary
+ if currentSeries.ZPosition < 1 then
+ begin
+  currentSeries.ZPosition:= 1;
+  MainForm.SIXCH.Invalidate;
+ end;
+
  SeriesName:= ATool.Series.Name;
  x:= MainForm.SIXCH.AxisList[1].GetTransform.GraphToAxis(
       ATool.NearestGraphPoint.X);

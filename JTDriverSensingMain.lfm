@@ -11752,9 +11752,6 @@ object MainForm: TMainForm
       Shift = [ssCtrl, ssLeft]
       OnPointClick = DataPointClickToolPointClick
     end
-    object DataPointMarksClickTool2: TDataPointMarksClickTool
-      OnBeforeMouseDown = DataPointMarksClickToolBeforeMouseDown
-    end
   end
   object ReadTimer: TTimer
     Enabled = False
