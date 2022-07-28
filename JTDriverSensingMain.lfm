@@ -172,7 +172,6 @@ object MainForm: TMainForm
           Top = 7
           Width = 100
           Caption = 'Evaluation Time [s]'
-          ParentColor = False
         end
         object EvalTimeFSE: TFloatSpinEdit
           Left = 120
@@ -235,7 +234,6 @@ object MainForm: TMainForm
           Width = 53
           Caption = 'Start Time'
           Enabled = False
-          ParentColor = False
         end
       end
       object SixStatusGB: TGroupBox
@@ -285,7 +283,6 @@ object MainForm: TMainForm
           Top = 188
           Width = 86
           Caption = 'Sensor Data File '
-          ParentColor = False
         end
         object SIXTempGB: TGroupBox
           Left = 7
@@ -305,7 +302,6 @@ object MainForm: TMainForm
             EditLabel.Height = 15
             EditLabel.Width = 104
             EditLabel.Caption = 'Current Temp [°C]'
-            EditLabel.ParentColor = False
             Enabled = False
             TabOrder = 0
           end
@@ -325,7 +321,6 @@ object MainForm: TMainForm
           Top = 120
           Width = 108
           Caption = 'Sensor Definiton File'
-          ParentColor = False
         end
         object LoadedDefFileM: TMemo
           Left = 7
@@ -364,7 +359,6 @@ object MainForm: TMainForm
           Top = 54
           Width = 73
           Caption = 'Connected To'
-          ParentColor = False
         end
       end
       object Channel7GB: TGroupBox
@@ -418,7 +412,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 82
           Caption = 'Channel Action'
-          ParentColor = False
         end
         object Channel7OnOffCB: TCheckBox
           Left = 8
@@ -619,7 +612,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 82
           Caption = 'Channel Action'
-          ParentColor = False
         end
         object Channel8OnOffCB: TCheckBox
           Left = 8
@@ -965,7 +957,6 @@ object MainForm: TMainForm
           Top = 104
           Width = 98
           Caption = 'Loaded Action File'
-          ParentColor = False
         end
       end
       object ShowExpertCB: TCheckBox
@@ -1691,7 +1682,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle1FSE: TFloatSpinEdit
               Left = 8
@@ -2807,7 +2797,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle2FSE: TFloatSpinEdit
               Left = 8
@@ -3924,7 +3913,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle3FSE: TFloatSpinEdit
               Left = 8
@@ -5041,7 +5029,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle4FSE: TFloatSpinEdit
               Left = 8
@@ -6158,7 +6145,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle5FSE: TFloatSpinEdit
               Left = 8
@@ -7274,7 +7260,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle6FSE: TFloatSpinEdit
               Left = 8
@@ -8328,7 +8313,6 @@ object MainForm: TMainForm
               Top = 4
               Width = 10
               Caption = '%'
-              ParentColor = False
             end
             object DutyCycle7FSE: TFloatSpinEdit
               Left = 8
@@ -9549,7 +9533,6 @@ object MainForm: TMainForm
           Top = 104
           Width = 98
           Caption = 'Loaded Action File'
-          ParentColor = False
         end
       end
       object RunSettingsGB: TGroupBox
@@ -9576,7 +9559,6 @@ object MainForm: TMainForm
           Top = 12
           Width = 71
           Caption = 'Repeat times:'
-          ParentColor = False
         end
         object RepeatSE: TSpinEdit
           Left = 87
@@ -9733,7 +9715,6 @@ object MainForm: TMainForm
           Width = 76
           Caption = 'Calibrate After'
           Enabled = False
-          ParentColor = False
         end
         object CalibStepCB: TComboBox
           Left = 104
@@ -9832,7 +9813,6 @@ object MainForm: TMainForm
               Top = 66
               Width = 98
               Caption = 'Available channels'
-              ParentColor = False
             end
           end
           object LactateTS: TTabSheet
@@ -9901,7 +9881,6 @@ object MainForm: TMainForm
               Top = 66
               Width = 98
               Caption = 'Available channels'
-              ParentColor = False
             end
           end
         end
@@ -9925,7 +9904,6 @@ object MainForm: TMainForm
           Top = 84
           Width = 116
           Caption = 'Used values for mean:'
-          ParentColor = False
         end
         object CalibEveryXStepsSE: TSpinEdit
           Left = 104
@@ -9949,7 +9927,6 @@ object MainForm: TMainForm
           Top = 52
           Width = 78
           Caption = 'Calibrate every'
-          ParentColor = False
         end
         object CalibEveryXStepsL2: TLabel
           Left = 160
@@ -9957,7 +9934,6 @@ object MainForm: TMainForm
           Top = 52
           Width = 38
           Caption = 'repeats'
-          ParentColor = False
         end
       end
       object PumpSetupGB: TGroupBox
@@ -10165,7 +10141,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 120
           Caption = 'Limit for Slope [mM/s]'
-          ParentColor = False
         end
         object Channel1TestOnOffCB: TCheckBox
           Left = 8
@@ -10260,7 +10235,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel4TestOnOffCB: TCheckBox
           Left = 8
@@ -10354,7 +10328,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel5TestOnOffCB: TCheckBox
           Left = 8
@@ -10447,7 +10420,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel2TestOnOffCB: TCheckBox
           Left = 8
@@ -10542,7 +10514,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel3TestOnOffCB: TCheckBox
           Left = 8
@@ -10635,7 +10606,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel6TestOnOffCB: TCheckBox
           Left = 8
@@ -10734,7 +10704,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 82
           Caption = 'Channel Action'
-          ParentColor = False
         end
         object LimitSlope8FSE: TFloatSpinEdit
           Left = 130
@@ -10756,7 +10725,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel8TestOnOffCB: TCheckBox
           Left = 8
@@ -10842,7 +10810,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 82
           Caption = 'Channel Action'
-          ParentColor = False
         end
         object LimitSlope7FSE: TFloatSpinEdit
           Left = 129
@@ -10864,7 +10831,6 @@ object MainForm: TMainForm
           Top = 72
           Width = 116
           Caption = 'Limit for Slope [uM/s]'
-          ParentColor = False
         end
         object Channel7TestOnOffCB: TCheckBox
           Left = 8
@@ -10904,7 +10870,6 @@ object MainForm: TMainForm
           Top = 8
           Width = 97
           Caption = 'Consecutive times'
-          ParentColor = False
         end
         object WaitTimeSE1: TSpinEdit
           Left = 136
@@ -10925,7 +10890,6 @@ object MainForm: TMainForm
           Top = 8
           Width = 67
           Caption = 'Wait time [s]'
-          ParentColor = False
         end
       end
       object StatusTestGB1: TGroupBox
@@ -10999,7 +10963,6 @@ object MainForm: TMainForm
           Top = 192
           Width = 86
           Caption = 'Sensor Data File '
-          ParentColor = False
         end
         object Label169: TLabel
           Left = 7
@@ -11007,7 +10970,6 @@ object MainForm: TMainForm
           Top = 120
           Width = 108
           Caption = 'Sensor Definiton File'
-          ParentColor = False
         end
         object LoadedDefFileTestM: TMemo
           Left = 7
@@ -11041,7 +11003,6 @@ object MainForm: TMainForm
           Top = 54
           Width = 73
           Caption = 'Connected To'
-          ParentColor = False
         end
       end
     end
@@ -11216,7 +11177,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 52
           Caption = 'Output of'
-          ParentColor = False
         end
         object AnOutConnector1OnOffCB: TCheckBox
           Left = 8
@@ -11256,7 +11216,6 @@ object MainForm: TMainForm
           Top = 20
           Width = 149
           Caption = 'nA will become 3.3 V output'
-          ParentColor = False
         end
         object AnOutOnOffTB: TToggleBox
           Left = 256
@@ -11353,7 +11312,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 52
           Caption = 'Output of'
-          ParentColor = False
         end
         object AnOutConnector2OnOffCB: TCheckBox
           Left = 8
@@ -11434,7 +11392,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 52
           Caption = 'Output of'
-          ParentColor = False
         end
         object AnOutConnector3OnOffCB: TCheckBox
           Left = 8
@@ -11515,7 +11472,6 @@ object MainForm: TMainForm
           Top = 24
           Width = 52
           Caption = 'Output of'
-          ParentColor = False
         end
         object AnOutConnector4OnOffCB: TCheckBox
           Left = 8
