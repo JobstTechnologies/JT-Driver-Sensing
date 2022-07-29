@@ -1697,10 +1697,16 @@ object MainForm: TMainForm
       ClientHeight = 652
       ClientWidth = 1154
       object SIXCH: TChart
+        AnchorSideLeft.Control = SIXValuesTS
+        AnchorSideTop.Control = SIXValuesTS
+        AnchorSideRight.Control = SIXValuesTS
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = SIXValuesTS
+        AnchorSideBottom.Side = asrBottom
         Left = 0
         Height = 652
         Top = 0
-        Width = 1156
+        Width = 1154
         AxisList = <        
           item
             Marks.Format = '%0:.4g'
@@ -1922,7 +1928,7 @@ object MainForm: TMainForm
         AnchorSideRight.Control = ScrollIntervalFSE
         AnchorSideBottom.Control = CalibrateP
         AnchorSideBottom.Side = asrBottom
-        Left = 942
+        Left = 940
         Height = 24
         Top = 4
         Width = 146
@@ -1980,7 +1986,7 @@ object MainForm: TMainForm
         AnchorSideRight.Control = LastShownP
         AnchorSideBottom.Control = LastShownP
         AnchorSideBottom.Side = asrBottom
-        Left = 846
+        Left = 844
         Height = 23
         Top = 5
         Width = 94
@@ -2016,7 +2022,7 @@ object MainForm: TMainForm
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = CalibrateP
         AnchorSideBottom.Side = asrBottom
-        Left = 1092
+        Left = 1090
         Height = 24
         Hint = 'Interval of last shown minutes in the plot'
         Top = 4
@@ -11711,11 +11717,17 @@ object MainForm: TMainForm
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
+        AnchorSideLeft.Control = ResultTS
+        AnchorSideTop.Control = ResultTS
+        AnchorSideRight.Control = ResultTS
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = ResultTS
+        AnchorSideBottom.Side = asrBottom
         Left = 0
         Height = 652
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
-        Width = 1156
+        Width = 1154
         AxisList = <        
           item
             Marks.LabelBrush.Style = bsClear
@@ -11772,30 +11784,41 @@ object MainForm: TMainForm
         end
       end
       object SaveScreenshotResultB: TButton
-        Left = 928
+        AnchorSideTop.Control = StartFitB
+        AnchorSideRight.Control = SaveCSVResultB
+        Left = 934
         Height = 24
         Top = 4
         Width = 104
         Anchors = [akTop, akRight]
+        BorderSpacing.Right = 8
         Caption = 'Save Screenshot'
         OnClick = SaveScreenshotResultBClick
         TabOrder = 1
       end
       object StartFitB: TButton
-        Left = 58
+        AnchorSideLeft.Control = ResultCH
+        AnchorSideTop.Control = ResultCH
+        Left = 50
         Height = 24
         Top = 4
         Width = 104
+        BorderSpacing.Left = 50
+        BorderSpacing.Top = 4
         Caption = 'Fit Result'
         OnClick = StartFitBClick
         TabOrder = 2
       end
       object SaveCSVResultB: TButton
+        AnchorSideTop.Control = StartFitB
+        AnchorSideRight.Control = ResultCH
+        AnchorSideRight.Side = asrBottom
         Left = 1046
         Height = 24
         Top = 4
         Width = 104
         Anchors = [akTop, akRight]
+        BorderSpacing.Right = 4
         Caption = 'Save Data as CSV'
         Enabled = False
         OnClick = SaveCSVResultBClick
@@ -11808,14 +11831,15 @@ object MainForm: TMainForm
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
-        AnchorSideLeft.Control = AnOutGeneralGB
+        AnchorSideLeft.Control = AnalogOutTS
         AnchorSideTop.Control = AnOutGeneralGB
         AnchorSideTop.Side = asrBottom
         Left = 8
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 96
+        Top = 92
         Width = 240
+        BorderSpacing.Left = 8
         BorderSpacing.Top = 12
         Caption = 'Output to Pump Connector 1'
         ClientHeight = 76
@@ -11892,17 +11916,19 @@ object MainForm: TMainForm
         end
       end
       object AnOutGeneralGB: TGroupBox
-        AnchorSideLeft.Control = AnalogOutTS
+        AnchorSideLeft.Control = AnOutPump1GB
         AnchorSideTop.Control = AnalogOutTS
+        AnchorSideRight.Control = AnOutPump2GB
+        AnchorSideRight.Side = asrBottom
         Left = 8
-        Height = 76
+        Height = 72
         Top = 8
-        Width = 384
-        BorderSpacing.Left = 8
+        Width = 492
+        Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 8
         Caption = 'General'
-        ClientHeight = 56
-        ClientWidth = 380
+        ClientHeight = 52
+        ClientWidth = 488
         TabOrder = 1
         object AnOutMaxSignalFSE: TFloatSpinEdit
           AnchorSideLeft.Control = AnOutGeneralGB
@@ -11911,7 +11937,7 @@ object MainForm: TMainForm
           Left = 8
           Height = 23
           Hint = 'When the absolute signal slope is the'#13#10'consecutive number of times below the'#13#10'given value, the signal is treated as stable.'#13#10'Then a measurement point is set.'
-          Top = 15
+          Top = 13
           Width = 52
           Alignment = taCenter
           BorderSpacing.Left = 8
@@ -11928,7 +11954,7 @@ object MainForm: TMainForm
           AnchorSideTop.Side = asrCenter
           Left = 64
           Height = 15
-          Top = 19
+          Top = 17
           Width = 149
           BorderSpacing.Left = 4
           Caption = 'nA will become 3.3 V output'
@@ -11937,16 +11963,15 @@ object MainForm: TMainForm
           AnchorSideLeft.Control = AnOutMaxLabel
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = AnOutGeneralGB
-          AnchorSideRight.Control = AnOutGeneralGB
           AnchorSideRight.Side = asrBottom
           AnchorSideBottom.Control = AnOutGeneralGB
           AnchorSideBottom.Side = asrBottom
           Left = 229
-          Height = 44
+          Height = 40
           Hint = 'Outputs the sensor signal'#13#10'to the pump connectors.'#13#10'Connect to a SIX and a pump driver'#13#10'to enable the button.'
           Top = 4
-          Width = 143
-          Anchors = [akTop, akLeft, akRight, akBottom]
+          Width = 114
+          Anchors = [akTop, akLeft, akBottom]
           BorderSpacing.Left = 16
           BorderSpacing.Top = 4
           BorderSpacing.Right = 8
@@ -11959,12 +11984,23 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object IndicatorAnOutP: TPanel
-          Left = 376
-          Height = 48
-          Top = 0
-          Width = 108
+          AnchorSideLeft.Control = AnOutOnOffTB
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = AnOutOnOffTB
+          AnchorSideRight.Control = AnOutGeneralGB
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Control = AnOutOnOffTB
+          AnchorSideBottom.Side = asrBottom
+          Left = 351
+          Height = 40
+          Top = 4
+          Width = 129
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          BorderSpacing.Left = 4
+          BorderSpacing.Right = 8
           BevelOuter = bvNone
           ParentBackground = False
+          ParentColor = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
@@ -11978,7 +12014,7 @@ object MainForm: TMainForm
         Left = 260
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 96
+        Top = 92
         Width = 240
         BorderSpacing.Left = 12
         Caption = 'Output to Pump Connector 2'
@@ -12062,7 +12098,7 @@ object MainForm: TMainForm
         Left = 8
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 198
+        Top = 194
         Width = 240
         BorderSpacing.Top = 6
         Caption = 'Output to Pump Connector 3'
@@ -12145,7 +12181,7 @@ object MainForm: TMainForm
         Left = 260
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 198
+        Top = 194
         Width = 240
         Caption = 'Output to Pump Connector 4'
         ClientHeight = 76
