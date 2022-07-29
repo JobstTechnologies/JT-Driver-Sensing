@@ -1,11 +1,11 @@
 object MainForm: TMainForm
   Left = 390
-  Height = 707
-  Top = 187
+  Height = 708
+  Top = 186
   Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 687
+  ClientHeight = 688
   ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
@@ -24,7 +24,7 @@ object MainForm: TMainForm
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 4
-    Height = 679
+    Height = 680
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -34,7 +34,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       object Channel1GB: TGroupBox
         AnchorSideLeft.Control = GeneralGB
@@ -229,24 +229,26 @@ object MainForm: TMainForm
         ClientHeight = 72
         ClientWidth = 336
         TabOrder = 2
-        object Label2Parse: TLabel
+        object EvalTimeL: TLabel
           AnchorSideLeft.Control = GeneralGB
           AnchorSideTop.Control = EvalTimeFSE
-          Left = 4
+          AnchorSideTop.Side = asrCenter
+          Left = 8
           Height = 15
-          Top = 4
+          Top = 8
           Width = 100
-          BorderSpacing.Around = 4
+          BorderSpacing.Left = 8
           Caption = 'Evaluation Time [s]'
         end
         object EvalTimeFSE: TFloatSpinEdit
-          AnchorSideLeft.Control = Label2Parse
+          AnchorSideLeft.Control = EvalTimeL
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = GeneralGB
-          Left = 112
+          AnchorSideTop.Control = SIXConnectBB
+          AnchorSideTop.Side = asrCenter
+          Left = 116
           Height = 22
           Hint = 'Time after a sensor value is readout'#13#10'and written to the data file'
-          Top = 0
+          Top = 4
           Width = 62
           Alignment = taCenter
           AutoSize = False
@@ -264,13 +266,16 @@ object MainForm: TMainForm
           AnchorSideLeft.Control = SIXConnectBB
           AnchorSideTop.Control = SIXConnectBB
           AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = SIXConnectBB
+          AnchorSideRight.Side = asrBottom
           AnchorSideBottom.Control = GeneralGB
           AnchorSideBottom.Side = asrBottom
-          Left = 186
+          Left = 190
           Height = 30
           Hint = 'Loads a sensor definition file'
           Top = 36
-          Width = 136
+          Width = 138
+          Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 6
           Caption = 'Load Definition File'
           OnClick = LoadDefBBClick
@@ -282,12 +287,16 @@ object MainForm: TMainForm
           AnchorSideLeft.Control = EvalTimeFSE
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GeneralGB
-          Left = 186
+          AnchorSideRight.Control = GeneralGB
+          AnchorSideRight.Side = asrBottom
+          Left = 190
           Height = 30
           Hint = 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement'
           Top = 0
-          Width = 136
+          Width = 138
+          Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 12
+          BorderSpacing.Right = 8
           Caption = 'Start SIX Measurement'
           OnClick = SIXConnectBBClick
           ParentShowHint = False
@@ -295,32 +304,34 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object StartTimeLE: TEdit
+          AnchorSideLeft.Control = StartTimeL
+          AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = LoadDefBB
+          AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = EvalTimeFSE
           AnchorSideRight.Side = asrBottom
-          Left = 64
+          Left = 69
           Height = 22
           Hint = 'Measurement start time'#13#10'in format'#13#10'dd.mm.yyyy hh:nn:ss'
           Top = 40
-          Width = 110
+          Width = 109
           Alignment = taCenter
           Anchors = [akTop, akLeft, akRight]
           AutoSize = False
-          BorderSpacing.Top = 4
+          BorderSpacing.Left = 8
           Enabled = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
         end
         object StartTimeL: TLabel
-          AnchorSideLeft.Control = GeneralGB
+          AnchorSideLeft.Control = EvalTimeL
           AnchorSideTop.Control = StartTimeLE
-          Left = 4
+          AnchorSideTop.Side = asrCenter
+          Left = 8
           Height = 15
-          Top = 43
+          Top = 44
           Width = 53
-          BorderSpacing.Left = 1
-          BorderSpacing.Around = 3
           Caption = 'Start Time'
           Enabled = False
         end
@@ -1683,11 +1694,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 651
+        Height = 652
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1906,7 +1917,8 @@ object MainForm: TMainForm
       end
       object LastShownP: TPanel
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = CalibrateP
+        AnchorSideTop.Control = ScrollIntervalFSE
+        AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = ScrollIntervalFSE
         AnchorSideBottom.Control = CalibrateP
         AnchorSideBottom.Side = asrBottom
@@ -1964,16 +1976,19 @@ object MainForm: TMainForm
       end
       object ScrollViewP: TPanel
         AnchorSideTop.Control = LastShownP
+        AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = LastShownP
+        AnchorSideBottom.Control = LastShownP
+        AnchorSideBottom.Side = asrBottom
         Left = 846
-        Height = 19
-        Top = 6
+        Height = 23
+        Top = 5
         Width = 94
-        Anchors = [akTop, akRight]
+        Anchors = [akTop, akRight, akBottom]
         BorderSpacing.Top = 2
         BorderSpacing.Right = 2
         BevelOuter = bvNone
-        ClientHeight = 19
+        ClientHeight = 23
         ClientWidth = 94
         TabOrder = 4
         object ScrollViewCB: TCheckBox
@@ -1982,8 +1997,9 @@ object MainForm: TMainForm
           Left = 0
           Height = 19
           Hint = 'Only the last seconds of the data will'#13#10'be shown in the diagram'
-          Top = 0
+          Top = 1
           Width = 88
+          BorderSpacing.Top = 1
           Caption = 'Scolling View'
           Checked = True
           Enabled = False
@@ -1998,13 +2014,15 @@ object MainForm: TMainForm
         AnchorSideTop.Control = CalibrateP
         AnchorSideRight.Control = SIXCH
         AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = CalibrateP
+        AnchorSideBottom.Side = asrBottom
         Left = 1092
-        Height = 23
+        Height = 24
         Hint = 'Interval of last shown minutes in the plot'
         Top = 4
         Width = 56
         Alignment = taCenter
-        Anchors = [akTop, akRight]
+        Anchors = [akTop, akRight, akBottom]
         BorderSpacing.Right = 8
         DecimalPlaces = 1
         MaxValue = 100000
@@ -2020,7 +2038,7 @@ object MainForm: TMainForm
         Left = 2
         Height = 20
         Hint = 'Autoscales all axes'
-        Top = 629
+        Top = 630
         Width = 65
         Anchors = [akLeft, akBottom]
         BorderSpacing.Left = 2
@@ -2034,7 +2052,7 @@ object MainForm: TMainForm
     end
     object ActionControlTS: TTabSheet
       Caption = 'Action Control'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       object RepeatPC: TPageControl
         AnchorSideLeft.Control = ActionControlTS
@@ -10048,12 +10066,12 @@ object MainForm: TMainForm
         object RepeatL: TLabel
           AnchorSideLeft.Control = RunSettingsGB
           AnchorSideTop.Control = RepeatSE
+          AnchorSideTop.Side = asrCenter
           Left = 8
           Height = 15
-          Top = 6
+          Top = 8
           Width = 71
           BorderSpacing.Left = 8
-          BorderSpacing.Top = 2
           Caption = 'Repeat times:'
         end
         object RepeatSE: TSpinEdit
@@ -10167,7 +10185,7 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = ActionControlTS
         AnchorSideBottom.Side = asrBottom
         Left = 8
-        Height = 111
+        Height = 112
         Hint = 'The command that will be sent by clicking ''Run Pumps'''
         Top = 532
         Width = 536
@@ -10224,13 +10242,13 @@ object MainForm: TMainForm
         object ValveNumberL: TLabel
           AnchorSideLeft.Control = ValveSetupGB
           AnchorSideTop.Control = ValveNumberSE
+          AnchorSideTop.Side = asrCenter
           Left = 8
           Height = 15
           Hint = 'Number of valves in the setup'
-          Top = 6
+          Top = 8
           Width = 86
           BorderSpacing.Left = 8
-          BorderSpacing.Top = 2
           Caption = 'Available valves:'
           ParentShowHint = False
           ShowHint = True
@@ -10276,12 +10294,12 @@ object MainForm: TMainForm
         object CalibStepL: TLabel
           AnchorSideLeft.Control = CalibrationGB
           AnchorSideTop.Control = CalibStepCB
+          AnchorSideTop.Side = asrCenter
           Left = 12
           Height = 15
           Top = 12
           Width = 76
           BorderSpacing.Left = 12
-          BorderSpacing.Top = 4
           Caption = 'Calibrate After'
           Enabled = False
         end
@@ -10514,11 +10532,11 @@ object MainForm: TMainForm
         object UsedCalibValueL: TLabel
           AnchorSideLeft.Control = CalibStepL
           AnchorSideTop.Control = UsedCalibValueSE
+          AnchorSideTop.Side = asrCenter
           Left = 12
           Height = 15
-          Top = 73
+          Top = 74
           Width = 116
-          BorderSpacing.Top = 3
           Caption = 'Used values for mean:'
         end
         object CalibEveryXStepsSE: TSpinEdit
@@ -10544,23 +10562,23 @@ object MainForm: TMainForm
         object CalibEveryXStepsL1: TLabel
           AnchorSideLeft.Control = CalibStepL
           AnchorSideTop.Control = CalibEveryXStepsSE
+          AnchorSideTop.Side = asrCenter
           Left = 12
           Height = 15
-          Top = 42
+          Top = 43
           Width = 78
-          BorderSpacing.Top = 3
           Caption = 'Calibrate every'
         end
         object CalibEveryXStepsL2: TLabel
           AnchorSideTop.Control = CalibEveryXStepsSE
+          AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = CalibStepCB
           AnchorSideRight.Side = asrBottom
           Left = 150
           Height = 15
-          Top = 42
+          Top = 43
           Width = 38
           Anchors = [akTop, akRight]
-          BorderSpacing.Top = 3
           Caption = 'repeats'
         end
       end
@@ -10596,13 +10614,13 @@ object MainForm: TMainForm
         object PumpNumberL: TLabel
           AnchorSideLeft.Control = PumpSetupGB
           AnchorSideTop.Control = PumpNumberSE
+          AnchorSideTop.Side = asrCenter
           Left = 8
           Height = 15
           Hint = 'Number of pumps in the setup'
-          Top = 6
+          Top = 8
           Width = 91
           BorderSpacing.Left = 8
-          BorderSpacing.Top = 2
           Caption = 'Available pumps:'
           ParentShowHint = False
           ShowHint = True
@@ -10713,7 +10731,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -11689,12 +11707,12 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 651
+        Height = 652
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -11786,15 +11804,19 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 651
+      ClientHeight = 652
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
-        Left = 16
+        AnchorSideLeft.Control = AnOutGeneralGB
+        AnchorSideTop.Control = AnOutGeneralGB
+        AnchorSideTop.Side = asrBottom
+        Left = 8
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 128
+        Top = 96
         Width = 240
+        BorderSpacing.Top = 12
         Caption = 'Output to Pump Connector 1'
         ClientHeight = 76
         ClientWidth = 236
@@ -11870,21 +11892,29 @@ object MainForm: TMainForm
         end
       end
       object AnOutGeneralGB: TGroupBox
-        Left = 16
-        Height = 80
-        Top = 32
-        Width = 496
+        AnchorSideLeft.Control = AnalogOutTS
+        AnchorSideTop.Control = AnalogOutTS
+        Left = 8
+        Height = 76
+        Top = 8
+        Width = 384
+        BorderSpacing.Left = 8
+        BorderSpacing.Top = 8
         Caption = 'General'
-        ClientHeight = 60
-        ClientWidth = 492
+        ClientHeight = 56
+        ClientWidth = 380
         TabOrder = 1
         object AnOutMaxSignalFSE: TFloatSpinEdit
-          Left = 16
+          AnchorSideLeft.Control = AnOutGeneralGB
+          AnchorSideTop.Control = AnOutOnOffTB
+          AnchorSideTop.Side = asrCenter
+          Left = 8
           Height = 23
           Hint = 'When the absolute signal slope is the'#13#10'consecutive number of times below the'#13#10'given value, the signal is treated as stable.'#13#10'Then a measurement point is set.'
-          Top = 16
+          Top = 15
           Width = 52
           Alignment = taCenter
+          BorderSpacing.Left = 8
           DecimalPlaces = 1
           MaxValue = 50
           MinValue = 0.1
@@ -11892,18 +11922,35 @@ object MainForm: TMainForm
           Value = 50
         end
         object AnOutMaxLabel: TLabel
-          Left = 76
+          AnchorSideLeft.Control = AnOutMaxSignalFSE
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = AnOutMaxSignalFSE
+          AnchorSideTop.Side = asrCenter
+          Left = 64
           Height = 15
-          Top = 20
+          Top = 19
           Width = 149
+          BorderSpacing.Left = 4
           Caption = 'nA will become 3.3 V output'
         end
         object AnOutOnOffTB: TToggleBox
-          Left = 256
-          Height = 50
+          AnchorSideLeft.Control = AnOutMaxLabel
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = AnOutGeneralGB
+          AnchorSideRight.Control = AnOutGeneralGB
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Control = AnOutGeneralGB
+          AnchorSideBottom.Side = asrBottom
+          Left = 229
+          Height = 44
           Hint = 'Outputs the sensor signal'#13#10'to the pump connectors.'#13#10'Connect to a SIX and a pump driver'#13#10'to enable the button.'
-          Top = 0
-          Width = 112
+          Top = 4
+          Width = 143
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          BorderSpacing.Left = 16
+          BorderSpacing.Top = 4
+          BorderSpacing.Right = 8
+          BorderSpacing.Bottom = 8
           Caption = 'Output On'
           Enabled = False
           OnChange = AnOutOnOffTBChange
@@ -11925,11 +11972,15 @@ object MainForm: TMainForm
         end
       end
       object AnOutPump2GB: TGroupBox
-        Left = 272
+        AnchorSideLeft.Control = AnOutPump1GB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = AnOutPump1GB
+        Left = 260
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 128
+        Top = 96
         Width = 240
+        BorderSpacing.Left = 12
         Caption = 'Output to Pump Connector 2'
         ClientHeight = 76
         ClientWidth = 236
@@ -12005,11 +12056,15 @@ object MainForm: TMainForm
         end
       end
       object AnOutPump3GB: TGroupBox
-        Left = 16
+        AnchorSideLeft.Control = AnOutPump1GB
+        AnchorSideTop.Control = AnOutPump1GB
+        AnchorSideTop.Side = asrBottom
+        Left = 8
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 240
+        Top = 198
         Width = 240
+        BorderSpacing.Top = 6
         Caption = 'Output to Pump Connector 3'
         ClientHeight = 76
         ClientWidth = 236
@@ -12085,10 +12140,12 @@ object MainForm: TMainForm
         end
       end
       object AnOutPump4GB: TGroupBox
-        Left = 272
+        AnchorSideLeft.Control = AnOutPump2GB
+        AnchorSideTop.Control = AnOutPump3GB
+        Left = 260
         Height = 96
         Hint = 'Double-click to change the name'
-        Top = 240
+        Top = 198
         Width = 240
         Caption = 'Output to Pump Connector 4'
         ClientHeight = 76

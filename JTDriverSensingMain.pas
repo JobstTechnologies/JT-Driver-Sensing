@@ -367,7 +367,7 @@ type
     StopTestBB: TBitBtn;
     AnalogOutTS: TTabSheet;
     TestSettingsTS: TTabSheet;
-    Label2Parse: TLabel;
+    EvalTimeL: TLabel;
     Channel2GB: TGroupBox;
     MainPC: TPageControl;
     LastShownP: TPanel;
