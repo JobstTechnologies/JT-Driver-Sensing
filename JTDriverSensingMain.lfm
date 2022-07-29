@@ -17,37 +17,57 @@ object MainForm: TMainForm
   Position = poDesktopCenter
   LCLVersion = '2.3.0.0'
   object MainPC: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
     Left = 4
-    Height = 676
+    Height = 679
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
     Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Around = 4
     TabIndex = 0
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       object Channel1GB: TGroupBox
-        Left = 0
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideTop.Control = GeneralGB
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = GeneralGB
+        AnchorSideRight.Side = asrBottom
+        Left = 4
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 104
-        Width = 344
+        Top = 106
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 6
         Caption = 'Channel 1'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
         OnDblClick = ChannelXGBDblClick
         object CurrChannel1LE: TLabeledEdit
+          AnchorSideLeft.Control = Channel1OnOffCB
+          AnchorSideTop.Side = asrBottom
+          AnchorSideBottom.Control = Channel1GB
+          AnchorSideBottom.Side = asrBottom
           Left = 8
           Height = 23
-          Top = 40
+          Top = 41
           Width = 108
           Alignment = taCenter
+          Anchors = [akLeft, akBottom]
+          BorderSpacing.Bottom = 6
           EditLabel.Height = 15
           EditLabel.Width = 108
           EditLabel.Caption = 'Actual Signal [mM]'
@@ -55,11 +75,14 @@ object MainForm: TMainForm
           TabOrder = 0
         end
         object Channel1OnOffCB: TCheckBox
+          AnchorSideLeft.Control = Channel1GB
+          AnchorSideTop.Control = Channel1GB
           Left = 8
           Height = 19
           Hint = 'Displayed in chart'
           Top = 0
           Width = 34
+          BorderSpacing.Left = 8
           Caption = 'On'
           Checked = True
           OnChange = ChanAnOutConnectorXOnOffCBChange
@@ -67,11 +90,17 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object Appearance1BB: TBitBtn
+          AnchorSideLeft.Control = CurrChannel1LE
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideBottom.Control = CurrChannel1LE
+          AnchorSideBottom.Side = asrBottom
           Left = 128
-          Height = 23
+          Height = 24
           Hint = 'Appearance in the chart'
           Top = 40
           Width = 82
+          Anchors = [akTop, akLeft, akBottom]
+          BorderSpacing.Left = 12
           Caption = 'Appearance'
           OnClick = AppearanceXBBClick
           ParentShowHint = False
@@ -79,11 +108,17 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object Channel1LE: TLabeledEdit
-          Left = 224
-          Height = 23
+          AnchorSideLeft.Control = Appearance1BB
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideBottom.Control = CurrChannel1LE
+          AnchorSideBottom.Side = asrBottom
+          Left = 222
+          Height = 24
           Top = 40
           Width = 91
           Alignment = taCenter
+          Anchors = [akTop, akLeft, akBottom]
+          BorderSpacing.Left = 12
           EditLabel.Height = 15
           EditLabel.Width = 91
           EditLabel.Caption = 'SIX Channel'
@@ -94,14 +129,18 @@ object MainForm: TMainForm
         end
       end
       object Channel2GB: TGroupBox
-        Left = 360
+        AnchorSideLeft.Control = Channel1GB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Channel1GB
+        Left = 356
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 104
-        Width = 344
+        Top = 106
+        Width = 340
+        BorderSpacing.Left = 12
         Caption = 'Channel 2'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -158,29 +197,40 @@ object MainForm: TMainForm
         end
       end
       object GeneralGB: TGroupBox
-        Left = 0
+        AnchorSideLeft.Control = GeneralTS
+        AnchorSideTop.Control = GeneralTS
+        Left = 4
         Height = 92
         Top = 8
-        Width = 344
+        Width = 340
+        BorderSpacing.Top = 4
+        BorderSpacing.Around = 4
         Caption = 'General'
         ClientHeight = 72
-        ClientWidth = 340
+        ClientWidth = 336
         TabOrder = 2
         object Label2Parse: TLabel
-          Left = 8
+          AnchorSideLeft.Control = GeneralGB
+          AnchorSideTop.Control = EvalTimeFSE
+          Left = 4
           Height = 15
-          Top = 7
+          Top = 4
           Width = 100
+          BorderSpacing.Around = 4
           Caption = 'Evaluation Time [s]'
         end
         object EvalTimeFSE: TFloatSpinEdit
-          Left = 120
+          AnchorSideLeft.Control = Label2Parse
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = GeneralGB
+          Left = 112
           Height = 22
           Hint = 'Time after a sensor value is readout'#13#10'and written to the data file'
-          Top = 4
+          Top = 0
           Width = 62
           Alignment = taCenter
           AutoSize = False
+          BorderSpacing.Left = 8
           DecimalPlaces = 1
           MaxValue = 99
           MinValue = 3
@@ -191,11 +241,17 @@ object MainForm: TMainForm
           Value = 3
         end
         object LoadDefBB: TBitBtn
-          Left = 192
+          AnchorSideLeft.Control = SIXConnectBB
+          AnchorSideTop.Control = SIXConnectBB
+          AnchorSideTop.Side = asrBottom
+          AnchorSideBottom.Control = GeneralGB
+          AnchorSideBottom.Side = asrBottom
+          Left = 186
           Height = 30
           Hint = 'Loads a sensor definition file'
-          Top = 37
+          Top = 36
           Width = 136
+          BorderSpacing.Top = 6
           Caption = 'Load Definition File'
           OnClick = LoadDefBBClick
           ParentShowHint = False
@@ -203,11 +259,15 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXConnectBB: TBitBtn
-          Left = 192
+          AnchorSideLeft.Control = EvalTimeFSE
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = GeneralGB
+          Left = 186
           Height = 30
           Hint = 'Connects to a SIX biosensor and'#13#10'starts immediately a measurement'
           Top = 0
           Width = 136
+          BorderSpacing.Left = 12
           Caption = 'Start SIX Measurement'
           OnClick = SIXConnectBBClick
           ParentShowHint = False
@@ -215,41 +275,64 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object StartTimeLE: TEdit
-          Left = 72
+          AnchorSideTop.Control = LoadDefBB
+          AnchorSideRight.Control = EvalTimeFSE
+          AnchorSideRight.Side = asrBottom
+          Left = 64
           Height = 22
           Hint = 'Measurement start time'#13#10'in format'#13#10'dd.mm.yyyy hh:nn:ss'
-          Top = 41
+          Top = 40
           Width = 110
           Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
           AutoSize = False
+          BorderSpacing.Top = 4
           Enabled = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
         end
         object StartTimeL: TLabel
-          Left = 8
+          AnchorSideLeft.Control = GeneralGB
+          AnchorSideTop.Control = StartTimeLE
+          Left = 4
           Height = 15
-          Top = 44
+          Top = 43
           Width = 53
+          BorderSpacing.Left = 1
+          BorderSpacing.Around = 3
           Caption = 'Start Time'
           Enabled = False
         end
       end
       object SixStatusGB: TGroupBox
+        AnchorSideLeft.Control = Channel2GB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Channel1GB
+        AnchorSideBottom.Control = Channel7GB
+        AnchorSideBottom.Side = asrBottom
         Left = 720
         Height = 378
-        Top = 104
+        Top = 106
         Width = 156
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 24
         Caption = 'Sensor Status Info'
         ClientHeight = 358
         ClientWidth = 152
         TabOrder = 3
         object IndicatorSensorP: TPanel
-          Left = 7
+          AnchorSideLeft.Control = SixStatusGB
+          AnchorSideTop.Control = SixStatusGB
+          AnchorSideRight.Control = SixStatusGB
+          AnchorSideRight.Side = asrBottom
+          Left = 8
           Height = 43
           Top = 0
-          Width = 138
+          Width = 136
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Right = 8
           BevelOuter = bvNone
           Caption = 'No definition file loaded'
           Color = clHighlight
@@ -261,12 +344,16 @@ object MainForm: TMainForm
           OnPaint = IndicatorSensorPPaint
         end
         object LoadedFileSensM: TMemo
-          Left = 7
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = LoadedFileSensL
+          AnchorSideTop.Side = asrBottom
+          Left = 8
           Height = 40
           Hint = 'No data storage file selected'
-          Top = 208
+          Top = 204
           Width = 137
           Alignment = taCenter
+          BorderSpacing.Top = 2
           Lines.Strings = (
             'None'
           )
@@ -279,17 +366,28 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object LoadedFileSensL: TLabel
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = LoadedDefFileM
+          AnchorSideTop.Side = asrBottom
           Left = 8
           Height = 15
-          Top = 188
+          Top = 187
           Width = 86
+          BorderSpacing.Top = 10
           Caption = 'Sensor Data File '
         end
         object SIXTempGB: TGroupBox
-          Left = 7
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = LoadedFileSensM
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = IndicatorSensorP
+          AnchorSideRight.Side = asrBottom
+          Left = 8
           Height = 98
-          Top = 256
+          Top = 254
           Width = 136
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 10
           Caption = 'SIX Temperature'
           ClientHeight = 78
           ClientWidth = 132
@@ -317,18 +415,26 @@ object MainForm: TMainForm
           end
         end
         object LoadedDefFileL: TLabel
-          Left = 7
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = ConnComPortSensM
+          AnchorSideTop.Side = asrBottom
+          Left = 8
           Height = 15
           Top = 120
           Width = 108
+          BorderSpacing.Top = 10
           Caption = 'Sensor Definiton File'
         end
         object LoadedDefFileM: TMemo
-          Left = 7
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = LoadedDefFileL
+          AnchorSideTop.Side = asrBottom
+          Left = 8
           Height = 40
-          Top = 140
+          Top = 137
           Width = 136
           Alignment = taCenter
+          BorderSpacing.Top = 2
           Lines.Strings = (
             'None'
           )
@@ -340,11 +446,15 @@ object MainForm: TMainForm
           TabOrder = 3
         end
         object ConnComPortSensM: TMemo
-          Left = 7
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = ConnComPortSensL
+          AnchorSideTop.Side = asrBottom
+          Left = 8
           Height = 40
-          Top = 72
+          Top = 70
           Width = 136
           Alignment = taCenter
+          BorderSpacing.Top = 2
           Color = clHighlight
           Lines.Strings = (
             'None'
@@ -355,22 +465,33 @@ object MainForm: TMainForm
           TabOrder = 4
         end
         object ConnComPortSensL: TLabel
+          AnchorSideLeft.Control = IndicatorSensorP
+          AnchorSideTop.Control = IndicatorSensorP
+          AnchorSideTop.Side = asrBottom
           Left = 8
           Height = 15
-          Top = 54
+          Top = 53
           Width = 73
+          BorderSpacing.Top = 10
           Caption = 'Connected To'
         end
       end
       object Channel7GB: TGroupBox
-        Left = 0
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideTop.Control = Channel5GB
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = GeneralGB
+        AnchorSideRight.Side = asrBottom
+        Left = 4
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 392
-        Width = 344
+        Top = 394
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 6
         Caption = 'Channel Operation 1'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4
@@ -438,14 +559,19 @@ object MainForm: TMainForm
         end
       end
       object Channel4GB: TGroupBox
-        Left = 360
+        AnchorSideLeft.Control = Channel2GB
+        AnchorSideTop.Control = Channel3GB
+        AnchorSideRight.Control = Channel2GB
+        AnchorSideRight.Side = asrBottom
+        Left = 356
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 200
-        Width = 344
+        Top = 202
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
         Caption = 'Channel 4'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
@@ -500,14 +626,21 @@ object MainForm: TMainForm
         end
       end
       object Channel5GB: TGroupBox
-        Left = 0
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideTop.Control = Channel3GB
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = GeneralGB
+        AnchorSideRight.Side = asrBottom
+        Left = 4
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 296
-        Width = 344
+        Top = 298
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 6
         Caption = 'Channel 5'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentBackground = False
         ParentShowHint = False
         ShowHint = True
@@ -563,14 +696,19 @@ object MainForm: TMainForm
         end
       end
       object Channel8GB: TGroupBox
-        Left = 360
+        AnchorSideLeft.Control = Channel2GB
+        AnchorSideTop.Control = Channel7GB
+        AnchorSideRight.Control = Channel2GB
+        AnchorSideRight.Side = asrBottom
+        Left = 356
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 392
-        Width = 344
+        Top = 394
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
         Caption = 'Channel Operation 2'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
@@ -638,21 +776,28 @@ object MainForm: TMainForm
         end
       end
       object ExpertGB: TGroupBox
-        Left = 360
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = GeneralGB
+        Left = 356
         Height = 92
         Top = 8
         Width = 680
+        BorderSpacing.Left = 12
         Caption = 'Expert Settings'
         ClientHeight = 72
         ClientWidth = 676
         TabOrder = 8
         Visible = False
         object NoSubtractBlankCB: TCheckBox
+          AnchorSideLeft.Control = ExpertGB
+          AnchorSideTop.Control = ExpertGB
           Left = 8
           Height = 19
           Hint = 'The blank values will not automatically'#13#10'be subtracted from the channel values'#13#10'(only available for running measurements'#13#10' and if definition file is loaded)'
           Top = 0
           Width = 161
+          BorderSpacing.Left = 8
           Caption = 'Don''t subtract blank values'
           OnChange = NoSubtractBlankCBChange
           ParentShowHint = False
@@ -660,11 +805,15 @@ object MainForm: TMainForm
           TabOrder = 0
         end
         object RawCurrentCB: TCheckBox
+          AnchorSideLeft.Control = NoSubtractBlankCB
+          AnchorSideTop.Control = NoSubtractBlankCB
+          AnchorSideTop.Side = asrBottom
           Left = 8
           Height = 19
           Hint = 'The raw channel current values'#13#10'will be output and displayed'#13#10'(can only be disabled if a definition'#13#10' file is loaded)'
-          Top = 24
+          Top = 23
           Width = 123
+          BorderSpacing.Top = 4
           Caption = 'Display values in nA'
           OnChange = RawCurrentCBChange
           ParentShowHint = False
@@ -672,12 +821,17 @@ object MainForm: TMainForm
           TabOrder = 1
         end
         object SIXTypeRG: TRadioGroup
+          AnchorSideLeft.Control = ExpertGB
+          AnchorSideBottom.Control = ExpertGB
+          AnchorSideBottom.Side = asrBottom
           Left = 216
           Height = 80
           Hint = 'Maximal current representation'#13#10'of the connected SIX device.'#13#10'To change one must not be'#13#10'connected to a SIX.'
-          Top = -10
+          Top = -8
           Width = 126
+          Anchors = [akLeft, akBottom]
           AutoFill = True
+          BorderSpacing.Left = 216
           Caption = 'SIX Type'
           ChildSizing.LeftRightSpacing = 6
           ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
@@ -701,11 +855,15 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object NoTempCorrectionCB: TCheckBox
+          AnchorSideLeft.Control = NoSubtractBlankCB
+          AnchorSideTop.Control = RawCurrentCB
+          AnchorSideTop.Side = asrBottom
           Left = 8
           Height = 19
           Hint = 'The sensor data will not be corrected'#13#10'by the temperature correction factor that'#13#10'are stored in the sensor definition file'#13#10'(only available for running measurements'#13#10' and if definition file is loaded)'
-          Top = 48
+          Top = 46
           Width = 204
+          BorderSpacing.Top = 4
           Caption = 'Don''t apply temperature correction'
           OnChange = NoTempCorrectionCBChange
           ParentShowHint = False
@@ -713,20 +871,31 @@ object MainForm: TMainForm
           TabOrder = 3
         end
         object PerformTestingGB: TGroupBox
+          AnchorSideLeft.Control = LoadOtherDefBB
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = SIXTypeRG
+          AnchorSideBottom.Control = ExpertGB
+          AnchorSideBottom.Side = asrBottom
           Left = 530
           Height = 80
-          Top = -10
+          Top = -8
           Width = 139
+          Anchors = [akTop, akLeft, akBottom]
+          BorderSpacing.Left = 24
           Caption = 'Testing'
           ClientHeight = 60
           ClientWidth = 135
           TabOrder = 4
           object PerformTestsCB: TCheckBox
+            AnchorSideLeft.Control = PerformTestingGB
+            AnchorSideTop.Control = PerformTestingGB
             Left = 8
             Height = 19
             Hint = 'Not yet implemented'
             Top = 4
             Width = 90
+            BorderSpacing.Left = 8
+            BorderSpacing.Top = 4
             Caption = 'Perform Tests'
             Enabled = False
             OnChange = PerformTestsCBChange
@@ -735,11 +904,15 @@ object MainForm: TMainForm
             TabOrder = 0
           end
           object UseAnOutCB: TCheckBox
+            AnchorSideLeft.Control = PerformTestsCB
+            AnchorSideTop.Control = PerformTestsCB
+            AnchorSideTop.Side = asrBottom
             Left = 8
             Height = 19
             Hint = 'Outputs the sensor values'#13#10'as voltage to a pump driver'
-            Top = 32
+            Top = 31
             Width = 119
+            BorderSpacing.Top = 8
             Caption = 'Use Analog Output'
             Enabled = False
             OnChange = UseAnOutCBChange
@@ -749,11 +922,15 @@ object MainForm: TMainForm
           end
         end
         object UnloadDefBB: TBitBtn
-          Left = 367
+          AnchorSideLeft.Control = LoadOtherDefBB
+          AnchorSideTop.Control = LoadOtherDefBB
+          AnchorSideTop.Side = asrBottom
+          Left = 370
           Height = 30
           Hint = 'Unloads sensor definition file'
           Top = 36
           Width = 136
+          BorderSpacing.Top = 6
           Caption = 'Unload Definition File'
           Enabled = False
           OnClick = UnloadDefBBClick
@@ -762,11 +939,15 @@ object MainForm: TMainForm
           TabOrder = 5
         end
         object LoadOtherDefBB: TBitBtn
-          Left = 367
+          AnchorSideLeft.Control = SIXTypeRG
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = ExpertGB
+          Left = 370
           Height = 30
           Hint = 'Changes a sensor definition file'
           Top = 0
           Width = 136
+          BorderSpacing.Left = 28
           Caption = 'Change Definition File'
           Enabled = False
           OnClick = LoadDefBBClick
@@ -776,14 +957,21 @@ object MainForm: TMainForm
         end
       end
       object Channel3GB: TGroupBox
-        Left = 0
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideTop.Control = Channel1GB
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = GeneralGB
+        AnchorSideRight.Side = asrBottom
+        Left = 4
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 200
-        Width = 344
+        Top = 202
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 6
         Caption = 'Channel 3'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 9
@@ -840,14 +1028,19 @@ object MainForm: TMainForm
         end
       end
       object Channel6GB: TGroupBox
-        Left = 360
+        AnchorSideLeft.Control = Channel2GB
+        AnchorSideTop.Control = Channel5GB
+        AnchorSideRight.Control = Channel2GB
+        AnchorSideRight.Side = asrBottom
+        Left = 356
         Height = 90
         Hint = 'Double-click to change the name'
-        Top = 296
-        Width = 344
+        Top = 298
+        Width = 340
+        Anchors = [akTop, akLeft, akRight]
         Caption = 'Channel 6'
         ClientHeight = 70
-        ClientWidth = 340
+        ClientWidth = 336
         ParentShowHint = False
         ShowHint = True
         TabOrder = 10
@@ -902,47 +1095,80 @@ object MainForm: TMainForm
         end
       end
       object PumpStatusGeneralGB: TGroupBox
-        Left = 892
-        Height = 194
-        Top = 104
+        AnchorSideLeft.Control = SixStatusGB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Channel1GB
+        AnchorSideBottom.Control = Channel3GB
+        AnchorSideBottom.Side = asrBottom
+        Left = 888
+        Height = 186
+        Top = 106
         Width = 148
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 12
         Caption = 'Pump Driver Status Info'
-        ClientHeight = 174
+        ClientHeight = 166
         ClientWidth = 144
         TabOrder = 11
         object IndicatorPumpGeneralP: TPanel
-          Left = 7
+          AnchorSideLeft.Control = PumpStatusGeneralGB
+          AnchorSideTop.Control = PumpStatusGeneralGB
+          AnchorSideRight.Control = PumpStatusGeneralGB
+          AnchorSideRight.Side = asrBottom
+          Left = 8
           Height = 43
           Top = 0
-          Width = 130
+          Width = 128
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Right = 8
           BevelOuter = bvNone
           ParentBackground = False
+          ParentColor = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 1
         end
         object ConnComPortPumpGeneralLE: TLabeledEdit
+          AnchorSideLeft.Control = IndicatorPumpGeneralP
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = IndicatorPumpGeneralP
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Control = LoadedActionFileGeneraL
           Left = 8
           Height = 23
-          Top = 72
-          Width = 124
+          Top = 68
+          Width = 128
           Alignment = taCenter
+          Anchors = [akLeft, akRight, akBottom]
+          BorderSpacing.Bottom = 6
           Color = clHighlight
           EditLabel.Height = 15
-          EditLabel.Width = 124
+          EditLabel.Width = 128
           EditLabel.Caption = 'Connected To'
+          EditLabel.Color = clDefault
+          EditLabel.ParentColor = False
           ParentShowHint = False
           ReadOnly = True
           TabOrder = 0
           Text = 'Not connected'
         end
         object LoadedActionFileGeneralM: TMemo
-          Left = 7
+          AnchorSideLeft.Control = IndicatorPumpGeneralP
+          AnchorSideTop.Control = LoadedActionFileGeneraL
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = IndicatorPumpGeneralP
+          AnchorSideRight.Side = asrBottom
+          AnchorSideBottom.Side = asrBottom
+          Left = 8
           Height = 40
           Hint = 'No action file loaded'
-          Top = 122
-          Width = 124
+          Top = 118
+          Width = 128
           Alignment = taCenter
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 2
+          BorderSpacing.Bottom = 8
           Lines.Strings = (
             'None'
           )
@@ -953,19 +1179,30 @@ object MainForm: TMainForm
           TabOrder = 2
         end
         object LoadedActionFileGeneraL: TLabel
-          Left = 7
+          AnchorSideLeft.Control = IndicatorPumpGeneralP
+          AnchorSideTop.Control = ConnComPortPumpGeneralLE
+          AnchorSideTop.Side = asrBottom
+          Left = 8
           Height = 15
-          Top = 104
+          Top = 101
           Width = 98
+          Anchors = [akLeft]
+          BorderSpacing.Top = 10
+          BorderSpacing.Bottom = 2
           Caption = 'Loaded Action File'
         end
       end
       object ShowExpertCB: TCheckBox
-        Left = 370
+        AnchorSideLeft.Control = GeneralGB
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ExpertGB
+        Left = 366
         Height = 19
         Hint = 'Displays expert settings'
         Top = 50
         Width = 192
+        BorderSpacing.Left = 22
+        BorderSpacing.Top = 42
         Caption = 'Show Expert and Testing Settings'
         OnChange = ShowExpertCBChange
         ParentShowHint = False
@@ -1283,11 +1520,11 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       object SIXCH: TChart
         Left = 0
-        Height = 648
+        Height = 651
         Top = 0
         Width = 1156
         AxisList = <        
@@ -1602,7 +1839,7 @@ object MainForm: TMainForm
     end
     object ActionControlTS: TTabSheet
       Caption = 'Action Control'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       object RepeatPC: TPageControl
         Left = 8
@@ -9447,6 +9684,7 @@ object MainForm: TMainForm
           Width = 130
           BevelOuter = bvNone
           ParentBackground = False
+          ParentColor = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
@@ -10034,7 +10272,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -11010,12 +11248,12 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
         Left = 0
-        Height = 648
+        Height = 651
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1156
@@ -11107,7 +11345,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 648
+      ClientHeight = 651
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
