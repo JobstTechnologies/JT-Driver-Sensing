@@ -21,7 +21,7 @@ To readout and visualize biosensorsensor data:
   like the axes, legend etc. To change the sensor channel names, double click on them in the
   tab *General*.
 - To add notes in the chart, Ctrl + click on a datapoint. To modify or delete an existing note
-  Ctrl + click on its datapoint.
+  Ctrl + click on it.
 
 ### Calibration
 
@@ -86,9 +86,11 @@ JT Driver Sensing uses the Arduino tool [**bossac**](https://github.com/arduino/
 
 # Compilation
 
-- Install the [**Lazarus** IDE](https://www.lazarus-ide.org/).</br>
-  Note: You must use Lazarus 2.2.0 or newer.
+- Install the [**Lazarus** IDE](https://www.lazarus-ide.org/) using the tool
+[**FPCupDeluxe**](https://github.com/LongDirtyAnimAlf/fpcupdeluxe/releases/latest).</br>
+  *Note:* You must in FPCupDeluxe choose to install the Lazarus version ***trunk***.
 - Only for the first run of Lazarus:
-  - Open the menu *Package → Online Package Manager* and install there the packages **LazSerial** and **Synapse**.
+  - Open the menu *Package → Install/Uninstall Packages* and install there the ***OnlinePackageManager***.
+  - Open the menu *Package → Online Package Manager* and install there the package ***LazSerial***.
 - Open the file *JTDriverSensing.lpi* in Lazarus.
 - Build the Lazarus project or run it.
