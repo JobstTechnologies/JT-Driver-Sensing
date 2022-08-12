@@ -21,6 +21,7 @@ object NoteEditingF: TNoteEditingF
     BorderSpacing.Left = 15
     BorderSpacing.Right = 15
     BorderSpacing.Bottom = 10
+    ScrollBars = ssAutoVertical
     TabOrder = 0
   end
   object OKBB: TBitBtn

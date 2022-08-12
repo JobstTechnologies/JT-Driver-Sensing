@@ -2930,11 +2930,12 @@ end;
 procedure TSIXControl.SCDataPointClickToolPointClick(ATool: TChartTool;
   APoint: TPoint);
 var
- NoteText, NotesFile, OutputLine : string;
+ NoteText, NotesFile, OutputLine, helpString : string;
  tool : TDataPointTool;
  series : TChartSeries;
  NotesFileStream : TFileStream;
  MousePointer : TPoint;
+ i : integer;
 begin
  MousePointer:= Mouse.CursorPos;
  tool:= ATool as TDataPointTool;
@@ -2954,7 +2955,19 @@ begin
     or (ModalResult = mrCancel) then
    exit
   else
-   series.Source[tool.PointIndex]^.Text:= NoteTextM.Lines.Text;
+  begin
+   // we must strip empty lines to avoid problems on reading
+   for i:= NoteTextM.Lines.Count - 1 downto 0 do
+    if NoteTextM.Lines[i].IsEmpty then
+     NoteTextM.Lines.Delete(i)
+    else
+     break;
+   // we must also strip a possible line ending of last line
+   helpString:= NoteTextM.Lines.Text;
+   if Pos(LineEnding, helpString) > 0 then
+    helpString:= Copy(helpString, 0, Length(helpString) - Length(LineEnding));
+   series.Source[tool.PointIndex]^.Text:= helpString;
+  end;
  end;
 
  // force a redraw of the chart
@@ -2986,7 +2999,7 @@ begin
   // seek to end and append the mark
   NotesFileStream.Seek(0, soFromEnd);
   OutputLine:= series.Name + #9 + IntToStr(tool.PointIndex) + LineEnding
-               + NoteEditingF.NoteTextM.Lines.Text + LineEnding + LineEnding;
+               + helpString + LineEnding + LineEnding;
   try
    NotesFileStream.Write(OutputLine[1], Length(OutputLine));
   except
@@ -3045,6 +3058,8 @@ try
   inc(rowCounter);
   LineReader.ReadLine(ReadLine);
   StringArray:= ReadLine.Split(#9);
+  // we can have the case that a note has line end at the end
+  // therefore check for the next line if the current one is empty
   // the first part is the series name the second one the point index
   series:= (MainForm.FindComponent(StringArray[0]) as TChartSeries);
   if series = nil then

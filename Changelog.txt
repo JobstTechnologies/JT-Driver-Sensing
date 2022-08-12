@@ -1,5 +1,13 @@
 Changes
 
+from version 1.34 to 1.35
+
+bugfix:
+- fix bug on reading notes that have a trailing line ending
+  (for existing measurements the error message cannot be avoided
+   but can be ignored)
+
+   
 from version 1.33 to 1.34
 
 improvements:
