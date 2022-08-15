@@ -3058,8 +3058,6 @@ try
   inc(rowCounter);
   LineReader.ReadLine(ReadLine);
   StringArray:= ReadLine.Split(#9);
-  // we can have the case that a note has line end at the end
-  // therefore check for the next line if the current one is empty
   // the first part is the series name the second one the point index
   series:= (MainForm.FindComponent(StringArray[0]) as TChartSeries);
   if series = nil then
