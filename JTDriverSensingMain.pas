@@ -1125,7 +1125,7 @@ begin
  finally
   FileVerInfo.Free;
  end;
- MainForm.Caption:= 'JT Driver Sensing ' + Version;
+ MainForm.Caption:= Application.Title + ' ' + Version;
  DefaultFormatSettings.DecimalSeparator:= '.'; // we use English numbers
  SIXControl.NumChannels:= 6; // if no definition file loaded, output 6 channels
 
@@ -2131,10 +2131,15 @@ end;
 
 procedure TMainForm.AboutMIClick(Sender: TObject);
 begin
- // set version number
- AboutFormF.VersionNumber.Caption:= Version;
- // open the dialog
- AboutFormF.ShowModal;
+ with AboutFormF do
+ begin
+  // set version number
+  NameL.Caption:= Application.Title + ' version ';
+  VersionNumberL.Caption:= Version;
+  Caption:= Application.Title;
+  // open the dialog
+  ShowModal;
+ end;
 end;
 
 procedure TMainForm.AbortCalibrationMIClick(Sender: TObject);

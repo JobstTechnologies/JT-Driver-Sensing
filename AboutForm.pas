@@ -13,16 +13,16 @@ type
   { TAboutFormF }
 
   TAboutFormF = class(TForm)
-    BitBtn1: TBitBtn;
-    ReadmeLink: TLabel;
-    Label1: TLabel;
-    DescriptionText: TStaticText;
-    VersionNumber: TLabel;
-    UsageText: TStaticText;
-    SourceCodeText: TLabel;
-    GitHubLink: TLabel;
-    procedure GitHubLinkClick(Sender: TObject);
-    procedure ReadmeLinkClick(Sender: TObject);
+    OKBB: TBitBtn;
+    ReadmeLinkL: TLabel;
+    NameL: TLabel;
+    DescriptionTextST: TStaticText;
+    VersionNumberL: TLabel;
+    UsageTextST: TStaticText;
+    SourceCodeTextL: TLabel;
+    GitHubLinkL: TLabel;
+    procedure GitHubLinkLClick(Sender: TObject);
+    procedure ReadmeLinkLClick(Sender: TObject);
   private
 
   public
@@ -38,12 +38,12 @@ implementation
 
 { TAboutFormF }
 
-procedure TAboutFormF.ReadmeLinkClick(Sender: TObject);
+procedure TAboutFormF.ReadmeLinkLClick(Sender: TObject);
 begin
  OpenURL('https://github.com/JobstTechnologies/JT-Driver-Sensing#readme');
 end;
 
-procedure TAboutFormF.GitHubLinkClick(Sender: TObject);
+procedure TAboutFormF.GitHubLinkLClick(Sender: TObject);
 begin
  OpenURL('https://github.com/JobstTechnologies/JT-Driver-Sensing');
 end;
