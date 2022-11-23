@@ -1093,6 +1093,7 @@ var
   COMListSIX : array of Int32; // list with available SIX (list index is COM port number)
   SensorFileStream : TFileStream;
   HaveSensorFileStream : Boolean = False;
+  FoundLoadedDefFile : Boolean = True; // .def file in loaded data was found
   InNamePump : string = ''; // name of loaded pump action file
   DropfileNamePump : string = ''; // name of dropped pump action file
   connectedPumpName : string = ''; // name of connected pump COM port
@@ -3072,10 +3073,10 @@ var
 begin
  // we can have the case that a file is dropped while we cannot load a file
  if not LoadSensorDataMI.enabled then
- exit;
+  exit;
 
- ReadSensorData((Sender as TComponent).Name,
-                AppendMinute, AppendCounter, LastDefFile, LastSIXID);
+ ReadSensorData((Sender as TComponent).Name, AppendMinute, AppendCounter,
+                LastDefFile, LastSIXID);
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -3101,7 +3102,7 @@ var
  OpenFileStream : TFileStream;
  LineReader : TStreamReader;
  StringArray : TStringArray;
- ReadLine, ReturnName, testString : string;
+ ReadLine, ReturnName, testString, tempStr : string;
  MousePointer : TPoint;
  i, rowCounter, blankCounter, TempRow : integer;
  ChanDbl, ChanRawDbl : array [1..8] of double;
@@ -3205,6 +3206,37 @@ try
      LastDefFile:= LastDefFile + ' ';
    end;
    RemovePadChars(LastDefFile, ['"']); // strip quotes
+
+   // assume we have an existing .def file
+   FoundLoadedDefFile:= True;
+   // reset temperature connection hint
+   NoTempCorrectionCB.Hint:= 'The sensor data will not be corrected' + LineEnding
+    + 'by the temperature correction factor that' + LineEnding
+    + 'are stored in the sensor definition file' + LineEnding
+    + '(only available for running measurements' + LineEnding
+    + 'if definition file is loadedor for loaded' + LineEnding
+    + 'measurements if values are displayed in nA)';
+
+   // check if .def file exists and if, read its gains
+   // this is done for the temperature gains that are the
+   // same in all .def files of a measurement
+   // first check if .def file is in same folder
+   tempStr:= ExtractFilePath(InNameSensor) + LastDefFile;
+   if FileExists(tempStr) then
+    SIXControl.ParseDefFile(tempStr)
+   else
+   begin
+    // chack also the subfolder 'DefinitionFiles'
+    tempStr:= ExtractFilePath(InNameSensor) + 'DefinitionFiles\' + LastDefFile;
+    if FileExists(tempStr) then
+     SIXControl.ParseDefFile(tempStr)
+    else
+    begin
+     FoundLoadedDefFile:= False;
+     NoTempCorrectionCB.Hint:= 'Not available because first .def file in'
+      + LineEnding + 'loaded sensor data file cannot be found';
+    end;
+   end;
    SetLength(LastDefFile, Length(LastDefFile) - 4); // without suffix '.def'
    continue;
   end;
@@ -3300,8 +3332,7 @@ try
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
  // there might have been a definition file load that doesn't fit to the data
- // therefore unload it
- // only when file was loaded by the user
+ // therefore unload it only when file was loaded by the user
  if HaveDefFileCB.Checked then
   UnloadDefBBClick(MainForm);
  end;
@@ -3623,11 +3654,15 @@ end;
  // only when file was loaded by the user
  if (Input = 'LoadSensorDataMI') or (Input = 'MainForm') then
  begin
-  // for existing data we don't perform calibrations
+  // for existing data we cannot change blank subtraction
   NoSubtractBlankCB.Enabled:= false;
   NoSubtractBlankCB.Checked:= false;
-  NoTempCorrectionCB.Enabled:= false;
+  // only for raw nA values we can recalculate the temperature correction
   NoTempCorrectionCB.Checked:= false;
+  if RawCurrentCB.Checked and FoundLoadedDefFile then
+   NoTempCorrectionCB.Enabled:= true
+  else
+   NoTempCorrectionCB.Enabled:= false;
   // also disable to load a new .def file because this would lead to
   // wrong channel names
   LoadDefBB.Enabled:= false;
@@ -4357,6 +4392,15 @@ begin
  LastDefFile:= 'None';
  // get the default gain for the raw values
  SetSIXFactors;
+ // assume we will get a .def file, will be set to false later if not
+ FoundLoadedDefFile:= True;
+ // reset temperature connection hint
+ NoTempCorrectionCB.Hint:= 'The sensor data will not be corrected' + LineEnding
+  + 'by the temperature correction factor that' + LineEnding
+  + 'are stored in the sensor definition file' + LineEnding
+  + '(only available for running measurements' + LineEnding
+  + 'if definition file is loadedor for loaded' + LineEnding
+  + 'measurements if values are displayed in nA)';
 
  if Disconnect then
  begin
@@ -4372,9 +4416,17 @@ begin
   if not HaveDefFileCB.Checked then
   begin
    LoadDefBBClick(LoadDefBB as TObject);
-   // only raw values possible
-   RawCurrentCB.Checked:= true;
-   RawCurrentCB.Enabled:= false;
+   // if the user canceled only raw values possible
+   if not HaveDefFileCB.Checked then
+   begin
+    RawCurrentCB.Checked:= true;
+    RawCurrentCB.Enabled:= false;
+    FoundLoadedDefFile:= False;
+    NoSubtractBlankCB.Checked:= false;
+    NoSubtractBlankCB.Enabled:= false;
+    NoTempCorrectionCB.Checked:= false;
+    NoTempCorrectionCB.Enabled:= false;
+   end;
   end;
 
   // determine all possible COM ports

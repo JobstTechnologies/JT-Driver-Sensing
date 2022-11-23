@@ -1662,6 +1662,9 @@ begin
         * GainsRaw[i] / Gains[i];
    end;
   end;
+  // for raw current the temperature correction can be recalculated
+  if hasLoadedSensorData and FoundLoadedDefFile then
+   MainForm.NoTempCorrectionCB.Enabled:= true;
  end
  else // not checked
  begin
@@ -1710,6 +1713,8 @@ begin
         * Gains[i] / GainsRaw[i];
    end;
   end;
+  // temperature correction cannot be recalculated
+  MainForm.NoTempCorrectionCB.Enabled:= false;
  end; // end not checked
 
  // calculate channel 7 and 8 values
@@ -2652,10 +2657,16 @@ procedure TSIXControl.SCNoTempCorrectionCBChange(Sender: TObject);
 var
  i, j : integer;
  calcGains : array [1..6] of single;
+ hasLoadedSensorData : Boolean;
 begin
  // initialize
  for i:= 1 to 6 do
   calcGains[i]:= 1.0;
+
+ // if we have something in the chart but no connection to the SIX,
+ // we have a data file loaded
+ hasLoadedSensorData:= ((MainForm.SIXCh1Values.LastValueIndex > 0)
+                        and (not MainForm.HaveSerialSensorCB.Checked));
 
  // recalculate the values in the plot
  // Note: this will purposely not have any influence on the output .csv file
@@ -2664,10 +2675,17 @@ begin
  for i:= 1 to NumChannels do
  begin
   if not MainForm.RawCurrentCB.Checked then
+  begin
+   // if we have loaded data Gains could be zero
+   if (Gains[i] = 0.0) or hasLoadedSensorData then
+    exit;
    // values are in mmol
    calcGains[i]:= Gains[i]
+  end
   else
    // values are in nA
+   if (GainsRaw[i] = 0.0) or (not FoundLoadedDefFile) then // just a safe guard
+    exit;
    calcGains[i]:= GainsRaw[i];
 
   for j:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
