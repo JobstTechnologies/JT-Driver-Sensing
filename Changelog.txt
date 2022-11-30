@@ -3,7 +3,7 @@ Changes
 from version 1.37 to 1.38
 
 bugfix:
-- an attempt to add a note in an empty sensor data diagram leads to a crash
+- trying to add a note in an empty sensor data diagram could lead to a crash
 
 
 from version 1.36 to 1.37
