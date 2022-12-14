@@ -3050,7 +3050,7 @@ begin
  MousePointer:= Mouse.CursorPos;
 
  NotesFile:= ExtractFileName(InNameSensor) + '.notes';
- NotesFile:= ExtractFilePath(Application.ExeName) + NotesFile;
+ NotesFile:= ExtractFilePath(InNameSensor) + NotesFile;
  if not FileExists(NotesFile) then
   // nothing to do
   exit;

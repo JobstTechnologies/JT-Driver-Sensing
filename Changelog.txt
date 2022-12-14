@@ -1,5 +1,14 @@
 Changes
 
+from version 1.38 to 1.39
+
+Improvement:
+- output the last uses SIX for existing sensor data
+
+bugfix:
+- notes for existing sensor data were not always loaded
+
+
 from version 1.37 to 1.38
 
 bugfix:

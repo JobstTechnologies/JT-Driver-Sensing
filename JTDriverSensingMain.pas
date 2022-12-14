@@ -3090,6 +3090,11 @@ begin
   SIXCH.Extent.UseXMin:= false;
  end;
 
+ // output the last used SIX
+ ConnComPortSensL.Caption:= 'Last Used SIX';
+ ConnComPortSensM.Color:= clInfoBK;
+ ConnComPortSensM.Text:= LastSIXID;
+
  // read the notes
  SIXControl.ReadNotes;
 end;
@@ -4401,6 +4406,13 @@ begin
   + '(only available for running measurements' + LineEnding
   + 'if definition file is loadedor for loaded' + LineEnding
   + 'measurements if values are displayed in nA)';
+ // reset SIX connection elements
+ if ConnComPortSensL.Caption <> 'Connected To' then
+ begin
+  ConnComPortSensL.Caption:= 'Connected To';
+  ConnComPortSensM.Color:= clHighlight;
+  ConnComPortSensM.Text:= 'None';
+ end;
 
  if Disconnect then
  begin
