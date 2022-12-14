@@ -3,7 +3,7 @@ Changes
 from version 1.38 to 1.39
 
 Improvements:
-- output the last uses SIX for existing sensor data
+- output the last used SIX for existing sensor data
 - new diagram context menu to hide/show notes
 
 bugfix:
