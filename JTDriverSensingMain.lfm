@@ -5,7 +5,7 @@ object MainForm: TMainForm
   Width = 1170
   AllowDropFiles = True
   Caption = 'JT Driver Sensing'
-  ClientHeight = 688
+  ClientHeight = 708
   ClientWidth = 1170
   Color = clWindow
   Menu = MainMenu
@@ -24,7 +24,7 @@ object MainForm: TMainForm
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 4
-    Height = 680
+    Height = 700
     Top = 4
     Width = 1162
     ActivePage = GeneralTS
@@ -34,7 +34,7 @@ object MainForm: TMainForm
     TabOrder = 0
     object GeneralTS: TTabSheet
       Caption = 'General'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       object Channel1GB: TGroupBox
         AnchorSideLeft.Control = GeneralGB
@@ -52,6 +52,7 @@ object MainForm: TMainForm
         Caption = 'Channel 1'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
@@ -141,6 +142,7 @@ object MainForm: TMainForm
         Caption = 'Channel 2'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -228,6 +230,7 @@ object MainForm: TMainForm
         Caption = 'General'
         ClientHeight = 72
         ClientWidth = 336
+        ParentBackground = False
         TabOrder = 2
         object EvalTimeL: TLabel
           AnchorSideLeft.Control = GeneralGB
@@ -351,6 +354,7 @@ object MainForm: TMainForm
         Caption = 'Sensor Status Info'
         ClientHeight = 358
         ClientWidth = 152
+        ParentBackground = False
         TabOrder = 3
         object IndicatorSensorP: TPanel
           AnchorSideLeft.Control = SixStatusGB
@@ -425,6 +429,7 @@ object MainForm: TMainForm
           Caption = 'SIX Temperature'
           ClientHeight = 78
           ClientWidth = 132
+          ParentBackground = False
           TabOrder = 2
           object SIXTempLE: TLabeledEdit
             Left = 12
@@ -532,6 +537,7 @@ object MainForm: TMainForm
         Caption = 'Channel Operation 1'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4
@@ -626,6 +632,7 @@ object MainForm: TMainForm
         Caption = 'Channel 4'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
@@ -803,6 +810,7 @@ object MainForm: TMainForm
         Caption = 'Channel Operation 2'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
@@ -904,6 +912,7 @@ object MainForm: TMainForm
         Caption = 'Expert Settings'
         ClientHeight = 72
         ClientWidth = 680
+        ParentBackground = False
         TabOrder = 8
         Visible = False
         object NoSubtractBlankCB: TCheckBox
@@ -967,6 +976,7 @@ object MainForm: TMainForm
             '250 nA'
             '500 nA'
           )
+          ParentBackground = False
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
@@ -1002,6 +1012,7 @@ object MainForm: TMainForm
           Caption = 'Testing'
           ClientHeight = 60
           ClientWidth = 135
+          ParentBackground = False
           TabOrder = 4
           object PerformTestsCB: TCheckBox
             AnchorSideLeft.Control = PerformTestingGB
@@ -1089,6 +1100,7 @@ object MainForm: TMainForm
         Caption = 'Channel 3'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 9
@@ -1178,6 +1190,7 @@ object MainForm: TMainForm
         Caption = 'Channel 6'
         ClientHeight = 70
         ClientWidth = 336
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 10
@@ -1266,6 +1279,7 @@ object MainForm: TMainForm
         Caption = 'Pump Driver Status Info'
         ClientHeight = 166
         ClientWidth = 144
+        ParentBackground = False
         TabOrder = 11
         object IndicatorPumpGeneralP: TPanel
           AnchorSideLeft.Control = PumpStatusGeneralGB
@@ -1693,7 +1707,7 @@ object MainForm: TMainForm
     end
     object SIXValuesTS: TTabSheet
       Caption = 'SIX Values'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       object SIXCH: TChart
         AnchorSideLeft.Control = SIXValuesTS
@@ -1703,7 +1717,7 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = SIXValuesTS
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 652
+        Height = 672
         Top = 0
         Width = 1154
         AxisList = <        
@@ -1935,6 +1949,7 @@ object MainForm: TMainForm
         BorderSpacing.Right = 4
         BevelOuter = bvNone
         Caption = 'Last shown minutes in plot:'
+        ParentBackground = False
         TabOrder = 2
       end
       object CalibrateP: TPanel
@@ -1949,6 +1964,7 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         ClientHeight = 24
         ClientWidth = 224
+        ParentBackground = False
         TabOrder = 3
         object CalibrateTB: TToggleBox
           AnchorSideLeft.Control = CalibrateP
@@ -1995,6 +2011,7 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         ClientHeight = 23
         ClientWidth = 94
+        ParentBackground = False
         TabOrder = 4
         object ScrollViewCB: TCheckBox
           AnchorSideLeft.Control = ScrollViewP
@@ -2043,7 +2060,7 @@ object MainForm: TMainForm
         Left = 2
         Height = 20
         Hint = 'Autoscales all axes'
-        Top = 630
+        Top = 650
         Width = 65
         Anchors = [akLeft, akBottom]
         BorderSpacing.Left = 2
@@ -2057,7 +2074,7 @@ object MainForm: TMainForm
     end
     object ActionControlTS: TTabSheet
       Caption = 'Action Control'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       object RepeatPC: TPageControl
         AnchorSideLeft.Control = ActionControlTS
@@ -2231,6 +2248,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump1VoltageFS1: TFloatSpinEdit
@@ -2288,6 +2306,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 2'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -2324,6 +2343,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump2VoltageFS1: TFloatSpinEdit
@@ -2382,6 +2402,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 3'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 2
@@ -2418,6 +2439,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump3VoltageFS1: TFloatSpinEdit
@@ -2476,6 +2498,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 4'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 3
@@ -2512,6 +2535,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump4VoltageFS1: TFloatSpinEdit
@@ -2575,6 +2599,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 5'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB1: TCheckBox
@@ -2607,6 +2632,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump5VoltageFS1: TFloatSpinEdit
@@ -2661,6 +2687,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 6'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB1: TCheckBox
@@ -2695,6 +2722,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump6VoltageFS1: TFloatSpinEdit
@@ -2750,6 +2778,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 7'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB1: TCheckBox
@@ -2783,6 +2812,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump7VoltageFS1: TFloatSpinEdit
@@ -2838,6 +2868,7 @@ object MainForm: TMainForm
                 Caption = 'Pump 8'
                 ClientHeight = 172
                 ClientWidth = 144
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB1: TCheckBox
@@ -2871,6 +2902,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   TabOrder = 1
                 end
                 object Pump8VoltageFS1: TFloatSpinEdit
@@ -3200,6 +3232,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             Enabled = False
+            ParentBackground = False
             TabOrder = 1
             object Unit2RBs: TRadioButton
               Left = 88
@@ -3250,6 +3283,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             Enabled = False
+            ParentBackground = False
             TabOrder = 2
             object Label1: TLabel
               Left = 64
@@ -3295,6 +3329,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB2: TCheckBox
@@ -3329,6 +3364,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3386,6 +3422,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB2: TCheckBox
@@ -3419,6 +3456,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3477,6 +3515,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB2: TCheckBox
@@ -3510,6 +3549,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3568,6 +3608,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB2: TCheckBox
@@ -3601,6 +3642,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3665,6 +3707,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB2: TCheckBox
@@ -3697,6 +3740,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3756,6 +3800,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB2: TCheckBox
@@ -3789,6 +3834,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3849,6 +3895,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB2: TCheckBox
@@ -3882,6 +3929,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -3942,6 +3990,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB2: TCheckBox
@@ -3975,6 +4024,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4316,6 +4366,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             Enabled = False
+            ParentBackground = False
             TabOrder = 1
             object Unit3RBs: TRadioButton
               Left = 88
@@ -4366,6 +4417,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             Enabled = False
+            ParentBackground = False
             TabOrder = 2
             object Label3: TLabel
               Left = 64
@@ -4411,6 +4463,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB3: TCheckBox
@@ -4445,6 +4498,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4502,6 +4556,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB3: TCheckBox
@@ -4535,6 +4590,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4593,6 +4649,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB3: TCheckBox
@@ -4626,6 +4683,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4684,6 +4742,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB3: TCheckBox
@@ -4717,6 +4776,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4781,6 +4841,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB3: TCheckBox
@@ -4813,6 +4874,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4872,6 +4934,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB3: TCheckBox
@@ -4905,6 +4968,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -4965,6 +5029,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB3: TCheckBox
@@ -4998,6 +5063,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5058,6 +5124,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB3: TCheckBox
@@ -5091,6 +5158,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5432,6 +5500,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             Enabled = False
+            ParentBackground = False
             TabOrder = 1
             object Unit4RBs: TRadioButton
               Left = 88
@@ -5482,6 +5551,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             Enabled = False
+            ParentBackground = False
             TabOrder = 2
             object Label4: TLabel
               Left = 64
@@ -5527,6 +5597,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB4: TCheckBox
@@ -5561,6 +5632,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5618,6 +5690,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB4: TCheckBox
@@ -5651,6 +5724,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5709,6 +5783,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB4: TCheckBox
@@ -5742,6 +5817,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5800,6 +5876,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB4: TCheckBox
@@ -5833,6 +5910,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5897,6 +5975,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB4: TCheckBox
@@ -5929,6 +6008,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -5988,6 +6068,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB4: TCheckBox
@@ -6021,6 +6102,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6081,6 +6163,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB4: TCheckBox
@@ -6114,6 +6197,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6174,6 +6258,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB4: TCheckBox
@@ -6207,6 +6292,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6548,6 +6634,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             Enabled = False
+            ParentBackground = False
             TabOrder = 1
             object Unit5RBs: TRadioButton
               Left = 88
@@ -6598,6 +6685,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             Enabled = False
+            ParentBackground = False
             TabOrder = 2
             object Label5: TLabel
               Left = 64
@@ -6643,6 +6731,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB5: TCheckBox
@@ -6677,6 +6766,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6734,6 +6824,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB5: TCheckBox
@@ -6767,6 +6858,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6825,6 +6917,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB5: TCheckBox
@@ -6858,6 +6951,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -6916,6 +7010,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB5: TCheckBox
@@ -6949,6 +7044,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7013,6 +7109,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB5: TCheckBox
@@ -7045,6 +7142,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7104,6 +7202,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB5: TCheckBox
@@ -7137,6 +7236,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7197,6 +7297,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB5: TCheckBox
@@ -7230,6 +7331,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7290,6 +7392,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB5: TCheckBox
@@ -7323,6 +7426,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7663,6 +7767,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 188
             Enabled = False
+            ParentBackground = False
             TabOrder = 1
             object Unit6RBs: TRadioButton
               Left = 88
@@ -7713,6 +7818,7 @@ object MainForm: TMainForm
             ClientHeight = 29
             ClientWidth = 84
             Enabled = False
+            ParentBackground = False
             TabOrder = 2
             object Label6: TLabel
               Left = 64
@@ -7758,6 +7864,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB6: TCheckBox
@@ -7792,6 +7899,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7849,6 +7957,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB6: TCheckBox
@@ -7882,6 +7991,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -7940,6 +8050,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB6: TCheckBox
@@ -7973,6 +8084,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8031,6 +8143,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB6: TCheckBox
@@ -8064,6 +8177,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8128,6 +8242,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB6: TCheckBox
@@ -8160,6 +8275,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8219,6 +8335,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump6OnOffCB6: TCheckBox
@@ -8252,6 +8369,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8312,6 +8430,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB6: TCheckBox
@@ -8345,6 +8464,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8405,6 +8525,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB6: TCheckBox
@@ -8438,6 +8559,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8766,6 +8888,7 @@ object MainForm: TMainForm
             Caption = 'Duty Cycle'
             ClientHeight = 29
             ClientWidth = 84
+            ParentBackground = False
             TabOrder = 0
             object Label12: TLabel
               Left = 64
@@ -8798,6 +8921,7 @@ object MainForm: TMainForm
             Caption = 'Action Time'
             ClientHeight = 29
             ClientWidth = 188
+            ParentBackground = False
             TabOrder = 1
             object Unit7RBs: TRadioButton
               Left = 88
@@ -8872,6 +8996,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump1OnOffCB7: TCheckBox
@@ -8906,6 +9031,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -8966,6 +9092,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
                 object Pump2OnOffCB7: TCheckBox
@@ -8999,6 +9126,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9059,6 +9187,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump3OnOffCB7: TCheckBox
@@ -9092,6 +9221,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9152,6 +9282,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump4OnOffCB7: TCheckBox
@@ -9185,6 +9316,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9251,6 +9383,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 0
                 OnDblClick = PumpGBDblClick
                 object Pump5OnOffCB7: TCheckBox
@@ -9283,6 +9416,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9342,6 +9476,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 ParentShowHint = False
                 TabOrder = 1
                 OnDblClick = PumpGBDblClick
@@ -9376,6 +9511,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9436,6 +9572,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 2
                 OnDblClick = PumpGBDblClick
                 object Pump7OnOffCB7: TCheckBox
@@ -9469,6 +9606,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9529,6 +9667,7 @@ object MainForm: TMainForm
                 ClientHeight = 172
                 ClientWidth = 144
                 Enabled = False
+                ParentBackground = False
                 TabOrder = 3
                 OnDblClick = PumpGBDblClick
                 object Pump8OnOffCB7: TCheckBox
@@ -9562,6 +9701,7 @@ object MainForm: TMainForm
                     'Clockwise'
                     'Counterclockwise'
                   )
+                  ParentBackground = False
                   ParentShowHint = False
                   TabOrder = 1
                 end
@@ -9894,6 +10034,7 @@ object MainForm: TMainForm
         Caption = 'Pump Driver Status Info'
         ClientHeight = 365
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 1
         object RepeatOutputLE: TLabeledEdit
           AnchorSideLeft.Control = IndicatorPumpP
@@ -10054,6 +10195,7 @@ object MainForm: TMainForm
         Caption = 'Run Settings'
         ClientHeight = 64
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 2
         object RunEndlessCB: TCheckBox
           AnchorSideLeft.Control = RepeatL
@@ -10107,6 +10249,7 @@ object MainForm: TMainForm
         Caption = 'Actions'
         ClientHeight = 166
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 3
         object RunBB: TBitBtn
           AnchorSideLeft.Control = ActionsGB
@@ -10178,6 +10321,7 @@ object MainForm: TMainForm
           BevelColor = clBtnShadow
           BevelInner = bvRaised
           BevelOuter = bvNone
+          ParentBackground = False
           TabOrder = 3
         end
       end
@@ -10190,7 +10334,7 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = ActionControlTS
         AnchorSideBottom.Side = asrBottom
         Left = 8
-        Height = 112
+        Height = 132
         Hint = 'The command that will be sent by clicking ''Run Pumps'''
         Top = 532
         Width = 536
@@ -10230,6 +10374,7 @@ object MainForm: TMainForm
         Caption = 'Valve Setup'
         ClientHeight = 64
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 6
         object HasNoValvesCB: TCheckBox
           AnchorSideLeft.Control = ValveNumberL
@@ -10292,6 +10437,7 @@ object MainForm: TMainForm
         ClientHeight = 410
         ClientWidth = 232
         Enabled = False
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
@@ -10370,6 +10516,7 @@ object MainForm: TMainForm
               Caption = 'Calibration Concentration'
               ClientHeight = 34
               ClientWidth = 156
+              ParentBackground = False
               TabOrder = 0
               object GlucoseCalibValueFSE: TFloatSpinEdit
                 Left = 8
@@ -10450,6 +10597,7 @@ object MainForm: TMainForm
               Caption = 'Calibration Concentration'
               ClientHeight = 34
               ClientWidth = 156
+              ParentBackground = False
               TabOrder = 0
               object LactateCalibValueFSE: TFloatSpinEdit
                 Left = 8
@@ -10602,6 +10750,7 @@ object MainForm: TMainForm
         Caption = 'Pump Setup'
         ClientHeight = 64
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 8
         object HasNoPumpsCB: TCheckBox
           AnchorSideLeft.Control = PumpNumberL
@@ -10665,6 +10814,7 @@ object MainForm: TMainForm
         Caption = 'Calibration'
         ClientHeight = 30
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 9
         object UseCalibCB: TCheckBox
           AnchorSideLeft.Control = UseCalibGB
@@ -10696,6 +10846,7 @@ object MainForm: TMainForm
         Caption = 'Connection'
         ClientHeight = 55
         ClientWidth = 148
+        ParentBackground = False
         TabOrder = 10
         object DriverConnectBB: TBitBtn
           AnchorSideLeft.Control = DriverConnectionGB
@@ -10736,7 +10887,7 @@ object MainForm: TMainForm
     end
     object TestSettingsTS: TTabSheet
       Caption = 'Test Settings'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       TabVisible = False
       object ActionSensGB1: TGroupBox
@@ -10785,6 +10936,7 @@ object MainForm: TMainForm
         Caption = 'Channel 1'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
@@ -10879,6 +11031,7 @@ object MainForm: TMainForm
         Caption = 'Channel 4'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
@@ -11064,6 +11217,7 @@ object MainForm: TMainForm
         Caption = 'Channel 2'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4
@@ -11158,6 +11312,7 @@ object MainForm: TMainForm
         Caption = 'Channel 3'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
@@ -11250,6 +11405,7 @@ object MainForm: TMainForm
         Caption = 'Channel 6'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 6
@@ -11342,6 +11498,7 @@ object MainForm: TMainForm
         Caption = 'Channel Operation 2'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 7
@@ -11448,6 +11605,7 @@ object MainForm: TMainForm
         Caption = 'Channel Operation 1'
         ClientHeight = 116
         ClientWidth = 348
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 8
@@ -11553,6 +11711,7 @@ object MainForm: TMainForm
         Caption = 'General'
         ClientHeight = 60
         ClientWidth = 204
+        ParentBackground = False
         TabOrder = 9
         object ResultCounterSE1: TSpinEdit
           Left = 24
@@ -11603,6 +11762,7 @@ object MainForm: TMainForm
         Caption = 'Status Info'
         ClientHeight = 372
         ClientWidth = 152
+        ParentBackground = False
         TabOrder = 10
         object IndicatorSensorTestP: TPanel
           Left = 7
@@ -11712,7 +11872,7 @@ object MainForm: TMainForm
     end
     object ResultTS: TTabSheet
       Caption = 'Test Results'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       TabVisible = False
       object ResultCH: TChart
@@ -11723,7 +11883,7 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = ResultTS
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 652
+        Height = 672
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
         Width = 1154
@@ -11826,7 +11986,7 @@ object MainForm: TMainForm
     end
     object AnalogOutTS: TTabSheet
       Caption = 'Analog Output'
-      ClientHeight = 652
+      ClientHeight = 672
       ClientWidth = 1154
       TabVisible = False
       object AnOutPump1GB: TGroupBox
@@ -11843,6 +12003,7 @@ object MainForm: TMainForm
         Caption = 'Output to Pump Connector 1'
         ClientHeight = 76
         ClientWidth = 236
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
@@ -11928,6 +12089,7 @@ object MainForm: TMainForm
         Caption = 'General'
         ClientHeight = 52
         ClientWidth = 488
+        ParentBackground = False
         TabOrder = 1
         object AnOutMaxSignalFSE: TFloatSpinEdit
           AnchorSideLeft.Control = AnOutGeneralGB
@@ -12019,6 +12181,7 @@ object MainForm: TMainForm
         Caption = 'Output to Pump Connector 2'
         ClientHeight = 76
         ClientWidth = 236
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
@@ -12103,6 +12266,7 @@ object MainForm: TMainForm
         Caption = 'Output to Pump Connector 3'
         ClientHeight = 76
         ClientWidth = 236
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
@@ -12185,6 +12349,7 @@ object MainForm: TMainForm
         Caption = 'Output to Pump Connector 4'
         ClientHeight = 76
         ClientWidth = 236
+        ParentBackground = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4
