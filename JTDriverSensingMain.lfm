@@ -12738,14 +12738,12 @@ object MainForm: TMainForm
   object ContextChartPM: TPopupMenu
     Left = 896
     Top = 512
-    object AbortCalibrationMI: TMenuItem
-      Caption = 'Abort Calibration'
-      Visible = False
-      OnClick = AbortCalibrationMIClick
+    object AutoscaleMI: TMenuItem
+      Caption = 'Auto scale'
+      OnClick = AutoscaleMIClick
     end
-    object ChangeBackColorMI: TMenuItem
-      Caption = 'Change Background Color'
-      OnClick = ChangeBackColorMIClick
+    object Separator1MI: TMenuItem
+      Caption = '-'
     end
     object TimeMinuteMI: TMenuItem
       Caption = 'Time in minutes'
@@ -12764,9 +12762,26 @@ object MainForm: TMainForm
       Caption = 'Time format DD:HH:MM'
       OnClick = TimeDaysHoursMinMIClick
     end
-    object AutoscaleMI: TMenuItem
-      Caption = 'Auto scale'
-      OnClick = AutoscaleMIClick
+    object Separator2MI: TMenuItem
+      Caption = '-'
+    end
+    object ChangeBackColorMI: TMenuItem
+      Caption = 'Change background color'
+      OnClick = ChangeBackColorMIClick
+    end
+    object HideNotesMI: TMenuItem
+      Caption = 'Notes shown'
+      Checked = True
+      OnClick = HideNotesMIClick
+    end
+    object Separator3MI: TMenuItem
+      Caption = '-'
+      Visible = False
+    end
+    object AbortCalibrationMI: TMenuItem
+      Caption = 'Abort calibration'
+      Visible = False
+      OnClick = AbortCalibrationMIClick
     end
   end
   object ChartLiveView: TChartLiveView

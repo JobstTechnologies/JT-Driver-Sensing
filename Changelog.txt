@@ -2,8 +2,9 @@ Changes
 
 from version 1.38 to 1.39
 
-Improvement:
+Improvements:
 - output the last uses SIX for existing sensor data
+- new diagram context menu to hide/show notes
 
 bugfix:
 - notes for existing sensor data were not always loaded

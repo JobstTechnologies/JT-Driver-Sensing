@@ -67,6 +67,10 @@ type
     ChartAxisTransformTime: TChartAxisTransformations;
     DataPointClickTool: TDataPointClickTool;
     DataPointMarksClickTool: TDataPointMarksClickTool;
+    HideNotesMI: TMenuItem;
+    Separator2MI: TMenuItem;
+    Separator3MI: TMenuItem;
+    Separator1MI: TMenuItem;
     StartTimeLE: TEdit;
     HaveSerialSensorCB: TCheckBox;
     HavePumpSerialCB: TCheckBox;
@@ -944,6 +948,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure HideNotesMIClick(Sender: TObject);
     procedure OverallTimerStartTimer(Sender: TObject);
     procedure TimeDaysHoursMinMIClick(Sender: TObject);
     procedure HaveDefFileCBChange(Sender: TObject);
@@ -2147,6 +2152,7 @@ procedure TMainForm.AbortCalibrationMIClick(Sender: TObject);
 begin
  SIXControl.SCCalibrateTBChange(Sender, true);
  AbortCalibrationMI.Visible:= false;
+ Separator3MI.Visible:= false;
 end;
 
 procedure TMainForm.AnOutConnectorXOnOffCBChange(Sender: TObject);
@@ -2223,6 +2229,11 @@ procedure TMainForm.DataPointHintToolHintPosition(
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
+end;
+
+procedure TMainForm.HideNotesMIClick(Sender: TObject);
+begin
+ SIXControl.SCHideNotesMIClick(Sender);
 end;
 
 procedure TMainForm.OverallTimerStartTimer(Sender: TObject);

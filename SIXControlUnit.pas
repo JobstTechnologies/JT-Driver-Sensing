@@ -60,6 +60,7 @@ type
     procedure SCSIXCHAxisList1GetMarkText(Sender: TObject; var AText: String;
       AMark: Double);
     procedure SCAutoscaleMIClick(Sender: TObject);
+    procedure SCHideNotesMIClick(Sender: TObject);
 
   private
 
@@ -2239,6 +2240,7 @@ begin
 
   // show menu entry to cancel the calibration
   MainForm.AbortCalibrationMI.Visible:= true;
+  MainForm.Separator3MI.Visible:= true;
  end
  // if not checked
  else
@@ -3642,7 +3644,7 @@ end;
 
 function TSIXControl.StringToFontStyles(s: string): TFontStyles;
 var
- i: integer;
+ i : integer;
 begin
  result:= [];
  for i:= 1 to WordCount(s, [',']) do
@@ -3696,7 +3698,9 @@ begin
 end;
 
 procedure TSIXControl.SCSIXCHAxisList1GetMarkText(Sender: TObject;
-  var AText: String; AMark: Double);
+var
+ AText : String;
+ AMark : Double);
 begin
  if MainForm.TimeDaysHoursMinMI.Checked then
  begin
@@ -3738,6 +3742,40 @@ begin
  // and we must trigger SCScrollViewCBChange to bring it back to scrolling
  if MainForm.ScrollViewCB.Checked then
   SCScrollViewCBChange(Sender);
+end;
+
+procedure TSIXControl.SCHideNotesMIClick(Sender: TObject);
+var
+ i: integer;
+ lineSeries : TLineSeries;
+begin
+ if MainForm.HideNotesMI.Checked then
+ begin
+  for i:= 0 to MainForm.SIXCH.SeriesCount - 1 do
+  begin
+   if MainForm.SIXCH.Series[i] is TLineSeries then
+   begin
+    lineSeries:= MainForm.SIXCH.Series[i] as TLineSeries;
+    //series:= ATool.Series as TLineSeries;
+    lineSeries.Marks.Visible:= false;
+   end;
+  end;
+  MainForm.HideNotesMI.Checked:= false;
+  MainForm.HideNotesMI.Caption:= 'Notes hidden';
+ end
+ else
+ begin
+  for i:= 0 to MainForm.SIXCH.SeriesCount - 1 do
+  begin
+   if MainForm.SIXCH.Series[i] is TLineSeries then
+   begin
+    lineSeries:= MainForm.SIXCH.Series[i] as TLineSeries;
+    lineSeries.Marks.Visible:= true;
+   end;
+  end;
+  MainForm.HideNotesMI.Checked:= true;
+  MainForm.HideNotesMI.Caption:= 'Notes shown';
+ end;
 end;
 
 end. //unit
