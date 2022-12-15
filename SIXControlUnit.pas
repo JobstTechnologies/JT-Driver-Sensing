@@ -3761,7 +3761,6 @@ begin
    end;
   end;
   MainForm.HideNotesMI.Checked:= false;
-  MainForm.HideNotesMI.Caption:= 'Notes hidden';
  end
  else
  begin
@@ -3774,7 +3773,6 @@ begin
    end;
   end;
   MainForm.HideNotesMI.Checked:= true;
-  MainForm.HideNotesMI.Caption:= 'Notes shown';
  end;
 end;
 
