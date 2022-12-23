@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, Graphics,
   Forms, Controls, Dialogs, ButtonPanel, ExtCtrls, Buttons, ComCtrls,
   TAGraph, TATextElements,
-  ceTitleFootFrame;
+  ceTitleFootFrame,
+  JTDriverSensingMain;
 
 type
 
@@ -61,11 +62,26 @@ end;
 
 procedure TChartTitleFootEditor.FormCloseQuery(Sender: TObject;
   var CanClose: boolean);
+var
+  HeaderLine : string;
 begin
-  if not CanClose then exit;
-  if not FOKClicked then begin
+  if not CanClose then
+    exit;
+  if not FOKClicked then
+  begin
     FTitle.Assign(FSavedTitle);
     GetChart.Invalidate;
+  end
+  else
+  // write changed title to sensor file
+  begin
+   if HaveSensorFileStream and (FSavedTitle.Text <> FTitle.Text) then
+   begin
+    // write into the output that the blanks are no longer subtracted
+    HeaderLine:= 'Diagram title: ' + FTitle.Text[0] + LineEnding;
+    // write a new header line to the output file
+    SensorFileStream.Write(HeaderLine[1], Length(HeaderLine));
+   end;
   end;
 end;
 

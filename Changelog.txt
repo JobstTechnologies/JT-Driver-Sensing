@@ -6,6 +6,8 @@ improvements:
 - improved display of decimals in tooltip of sensor data diagram
 - when loading existing data, assure that data of at least
   one channel is displayed
+- the chart title is now saved together with the sensor data
+
 
 from version 1.38 to 1.39
 

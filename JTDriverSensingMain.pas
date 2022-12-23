@@ -3123,7 +3123,7 @@ var
  OpenFileStream : TFileStream;
  LineReader : TStreamReader;
  StringArray : TStringArray;
- ReadLine, ReturnName, testString, tempStr : string;
+ ReadLine, ReturnName, testString, tempStr, ChartTitle : string;
  MousePointer : TPoint;
  i, rowCounter, blankCounter, TempRow : integer;
  ChanDbl, ChanRawDbl : array [1..8] of double;
@@ -3140,6 +3140,7 @@ begin
  MousePointer:= Mouse.CursorPos; // store mouse position
  LastDefFile:= 'None'; // there might not be any .def file
  LastSIXID:= 'unknown SIX';
+ ChartTitle:= 'SIX Values';
  TempRow:= -1;
  for i:= 1 to 8 do
   ChanRawDbl[i]:= 0.0;
@@ -3262,6 +3263,7 @@ try
    continue;
   end;
 
+  // determine initial SIX
   if (StringArray[0] = 'Used') and (StringArray[1] = 'SIX')
    and (StringArray[2] = 'ID') then // line with ID of SIX
   begin
@@ -3272,6 +3274,20 @@ try
     LastSIXID:= LastSIXID + StringArray[i];
     if i < (Length(StringArray) - 1) then
      LastSIXID:= LastSIXID + ' ';
+   end;
+   continue;
+  end;
+
+  // determine initial title
+  if (StringArray[0] = 'Diagram') and (StringArray[1] = 'title:') then
+  begin
+   // concatenate all except of the first two
+   ChartTitle:= '';
+   for i:= 2 to Length(StringArray)-1 do
+   begin
+    ChartTitle:= ChartTitle + StringArray[i];
+    if i < (Length(StringArray) - 1) then
+     ChartTitle:= ChartTitle + ' ';
    end;
    continue;
   end;
@@ -3464,6 +3480,7 @@ try
     LastDefFile:= 'None';
     continue;
    end;
+   // determine SIX
    if (StringArray[0] = 'Used') and (StringArray[1] = 'SIX')
     and (StringArray[2] = 'ID') then // line with ID of SIX
    begin
@@ -3477,8 +3494,23 @@ try
     end;
     continue;
    end;
+   // determine title
+   if (StringArray[0] = 'Diagram') and (StringArray[1] = 'title:') then
+   begin
+    // concatenate all except of the first two
+    ChartTitle:= '';
+    for i:= 2 to Length(StringArray)-1 do
+    begin
+     ChartTitle:= ChartTitle + StringArray[i];
+     if i < (Length(StringArray) - 1) then
+      ChartTitle:= ChartTitle + ' ';
+    end;
+    continue;
+   end;
+
    continue;
-  end;
+  end; // end evealuation of intermediate header
+
   // first read the counter because corrupted files might thave missing
   // values and then following routines like calculating slopes would fail
   if not TryStrToInt(StringArray[0], counter) then
@@ -3696,8 +3728,8 @@ end;
   end;
  end;
 
- // at last display the file name as chart title
- SIXCH.Title.Text[0]:= ExtractFileName(InNameSensor);
+ // set the chart title
+ SIXCH.Title.Text[0]:= ChartTitle;
  // update file name field and tooltip
  LoadedFileSensM.Text:= ExtractFileNameOnly(InNameSensor);
  LoadedFileSensM.Hint:= InNameSensor;
@@ -4825,6 +4857,8 @@ begin
     SIXTempValues.Clear;
     // output start time
     StartTimeLE.Text:= FormatDateTime('dd.mm.yyyy hh:nn:ss', now);
+    // assure that not a title of a previous measurement is taken
+    SIXCH.Title.Text[0]:= 'SIX Values';
    end;
    SIXControl.DelayReadCounter:= 0; // for the case there was a previous run
   except
@@ -4849,7 +4883,9 @@ begin
  end;
 
  // write header lines
- HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy hh:nn:ss', now) + LineEnding;
+ HeaderLine:= HeaderLine + FormatDateTime('dd.mm.yyyy hh:nn:ss', now)
+  + LineEnding;
+ HeaderLine:= HeaderLine + 'Diagram title: ' + SIXCH.Title.Text[0] + LineEnding;
  // output the used SIX
  HeaderLine:= HeaderLine + 'Used ' + ConnComPortSensM.Lines[1] + LineEnding;
  if not HaveDefFileCB.Checked then
@@ -4861,8 +4897,8 @@ begin
  end
  else
  begin
-  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text +
-   '.def"' + LineEnding;
+  HeaderLine:= HeaderLine + 'Used definition file: "' + LoadedDefFileM.Text
+   + '.def"' + LineEnding;
   HeaderLine:= HeaderLine + 'Counter' + #9 + 'Time [min]' + #9;
   // the blank channels have the unit nA
   for i:= 1 to 6 do
@@ -4967,8 +5003,6 @@ begin
 
  // disable menu to load existing sensor data
  LoadSensorDataMI.Enabled:= false;
- // reset chart title to default
- SIXCH.Title.Text[0]:= 'SIX Values';
  if HaveDefFileCB.Checked then
  begin
   RawCurrentCB.Enabled:= true;
