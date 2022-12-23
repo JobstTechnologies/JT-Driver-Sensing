@@ -1,5 +1,11 @@
 Changes
 
+from version 1.39 to 1.40
+
+improvements:
+- improved display of decimals in tooltip of sensor data diagram
+
+
 from version 1.38 to 1.39
 
 improvements:

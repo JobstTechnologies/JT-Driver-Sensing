@@ -1058,12 +1058,7 @@ begin
  // only if the data format is actually used, we do the calculation
  if not MainForm.TimeDaysHoursMinMI.checked then
  begin
-  if MainForm.TimeMinuteMI.checked then
-   // we explicitly want decimals in this case
-   result:= Format('%.2f', [x])
-  else
-   // take the chart's formatting
-   result:= Format(MainForm.SIXCH.BottomAxis.Marks{%H-}.Format, [x]);
+  result:= Format('%.4g', [x]);
   exit;
  end;
 
@@ -1127,12 +1122,12 @@ begin
  // all series except of SIXTempValues are connected to the left axis
  if SeriesName <> 'SIXTempValues' then
   AHint:= 'time = ' + CalcDaysHoursMins(x) + LineEnding
-          + Format('value = %.4g',
+          + Format('%.4g',
                    [MainForm.SIXCH.AxisList[0].GetTransform.GraphToAxis(
                     ATool.NearestGraphPoint.Y)])
  else
   AHint:= 'time = ' + CalcDaysHoursMins(x) + LineEnding
-          + Format('value = %.4g',
+          + Format('%.4g',
                    [MainForm.SIXCH.AxisList[2].GetTransform.GraphToAxis(
                     ATool.NearestGraphPoint.Y)])
 end;
