@@ -1080,6 +1080,7 @@ type
     procedure DisconnectPumpDriver;
     procedure SetSIXFactors;
     procedure DisconnectSIX;
+    procedure AssureChannelDisplay;
 
   end;
 
@@ -3088,6 +3089,10 @@ begin
 
  ReadSensorData((Sender as TComponent).Name, AppendMinute, AppendCounter,
                 LastDefFile, LastSIXID);
+
+ // assure that at least one channel is displayed
+ AssureChannelDisplay;
+
  // if the current tab is not the chart tab, we must explicitly
  // reset the axis ranges to get all data displayed
  if MainPC.ActivePage <> SIXValuesTS then
@@ -4975,6 +4980,9 @@ begin
  ReadTimer.Interval:= Trunc(EvalTimeFSE.Value * 1000); // in ms
  ReadTimer.Enabled:= true;
 
+ // assure that at least one channel is displayed
+ AssureChannelDisplay;
+
 end;
 
 procedure TMainForm.SIXCHAfterDrawBackWall(ASender: TChart; ACanvas: TCanvas;
@@ -5491,6 +5499,26 @@ begin
  end;
 
 end;
+
+procedure TMainForm.AssureChannelDisplay;
+var
+ i, counter : Byte;
+begin
+ // assure that at least one channel is displayed
+ counter:= 0;
+ for i:= 1 to SIXControl.NumChannels do
+ begin
+  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
+      as TCheckBox).Checked = true then
+  begin
+   inc(counter);
+   break;
+  end;
+ end;
+ if counter = 0 then
+  Channel1OnOffCB.Checked:= true;
+end;
+
 
 end.
 
