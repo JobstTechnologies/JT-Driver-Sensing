@@ -1,5 +1,11 @@
 Changes
 
+from version 1.40 to 1.41
+
+improvements:
+- support to change the text color and background color of notes
+
+
 from version 1.39 to 1.40
 
 improvements:

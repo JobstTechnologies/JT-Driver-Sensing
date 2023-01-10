@@ -242,6 +242,7 @@ object ChartSeriesFrame: TChartSeriesFrame
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Top = 4
           BorderSpacing.Right = 8
+          Enabled = False
           ItemHeight = 15
           ItemIndex = 1
           Items.Strings = (
@@ -304,6 +305,7 @@ object ChartSeriesFrame: TChartSeriesFrame
           Caption = 'Show at series data points'
           OnChange = cbShowMarksChange
           TabOrder = 2
+          Visible = False
         end
         object cbMarksTextColor: TColorButton
           AnchorSideLeft.Control = lblMarksTextColor

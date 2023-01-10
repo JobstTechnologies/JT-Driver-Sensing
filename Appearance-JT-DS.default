@@ -186,7 +186,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clBlack
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clBlack
@@ -206,7 +206,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clBlack
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clBlack
@@ -226,7 +226,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clYellow
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clYellow
@@ -246,7 +246,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clYellow
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clYellow
@@ -266,7 +266,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clAqua
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clAqua
@@ -286,7 +286,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clAqua
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clAqua
@@ -306,7 +306,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color $000080FF
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor $000080FF
@@ -326,7 +326,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color $000080FF
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor $000080FF
@@ -346,7 +346,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clRed
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clRed
@@ -366,7 +366,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clRed
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clRed
@@ -386,7 +386,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clLime
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clLime
@@ -406,7 +406,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clLime
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clLime
@@ -426,7 +426,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clCream
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clCream
@@ -446,7 +446,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clCream
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clCream
@@ -466,7 +466,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clFuchsia
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clFuchsia
@@ -486,7 +486,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clFuchsia
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines 0
 SeriesColor clFuchsia
@@ -506,7 +506,7 @@ Legend.Multiplicity lmSingle
 Marks.Style smsNone
 Marks.Format 
 Marks.LabelBrush.Color clMaroon
-Marks.LabelFont.Color clDefault
+Marks.LabelFont.Color clGray
 Marks.Visible -1
 ShowLines -1
 SeriesColor clMaroon
