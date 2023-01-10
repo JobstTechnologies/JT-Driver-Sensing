@@ -1070,7 +1070,7 @@ type
     function OpenActionFile(InputName: string): Boolean;
     function OpenHandling(InName: string; FileExt: string): string;
     function SaveHandling(InName: string; FileExt: string): string;
-    function ReadSensorData(Input: string; out AppendMinute: Int64;
+    function ReadSensorData(Input: string; out AppendMinute: double;
               out AppendCounter: Int64; out LastDefFile: string;
               out LastSIXID: string): Boolean;
     procedure CloseLazSerialConn;
@@ -3073,8 +3073,9 @@ end;
 
 procedure TMainForm.LoadSensorDataMIClick(Sender: TObject);
 var
- AppendMinute, AppendCounter : Int64;
+ AppendCounter : Int64;
  LastDefFile, LastSIXID : string;
+ AppendMinute : double;
 begin
  // we can have the case that a file is dropped while we cannot load a file
  if not LoadSensorDataMI.enabled then
@@ -3108,7 +3109,7 @@ begin
  SIXControl.ReadNotes;
 end;
 
-function TMainForm.ReadSensorData(Input: string; out AppendMinute: Int64;
+function TMainForm.ReadSensorData(Input: string; out AppendMinute: double;
                    out AppendCounter: Int64; out LastDefFile: string;
                    out LastSIXID: string) : Boolean;
 // reads data out of sensor file
@@ -3680,7 +3681,7 @@ try
  end;
 
  // to later append to right time, store the last found time and counter
- AppendMinute:= MinutesBetween(Now, StartTime);
+ AppendMinute:= SecondsBetween(Now, StartTime) / 60;
  AppendCounter:= counter;
 
  Result:= true;
@@ -4422,12 +4423,13 @@ procedure TMainForm.SIXBiosensorsStart(Connected: Boolean; Disconnect: Boolean);
 var
  Reg : TRegistry;
  i, k, COMNumber, COMIndex, YesNo : integer;
- AppendCounter, AppendMinute : Int64;
+ AppendCounter : Int64;
  MousePointer : TPoint;
  HeaderLine, ReturnName, LastLine, COMPort, LastDefFile, LastSIXID : string;
  dataArray : array[0..24] of byte;
  COMArray : array of string;
  BufferSize : integer = 300; // a line has about 90 characters, so 300 is sufficient
+ AppendMinute : double;
 begin
  // initialize
  MousePointer:= Mouse.CursorPos;

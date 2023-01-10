@@ -1595,8 +1595,9 @@ var
  i, j : integer;
  LastIndex : integer = 0;
  hasLoadedSensorData : Boolean;
- AppendMinute, AppendCounter : Int64;
+ AppendCounter : Int64;
  LastDefFile, LastSIXID : string;
+ AppendMinute : double;
 begin
  // if RawCurrentCB is disabled we must not recalculate
  if (not MainForm.RawCurrentCB.Enabled) then
