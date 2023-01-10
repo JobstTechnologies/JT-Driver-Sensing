@@ -5,7 +5,7 @@ unit ceSeriesFrame;
 interface
 
 uses
-  Classes, SysUtils, Graphics, Forms, Controls, ExtCtrls, StdCtrls,
+  Classes, SysUtils, Graphics, Forms, Controls, ExtCtrls, StdCtrls, Dialogs,
   TAGraph, TACustomSeries, TASeries,
   ceBrushFrame, cePenFrame, cePointerFrame;
 
@@ -25,6 +25,8 @@ type
     cbLineSeriesShowLines: TCheckBox;
     cbLineSeriesShowPoints: TCheckBox;
     cbMarksStyle: TComboBox;
+    cbMarksTextColor: TColorButton;
+    cbMarksBackColor: TColorButton;
     cbShowInLegend: TCheckBox;
     cbShowMarks: TCheckBox;
     cbShowSeries: TCheckBox;
@@ -42,6 +44,8 @@ type
     gbMarks: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
+    lblMarksTextColor: TLabel;
+    lblMarksBackColor: TLabel;
     lblSeriesMarksStyle: TLabel;
     nbSeriesTypes: TNotebook;
     PanelTop: TPanel;
@@ -54,7 +58,9 @@ type
     procedure cbLegendMultiplicityChange(Sender: TObject);
     procedure cbLineSeriesShowLinesChange(Sender: TObject);
     procedure cbLineSeriesShowPointsChange(Sender: TObject);
+    procedure cbMarksBackColorColorChanged(Sender: TObject);
     procedure cbMarksStyleChange(Sender: TObject);
+    procedure cbMarksTextColorColorChanged(Sender: TObject);
     procedure cbShowInLegendChange(Sender: TObject);
     procedure cbShowMarksChange(Sender: TObject);
     procedure cbShowSeriesChange(Sender: TObject);
@@ -223,6 +229,12 @@ begin
     TLineSeries(FSeries).ShowPoints := cbLineSeriesShowPoints.Checked;
 end;
 
+procedure TChartSeriesFrame.cbMarksBackColorColorChanged(Sender: TObject);
+begin
+  if (FSeries is TChartSeries) then
+    TChartSeries(FSeries).Marks.LabelBrush.Color := cbMarksBackColor.ButtonColor;
+end;
+
 procedure TChartSeriesFrame.cbMarksStyleChange(Sender: TObject);
 var
   series: TChartSeries;
@@ -232,6 +244,12 @@ begin
     series.Marks.Style := TSeriesMarksStyle(cbMarksStyle.ItemIndex);
     edMarksFormat.Text := series.Marks.Format;
   end;
+end;
+
+procedure TChartSeriesFrame.cbMarksTextColorColorChanged(Sender: TObject);
+begin
+  if (FSeries is TChartSeries) then
+    TChartSeries(FSeries).Marks.LabelFont.Color := cbMarksTextColor.ButtonColor;
 end;
 
 procedure TChartSeriesFrame.cbShowInLegendChange(Sender: TObject);
@@ -292,6 +310,8 @@ begin
     cbMarksStyle.ItemIndex := ord(TChartSeries(FSeries).Marks.Style);
     edMarksFormat.Text := TChartSeries(FSeries).Marks.Format;
     cbShowMarks.Checked := TChartSeries(FSeries).Marks.Visible;
+    cbMarksTextColor.ButtonColor := TChartSeries(FSeries).Marks.LabelFont.Color;
+    cbMarksBackColor.ButtonColor := TChartSeries(FSeries).Marks.LabelBrush.Color;
   end;
 
   if ASeries is TLineSeries then begin

@@ -2878,6 +2878,8 @@ try
   WriteStr(tempStr, Series.Marks.Style);
   List.Add('Marks.Style ' + tempStr);
   List.Add('Marks.Format ' + Series.Marks.Format);
+  List.Add('Marks.LabelBrush.Color ' + ColorToString(Series.Marks.LabelBrush.Color));
+  List.Add('Marks.LabelFont.Color ' + ColorToString(Series.Marks.LabelFont.Color));
   List.Add('Marks.Visible ' + BoolToStr(Series.Marks.Visible));
   // Lines
   List.Add('ShowLines ' + BoolToStr(Series.ShowLines));
@@ -3505,6 +3507,12 @@ begin
    Series.Marks.Style:= tempMarksStyle;
    inc(m);
    Series.Marks.Format:= Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length);
+   inc(m);
+   Series.Marks.LabelBrush.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
+   inc(m);
+   Series.Marks.LabelFont.Color:= StringToColor(
+    Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));
    inc(m);
    Series.Marks.Visible:= StrToBool(
     Copy(List[m], Pos(' ', List[m]) + 1, List[m].Length));

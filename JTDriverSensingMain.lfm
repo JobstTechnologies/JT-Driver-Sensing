@@ -1780,6 +1780,7 @@ object MainForm: TMainForm
           Title = 'Channel 1'
           AxisIndexY = 0
           LinePen.Width = 2
+          Pointer.Brush.Color = clBlack
         end
         object SIXCh1Results: TLineSeries
           Active = False
@@ -1796,6 +1797,7 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clYellow
           LinePen.Width = 2
+          Pointer.Brush.Color = clYellow
           Pointer.Style = psCircle
         end
         object SIXCh2Results: TLineSeries
@@ -1814,10 +1816,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clAqua
           LinePen.Width = 2
+          Pointer.Brush.Color = clAqua
         end
         object SIXCh3Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = clAqua
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = clAqua
@@ -1831,10 +1835,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = 33023
           LinePen.Width = 2
+          Pointer.Brush.Color = 33023
         end
         object SIXCh4Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = 33023
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = 33023
@@ -1848,10 +1854,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clRed
           LinePen.Width = 2
+          Pointer.Brush.Color = clRed
         end
         object SIXCh5Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = clRed
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = clRed
@@ -1865,10 +1873,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clLime
           LinePen.Width = 2
+          Pointer.Brush.Color = clLime
         end
         object SIXCh6Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = clLime
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = clLime
@@ -1881,10 +1891,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clCream
           LinePen.Width = 2
+          Pointer.Brush.Color = clCream
         end
         object SIXCh7Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = clCream
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = clCream
@@ -1897,10 +1909,12 @@ object MainForm: TMainForm
           AxisIndexY = 0
           LinePen.Color = clFuchsia
           LinePen.Width = 2
+          Pointer.Brush.Color = clFuchsia
         end
         object SIXCh8Results: TLineSeries
           Active = False
           AxisIndexY = 0
+          LinePen.Color = clFuchsia
           LinePen.Width = 2
           LineType = ltNone
           Pointer.Brush.Color = clFuchsia
@@ -1914,6 +1928,7 @@ object MainForm: TMainForm
           AxisIndexY = 2
           LinePen.Color = clMaroon
           LinePen.Width = 2
+          Pointer.Brush.Color = clMaroon
         end
         object TopLine: TConstantLine
           Legend.Visible = False

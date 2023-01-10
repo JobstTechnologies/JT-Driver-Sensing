@@ -119,112 +119,6 @@ object ChartSeriesFrame: TChartSeriesFrame
         ParentColor = False
       end
     end
-    object gbMarks: TGroupBox
-      AnchorSideLeft.Control = Bevel4
-      AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = gbLegendText
-      AnchorSideRight.Control = PanelTop
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Control = gbLegendText
-      AnchorSideBottom.Side = asrBottom
-      Left = 302
-      Height = 109
-      Top = 25
-      Width = 287
-      Anchors = [akTop, akLeft, akRight, akBottom]
-      AutoSize = True
-      Caption = 'Marks'
-      ClientHeight = 89
-      ClientWidth = 283
-      TabOrder = 2
-      object lblSeriesMarksStyle: TLabel
-        AnchorSideLeft.Control = gbMarks
-        AnchorSideTop.Control = cbMarksStyle
-        AnchorSideTop.Side = asrCenter
-        Left = 8
-        Height = 15
-        Top = 8
-        Width = 25
-        BorderSpacing.Left = 8
-        Caption = 'Style'
-        ParentColor = False
-      end
-      object cbMarksStyle: TComboBox
-        AnchorSideLeft.Control = edMarksFormat
-        AnchorSideTop.Control = gbMarks
-        AnchorSideRight.Control = gbMarks
-        AnchorSideRight.Side = asrBottom
-        Left = 54
-        Height = 23
-        Top = 4
-        Width = 221
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Top = 4
-        BorderSpacing.Right = 8
-        ItemHeight = 15
-        ItemIndex = 1
-        Items.Strings = (
-          'User-defined'
-          'No labels'
-          'Value'
-          'Percent'
-          'Label'
-          'Label and percent'
-          'Label and value'
-          'Legend'
-          'Percent and total'
-          'Label, percent, and total'
-          'X value'
-        )
-        OnChange = cbMarksStyleChange
-        Style = csDropDownList
-        TabOrder = 0
-        Text = 'No labels'
-      end
-      object Label2: TLabel
-        AnchorSideLeft.Control = lblSeriesMarksStyle
-        AnchorSideTop.Control = edMarksFormat
-        AnchorSideTop.Side = asrCenter
-        Left = 8
-        Height = 15
-        Top = 37
-        Width = 38
-        Caption = 'Format'
-        ParentColor = False
-      end
-      object edMarksFormat: TEdit
-        AnchorSideLeft.Control = Label2
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = cbMarksStyle
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = gbMarks
-        AnchorSideRight.Side = asrBottom
-        Left = 54
-        Height = 23
-        Top = 33
-        Width = 221
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 8
-        BorderSpacing.Top = 6
-        BorderSpacing.Right = 8
-        OnEditingDone = edMarksFormatEditingDone
-        TabOrder = 1
-        Text = 'edMarksFormat'
-      end
-      object cbShowMarks: TCheckBox
-        AnchorSideLeft.Control = edMarksFormat
-        AnchorSideTop.Control = edMarksFormat
-        AnchorSideTop.Side = asrBottom
-        Left = 54
-        Height = 19
-        Top = 62
-        Width = 156
-        BorderSpacing.Top = 6
-        Caption = 'Show at series data points'
-        OnChange = cbShowMarksChange
-        TabOrder = 2
-      end
-    end
     object Bevel4: TBevel
       AnchorSideLeft.Control = PanelTop
       AnchorSideLeft.Side = asrCenter
@@ -306,6 +200,171 @@ object ChartSeriesFrame: TChartSeriesFrame
         Top = 120
         Width = 16
         Shape = bsSpacer
+      end
+      object gbMarks: TGroupBox
+        AnchorSideLeft.Control = pgLineSeries
+        AnchorSideTop.Control = gbLineSeriesLineStyle
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = Bevel1
+        AnchorSideBottom.Side = asrBottom
+        Left = 0
+        Height = 132
+        Top = 92
+        Width = 286
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = True
+        BorderSpacing.Top = 4
+        Caption = 'Marks'
+        ClientHeight = 112
+        ClientWidth = 282
+        TabOrder = 2
+        object lblSeriesMarksStyle: TLabel
+          AnchorSideLeft.Control = gbMarks
+          AnchorSideTop.Control = cbMarksStyle
+          AnchorSideTop.Side = asrCenter
+          Left = 8
+          Height = 15
+          Top = 8
+          Width = 25
+          BorderSpacing.Left = 8
+          Caption = 'Style'
+          ParentColor = False
+        end
+        object cbMarksStyle: TComboBox
+          AnchorSideLeft.Control = edMarksFormat
+          AnchorSideTop.Control = gbMarks
+          AnchorSideRight.Control = gbMarks
+          AnchorSideRight.Side = asrBottom
+          Left = 54
+          Height = 23
+          Top = 4
+          Width = 220
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Top = 4
+          BorderSpacing.Right = 8
+          ItemHeight = 15
+          ItemIndex = 1
+          Items.Strings = (
+            'User-defined'
+            'No labels'
+            'Value'
+            'Percent'
+            'Label'
+            'Label and percent'
+            'Label and value'
+            'Legend'
+            'Percent and total'
+            'Label, percent, and total'
+            'X value'
+          )
+          OnChange = cbMarksStyleChange
+          Style = csDropDownList
+          TabOrder = 0
+          Text = 'No labels'
+        end
+        object Label2: TLabel
+          AnchorSideLeft.Control = lblSeriesMarksStyle
+          AnchorSideTop.Control = edMarksFormat
+          AnchorSideTop.Side = asrCenter
+          Left = 8
+          Height = 15
+          Top = 37
+          Width = 38
+          Caption = 'Format'
+          ParentColor = False
+        end
+        object edMarksFormat: TEdit
+          AnchorSideLeft.Control = Label2
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = cbMarksStyle
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = gbMarks
+          AnchorSideRight.Side = asrBottom
+          Left = 54
+          Height = 23
+          Top = 33
+          Width = 220
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 8
+          BorderSpacing.Top = 6
+          BorderSpacing.Right = 8
+          OnEditingDone = edMarksFormatEditingDone
+          TabOrder = 1
+          Text = 'edMarksFormat'
+        end
+        object cbShowMarks: TCheckBox
+          AnchorSideLeft.Control = edMarksFormat
+          AnchorSideTop.Control = edMarksFormat
+          AnchorSideTop.Side = asrBottom
+          Left = 54
+          Height = 19
+          Top = 62
+          Width = 154
+          BorderSpacing.Top = 6
+          Caption = 'Show at series data points'
+          OnChange = cbShowMarksChange
+          TabOrder = 2
+        end
+        object cbMarksTextColor: TColorButton
+          AnchorSideLeft.Control = lblMarksTextColor
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = cbShowMarks
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Side = asrBottom
+          Left = 65
+          Height = 25
+          Top = 87
+          Width = 31
+          BorderSpacing.Left = 6
+          BorderSpacing.Top = 6
+          BorderWidth = 2
+          ButtonColorSize = 16
+          ButtonColor = clBlack
+          Margin = 2
+          OnColorChanged = cbMarksTextColorColorChanged
+        end
+        object cbMarksBackColor: TColorButton
+          AnchorSideLeft.Control = lblMarksBackColor
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = cbMarksTextColor
+          AnchorSideRight.Control = gbMarks
+          AnchorSideRight.Side = asrBottom
+          Left = 243
+          Height = 25
+          Top = 87
+          Width = 31
+          Anchors = [akTop, akRight]
+          BorderSpacing.Left = 6
+          BorderSpacing.Right = 8
+          BorderWidth = 2
+          ButtonColorSize = 16
+          ButtonColor = clBlack
+          Margin = 2
+          OnColorChanged = cbMarksBackColorColorChanged
+        end
+        object lblMarksTextColor: TLabel
+          AnchorSideLeft.Control = lblSeriesMarksStyle
+          AnchorSideTop.Control = cbMarksTextColor
+          AnchorSideTop.Side = asrCenter
+          Left = 8
+          Height = 15
+          Top = 92
+          Width = 51
+          Caption = 'Text color'
+        end
+        object lblMarksBackColor: TLabel
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = cbMarksBackColor
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = cbMarksBackColor
+          Left = 143
+          Height = 15
+          Top = 92
+          Width = 94
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 6
+          Caption = 'Background color'
+        end
       end
     end
     object pgBarSeries: TPage
