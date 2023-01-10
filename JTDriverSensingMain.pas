@@ -3503,7 +3503,7 @@ try
    end;
 
    continue;
-  end; // end evealuation of intermediate header
+  end; // end evaluation of intermediate header
 
   // first read the counter because corrupted files might thave missing
   // values and then following routines like calculating slopes would fail
