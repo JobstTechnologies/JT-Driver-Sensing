@@ -1,5 +1,15 @@
 Changes
 
+from version 1.41 to 1.50
+
+improvement:
+- 
+
+bugfix:
+- fix bug that on enabling all action settings, the checkbox for calibration
+  was not enabled
+
+
 from version 1.40 to 1.41
 
 improvement:

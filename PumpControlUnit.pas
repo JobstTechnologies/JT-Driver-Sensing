@@ -86,7 +86,7 @@ begin
  MainForm.LiveModeCB.Enabled:= True;
  MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
  MainForm.PumpSetupGB.Enabled:= True;
- MainForm.UseCalibGB.Enabled:= False;
+ MainForm.UseCalibGB.Enabled:= True;
  MainForm.ValveSetupGB.Enabled:= True;
  MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
  if not MainForm.HaveDefFileCB.Checked then
@@ -133,11 +133,11 @@ begin
  MainForm.LoadedActionFileM.Color:= clDefault;
  MainForm.LoadedActionFileM.Hint:= 'No action file loaded';
  // enable the calibration settings
+ MainForm.UseCalibCB.Enabled:= True;
  if MainForm.UseCalibCB.Checked then
  begin
   MainForm.CalibStepCB.Enabled:= True;
   MainForm.CalibStepL.Enabled:= True;
-  MainForm.UseCalibCB.Enabled:= True;
   MainForm.CalibEveryXStepsSE.Enabled:= True;
   MainForm.CalibEveryXStepsL1.Enabled:= True;
   MainForm.CalibEveryXStepsL2.Enabled:= True;
