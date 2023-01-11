@@ -1444,7 +1444,8 @@ procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
  Step : integer;
  SenderName : string;
- Subst: Substance;
+ Subst : Substance;
+ AverageValue : double;
 begin
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form "StepTimerX" and we need the X
@@ -1497,6 +1498,22 @@ begin
  begin
   for Subst in Substance do
    SIXControl.SCPerformAutoCalib(Subst);
+ end;
+ // perform a measurement if necessary
+ if MainForm.PerformLinearityCB.Checked then
+ begin
+  if (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
+   as TFloatSpinEdit).Value > 0 then
+  begin
+   // determine measurement value
+   // for ...
+   // output to diagram
+   MainForm.ResultCHValues.AddXY(
+    (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
+     as TFloatSpinEdit).Value, AverageValue);
+  end;
+  //for Subst in Substance do
+  // SIXControl.SCPerformAutoCalib(Subst);
  end;
 end;
 

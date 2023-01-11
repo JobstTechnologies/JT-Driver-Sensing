@@ -18,7 +18,6 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
-    ActionSensGB1: TGroupBox;
     AnOutPump2GB: TGroupBox;
     AnOutPump3GB: TGroupBox;
     AnOutPump4GB: TGroupBox;
@@ -32,24 +31,27 @@ type
     Appearance4BB: TBitBtn;
     AutoscaleB: TButton;
     CalibEveryXStepsL2: TLabel;
+    CalibEveryXStepsL4: TLabel;
+    MeasurementConcentrationsGB: TGroupBox;
+    Step2MeasureL: TLabel;
+    Step3MeasureL: TLabel;
+    Step4MeasureL: TLabel;
+    Step5MeasureL: TLabel;
+    Step6MeasureL: TLabel;
+    Step7MeasureL: TLabel;
+    Step1MeasureUnitCB: TComboBox;
+    Step2MeasureUnitCB: TComboBox;
+    Step3MeasureUnitCB: TComboBox;
+    Step4MeasureUnitCB: TComboBox;
+    Step5MeasureUnitCB: TComboBox;
+    Step6MeasureUnitCB: TComboBox;
+    Step7MeasureUnitCB: TComboBox;
+    Step1MeasureValueFSE: TFloatSpinEdit;
+    GroupBox1: TGroupBox;
+    LinearityGB: TGroupBox;
     CalibStepCB: TComboBox;
-    Channel1TestGB: TGroupBox;
-    ChannelTest1LE: TLabeledEdit;
-    Channel1TestOnOffCB: TCheckBox;
-    Channel2TestGB: TGroupBox;
-    ChannelTest2LE: TLabeledEdit;
-    Channel2TestOnOffCB: TCheckBox;
-    Channel3TestGB: TGroupBox;
+    CalibSubstancesPC1: TPageControl;
     Channel3LE: TLabeledEdit;
-    ChannelTest3LE: TLabeledEdit;
-    Channel3TestOnOffCB: TCheckBox;
-    Channel4TestGB: TGroupBox;
-    ChannelTest4LE: TLabeledEdit;
-    Channel4TestOnOffCB: TCheckBox;
-    Channel5TEstGB: TGroupBox;
-    ChannelTest5LE: TLabeledEdit;
-    Channel5TestOnOffCB: TCheckBox;
-    Channel6TestGB: TGroupBox;
     Channel6LE: TLabeledEdit;
     Channel5LE: TLabeledEdit;
     Channel4LE: TLabeledEdit;
@@ -57,17 +59,18 @@ type
     Channel6GB: TGroupBox;
     Channel1LE: TLabeledEdit;
     Channel3OnOffCB: TCheckBox;
-    ChannelTest6LE: TLabeledEdit;
     Channel6OnOffCB: TCheckBox;
-    Channel6TestOnOffCB: TCheckBox;
-    Channel7TestCB: TComboBox;
-    Channel7TestGB: TGroupBox;
-    Channel7TestOnOffCB: TCheckBox;
     AnOutOnOffTB: TToggleBox;
     ChartAxisTransformTime: TChartAxisTransformations;
     DataPointClickTool: TDataPointClickTool;
     DataPointMarksClickTool: TDataPointMarksClickTool;
+    GlucoseAvailChanL1: TLabel;
+    GlucoseCalibCLB1: TChartListbox;
+    GlucoseTS1: TTabSheet;
     HideNotesMI: TMenuItem;
+    LactateAvailChanL1: TLabel;
+    LactateCalibCLB1: TChartListbox;
+    LactateTS1: TTabSheet;
     Separator2MI: TMenuItem;
     Separator3MI: TMenuItem;
     Separator1MI: TMenuItem;
@@ -103,9 +106,6 @@ type
     Label118: TLabel;
     Label119: TLabel;
     Label120: TLabel;
-    Label167: TLabel;
-    Label169: TLabel;
-    Label171: TLabel;
     Label65: TLabel;
     Label66: TLabel;
     Label68: TLabel;
@@ -140,6 +140,12 @@ type
     Label98: TLabel;
     Label99: TLabel;
     LoadOtherDefBB: TBitBtn;
+    Step2MeasureValueFSE: TFloatSpinEdit;
+    Step3MeasureValueFSE: TFloatSpinEdit;
+    Step4MeasureValueFSE: TFloatSpinEdit;
+    Step5MeasureValueFSE: TFloatSpinEdit;
+    Step6MeasureValueFSE: TFloatSpinEdit;
+    Step7MeasureValueFSE: TFloatSpinEdit;
     TimeDaysHoursMinMI: TMenuItem;
     SIXConnectBB: TBitBtn;
     UseCalibGB: TGroupBox;
@@ -147,6 +153,8 @@ type
     LoadSensorDataMI: TMenuItem;
     CalibEveryXStepsL1: TLabel;
     ShowExpertCB: TCheckBox;
+    UsedCalibValueL1: TLabel;
+    Step1MeasureL: TLabel;
     UsedCalibValueSE: TSpinEdit;
     UsedCalibValueL: TLabel;
     LactateAvailChanL: TLabel;
@@ -166,6 +174,7 @@ type
     NoTempCorrectionCB: TCheckBox;
     UseCalibCB: TCheckBox;
     CalibEveryXStepsSE: TSpinEdit;
+    UsedCalibValueSE1: TSpinEdit;
     ValveNumberL: TLabel;
     PumpNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
@@ -184,7 +193,6 @@ type
     ColorDialog: TColorDialog;
     AbortCalibrationMI: TMenuItem;
     ConnComPortSensM: TMemo;
-    ConnComPortSensTestM: TMemo;
     ContextSensFilePM: TPopupMenu;
     ConnComPortSensL: TLabel;
     Label71: TLabel;
@@ -199,7 +207,6 @@ type
     LoadedDefFileL: TLabel;
     Label69: TLabel;
     LoadedDefFileM: TMemo;
-    LoadedDefFileTestM: TMemo;
     ChangeBackColorMI: TMenuItem;
     ContextChartPM: TPopupMenu;
     ScrollViewP: TPanel;
@@ -212,17 +219,12 @@ type
     RectangleSelectionTool: TUserDefinedTool;
     LineDragTool: TDataPointDragTool;
     ConnComPortPumpGeneralLE: TLabeledEdit;
-    FinishTimeSensLE1: TLabeledEdit;
     FirmwareResetMI: TMenuItem;
     IndicatorPumpGeneralP: TPanel;
-    IndicatorSensorTestP: TPanel;
     LoadedActionFileGeneraL: TLabel;
     Label67: TLabel;
     LoadedActionFileGeneralM: TMemo;
-    LoadedFileSensTestM: TMemo;
-    StartTimeSensLE1: TLabeledEdit;
     PumpStatusGeneralGB: TGroupBox;
-    StatusTestGB1: TGroupBox;
     UseAnOutCB: TCheckBox;
     AnOutputOf1CB: TComboBox;
     AnOutPump1GB: TGroupBox;
@@ -233,9 +235,6 @@ type
     AnOutConnector2OnOffCB: TCheckBox;
     AnOutConnector3OnOffCB: TCheckBox;
     AnOutConnector4OnOffCB: TCheckBox;
-    Channel8TestCB: TComboBox;
-    Channel8TestGB: TGroupBox;
-    Channel8TestOnOffCB: TCheckBox;
     ChartAxisTransformValues: TChartAxisTransformations;
     ValuesAutoScaleAxisTransform: TAutoScaleAxisTransform;
     TempAutoScaleAxisTransform: TAutoScaleAxisTransform;
@@ -248,51 +247,13 @@ type
     Label1Ch16: TLabel;
     AnOutMaxLabel: TLabel;
     AnOutMaxSignalFSE: TFloatSpinEdit;
-    CurrChannel1TestLE: TLabeledEdit;
-    CurrChannel2TestLE: TLabeledEdit;
     CurrChannel3LE: TLabeledEdit;
-    CurrChannel3TestLE: TLabeledEdit;
-    CurrChannel4TestLE: TLabeledEdit;
-    CurrChannel5TestLE: TLabeledEdit;
     CurrChannel6LE: TLabeledEdit;
-    CurrChannel6TestLE: TLabeledEdit;
-    CurrChannel7TestLE: TLabeledEdit;
     AnOutOf1LE: TLabeledEdit;
-    CurrChannel8TestLE: TLabeledEdit;
     AnOutGeneralGB: TGroupBox;
     Label1Ch13: TLabel;
     PerformTestingGB: TGroupBox;
-    GeneralGB1: TGroupBox;
-    Label1Ch10: TLabel;
-    Label1Ch9: TLabel;
-    Label2Parse3: TLabel;
-    LabelAirValue1: TLabel;
-    LabelSlope4: TLabel;
-    LabelSlope5: TLabel;
-    LabelSlope2: TLabel;
-    LabelSlope3: TLabel;
-    LabelSlope6: TLabel;
-    LabelSlope8: TLabel;
-    LabelSlope7: TLabel;
-    LabelSlope1: TLabel;
-    LimitSlope1FSE: TFloatSpinEdit;
-    LimitSlope2FSE: TFloatSpinEdit;
-    LimitSlope3FSE: TFloatSpinEdit;
-    LimitSlope4FSE: TFloatSpinEdit;
-    LimitSlope5FSE: TFloatSpinEdit;
-    LimitSlope6FSE: TFloatSpinEdit;
-    LimitSlope7FSE: TFloatSpinEdit;
-    LimitSlope8FSE: TFloatSpinEdit;
-    PerformTestsCB: TCheckBox;
-    PrevChannel1LE: TLabeledEdit;
-    PrevChannel2LE: TLabeledEdit;
-    PrevChannel3LE: TLabeledEdit;
-    PrevChannel4LE: TLabeledEdit;
-    PrevChannel5LE: TLabeledEdit;
-    PrevChannel6LE: TLabeledEdit;
-    PrevChannel7LE: TLabeledEdit;
-    PrevChannel8LE: TLabeledEdit;
-    ResultCounterSE1: TSpinEdit;
+    PerformLinearityCB: TCheckBox;
     ShowTempCB: TCheckBox;
     Channel2LE: TLabeledEdit;
     SIXCh1Results: TLineSeries;
@@ -320,11 +281,6 @@ type
     SIXCh1Values: TLineSeries;
     SIXCh4Values: TLineSeries;
     SIXTypeRG: TRadioGroup;
-    Slope1LE: TLabeledEdit;
-    Slope2LE: TLabeledEdit;
-    Slope3LE: TLabeledEdit;
-    Slope4LE: TLabeledEdit;
-    Slope5LE: TLabeledEdit;
     NoSubtractBlankCB: TCheckBox;
     CurrChannel7LE: TLabeledEdit;
     CurrChannel8LE: TLabeledEdit;
@@ -346,10 +302,6 @@ type
     SIXCh5Results: TLineSeries;
     SIXCh6Values: TLineSeries;
     SIXCh6Results: TLineSeries;
-    Slope6LE: TLabeledEdit;
-    Slope7LE: TLabeledEdit;
-    Slope8LE: TLabeledEdit;
-    StartTestBB: TBitBtn;
     Channel7GB: TGroupBox;
     IndicatorSensorP: TPanel;
     Channel7L: TLabel;
@@ -368,7 +320,6 @@ type
     CurrChannel2LE: TLabeledEdit;
     Channel1GB: TGroupBox;
     SixStatusGB: TGroupBox;
-    StopTestBB: TBitBtn;
     AnalogOutTS: TTabSheet;
     TestSettingsTS: TTabSheet;
     EvalTimeL: TLabel;
@@ -916,7 +867,6 @@ type
     Valve8RG6: TRadioGroup;
     Valve8RG7: TRadioGroup;
     PumpSetupGB: TGroupBox;
-    WaitTimeSE1: TSpinEdit;
     procedure AbortCalibrationMIClick(Sender: TObject);
     procedure AboutMIClick(Sender: TObject);
     procedure AnOutConnectorXOnOffCBChange(Sender: TObject);
@@ -961,7 +911,6 @@ type
     procedure ZoomDragToolAfterMouseUp(ATool{%H-}: TChartTool;
       APoint{%H-}: TPoint);
     procedure ConnComPortPumpLEChange;
-    procedure ConnComPortSensMChange(Sender: TObject);
     procedure ConnComPortSensMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
     procedure HaveSerialSensorCBChange(Sender: TObject);
@@ -980,7 +929,6 @@ type
     procedure HasNoValvesCBChange(Sender: TObject);
     procedure HavePumpSerialCBChange(Sender: TObject);
     procedure IndicatorPumpPPaint;
-    procedure IndicatorSensorPPaint(Sender: TObject);
     procedure InfoNoteClose(Sender: TObject; var CloseAction{%H-}: TCloseAction);
     procedure LineDragToolDrag(ASender: TDataPointDragTool;
       var AGraphPoint: TDoublePoint);
@@ -993,7 +941,6 @@ type
     procedure LoadedActionFileMChange(Sender: TObject);
     procedure LoadedActionFileMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
-    procedure LoadedDefFileMChange(Sender: TObject);
     procedure LoadedDefFileMContextPopup(Sender: TObject; MousePos{%H-}: TPoint;
       var Handled: Boolean);
     procedure LoadedFileSensMChange(Sender: TObject);
@@ -1005,7 +952,7 @@ type
     procedure RepeatSEChange(Sender: TObject);
     procedure ResetChartAppearanceMIClick(Sender: TObject);
     procedure NoSubtractBlankCBChange(Sender: TObject);
-    procedure PerformTestsCBChange(Sender: TObject);
+    procedure PerformLinearityCBChange(Sender: TObject);
     procedure RawCurrentCBChange(Sender: TObject);
     procedure ReadTimerTimerFinished(Sender: TObject);
     procedure RectangleSelectionToolAfterMouseDown(ATool{%H-}: TChartTool;
@@ -1153,7 +1100,6 @@ begin
  LoadedFileSensM.Text:= 'None';
  LoadedActionFileM.Text:= 'None';
  LoadedDefFileM.Text:= 'None';
- LoadedDefFileTestM.Text:= 'None';
 
  EvalTimeFSE.MaxValue:= MaxDouble; // because MaxDouble cannot be set in the form editor
  // load definition file file directly if it was provided via command line
@@ -2256,7 +2202,6 @@ begin
   begin
    IndicatorSensorP.Color:= clDefault;
    IndicatorSensorP.Caption:= '';
-   StartTestBB.enabled:= true;
   end;
   SIXBiosensorsMI.Enabled:= true;
   SIXConnectBB.Enabled:= true;
@@ -2640,10 +2585,10 @@ begin
 
 end;
 
-procedure TMainForm.PerformTestsCBChange(Sender: TObject);
+procedure TMainForm.PerformLinearityCBChange(Sender: TObject);
 begin
- TestSettingsTS.TabVisible:= PerformTestsCB.Checked;
- ResultTS.TabVisible:= PerformTestsCB.Checked;
+ TestSettingsTS.TabVisible:= PerformLinearityCB.Checked;
+ ResultTS.TabVisible:= PerformLinearityCB.Checked;
 end;
 
 procedure TMainForm.NoSubtractBlankCBChange(Sender: TObject);
@@ -2836,12 +2781,6 @@ begin
  IndicatorPumpGeneralP.Caption:= IndicatorPumpP.Caption;
 end;
 
-procedure TMainForm.IndicatorSensorPPaint(Sender: TObject);
-begin
- IndicatorSensorTestP.Color:= IndicatorSensorP.Color;
- IndicatorSensorTestP.Caption:= IndicatorSensorP.Caption;
-end;
-
 procedure TMainForm.InfoNoteClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
  // stop the permanent COM-port scan
@@ -2914,12 +2853,6 @@ procedure TMainForm.ConnComPortPumpLEChange;
 begin
  ConnComPortPumpGeneralLE.Color:= ConnComPortPumpLE.Color;
  ConnComPortPumpGeneralLE.Text:= ConnComPortPumpLE.Text;
-end;
-
-procedure TMainForm.ConnComPortSensMChange(Sender: TObject);
-begin
- ConnComPortSensTestM.Color:= ConnComPortSensM.Color;
- ConnComPortSensTestM.Text:= ConnComPortSensM.Text;
 end;
 
 // disable context menus for TMemo and TComboBoxObjects
@@ -3034,20 +2967,8 @@ begin
  LoadedActionFileGeneralM.Hint:= LoadedActionFileM.Hint;
 end;
 
-procedure TMainForm.LoadedDefFileMChange(Sender: TObject);
-begin
- LoadedDefFileTestM.Text:= LoadedDefFileM.Text;
- LoadedDefFileTestM.ShowHint:= LoadedDefFileM.ShowHint;
- LoadedDefFileTestM.Hint:= LoadedDefFileM.Hint;
-end;
-
 procedure TMainForm.LoadedFileSensMChange(Sender: TObject);
 begin
- // forward the properties to the counterpart of in the tab Test Settings
- LoadedFileSensTestM.Text:= LoadedFileSensM.Text;
- LoadedFileSensTestM.Color:= LoadedFileSensM.Color;
- LoadedFileSensTestM.Hint:= LoadedFileSensM.Hint;
-
  // update the main window title
  if LoadedFileSensM.Text = 'None' then
   MainForm.Caption:= 'JT Driver Sensing ' + Version
@@ -4401,8 +4322,6 @@ begin
  ConnComPortSensM.Color:= clHighlight;
  IndicatorSensorP.Caption:= '';
  IndicatorSensorP.Color:= clDefault;
- StartTestBB.Enabled:= false;
- StopTestBB.Enabled:= false;
  LoadSensorDataMI.Enabled:= true;
  if HaveSerialSensorCB.Checked then
  begin
@@ -4585,8 +4504,6 @@ begin
     exit; // nothing needs to be done
    MessageDlgPos('Error: No COM port selected.',
     mtError, [mbOK], 0, MousePointer.X, MousePointer.Y);
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
    IndicatorSensorP.Caption:= 'Connection failure';
    IndicatorSensorP.Color:= clRed;
    if HaveSerialSensorCB.Checked then
@@ -4623,8 +4540,6 @@ begin
     IndicatorSensorP.Caption:= 'Connection failure';
     IndicatorSensorP.Color:= clRed;
     ConnComPortSensM.Color:= clRed;
-    StartTestBB.Enabled:= false;
-    StopTestBB.Enabled:= false;
     exit;
    end
    else
@@ -4659,8 +4574,6 @@ begin
     ConnComPortSensM.Color:= clRed;
     IndicatorSensorP.Caption:= 'Wrong device';
     IndicatorSensorP.Color:= clRed;
-    StartTestBB.Enabled:= false;
-    StopTestBB.Enabled:= false;
     exit;
    end;
   end;
@@ -4676,8 +4589,6 @@ begin
    ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'Wrong device';
    IndicatorSensorP.Color:= clRed;
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
    exit;
   end;
 
@@ -4872,8 +4783,6 @@ begin
    ConnComPortSensM.Color:= clRed;
    IndicatorSensorP.Caption:= 'No file to save';
    IndicatorSensorP.Color:= clRed;
-   StartTestBB.Enabled:= false;
-   StopTestBB.Enabled:= false;
    exit;
  end;
 
@@ -4940,7 +4849,6 @@ begin
 
  // final UI settings
 
- StartTestBB.Enabled:= true;
  // enable analog output when also connected to a pump driver
  if ConnComPortPumpLE.Color = clDefault then
  begin

@@ -229,8 +229,6 @@ begin
      MainForm.IndicatorSensorP.Caption:= 'Connection failiure';
      MainForm.IndicatorSensorP.Color:= clRed;
      MainForm.ConnComPortSensM.Color:= clRed;
-     MainForm.StartTestBB.Enabled:= false;
-     MainForm.StopTestBB.Enabled:= false;
      MainForm.LoadSensorDataMI.Enabled:= true;
      exit;
     end;
@@ -264,8 +262,6 @@ begin
   MainForm.ConnComPortSensM.Color:= clRed;
   MainForm.IndicatorSensorP.Caption:= 'Connection lost';
   MainForm.IndicatorSensorP.Color:= clRed;
-  MainForm.StartTestBB.Enabled:= false;
-  MainForm.StopTestBB.Enabled:= false;
   exit;
  end;
 
@@ -293,8 +289,6 @@ begin
     MainForm.ConnComPortSensM.Color:= clRed;
     MainForm.IndicatorSensorP.Caption:= 'SIX error';
     MainForm.IndicatorSensorP.Color:= clRed;
-    MainForm.StartTestBB.Enabled:= false;
-    MainForm.StopTestBB.Enabled:= false;
     exit;
    end;
   end;
@@ -309,8 +303,6 @@ begin
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'Check USB cable!';
    MainForm.IndicatorSensorP.Color:= clRed;
-   //MainForm.StartTestBB.Enabled:= false;
-   //MainForm.StopTestBB.Enabled:= false;
    if MainForm.HaveSerialSensorCB.Checked then
    begin
     // close connection
@@ -385,8 +377,6 @@ begin
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
-   MainForm.StartTestBB.Enabled:= false;
-   MainForm.StopTestBB.Enabled:= false;
    exit;
   end;
  end;
@@ -435,8 +425,6 @@ begin
    MainForm.ConnComPortSensM.Color:= clRed;
    MainForm.IndicatorSensorP.Caption:= 'SIX error';
    MainForm.IndicatorSensorP.Color:= clRed;
-   MainForm.StartTestBB.Enabled:= false;
-   MainForm.StopTestBB.Enabled:= false;
    exit;
   end;
  end;
