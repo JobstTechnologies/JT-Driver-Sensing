@@ -10,21 +10,22 @@ object FitForm: TFitForm
   OnCreate = FormCreate
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.2.2.0'
+  LCLVersion = '2.3.0.0'
   object pnlParams: TPanel
     Left = 4
-    Height = 495
+    Height = 492
     Top = 4
     Width = 350
     Align = alLeft
     BorderSpacing.Around = 4
     BevelOuter = bvNone
-    ClientHeight = 495
+    ClientHeight = 492
     ClientWidth = 350
+    ParentBackground = False
     TabOrder = 0
     object PageControl1: TPageControl
       Left = 0
-      Height = 495
+      Height = 492
       Top = 0
       Width = 350
       ActivePage = TabSheet1
@@ -33,7 +34,7 @@ object FitForm: TFitForm
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Preparation'
-        ClientHeight = 467
+        ClientHeight = 464
         ClientWidth = 342
         object gbDataGeneration: TGroupBox
           Left = 4
@@ -46,6 +47,7 @@ object FitForm: TFitForm
           Caption = ' Data generation '
           ClientHeight = 62
           ClientWidth = 330
+          ParentBackground = False
           TabOrder = 0
           object btnSave: TSpeedButton
             AnchorSideRight.Side = asrBottom
@@ -144,6 +146,7 @@ object FitForm: TFitForm
           Caption = ' Fitting '
           ClientHeight = 160
           ClientWidth = 330
+          ParentBackground = False
           TabOrder = 1
           object FitOrderSE: TSpinEdit
             AnchorSideLeft.Control = lblFitOrder
@@ -224,6 +227,7 @@ object FitForm: TFitForm
             Caption = 'Fixed parameters (check to keep constant)'
             ClientHeight = 66
             ClientWidth = 298
+            ParentBackground = False
             ParentFont = False
             TabOrder = 2
             object cbFitParam0Fixed: TCheckBox
@@ -304,11 +308,11 @@ object FitForm: TFitForm
       end
       object TabSheet2: TTabSheet
         Caption = 'Results'
-        ClientHeight = 467
+        ClientHeight = 464
         ClientWidth = 342
         object lbResults: TListBox
           Left = 0
-          Height = 467
+          Height = 464
           Top = 0
           Width = 342
           Align = alClient
@@ -326,20 +330,21 @@ object FitForm: TFitForm
   end
   object pnlChart: TPanel
     Left = 372
-    Height = 495
+    Height = 492
     Top = 4
-    Width = 627
+    Width = 624
     Align = alClient
     BorderSpacing.Around = 4
     BevelOuter = bvNone
-    ClientHeight = 495
-    ClientWidth = 627
+    ClientHeight = 492
+    ClientWidth = 624
+    ParentBackground = False
     TabOrder = 1
     object FitChart: TChart
       Left = 0
-      Height = 495
+      Height = 492
       Top = 0
-      Width = 627
+      Width = 624
       AxisList = <      
         item
           Intervals.Count = 4
@@ -372,7 +377,7 @@ object FitForm: TFitForm
               Marks.LabelBrush.Style = bsClear
             end>
           Title.Visible = True
-          Title.Caption = 'Concentration [mM]'
+          Title.Caption = 'Concentration [mmol/l]'
           Title.LabelBrush.Style = bsClear
         end>
       BackColor = clGray
@@ -447,13 +452,14 @@ object FitForm: TFitForm
     object pnlLog: TPanel
       Left = 0
       Height = 0
-      Top = 495
-      Width = 627
+      Top = 492
+      Width = 624
       Align = alBottom
       AutoSize = True
       BevelOuter = bvNone
       ClientHeight = 0
-      ClientWidth = 627
+      ClientWidth = 624
+      ParentBackground = False
       TabOrder = 1
       object cbShowConfidenceIntervals: TCheckBox
         AnchorSideLeft.Side = asrBottom
@@ -461,7 +467,7 @@ object FitForm: TFitForm
         Left = 99
         Height = 19
         Top = -10
-        Width = 158
+        Width = 156
         Anchors = []
         BorderSpacing.Left = 20
         Caption = 'Show confidence intervals'
@@ -472,10 +478,10 @@ object FitForm: TFitForm
         AnchorSideLeft.Control = cbShowConfidenceIntervals
         AnchorSideTop.Control = cbShowConfidenceIntervals
         AnchorSideTop.Side = asrBottom
-        Left = 429
+        Left = 428
         Height = 19
         Top = -10
-        Width = 153
+        Width = 151
         Anchors = []
         Caption = 'Show prediction intervals'
         OnChange = cbShowPredictionIntervalsChange
