@@ -687,5 +687,6 @@ begin
     Result := Result + ';' + FloatToStr(FitParam1SE.Value, fs);
 end;
 
+
 end.
 

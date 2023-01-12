@@ -61,6 +61,8 @@ type
       AMark: Double);
     procedure SCAutoscaleMIClick(Sender: TObject);
     procedure SCHideNotesMIClick(Sender: TObject);
+    procedure TimeXMIClick(Sender: TObject; factor: integer);
+    procedure SubstMeasureCLBItemClick(ASender: TObject; AIndex: Integer);
 
   private
 
@@ -75,7 +77,6 @@ type
     function StringToFontStyles(s: string): TFontStyles;
     procedure ReadNotes;
     function CalcDaysHoursMins(x : double) : string;
-    procedure TimeXMIClick(Sender: TObject; factor: integer);
 
     class var
      evalTimeChanged : Boolean; // true if user changed evaluation time
@@ -132,7 +133,7 @@ type intArray = array[1..4] of byte;
 var
  OutLine : string;
  dataString : AnsiString;
- slope, temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
+ temperature, lastInterval, ScrollInterval, X, OldMax, OldMin : double;
  i, StopPos, ItemIndex : integer;
  MousePointer : TPoint;
  dataArray : TDataArray;
@@ -141,7 +142,6 @@ var
  Chan : array [1..6] of Int16;
  ChanDbl : array [0..8] of double; // start from zero purposely for non-existing subtracts
  ChanRawDbl : array [1..8] of double;
- prevChan : array [1..8] of double;
  checksum : integer;
  tempInt16: Int16;
  PintegerArray : PintArray;
@@ -669,18 +669,6 @@ begin
    MainForm.SIXTempValues.LinePen.Width:= 2;
   end;
  end;
-
- // if we are in the first run there are no previous values
- // and no slopes can be calculated
- if signalCounter = 1 then
-  exit;
- // get last channel values out of diagramm series
- for i:= 1 to NumChannels do
-  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).GetYValue(signalCounter - 2);
- for i:= 7 to 8 do
-  prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
-   as TLineSeries).GetYValue(signalCounter - 2);
 
  // output analog voltages
  if (not MainForm.UseAnOutCB.checked) then
@@ -3686,6 +3674,68 @@ begin
   MainForm.HideNotesMI.Checked:= true;
  end;
 end;
+
+procedure TSIXControl.SubstMeasureCLBItemClick(ASender: TObject; AIndex: Integer);
+var
+ i, k, l : integer;
+ SelectedName : string;
+ SelectedSeries : TChartSeries;
+ Average, StepConcentrationValue : array[1..7] of double;
+begin
+ // update average if there is a channel selected for the result diagram
+ SelectedName:= '';
+ SelectedSeries:= nil;
+ if MainForm.MeasurementChannelsPC.ActivePage = MainForm.GlucoseMeasureTS then
+ begin
+  // don't do anything if nothing is selected
+  if MainForm.GlucoseMeasureCLB.SelCount = 0 then
+   exit;
+  for i:= 0 to MainForm.GlucoseMeasureCLB.SeriesCount-1 do
+  begin
+   if not MainForm.GlucoseMeasureCLB.Selected[i] then
+    continue;
+   SelectedSeries:= MainForm.GlucoseCalibCLB.Series[i] as TChartSeries;
+  end;
+ end
+ else if MainForm.MeasurementChannelsPC.ActivePage = MainForm.LactateMeasureTS then
+ begin
+  // don't do anything if nothing is selected
+  if MainForm.LactateMeasureCLB.SelCount = 0 then
+   exit;
+  for i:= 0 to MainForm.LactateMeasureCLB.SeriesCount-1 do
+  begin
+   if not MainForm.LactateMeasureCLB.Selected[i] then
+    continue;
+   SelectedSeries:= MainForm.LactateMeasureCLB.Series[i] as TChartSeries;
+  end;
+ end;
+ SelectedName:= SelectedSeries.Name;
+ if SelectedName = SelectedName then
+  exit;
+ // replace 'Values' by 'Results'
+ SelectedName:= Copy(SelectedName, 0, SelectedName.Length-1-6);
+ SelectedName:= SelectedName + 'Results';
+ k:= 0;
+ for i:= 0 to SelectedSeries.Count - 1 do
+ begin
+  for l:= 1 to 7 do
+  begin
+   Average[l]:= 0;
+   StepConcentrationValue[l]:= (MainForm.FindComponent('Step' + IntToStr(l) + 'MeasureValueFSE')
+                                as TFloatSpinEdit).Value;
+   if (StepConcentrationValue[l] > 0) and
+     ((MainForm.FindComponent(SelectedName) as TLineSeries).XValue[i] =
+      StepConcentrationValue[l]) then
+   begin
+    Average[l]:= Average[l] + (MainForm.FindComponent(SelectedName) as TLineSeries).YValue[i];
+    inc(k);
+   end;
+  end;
+  Average[l]:= Average[l] / k;
+  MainForm.ResultCHAverages.YValue[l]:= Average[l];
+ end;
+end;
+
 
 end. //unit
 

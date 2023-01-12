@@ -380,7 +380,7 @@ object FitForm: TFitForm
           Title.Caption = 'Concentration [mmol/l]'
           Title.LabelBrush.Style = bsClear
         end>
-      BackColor = clGray
+      BackColor = clMedGray
       Foot.Brush.Color = clBtnFace
       Foot.Font.Color = clBlue
       Legend.Alignment = laTopLeft

@@ -11307,7 +11307,7 @@ object MainForm: TMainForm
             Chart = SIXCH
             Options = [cloShowIcons]
             OnAddSeries = CLBAddSeries
-            OnItemClick = CalibCLBItemClick
+            OnItemClick = SubstMeasureCLBItemClick
             Anchors = [akTop, akRight]
             BorderSpacing.Top = 2
             BorderSpacing.Right = 8
@@ -11344,7 +11344,7 @@ object MainForm: TMainForm
             Chart = SIXCH
             Options = [cloShowIcons]
             OnAddSeries = CLBAddSeries
-            OnItemClick = CalibCLBItemClick
+            OnItemClick = SubstMeasureCLBItemClick
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Top = 2
             BorderSpacing.Right = 8

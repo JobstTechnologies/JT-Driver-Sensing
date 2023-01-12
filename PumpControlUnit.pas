@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
-  StdCtrls, ExtCtrls, Spin, Buttons, LCLType,
-  SynaSer, Crt, Character, System.UITypes, Types, TAChartListbox, TASeries,
+  StdCtrls, ExtCtrls, Spin, Buttons, LCLType, SynaSer, Crt, Character,
+  System.UITypes, Types, TAChartListbox, TASeries,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -1442,7 +1442,7 @@ end;
 
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
- Step, i, k : integer;
+ Step, i: integer;
  SenderName : string;
  Subst : Substance;
  Average : double = 0;
@@ -1520,24 +1520,9 @@ begin
      as TLineSeries).AddXY(
     (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
      as TFloatSpinEdit).Value, Average);
-   // update average
-   Average:= 0;
-   k:= 0;
-   for i:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
-     as TLineSeries).Count - 1 do
-   begin
-    if (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
-        as TLineSeries).XValue[i] =
-        (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
-         as TFloatSpinEdit).Value then
-    begin
-     Average:= Average + (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
-                          as TLineSeries).YValue[i];
-     inc(k);
-    end;
-   end;
-   Average:= Average / k;
-   MainForm.ResultCHAverages.YValue[Step]:= Average;
+
+   // update average if there is a channel selected for the result diagram
+   SIXControl.SubstMeasureCLBItemClick(Sender, 0);
   end;
   //for Subst in Substance do
   // SIXControl.SCPerformAutoCalib(Subst);

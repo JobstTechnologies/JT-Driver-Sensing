@@ -888,6 +888,7 @@ type
       const APoint{%H-}: TPoint; var AHint: String);
     procedure DataPointHintToolHintPosition(
       ATool: TDataPointHintTool; var APoint: TPoint);
+    procedure SubstMeasureCLBItemClick(ASender: TObject; AIndex: Integer);
     procedure HideNotesMIClick(Sender: TObject);
     procedure OverallTimerStartTimer(Sender: TObject);
     procedure TimeDaysHoursMinMIClick(Sender: TObject);
@@ -2157,6 +2158,11 @@ procedure TMainForm.DataPointHintToolHintPosition(
 // moves the hint text above the cursor and center it horizontally to cursor
 begin
  SIXControl.SCDataPointHintToolHintPosition(ATool, APoint);
+end;
+
+procedure TMainForm.SubstMeasureCLBItemClick(ASender: TObject; AIndex: Integer);
+begin
+ SIXControl.SubstMeasureCLBItemClick(ASender, AIndex);
 end;
 
 procedure TMainForm.HideNotesMIClick(Sender: TObject);
@@ -4138,7 +4144,7 @@ var
  SaveFileStream : TFileStream;
  CommandResult: Boolean;
  k : integer;
- selectedSeries : TChartSeries;
+ SelectedSeries : TChartSeries;
  MousePointer : TPoint;
 begin
  MousePointer:= Mouse.CursorPos; // store mouse position
@@ -4231,9 +4237,9 @@ begin
     begin
      if not GlucoseCalibCLB.Selected[k] then
       continue;
-     selectedSeries:= GlucoseCalibCLB.Series[k] as TChartSeries;
+     SelectedSeries:= GlucoseCalibCLB.Series[k] as TChartSeries;
      SaveFileStream.Write('Glucose Channel: ', Length('Glucose Channel: '));
-     SaveFileStream.Write(selectedSeries.Name[1], Length(selectedSeries.Name));
+     SaveFileStream.Write(SelectedSeries.Name[1], Length(SelectedSeries.Name));
      SaveFileStream.Write(LineEnding, 2);
      break;
     end;
