@@ -1671,7 +1671,7 @@ begin
    end;
   end;
 
-  // not the pump settings when in live mode
+  // pump settings when not in live mode
   if not MainForm.LiveModeCB.Checked then
   begin
    // the user must be able to see if the pumps 5 - 8 are set
@@ -1719,10 +1719,12 @@ begin
     as TChartListbox).Enabled:= False;
    end;
   end;
+  // further UI settings
   MainForm.RepeatOutputLE.Visible:= False;
   MainForm.IndicatorPumpP.Caption:= 'Action is running';
   MainForm.IndicatorPumpP.Color:= clRed;
   MainForm.IndicatorPumpPPaint;
+  MainForm.LinearityTestGB.Enabled:= False;
   // set timers
   if (StrToInt(MainForm.RepeatSE.Text) > 0)
    and (MainForm.RunEndlessCB.Checked = False) then
@@ -1870,6 +1872,7 @@ begin
   MainForm.RunSettingsGB.Enabled:= not MainForm.LiveModeCB.Checked;
   MainForm.PumpSetupGB.Enabled:= True;
   MainForm.ValveSetupGB.Enabled:= True;
+  MainForm.LinearityTestGB.Enabled:= True;
   for j:= 1 to StepNum do
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')
@@ -2121,6 +2124,7 @@ begin
   MainForm.PumpSetupGB.Enabled:= True;
   MainForm.ValveSetupGB.Enabled:= True;
   MainForm.CalibrationGB.Enabled:= not MainForm.LiveModeCB.Checked;
+  MainForm.LinearityTestGB.Enabled:= True;
   for j:= 1 to StepNum do
   begin
    (MainForm.FindComponent('Step' + IntToStr(j) + 'UseCB')

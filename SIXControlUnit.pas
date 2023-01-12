@@ -1389,12 +1389,6 @@ begin
   (MainForm.FindComponent(SenderName) as TComboBox).Items[
       (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex];
 
- // transfer content to testing tab
- (MainForm.FindComponent('Channel' + Channel + 'TestCB') as TComboBox).Text:=
-  (MainForm.FindComponent(SenderName) as TComboBox).Text;
- (MainForm.FindComponent('Channel' + Channel + 'TestCB') as TComboBox).ItemIndex:=
-  (MainForm.FindComponent(SenderName) as TComboBox).ItemIndex;
-
  // set legend name
  if (MainForm.FindComponent(SenderName) as TComboBox).Text = 'mean(#2, #5)' then
   (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
