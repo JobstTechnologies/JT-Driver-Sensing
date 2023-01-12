@@ -2578,6 +2578,9 @@ begin
  UseCalibGB.Enabled:= not PerformLinearityCB.Checked;
  // notify user
  UseCalibGB.ShowHint:= PerformLinearityCB.Checked;
+ // enable to start an action if measurement is running
+ if HaveSerialSensorCB.Checked then
+  RunBB.Enabled:= PerformLinearityCB.Checked;
 end;
 
 procedure TMainForm.NoSubtractBlankCBChange(Sender: TObject);
@@ -3694,7 +3697,8 @@ procedure TMainForm.StopTimerFinished;
 // enable to execute new commands
 begin
  RunBB.Caption:= 'Run Action';
- RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked);
+ RunBB.Enabled:= (HavePumpSerialCB.Checked or HasNoPumpsCB.Checked)
+                 or PerformLinearityCB.Checked;
  StopTimer.Enabled:= False;
 end;
 
@@ -4908,6 +4912,10 @@ begin
 
  // assure that at least one channel is displayed
  AssureChannelDisplay;
+
+ // if linearity test enabled, enable button to start an action
+ if PerformLinearityCB.Checked then
+  RunBB.Enabled:= true;
 
 end;
 
