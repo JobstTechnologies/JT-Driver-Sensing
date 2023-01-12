@@ -682,50 +682,6 @@ begin
   prevChan[i]:= (MainForm.FindComponent('SIXCh' + IntToStr(i) + 'Values')
    as TLineSeries).GetYValue(signalCounter - 2);
 
- // calculate slopes
- for i:= 1 to NumChannels do
- begin
-  if MainForm.RawCurrentCB.Checked then
-   slope:= (ChanRawDbl[i] - prevChan[i])
-           / (lastInterval * 60) * 1000 // in pA/s
-  else
-   slope:= (ChanDbl[i] - prevChan[i])
-           / (lastInterval * 60) * 1000; // in uM/s
-  (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
-  as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
-  (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
-  as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
-  if MainForm.RawCurrentCB.Checked then
-   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
-  else
-   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
- end;
- for i:= 7 to 8 do
- begin
-  if (MainForm.FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
-   as TCheckBox).Checked then
-  begin
-   if MainForm.RawCurrentCB.Checked then
-    slope:= (ChanRawDbl[i] - prevChan[i])
-            / (lastInterval * 60) * 1000 // in pA/s
-   else
-    slope:= (ChanDbl[i] - prevChan[i])
-            / (lastInterval * 60) * 1000; // in uM/s
-   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(slope, -2));
-   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
-   as TLabeledEdit).Text:= FloatToStr(RoundTo(prevChan[i], -4));
-   if MainForm.RawCurrentCB.Checked then
-    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanRawDbl[i], -4))
-   else
-    (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).Text:= FloatToStr(RoundTo(ChanDbl[i], -4));
-  end;
- end;
-
  // output analog voltages
  if (not MainForm.UseAnOutCB.checked) then
   exit;
@@ -879,7 +835,7 @@ begin
     end;
    end; // end else if mean
   end
-  // values in mM according to .def file
+  // values in mmol/l according to .def file
   else
   begin
    // if just a channel
@@ -1593,19 +1549,6 @@ begin
   // rename the chart axis
   MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [nA]';
   MainForm.ResultCH.AxisList[0].Title.Caption:= 'Sensor Value [nA]';
-  for i:= 1 to 8 do
-  begin
-   if (i < 7) and isBlank[i] then // don't do this for blank channels
-    continue;
-   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [nA]';
-   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [nA]';
-   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [pA/s]';
-   (MainForm.FindComponent('LabelSlope' + IntToStr(i))
-    as TLabel).Caption:= 'Limit for Slope [pA/s]';
-  end;
   // in this case no definition file is needed and the SIX connection
   // can be enabled
   MainForm.SIXBiosensorsMI.Enabled:= true;
@@ -1647,21 +1590,8 @@ begin
  begin
   MainForm.SIXCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
   MainForm.ResultCH.AxisList[0].Title.Caption:= 'Sensor Value [mmol/l]';
-  for i:= 1 to 8 do
-  begin
-   if (i < 7) and isBlank[i] then // don't do this for blank channels
-    continue;
-   (MainForm.FindComponent('PrevChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Previous Signal [mM]';
-   (MainForm.FindComponent('CurrChannel' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Actual Signal [mM]';
-   (MainForm.FindComponent('Slope' + IntToStr(i) + 'LE')
-    as TLabeledEdit).EditLabel.Caption:= 'Signal Slope [uM/s]';
-   (MainForm.FindComponent('LabelSlope' + IntToStr(i))
-    as TLabel).Caption:= 'Limit for Slope [uM/s]';
-  end;
   // change 3.3V output label
-  MainForm.AnOutMaxLabel.Caption:= 'mM will become 3.3 V output';
+  MainForm.AnOutMaxLabel.Caption:= 'mmol/l will become 3.3 V output';
 
   if hasLoadedSensorData then
    // we need to re-read the file
