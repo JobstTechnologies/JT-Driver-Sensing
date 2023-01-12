@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Math,
   StdCtrls, ExtCtrls, Spin, Buttons, LCLType,
-  SynaSer, Crt, Character, System.UITypes, Types, TAChartListbox,
+  SynaSer, Crt, Character, System.UITypes, Types, TAChartListbox, TASeries,
   // custom forms
   JTDriverSensingMain, NameSetting;
 
@@ -1442,10 +1442,10 @@ end;
 
 procedure TPumpControl.PCStepTimerXFinished(Sender: TObject);
 var
- Step : integer;
+ Step, i, k : integer;
  SenderName : string;
  Subst : Substance;
- AverageValue : double;
+ Average : double = 0;
 begin
  SenderName:= (Sender as TComponent).Name;
  // SenderName is in the form "StepTimerX" and we need the X
@@ -1505,12 +1505,39 @@ begin
   if (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
    as TFloatSpinEdit).Value > 0 then
   begin
-   // determine measurement value
-   // for ...
+   // determine measurement value as average of the given number of last values
+   for i:= 0 to MainForm.MeasureAverageSE.Value - 1 do
+   begin
+    Average:= Average +
+     (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Values')
+      as TLineSeries).YValue[
+       (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Values')
+        as TLineSeries).Count - 1 - i];
+   end;
+   Average:= Average / MainForm.MeasureAverageSE.Value;
    // output to diagram
-   MainForm.ResultCHValues.AddXY(
+   (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
+     as TLineSeries).AddXY(
     (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
-     as TFloatSpinEdit).Value, AverageValue);
+     as TFloatSpinEdit).Value, Average);
+   // update average
+   Average:= 0;
+   k:= 0;
+   for i:= 0 to (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
+     as TLineSeries).Count - 1 do
+   begin
+    if (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
+        as TLineSeries).XValue[i] =
+        (MainForm.FindComponent('Step' + IntToStr(Step) + 'MeasureValueFSE')
+         as TFloatSpinEdit).Value then
+    begin
+     Average:= Average + (MainForm.FindComponent('SIXCh' + IntToStr(Step) + 'Results')
+                          as TLineSeries).YValue[i];
+     inc(k);
+    end;
+   end;
+   Average:= Average / k;
+   MainForm.ResultCHAverages.YValue[Step]:= Average;
   end;
   //for Subst in Substance do
   // SIXControl.SCPerformAutoCalib(Subst);

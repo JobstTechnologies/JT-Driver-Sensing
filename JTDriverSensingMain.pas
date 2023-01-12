@@ -31,26 +31,16 @@ type
     Appearance4BB: TBitBtn;
     AutoscaleB: TButton;
     CalibEveryXStepsL2: TLabel;
-    CalibEveryXStepsL4: TLabel;
-    MeasurementConcentrationsGB: TGroupBox;
-    Step2MeasureL: TLabel;
-    Step3MeasureL: TLabel;
-    Step4MeasureL: TLabel;
-    Step5MeasureL: TLabel;
-    Step6MeasureL: TLabel;
-    Step7MeasureL: TLabel;
-    Step1MeasureUnitCB: TComboBox;
-    Step2MeasureUnitCB: TComboBox;
-    Step3MeasureUnitCB: TComboBox;
-    Step4MeasureUnitCB: TComboBox;
-    Step5MeasureUnitCB: TComboBox;
-    Step6MeasureUnitCB: TComboBox;
-    Step7MeasureUnitCB: TComboBox;
-    Step1MeasureValueFSE: TFloatSpinEdit;
-    GroupBox1: TGroupBox;
-    LinearityGB: TGroupBox;
+    MeasureAverageSE: TSpinEdit;
+    LinearityTestGB: TGroupBox;
+    MeasurementChannelsPC: TPageControl;
+    GlucoseMeasureAvailChanL: TLabel;
+    GlucoseMeasureCLB: TChartListbox;
+    GlucoseMeasureTS: TTabSheet;
+    LactateMeasureAvailChanL: TLabel;
+    LactateMeasureCLB: TChartListbox;
+    LactateMeasureTS: TTabSheet;
     CalibStepCB: TComboBox;
-    CalibSubstancesPC1: TPageControl;
     Channel3LE: TLabeledEdit;
     Channel6LE: TLabeledEdit;
     Channel5LE: TLabeledEdit;
@@ -64,13 +54,8 @@ type
     ChartAxisTransformTime: TChartAxisTransformations;
     DataPointClickTool: TDataPointClickTool;
     DataPointMarksClickTool: TDataPointMarksClickTool;
-    GlucoseAvailChanL1: TLabel;
-    GlucoseCalibCLB1: TChartListbox;
-    GlucoseTS1: TTabSheet;
     HideNotesMI: TMenuItem;
-    LactateAvailChanL1: TLabel;
-    LactateCalibCLB1: TChartListbox;
-    LactateTS1: TTabSheet;
+    MeasureConcentrationsGB: TGroupBox;
     Separator2MI: TMenuItem;
     Separator3MI: TMenuItem;
     Separator1MI: TMenuItem;
@@ -140,11 +125,19 @@ type
     Label98: TLabel;
     Label99: TLabel;
     LoadOtherDefBB: TBitBtn;
+    Step1MeasureL: TLabel;
+    Step1MeasureValueFSE: TFloatSpinEdit;
+    Step2MeasureL: TLabel;
     Step2MeasureValueFSE: TFloatSpinEdit;
+    Step3MeasureL: TLabel;
     Step3MeasureValueFSE: TFloatSpinEdit;
+    Step4MeasureL: TLabel;
     Step4MeasureValueFSE: TFloatSpinEdit;
+    Step5MeasureL: TLabel;
     Step5MeasureValueFSE: TFloatSpinEdit;
+    Step6MeasureL: TLabel;
     Step6MeasureValueFSE: TFloatSpinEdit;
+    Step7MeasureL: TLabel;
     Step7MeasureValueFSE: TFloatSpinEdit;
     TimeDaysHoursMinMI: TMenuItem;
     SIXConnectBB: TBitBtn;
@@ -153,8 +146,6 @@ type
     LoadSensorDataMI: TMenuItem;
     CalibEveryXStepsL1: TLabel;
     ShowExpertCB: TCheckBox;
-    UsedCalibValueL1: TLabel;
-    Step1MeasureL: TLabel;
     UsedCalibValueSE: TSpinEdit;
     UsedCalibValueL: TLabel;
     LactateAvailChanL: TLabel;
@@ -174,7 +165,7 @@ type
     NoTempCorrectionCB: TCheckBox;
     UseCalibCB: TCheckBox;
     CalibEveryXStepsSE: TSpinEdit;
-    UsedCalibValueSE1: TSpinEdit;
+    UsedMeasureValueL: TLabel;
     ValveNumberL: TLabel;
     PumpNumberL: TLabel;
     ValveNumberSE: TSpinEdit;
@@ -321,7 +312,6 @@ type
     Channel1GB: TGroupBox;
     SixStatusGB: TGroupBox;
     AnalogOutTS: TTabSheet;
-    TestSettingsTS: TTabSheet;
     EvalTimeL: TLabel;
     Channel2GB: TGroupBox;
     MainPC: TPageControl;
@@ -994,12 +984,10 @@ type
     procedure SIXCHAfterDrawBackWall(ASender{%H-}: TChart; ACanvas: TCanvas;
       const ARect{%H-}: TRect);
     procedure StartFitBClick(Sender: TObject);
-    procedure StartTestBBClick(Sender: TObject);
     procedure StepXUseCBChange(Sender: TObject);
     procedure StepTimerXFinished(Sender: TObject);
     procedure StepTimerLastFinished(Sender: TObject);
     procedure StopBBClick(Sender: TObject);
-    procedure StopTestBBClick(Sender: TObject);
     procedure StopTimerFinished;
     procedure OverallTimerFinished;
     procedure RepeatTimerFinished;
@@ -2401,10 +2389,6 @@ begin
   (FindComponent('SIXCh' + IntToStr(i) + 'Results') as TLineSeries).Title:=
    (FindComponent('SIXCh' + IntToStr(i) + 'Values') as TLineSeries).Title;
  end;
- // transfer caption to testing tab
- for i:= 1 to SIXControl.NumChannels do
- (FindComponent('Channel' + IntToStr(i) + 'TestGB') as TGroupBox).Caption:=
-  (FindComponent('Channel' + IntToStr(i) + 'GB') as TGroupBox).Caption;
 
  // determine what are the blank channels
  for i:= 1 to 6 do
@@ -2587,8 +2571,13 @@ end;
 
 procedure TMainForm.PerformLinearityCBChange(Sender: TObject);
 begin
- TestSettingsTS.TabVisible:= PerformLinearityCB.Checked;
+ LinearityTestGB.Visible:= PerformLinearityCB.Checked;
  ResultTS.TabVisible:= PerformLinearityCB.Checked;
+ if UseCalibCB.Checked then
+  UseCalibCB.Checked:= false;
+ UseCalibGB.Enabled:= not PerformLinearityCB.Checked;
+ // notify user
+ UseCalibGB.ShowHint:= PerformLinearityCB.Checked;
 end;
 
 procedure TMainForm.NoSubtractBlankCBChange(Sender: TObject);
@@ -4940,41 +4929,6 @@ end;
 procedure TMainForm.StartFitBClick(Sender: TObject);
 begin
  SIXControl.SCStartFitBClick(Sender);
-end;
-
-procedure TMainForm.StartTestBBClick(Sender: TObject);
-var
- i : integer;
-begin
- for i:= 1 to 8 do
- begin
-  // show results data that should be shown
-  (FindComponent('SIXCh' + IntToStr(i) + 'Results')
-   as TLineSeries).Active:=
-   (FindComponent('Channel' + IntToStr(i) + 'OnOffCB')
-    as TCheckBox).Checked;
- end;
-
- // disable all channel actions
- for i:= 7 to 8 do
-  (FindComponent('Channel' + IntToStr(i) + 'CB')
-   as TComboBox).Enabled:= false;
- // definition file must not be changed
- LoadDefBB.Enabled:= false;
-
- Started:= true;
-end;
-
-procedure TMainForm.StopTestBBClick(Sender: TObject);
-var
- i : integer;
-begin
- Started:= false;
- LoadDefBB.Enabled:= true;
- // enable all channel actions
- for i:= 7 to 8 do
-  (FindComponent('Channel' + IntToStr(i) + 'CB')
-   as TComboBox).Enabled:= true;
 end;
 
 procedure TMainForm.CloseLazSerialConn;
