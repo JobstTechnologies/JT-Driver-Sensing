@@ -7,11 +7,11 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, lazcontrols, JTDriverSensingMain,
-  SerialUSBSelection, NameSetting, SIXControlUnit, Fitting, PumpControlUnit,
-  AboutForm, ceFontFrame, ceAxisDlg, ceBrushFrame, ceLegendDlg, cePenFrame,
-  cePointerFrame, ceSeriesDlg, ceShapeBrushPenMarginsFrame, ceTitleFootDlg,
-  ceUtils, Calibration, TAChartLiveView, NoteEditing, ScanningProgress;
+  Forms, lazcontrols, JTDriverSensingMain, SerialUSBSelection, NameSetting,
+  SIXControlUnit, Fitting, PumpControlUnit, AboutForm, ceFontFrame, ceAxisDlg,
+  ceBrushFrame, ceLegendDlg, cePenFrame, cePointerFrame, ceSeriesDlg,
+  ceShapeBrushPenMarginsFrame, ceTitleFootDlg, ceUtils, ceAxisFrame,
+  Calibration, TAChartLiveView, NoteEditing, ScanningProgress;
 
 {$R *.res}
 

@@ -71,7 +71,7 @@
           </Linking>
           <Other>
             <Verbosity>
-              <ShoLineNum Value="True"/>
+              <ShowLineNum Value="True"/>
             </Verbosity>
           </Other>
         </CompilerOptions>
@@ -130,7 +130,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="20">
+    <Units Count="21">
       <Unit0>
         <Filename Value="JTDriverSensing.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -270,6 +270,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit19>
+      <Unit20>
+        <Filename Value="ChartEditing\ceaxisframe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChartAxisFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ceAxisFrame"/>
+      </Unit20>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

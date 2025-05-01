@@ -8,7 +8,7 @@ uses
   Windows, Classes, SysUtils, Forms, Controls, Graphics, Crt, Streamex,
   Dialogs, StdCtrls, ExtCtrls, Spin, Buttons, ComCtrls, LazFileUtils,
   TAGraph, TASeries, TATools, TAChartUtils, TADrawerSVG, TAFuncSeries, Math,
-  Types, TATextElements, TALegend, TACustomSeries, TAChartAxis, ceAxisFrame,
+  Types, TATextElements, TALegend, TACustomSeries, TAChartAxis,
   TATypes, TAGeometry, TAChartLiveView, StrUtils, DateUtils, SynaSer,
   // custom forms
   JTDriverSensingMain, NameSetting, NoteEditing;
@@ -114,7 +114,7 @@ implementation
 uses
   Fitting, Calibration,
   // ChartEditing units
-  ceTitleFootDlg, ceLegendDlg, ceSeriesDlg, ceAxisDlg;
+  ceTitleFootDlg, ceLegendDlg, ceSeriesDlg, ceAxisDlg, ceAxisFrame;
 
 constructor TSIXControl.create;
 var
