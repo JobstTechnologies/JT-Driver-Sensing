@@ -10833,6 +10833,7 @@ object MainForm: TMainForm
         AnchorSideRight.Side = asrBottom
         Left = 560
         Height = 50
+        Hint = 'Disabled because'#13#10'linearity test is active'
         Top = 393
         Width = 152
         Anchors = [akTop, akLeft, akRight]
@@ -10910,188 +10911,38 @@ object MainForm: TMainForm
         TabOrder = 11
         Visible = False
       end
-    end
-    object TestSettingsTS: TTabSheet
-      Caption = 'Test Settings'
-      ClientHeight = 673
-      ClientWidth = 1154
-      TabVisible = False
-      object LinearityGB: TGroupBox
-        AnchorSideLeft.Control = ActionsGB
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = LiveModeCB
-        Left = 8
-        Height = 304
-        Hint = 'Calibration is only possible if a'#13#10'sensor definition file is loaded'
-        Top = 8
-        Width = 236
-        BorderSpacing.Left = 16
-        Caption = 'Channel Settings'
-        ClientHeight = 284
-        ClientWidth = 232
-        Enabled = False
+      object LinearityTestGB: TGroupBox
+        Left = 728
+        Height = 280
+        Top = 24
+        Width = 176
+        Caption = 'Linearity Test Settings'
+        ClientHeight = 260
+        ClientWidth = 172
         ParentBackground = False
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 0
+        TabOrder = 12
         Visible = False
-        object CalibSubstancesPC1: TPageControl
-          AnchorSideLeft.Control = LinearityGB
-          AnchorSideTop.Control = UsedCalibValueSE1
-          AnchorSideTop.Side = asrBottom
-          AnchorSideRight.Control = LinearityGB
-          AnchorSideRight.Side = asrBottom
-          AnchorSideBottom.Control = LinearityGB
-          AnchorSideBottom.Side = asrBottom
-          Left = 8
-          Height = 229
-          Top = 47
-          Width = 216
-          ActivePage = GlucoseTS1
-          Anchors = [akTop, akLeft, akRight, akBottom]
-          BorderSpacing.Left = 8
-          BorderSpacing.Top = 8
-          BorderSpacing.Right = 8
-          BorderSpacing.Bottom = 8
-          TabIndex = 0
-          TabOrder = 0
-          object GlucoseTS1: TTabSheet
-            Caption = 'Glucose'
-            ClientHeight = 201
-            ClientWidth = 208
-            object GlucoseCalibCLB1: TChartListbox
-              AnchorSideTop.Control = GlucoseAvailChanL1
-              AnchorSideTop.Side = asrBottom
-              Left = 8
-              Height = 167
-              Hint = 'Select the SIX channel that will contain'#13#10'the signal of the calibration solution'
-              Top = 25
-              Width = 192
-              Chart = SIXCH
-              Options = [cloShowIcons]
-              OnAddSeries = CLBAddSeries
-              OnItemClick = CalibCLBItemClick
-              BorderSpacing.Top = 2
-              ExtendedSelect = False
-              ItemHeight = 20
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-            end
-            object GlucoseAvailChanL1: TLabel
-              AnchorSideTop.Side = asrBottom
-              Left = 8
-              Height = 15
-              Top = 8
-              Width = 98
-              BorderSpacing.Top = 8
-              Caption = 'Available channels'
-            end
-          end
-          object LactateTS1: TTabSheet
-            Caption = 'Lactate'
-            ClientHeight = 201
-            ClientWidth = 208
-            Enabled = False
-            object LactateCalibCLB1: TChartListbox
-              AnchorSideTop.Control = LactateAvailChanL1
-              AnchorSideTop.Side = asrBottom
-              Left = 8
-              Height = 168
-              Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
-              Top = 25
-              Width = 192
-              Chart = SIXCH
-              Options = [cloShowIcons]
-              OnAddSeries = CLBAddSeries
-              OnItemClick = CalibCLBItemClick
-              BorderSpacing.Top = 2
-              ExtendedSelect = False
-              ItemHeight = 20
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-            end
-            object LactateAvailChanL1: TLabel
-              AnchorSideTop.Side = asrBottom
-              Left = 8
-              Height = 15
-              Top = 8
-              Width = 98
-              BorderSpacing.Top = 8
-              Caption = 'Available channels'
-            end
-          end
-        end
-        object UsedCalibValueSE1: TSpinEdit
-          AnchorSideTop.Side = asrBottom
-          AnchorSideRight.Side = asrBottom
-          Left = 136
-          Height = 23
-          Hint = 'Number of last measurements that'#13#10'will be used to calculate the mean'#13#10'value that is used as linearity'#13#10'measurement point'
-          Top = 16
-          Width = 58
-          Alignment = taRightJustify
-          Anchors = [akTop, akRight]
-          BorderSpacing.Top = 8
-          MaxValue = 999
-          MinValue = 5
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          Value = 5
-        end
-        object UsedCalibValueL1: TLabel
-          AnchorSideTop.Control = UsedCalibValueSE1
-          AnchorSideTop.Side = asrCenter
-          Left = 12
-          Height = 15
-          Top = 20
-          Width = 116
-          Caption = 'Used values for mean:'
-        end
-        object CalibEveryXStepsL4: TLabel
-          AnchorSideTop.Side = asrCenter
-          AnchorSideRight.Side = asrBottom
-          Left = 136
-          Height = 15
+        object MeasureConcentrationsGB: TGroupBox
+          AnchorSideLeft.Control = LinearityTestGB
+          AnchorSideTop.Control = LinearityTestGB
+          Left = 6
+          Height = 224
           Top = 0
-          Width = 38
-          Anchors = [akTop, akRight]
-          Caption = 'repeats'
-        end
-      end
-      object GroupBox1: TGroupBox
-        Left = 264
-        Height = 256
-        Top = 8
-        Width = 216
-        Caption = 'Step Settings'
-        ClientHeight = 236
-        ClientWidth = 212
-        ParentBackground = False
-        TabOrder = 1
-        object MeasurementConcentrationsGB: TGroupBox
-          AnchorSideLeft.Control = GlucoseTS
-          AnchorSideTop.Control = GlucoseTS
-          Left = 8
-          Height = 232
-          Top = 0
-          Width = 200
-          BorderSpacing.Left = 8
-          BorderSpacing.Top = 4
-          Caption = 'Concentrations'
-          ClientHeight = 212
-          ClientWidth = 196
+          Width = 160
+          BorderSpacing.Left = 6
+          Caption = 'Concentrations in mmol/l'
+          ClientHeight = 204
+          ClientWidth = 156
           ParentBackground = False
           TabOrder = 0
           object Step1MeasureValueFSE: TFloatSpinEdit
             AnchorSideLeft.Control = Step1MeasureL
             AnchorSideLeft.Side = asrBottom
-            Left = 49
+            AnchorSideTop.Control = MeasureConcentrationsGB
+            Left = 63
             Height = 23
             Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 4
+            Top = 0
             Width = 64
             Alignment = taRightJustify
             BorderSpacing.Left = 6
@@ -11101,57 +10952,62 @@ object MainForm: TMainForm
             ShowHint = True
             TabOrder = 0
           end
-          object Step1MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step1MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 4
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 1
-            Text = 'mmol/l'
-          end
           object Step1MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
+            AnchorSideLeft.Control = MeasureConcentrationsGB
             AnchorSideTop.Control = Step1MeasureValueFSE
             AnchorSideTop.Side = asrCenter
-            Left = 8
+            Left = 22
             Height = 15
-            Top = 8
+            Top = 4
             Width = 35
-            BorderSpacing.Left = 8
+            BorderSpacing.Left = 22
             Caption = 'Step 1:'
           end
           object Step2MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
+            AnchorSideLeft.Control = Step1MeasureL
             AnchorSideTop.Control = Step2MeasureValueFSE
             AnchorSideTop.Side = asrCenter
-            Left = 8
+            Left = 22
             Height = 15
-            Top = 37
+            Top = 33
             Width = 35
-            BorderSpacing.Left = 8
             Caption = 'Step 2:'
           end
           object Step2MeasureValueFSE: TFloatSpinEdit
             AnchorSideLeft.Control = Step1MeasureValueFSE
             AnchorSideTop.Control = Step1MeasureValueFSE
             AnchorSideTop.Side = asrBottom
-            Left = 49
+            Left = 63
             Height = 23
             Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 33
+            Top = 29
+            Width = 64
+            Alignment = taRightJustify
+            BorderSpacing.Top = 6
+            MaxValue = 9999
+            OnChange = CalibValueFSEChange
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+          end
+          object Step3MeasureL: TLabel
+            AnchorSideLeft.Control = Step1MeasureL
+            AnchorSideTop.Control = Step3MeasureValueFSE
+            AnchorSideTop.Side = asrCenter
+            Left = 22
+            Height = 15
+            Top = 62
+            Width = 35
+            Caption = 'Step 3:'
+          end
+          object Step3MeasureValueFSE: TFloatSpinEdit
+            AnchorSideLeft.Control = Step1MeasureValueFSE
+            AnchorSideTop.Control = Step2MeasureValueFSE
+            AnchorSideTop.Side = asrBottom
+            Left = 63
+            Height = 23
+            Hint = 'If zero, no measurement'#13#10'will be performed'
+            Top = 58
             Width = 64
             Alignment = taRightJustify
             BorderSpacing.Top = 6
@@ -11161,46 +11017,51 @@ object MainForm: TMainForm
             ShowHint = True
             TabOrder = 2
           end
-          object Step2MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step2MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step2MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 33
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 3
-            Text = 'mmol/l'
-          end
-          object Step3MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
-            AnchorSideTop.Control = Step3MeasureValueFSE
+          object Step4MeasureL: TLabel
+            AnchorSideLeft.Control = Step1MeasureL
+            AnchorSideTop.Control = Step4MeasureValueFSE
             AnchorSideTop.Side = asrCenter
-            Left = 8
+            Left = 22
             Height = 15
-            Top = 66
+            Top = 91
             Width = 35
-            BorderSpacing.Left = 8
-            Caption = 'Step 3:'
+            Caption = 'Step 4:'
           end
-          object Step3MeasureValueFSE: TFloatSpinEdit
+          object Step4MeasureValueFSE: TFloatSpinEdit
             AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideTop.Control = Step2MeasureValueFSE
+            AnchorSideTop.Control = Step3MeasureValueFSE
             AnchorSideTop.Side = asrBottom
-            Left = 49
+            Left = 63
             Height = 23
             Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 62
+            Top = 87
+            Width = 64
+            Alignment = taRightJustify
+            BorderSpacing.Top = 6
+            MaxValue = 9999
+            OnChange = CalibValueFSEChange
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 3
+          end
+          object Step5MeasureL: TLabel
+            AnchorSideLeft.Control = Step1MeasureL
+            AnchorSideTop.Control = Step5MeasureValueFSE
+            AnchorSideTop.Side = asrCenter
+            Left = 22
+            Height = 15
+            Top = 120
+            Width = 35
+            Caption = 'Step 5:'
+          end
+          object Step5MeasureValueFSE: TFloatSpinEdit
+            AnchorSideLeft.Control = Step1MeasureValueFSE
+            AnchorSideTop.Control = Step4MeasureValueFSE
+            AnchorSideTop.Side = asrBottom
+            Left = 63
+            Height = 23
+            Hint = 'If zero, no measurement'#13#10'will be performed'
+            Top = 116
             Width = 64
             Alignment = taRightJustify
             BorderSpacing.Top = 6
@@ -11210,46 +11071,51 @@ object MainForm: TMainForm
             ShowHint = True
             TabOrder = 4
           end
-          object Step3MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step3MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step3MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 62
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 5
-            Text = 'mmol/l'
-          end
-          object Step4MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
-            AnchorSideTop.Control = Step4MeasureValueFSE
+          object Step6MeasureL: TLabel
+            AnchorSideLeft.Control = Step1MeasureL
+            AnchorSideTop.Control = Step6MeasureValueFSE
             AnchorSideTop.Side = asrCenter
-            Left = 8
+            Left = 22
             Height = 15
-            Top = 95
+            Top = 149
             Width = 35
-            BorderSpacing.Left = 8
-            Caption = 'Step 4:'
+            Caption = 'Step 6:'
           end
-          object Step4MeasureValueFSE: TFloatSpinEdit
+          object Step6MeasureValueFSE: TFloatSpinEdit
             AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideTop.Control = Step3MeasureValueFSE
+            AnchorSideTop.Control = Step5MeasureValueFSE
             AnchorSideTop.Side = asrBottom
-            Left = 49
+            Left = 63
             Height = 23
             Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 91
+            Top = 145
+            Width = 64
+            Alignment = taRightJustify
+            BorderSpacing.Top = 6
+            MaxValue = 9999
+            OnChange = CalibValueFSEChange
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 5
+          end
+          object Step7MeasureL: TLabel
+            AnchorSideLeft.Control = Step1MeasureL
+            AnchorSideTop.Control = Step7MeasureValueFSE
+            AnchorSideTop.Side = asrCenter
+            Left = 22
+            Height = 15
+            Top = 178
+            Width = 35
+            Caption = 'Step 7:'
+          end
+          object Step7MeasureValueFSE: TFloatSpinEdit
+            AnchorSideLeft.Control = Step1MeasureValueFSE
+            AnchorSideTop.Control = Step6MeasureValueFSE
+            AnchorSideTop.Side = asrBottom
+            Left = 63
+            Height = 23
+            Hint = 'If zero, no measurement'#13#10'will be performed'
+            Top = 174
             Width = 64
             Alignment = taRightJustify
             BorderSpacing.Top = 6
@@ -11259,174 +11125,38 @@ object MainForm: TMainForm
             ShowHint = True
             TabOrder = 6
           end
-          object Step4MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step4MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step4MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 91
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 7
-            Text = 'mmol/l'
-          end
-          object Step5MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
-            AnchorSideTop.Control = Step5MeasureValueFSE
-            AnchorSideTop.Side = asrCenter
-            Left = 8
-            Height = 15
-            Top = 124
-            Width = 35
-            BorderSpacing.Left = 8
-            Caption = 'Step 5:'
-          end
-          object Step5MeasureValueFSE: TFloatSpinEdit
-            AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideTop.Control = Step4MeasureValueFSE
-            AnchorSideTop.Side = asrBottom
-            Left = 49
-            Height = 23
-            Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 120
-            Width = 64
-            Alignment = taRightJustify
-            BorderSpacing.Top = 6
-            MaxValue = 9999
-            OnChange = CalibValueFSEChange
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 8
-          end
-          object Step5MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step5MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step5MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 120
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 9
-            Text = 'mmol/l'
-          end
-          object Step6MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
-            AnchorSideTop.Control = Step6MeasureValueFSE
-            AnchorSideTop.Side = asrCenter
-            Left = 8
-            Height = 15
-            Top = 153
-            Width = 35
-            BorderSpacing.Left = 8
-            Caption = 'Step 6:'
-          end
-          object Step6MeasureValueFSE: TFloatSpinEdit
-            AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideTop.Control = Step5MeasureValueFSE
-            AnchorSideTop.Side = asrBottom
-            Left = 49
-            Height = 23
-            Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 149
-            Width = 64
-            Alignment = taRightJustify
-            BorderSpacing.Top = 6
-            MaxValue = 9999
-            OnChange = CalibValueFSEChange
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 10
-          end
-          object Step6MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step6MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step6MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 149
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 11
-            Text = 'mmol/l'
-          end
-          object Step7MeasureL: TLabel
-            AnchorSideLeft.Control = MeasurementConcentrationsGB
-            AnchorSideTop.Control = Step7MeasureValueFSE
-            AnchorSideTop.Side = asrCenter
-            Left = 8
-            Height = 15
-            Top = 182
-            Width = 35
-            BorderSpacing.Left = 8
-            Caption = 'Step 7:'
-          end
-          object Step7MeasureValueFSE: TFloatSpinEdit
-            AnchorSideLeft.Control = Step1MeasureValueFSE
-            AnchorSideTop.Control = Step6MeasureValueFSE
-            AnchorSideTop.Side = asrBottom
-            Left = 49
-            Height = 23
-            Hint = 'If zero, no measurement'#13#10'will be performed'
-            Top = 178
-            Width = 64
-            Alignment = taRightJustify
-            BorderSpacing.Top = 6
-            MaxValue = 9999
-            OnChange = CalibValueFSEChange
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 12
-          end
-          object Step7MeasureUnitCB: TComboBox
-            AnchorSideLeft.Control = Step7MeasureValueFSE
-            AnchorSideLeft.Side = asrBottom
-            AnchorSideTop.Control = Step7MeasureValueFSE
-            Left = 119
-            Height = 23
-            Hint = 'Select unit'
-            Top = 178
-            Width = 72
-            BorderSpacing.Left = 6
-            Enabled = False
-            ItemHeight = 15
-            ItemIndex = 0
-            Items.Strings = (
-              'mmol/l'
-              'g/l'
-              'mg/dl'
-            )
-            TabOrder = 13
-            Text = 'mmol/l'
-          end
+        end
+        object UsedMeasureValueL: TLabel
+          AnchorSideLeft.Control = MeasureConcentrationsGB
+          AnchorSideTop.Control = MeasureAverageSE
+          AnchorSideTop.Side = asrCenter
+          Left = 6
+          Height = 15
+          Top = 234
+          Width = 116
+          Caption = 'Used values for mean:'
+        end
+        object MeasureAverageSE: TSpinEdit
+          AnchorSideLeft.Control = UsedMeasureValueL
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = MeasureConcentrationsGB
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Side = asrBottom
+          Left = 128
+          Height = 23
+          Hint = 'Number of last measurements that'#13#10'will be used to calculate the mean'#13#10'value that is used as linearity'#13#10'measurement point'
+          Top = 230
+          Width = 40
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 6
+          BorderSpacing.Top = 6
+          MaxValue = 999
+          MinValue = 5
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          Value = 5
         end
       end
     end
@@ -11438,15 +11168,14 @@ object MainForm: TMainForm
       object ResultCH: TChart
         AnchorSideLeft.Control = ResultTS
         AnchorSideTop.Control = ResultTS
-        AnchorSideRight.Control = ResultTS
-        AnchorSideRight.Side = asrBottom
+        AnchorSideRight.Control = MeasurementChannelsPC
         AnchorSideBottom.Control = ResultTS
         AnchorSideBottom.Side = asrBottom
         Left = 0
         Height = 673
         Hint = 'This chart will show the results of the linearity test'
         Top = 0
-        Width = 1154
+        Width = 918
         AxisList = <        
           item
             Marks.LabelBrush.Style = bsClear
@@ -11481,6 +11210,7 @@ object MainForm: TMainForm
         Title.Visible = True
         Toolset = ChartToolset
         Anchors = [akTop, akLeft, akRight, akBottom]
+        BorderSpacing.Right = 8
         Color = clWindow
         PopupMenu = ContextChartPM
         object ResultCHValues: TLineSeries
@@ -11505,7 +11235,7 @@ object MainForm: TMainForm
       object SaveScreenshotResultB: TButton
         AnchorSideTop.Control = StartFitB
         AnchorSideRight.Control = SaveCSVResultB
-        Left = 934
+        Left = 698
         Height = 24
         Top = 4
         Width = 104
@@ -11532,7 +11262,7 @@ object MainForm: TMainForm
         AnchorSideTop.Control = StartFitB
         AnchorSideRight.Control = ResultCH
         AnchorSideRight.Side = asrBottom
-        Left = 1046
+        Left = 810
         Height = 24
         Top = 4
         Width = 104
@@ -11542,6 +11272,98 @@ object MainForm: TMainForm
         Enabled = False
         OnClick = SaveCSVResultBClick
         TabOrder = 3
+      end
+      object MeasurementChannelsPC: TPageControl
+        AnchorSideTop.Control = ResultTS
+        AnchorSideRight.Control = ResultTS
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 926
+        Height = 229
+        Top = 8
+        Width = 220
+        ActivePage = GlucoseMeasureTS
+        Anchors = [akTop, akRight]
+        BorderSpacing.Top = 8
+        BorderSpacing.Right = 8
+        TabIndex = 0
+        TabOrder = 4
+        object GlucoseMeasureTS: TTabSheet
+          AnchorSideRight.Control = LactateMeasureTS
+          AnchorSideRight.Side = asrBottom
+          Caption = 'Glucose'
+          ClientHeight = 201
+          ClientWidth = 212
+          object GlucoseMeasureCLB: TChartListbox
+            AnchorSideTop.Control = GlucoseMeasureAvailChanL
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = GlucoseMeasureTS
+            AnchorSideRight.Side = asrBottom
+            Left = 8
+            Height = 167
+            Hint = 'Select the SIX channel whose measurement'#13#10'values should be shown in the results diagram'
+            Top = 25
+            Width = 196
+            Chart = SIXCH
+            Options = [cloShowIcons]
+            OnAddSeries = CLBAddSeries
+            OnItemClick = CalibCLBItemClick
+            Anchors = [akTop, akRight]
+            BorderSpacing.Top = 2
+            BorderSpacing.Right = 8
+            ExtendedSelect = False
+            ItemHeight = 20
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+          object GlucoseMeasureAvailChanL: TLabel
+            AnchorSideTop.Side = asrBottom
+            Left = 8
+            Height = 15
+            Top = 8
+            Width = 98
+            BorderSpacing.Top = 8
+            Caption = 'Available channels'
+          end
+        end
+        object LactateMeasureTS: TTabSheet
+          Caption = 'Lactate'
+          ClientHeight = 201
+          ClientWidth = 212
+          object LactateMeasureCLB: TChartListbox
+            AnchorSideTop.Control = LactateMeasureAvailChanL
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = LactateMeasureTS
+            AnchorSideRight.Side = asrBottom
+            Left = 8
+            Height = 168
+            Hint = 'Select the SIX channel that shows'#13#10'the signal of the calibration solution'
+            Top = 25
+            Width = 196
+            Chart = SIXCH
+            Options = [cloShowIcons]
+            OnAddSeries = CLBAddSeries
+            OnItemClick = CalibCLBItemClick
+            Anchors = [akTop, akLeft, akRight]
+            BorderSpacing.Top = 2
+            BorderSpacing.Right = 8
+            ExtendedSelect = False
+            ItemHeight = 20
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+          object LactateMeasureAvailChanL: TLabel
+            AnchorSideTop.Side = asrBottom
+            Left = 8
+            Height = 15
+            Top = 8
+            Width = 98
+            BorderSpacing.Top = 8
+            Caption = 'Available channels'
+          end
+        end
       end
     end
     object AnalogOutTS: TTabSheet

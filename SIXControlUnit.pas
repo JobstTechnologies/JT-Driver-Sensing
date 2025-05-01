@@ -97,7 +97,6 @@ var
   wasReset: Boolean = false; // true if Reset button was pressed
   ScreenOutName: string = '';
   CSVOutName: string = '';
-  Started: Boolean = false; // if Start was pressed or not
   Gains : array [1..6] of single; // the channel gains
   GainsRaw : array [1..6] of single; // the default gains
   Subtracts : array [1..6] of integer; // the channel subtracts
@@ -1495,9 +1494,8 @@ begin
   HeaderStrings[i]:= (MainForm.FindComponent(SenderName) as TGroupBox).Caption;
   (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Title:=
    HeaderStrings[i];
-  if Started then
-   (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
-    'Stable ' + HeaderStrings[i];
+  (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Title:=
+   'Measurement ' + HeaderStrings[i];
  end;
 
  // the channel operations might show the old channel name, thus update them
@@ -1901,9 +1899,6 @@ begin
  // show/hide data
  (MainForm.FindComponent('SIXCh' + Channel + 'Values') as TLineSeries).Active:=
   (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
- if Started then
-  (MainForm.FindComponent('SIXCh' + Channel + 'Results') as TLineSeries).Active:=
-   (MainForm.FindComponent(SenderName) as TCheckBox).Checked;
  // for the channel operations, empty the LineEdit when turned off
  if StrToInt(Channel) > 6 then
   (MainForm.FindComponent('CurrChannel' + Channel + 'LE')
